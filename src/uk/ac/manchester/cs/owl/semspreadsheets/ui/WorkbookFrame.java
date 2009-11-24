@@ -1,9 +1,5 @@
 package uk.ac.manchester.cs.owl.semspreadsheets.ui;
 
-import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
-import uk.ac.manchester.cs.owl.semspreadsheets.repository.bioportal.BioPortalRepositoryAccessor;
 
 import javax.swing.*;
 import java.awt.*;
@@ -51,7 +47,7 @@ import org.semanticweb.owlapi.model.IRI;
  */
 public class WorkbookFrame extends JFrame {
 
-    private WorkbookManager workbookManager;
+    private uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager workbookManager;
 
     private MainPanel mainPanel;
 
