@@ -1,0 +1,1 @@
+java -Xmx500M -jar orcha-bin.jar

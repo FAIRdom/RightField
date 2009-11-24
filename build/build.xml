@@ -1,0 +1,151 @@
+<project default="distribution">
+
+    <property name="version" value="0.9.0"/>
+
+    <!-- The directory that contains the jar file dependencies for
+         the class path and building a release -->
+    <property name="libdir" value="../lib"/>
+
+    <!-- The directory where intermediate build products will be placed -->
+    <property name="builddir" value="out"/>
+
+    <!-- A directory into which class files will be placed during the build-->
+    <property name="classesdir" value="${builddir}/classes"/>
+
+    <!-- The directory where the javadoc will be generated to-->
+    <property name="javadocdir" value="${builddir}/javadoc"/>
+
+    <!-- The name of the jar file which contains the class files-->
+    <property name="bin-name" value="orcha-bin.jar"/>
+
+    <!-- The name of the jar file that contains the gathered source files-->
+    <property name="src-name" value="orcha-src.jar"/>
+
+    <property name="sourcepath" value="../src/**/*.java"/>
+
+
+    <!-- For the classpath, we just use all of the libraries in the
+         lib directory -->
+    <path id="classpath">
+        <fileset dir="${libdir}">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+
+
+    <!-- create a property containing all .jar files, prefix lib/, and seperated with a space -->
+    <pathconvert property="manifestclasspath" pathsep=" ">
+        <mapper>
+            <chainedmapper>
+
+                <!-- remove absolute path -->
+                <flattenmapper/>
+
+                <!-- add lib/ prefix -->
+                <globmapper from="*" to="lib/*"/>
+            </chainedmapper>
+        </mapper>
+
+        <path>
+            <!-- lib.home contains all jar files, in several subdirectories -->
+            <fileset dir="${libdir}">
+                <include name="**/*.jar"/>
+            </fileset>
+        </path>
+    </pathconvert>
+
+
+    <!-- Deletes all build products-->
+    <target name="clean">
+        <delete dir="${builddir}"/>
+    </target>
+
+    <!-- Compiles the source into a directory called classes inside
+         the build directory -->
+    <target name="compile">
+        <mkdir dir="${classesdir}"/>
+        <javac srcdir="../src" destdir="${classesdir}" debug="on">
+            <classpath refid="classpath"/>
+            <!--<include name="${sourcepath}"/>-->
+        </javac>
+        <copy todir="${classesdir}">
+            <fileset dir="../etc"/>
+        </copy>
+    </target>
+
+    <!-- Creates a jar containing the OWL API binary code -->
+    <target name="binjar" depends="compile">
+        <!-- Get the SVN revision number -->
+        <exec executable="svn" output="../build/svn.properties">
+            <arg value="info"/>
+        </exec>
+        <property prefix="svn" file="../build/svn.properties"/>
+        <jar basedir="${classesdir}" destfile="${builddir}/${bin-name}">
+            <manifest>
+                <attribute name="Title" value="Orcha"/>
+                <attribute name="Built-By" value="${user.name}"/>
+                <attribute name="Implementation-Version" value="${version}.${svn.Revision}"/>
+                <attribute name="Main-Class" value="WorkbookFrame"/>
+                <attribute name="Class-Path" value="${manifestclasspath}"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <!-- We just include the documentation for non-implementation stuff-->
+    <!--- including documentation for the impl package wouldn't make sense-->
+    <!--because end API users aren't expected to deal with this kind of thing -->
+    <!--<target name="javadoc">-->
+    <!--<mkdir dir="${javadocdir}"/>-->
+    <!--<javadoc destdir="${javadocdir}" verbose="no" windowtitle="Kudu">-->
+    <!--<fileset dir="./.." defaultexcludes="yes">-->
+    <!--<include name="${sourcepath}"/>-->
+    <!--</fileset>-->
+    <!--</javadoc>-->
+    <!--</target>-->
+
+    <!-- Creates a jar containing the OWL API source code -->
+    <target name="srcjar">
+        <jar destfile="${builddir}/${src-name}">
+            <manifest>
+                <attribute name="title" value="Orcha Source Code"/>
+                <attribute name="built-by" value="${user.name}"/>
+                <attribute name="version" value="${version}"/>
+            </manifest>
+            <fileset dir="../src"/>
+        </jar>
+    </target>
+
+    <!-- Creates a zip file containing the jar file containing the OWL API
+         class files, a jar file containing the source, a lib directory containing
+         the dependencies for the distribution.  The zip file is names
+         owlapi-${version}.zip -->
+    <target name="distribution" depends="clean, binjar, srcjar">
+        <property name="distdir" value="${builddir}/dist"/>
+        <mkdir dir="${distdir}"/>
+        <copy todir="${distdir}/lib">
+            <fileset dir="${libdir}"/>
+        </copy>
+        <chmod file="${distdir}/orcha.bat" perm="+x"/>
+        <chmod file="${distdir}/orcha.sh" perm="+x"/>
+        <chmod file="${distdir}/run.command" perm="+x"/>
+        <copy todir="${distdir}">
+            <fileset dir="../etc"/>
+        </copy>
+        <copy todir="${distdir}">
+            <fileset dir="../etc">
+                <include name="*.*"/>
+            </fileset>
+            <fileset file="${builddir}/${bin-name}"/>
+            <fileset file="${builddir}/${src-name}"/>
+            <fileset file=""/>
+            <fileset file="${src-name}"/>
+        </copy>
+        <!--<copy todir="${distdir}/javadoc">-->
+        <!--<fileset dir="${javadocdir}"/>-->
+        <!--</copy>-->
+        <zip destfile="${builddir}/orcha-${version}.zip">
+            <fileset dir="${distdir}"/>
+        </zip>
+    </target>
+
+</project>
