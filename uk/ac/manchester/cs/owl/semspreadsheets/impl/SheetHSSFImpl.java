@@ -1,0 +1,220 @@
+package uk.ac.manchester.cs.owl.semspreadsheets.impl;
+
+import uk.ac.manchester.cs.owl.semspreadsheets.model.*;
+
+import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Iterator;
+
+import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.ss.util.CellRangeAddressList;
+import org.apache.poi.ss.usermodel.Row;
+/*
+ * Copyright (C) 2009, University of Manchester
+ *
+ * Modifications to the initial code base are copyright of their
+ * respective authors, or their employers as appropriate.  Authorship
+ * of the modifications may be determined from the ChangeLog placed at
+ * the end of this file.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ */
+
+/**
+ * Author: Matthew Horridge<br>
+ * The University of Manchester<br>
+ * Information Management Group<br>
+ * Date: 18-Sep-2009
+ */
+public class SheetHSSFImpl implements Sheet {
+
+    private WorkbookHSSFImpl workbook;
+
+    private HSSFWorkbook hssfWorkbook;
+
+    private HSSFSheet sheet;
+
+    private static final short MAX_ROWS = Short.MAX_VALUE;
+
+    private static final int MAX_COLUMNS = 256;
+
+
+    public SheetHSSFImpl(WorkbookHSSFImpl workbook, HSSFSheet hssfSheet) {
+        this.workbook = workbook;
+        this.hssfWorkbook = workbook.getHSSFWorkbook();
+        this.sheet = hssfSheet;
+    }
+
+    public Workbook getWorkbook() {
+        return workbook;
+    }
+
+    public void setName(String name) {
+        String oldName = sheet.getSheetName();
+        hssfWorkbook.setSheetName(hssfWorkbook.getSheetIndex(sheet), name);
+        workbook.fireSheetRenamed(oldName, name);
+    }
+
+    public boolean isHidden() {
+        return hssfWorkbook.isSheetHidden(hssfWorkbook.getSheetIndex(sheet));
+    }
+
+    public void setHidden(boolean b) {
+        hssfWorkbook.setSheetHidden(hssfWorkbook.getSheetIndex(sheet), b);
+    }
+
+    public void setVeryHidden(boolean b) {
+        if (b) {
+            hssfWorkbook.setSheetHidden(hssfWorkbook.getSheetIndex(sheet), 2);
+        }
+        else {
+            hssfWorkbook.setSheetHidden(hssfWorkbook.getSheetIndex(sheet), false);
+        }
+    }
+
+    public boolean equals(Object obj) {
+        if (!(obj instanceof SheetHSSFImpl)) {
+            return false;
+        }
+        SheetHSSFImpl other = (SheetHSSFImpl) obj;
+        return sheet == other.sheet;
+    }
+
+    public HSSFSheet getHSSFSheet() {
+        return sheet;
+    }
+
+    public int getColumnWidth(int col) {
+        int width = (sheet.getColumnWidth(col) / 256) * 6;
+        return width;
+    }
+
+    public String getName() {
+        return hssfWorkbook.getSheetName(hssfWorkbook.getSheetIndex(sheet));
+    }
+
+    public int getMaxRows() {
+        return MAX_ROWS;
+    }
+
+    public int getMaxColumns() {
+        return MAX_COLUMNS;
+    }
+
+    public void clearAllCells() {
+        for(Iterator<Row> it = sheet.rowIterator(); it.hasNext(); ) {
+            Row row = it.next();
+            sheet.removeRow(row);
+        }
+    }
+
+    public boolean isCellAt(int col, int row) {
+        return false;
+    }
+
+    public Cell getCellAt(int col, int row) {
+        HSSFRow hssfRow = sheet.getRow(row);
+        if (hssfRow == null) {
+            return null;
+        }
+        HSSFCell hssfCell = hssfRow.getCell(col);
+        if (hssfCell == null) {
+            return null;
+        }
+        else {
+            return new CellHSSFImpl(hssfWorkbook, hssfCell);
+        }
+    }
+
+    public Cell addCellAt(int col, int row) {
+        HSSFRow hssfRow = sheet.getRow(row);
+        if (hssfRow == null) {
+            hssfRow = sheet.createRow(row);
+        }
+        HSSFCell cell = hssfRow.getCell(col);
+        if (cell == null) {
+            cell = hssfRow.createCell(col);
+        }
+        return new CellHSSFImpl(hssfWorkbook, cell);
+    }
+
+    public void clearCellAt(int col, int row) {
+        HSSFRow theRow = sheet.getRow(row);
+        if(theRow != null) {
+            HSSFCell theCell = theRow.getCell(col);
+            theCell.setCellValue("");
+        }
+    }
+
+    public Validation getValidationAt(int col, int row) {
+        for (HSSFDataValidation validation : sheet.getValidationData()) {
+            for (CellRangeAddress address : validation.getRegions().getCellRangeAddresses()) {
+                if (address.getFirstColumn() <= col && col <= address.getLastColumn()) {
+                    if (address.getFirstRow() <= row && row <= address.getLastRow()) {
+                        return new ValidationImpl(validation.getConstraint().getFormula1(), this, address.getFirstColumn(), address.getLastColumn(), address.getFirstRow(), address.getLastRow());
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    public Collection<Validation> getIntersectingValidations(Range range) {
+        ArrayList<Validation> intersectingValidations = new ArrayList<Validation>();
+        for (Validation validation : range.getSheet().getValidations()) {
+            if (validation.getRange().intersectsRange(range)) {
+                intersectingValidations.add(validation);
+            }
+        }
+        return intersectingValidations;
+    }
+
+    public Collection<Validation> getContainingValidations(Range range) {
+        ArrayList<Validation> containingValidations = new ArrayList<Validation>();
+        for (Validation validation : range.getSheet().getValidations()) {
+            if (validation.getRange().containsRange(range)) {
+                containingValidations.add(validation);
+            }
+        }
+        return containingValidations;
+    }
+
+    public void clearValidation() {
+        sheet.clearValidationData();
+    }
+
+    public void addValidation(String namedRange, int firstCol, int firstRow, int lastCol, int lastRow) {
+        CellRangeAddressList addressList = new CellRangeAddressList(firstRow, lastRow, firstCol, lastCol);
+        HSSFDataValidation dataValidation = new HSSFDataValidation(addressList, DVConstraint.createFormulaListConstraint(namedRange));
+        sheet.addValidationData(dataValidation);
+    }
+
+    public Collection<Validation> getValidations() {
+        List<Validation> validationList = new ArrayList<Validation>();
+        for (HSSFDataValidation validation : sheet.getValidationData()) {
+            for (CellRangeAddress address : validation.getRegions().getCellRangeAddresses()) {
+                validationList.add(new ValidationImpl(validation.getConstraint().getFormula1(), this, address.getFirstColumn(), address.getLastColumn(), address.getFirstRow(), address.getLastRow()));
+            }
+
+        }
+        return validationList;
+    }
+
+    public void removeValidation(Validation validation) {
+    }
+
+}
