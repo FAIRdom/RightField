@@ -1,9 +1,12 @@
 package uk.ac.manchester.cs.owl.semspreadsheets.ui;
 
+import org.semanticweb.owlapi.io.OWLOntologyCreationIOException;
+import org.semanticweb.owlapi.io.UnparsableOntologyException;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
 import javax.swing.*;
 import java.io.IOException;
+import java.net.UnknownHostException;
 /*
  * Copyright (C) 2009, University of Manchester
  *
@@ -46,11 +49,25 @@ public class ErrorHandler {
 
     public void handleError(Throwable throwable) {
         if(throwable instanceof OWLOntologyCreationException) {
-            JOptionPane.showMessageDialog(null, throwable.getMessage(), "Could not load ontology", JOptionPane.ERROR_MESSAGE);
+            if(throwable instanceof OWLOntologyCreationIOException) {
+                OWLOntologyCreationIOException e = (OWLOntologyCreationIOException) throwable;
+                JOptionPane.showMessageDialog(null, e.getCause().getMessage(), "Could not load ontology", JOptionPane.ERROR_MESSAGE);
+            }
+            else if(throwable instanceof UnparsableOntologyException) {
+                JOptionPane.showMessageDialog(null, "The ontology document appears to be an unsupported format or contains syntax errors", "Could not load ontology", JOptionPane.ERROR_MESSAGE);
+            }
+            else {
+                JOptionPane.showMessageDialog(null, throwable.getMessage(), "Could not load ontology", JOptionPane.ERROR_MESSAGE);
+            }
+
+        }
+        else if(throwable instanceof UnknownHostException) {
+            JOptionPane.showMessageDialog(null, "You are not connected to the internet.  Please check your network connection.", "Not connected to network", JOptionPane.ERROR_MESSAGE);
         }
         else if (throwable instanceof IOException) {
             JOptionPane.showMessageDialog(null, throwable.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
+
         throwable.printStackTrace();
     }
 }

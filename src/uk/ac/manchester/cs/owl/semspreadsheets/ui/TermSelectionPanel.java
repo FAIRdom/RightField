@@ -1,7 +1,5 @@
 package uk.ac.manchester.cs.owl.semspreadsheets.ui;
 
-import org.semanticweb.owlapi.inference.OWLReasonerAdapter;
-import org.semanticweb.owlapi.inference.OWLReasonerException;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
@@ -155,46 +153,31 @@ public class TermSelectionPanel extends JPanel {
     }
 
     private void fillList(Set<? extends OWLClassExpression> expressions) {
-        Range range = workbookManager.getSelectionModel().getSelectedRange();
-        
-
-//        Validation oldValidation = spreadSheetManager.getWorkbook().getValidationAt(col, row);
-//        if (oldValidation != null) {
-//            spreadSheetManager.getWorkbook().removeValidation(oldValidation);
-//        }
         Validation validation = null;
         for (OWLClassExpression ce : expressions) {
             if (!ce.isAnonymous()) {
-                try {
-                    List<OWLObject> listObjects = new ArrayList<OWLObject>();
-                    if (noneRadioButton.isSelected()) {
-                        validation = null;
-                    }
-                    else if (subClassesRadioButton.isSelected()) {
-                        listObjects.addAll(OWLReasonerAdapter.flattenSetOfSets(workbookManager.getReasoner().getSubClasses(ce)));
-                    }
-                    else if (individualsRadioButton.isSelected()) {
-                        Set<OWLNamedIndividual> individuals = workbookManager.getReasoner().getIndividuals(ce, false);
-                        listObjects.addAll(individuals);
+                List<OWLObject> listObjects = new ArrayList<OWLObject>();
+                if (noneRadioButton.isSelected()) {
+                    validation = null;
+                }
+                else if (subClassesRadioButton.isSelected()) {
+                    listObjects.addAll(workbookManager.getReasoner().getSubClasses(ce, true).getFlattened());
+                }
+                else if (individualsRadioButton.isSelected()) {
+                    Set<OWLNamedIndividual> individuals = workbookManager.getReasoner().getInstances(ce, false).getFlattened();
+                    listObjects.addAll(individuals);
 //                        validation = new IndividualValuesValidation(col, row, row, ce.asOWLClass(), individuals);
-                    }
-                    else if (directIndividualsRadioButton.isSelected()) {
-                        listObjects.addAll(workbookManager.getReasoner().getIndividuals(ce, true));
+                }
+                else if (directIndividualsRadioButton.isSelected()) {
+                    listObjects.addAll(workbookManager.getReasoner().getInstances(ce, true).getFlattened());
 
-                    }
-                    Collections.sort(listObjects);
-                    for(OWLObject o : listObjects) {
-                        System.out.println(o);
-                    }
-                    list.setListData(listObjects.toArray());
                 }
-                catch (OWLReasonerException e1) {
-                    e1.printStackTrace();
+                Collections.sort(listObjects);
+                for (OWLObject o : listObjects) {
+                    System.out.println(o);
                 }
+                list.setListData(listObjects.toArray());
             }
-        }
-        if (validation != null) {
-//            spreadSheetManager.getWorkbook().addValidation(validation);
         }
     }
 }

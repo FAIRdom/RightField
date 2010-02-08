@@ -1,11 +1,12 @@
-package uk.ac.manchester.cs.owl.semspreadsheets.model;
+package uk.ac.manchester.cs.owl.semspreadsheets.ui;
 
-import org.semanticweb.owlapi.model.OWLOntologyIRIMapper;
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
-import java.net.URI;
+import java.io.File;
 /*
- * Copyright (C) 2009, University of Manchester
+ * Copyright (C) 2010, University of Manchester
  *
  * Modifications to the initial code base are copyright of their
  * respective authors, or their employers as appropriate.  Authorship
@@ -31,23 +32,25 @@ import java.net.URI;
  * Author: Matthew Horridge<br>
  * The University of Manchester<br>
  * Information Management Group<br>
- * Date: 12-Nov-2009
+ * Date: 03-Feb-2010
  */
-public class OntologyTermValdiationManagerMapper implements OWLOntologyIRIMapper {
+public class LoadOntologyTask extends AbstractTask<OWLOntology, OWLOntologyCreationException> {
 
-    private OntologyTermValidationManager manager;
+    private File file;
 
-    public OntologyTermValdiationManagerMapper(OntologyTermValidationManager manager) {
-        this.manager = manager;
+    public LoadOntologyTask(File file) {
+        this.file = file;
     }
 
-    public IRI getDocumentIRI(IRI ontologyIRI) {
-        IRI physicalIRI = manager.getOntology2PhysicalIRIMap().get(ontologyIRI);
-        if(physicalIRI == null) {
-            return null;
-        }
-        else {
-            return physicalIRI;
-        }
+
+    public OWLOntology runTask() throws OWLOntologyCreationException {
+        return getWorkbookFrame().getWorkbookManager().loadOntology(IRI.create(file));
+    }
+
+    public String getTitle() {
+        return "Loading ontology";
+    }
+
+    public void cancelTask() {
     }
 }

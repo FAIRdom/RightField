@@ -9,7 +9,6 @@ import java.awt.event.ActionEvent;
 import java.util.*;
 
 import org.semanticweb.owlapi.model.OWLEntity;
-import org.semanticweb.owlapi.inference.OWLReasonerException;
 /*
  * Copyright (C) 2009, University of Manchester
  *

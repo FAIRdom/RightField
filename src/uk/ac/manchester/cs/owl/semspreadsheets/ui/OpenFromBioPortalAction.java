@@ -44,13 +44,16 @@ public class OpenFromBioPortalAction extends WorkbookFrameAction {
     }
 
     public void actionPerformed(ActionEvent e) {
-        RepositoryItem item =RepositoryPanel.showDialog(getWorkbookFrame(), RepositoryManager.getInstance().getBioPortalRepositoryAccessor());
-        if(item != null) {
-            try {
-                getWorkbookFrame().getWorkbookManager().loadOntology(item.getPhysicalIRI().toURI());
-            }
-            catch (OWLOntologyCreationException e1) {
-                ErrorHandler.getErrorHandler().handleError(e1);
+        BioPortalRepositoryAccessor bioPortalRepositoryAccessor = RepositoryManager.getInstance().getBioPortalRepositoryAccessor();
+        if (!bioPortalRepositoryAccessor.getRepository().getOntologies().isEmpty()) {
+            RepositoryItem item =RepositoryPanel.showDialog(getWorkbookFrame(), bioPortalRepositoryAccessor);
+            if(item != null) {
+                try {
+                    getWorkbookFrame().getWorkbookManager().loadOntology(item.getPhysicalIRI());
+                }
+                catch (OWLOntologyCreationException e1) {
+                    ErrorHandler.getErrorHandler().handleError(e1);
+                }
             }
         }
     }

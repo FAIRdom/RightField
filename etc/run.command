@@ -1,1 +1,2 @@
-java -Xmx500M -jar orcha-bin.jar
+cd `dirname $0`
+sh run.sh

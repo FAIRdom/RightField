@@ -1,7 +1,6 @@
 package uk.ac.manchester.cs.owl.semspreadsheets.ui;
 
 import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.inference.OWLReasonerException;
 
 import javax.swing.*;
 import java.awt.*;

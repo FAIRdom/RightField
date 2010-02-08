@@ -2,7 +2,6 @@ package uk.ac.manchester.cs.owl.semspreadsheets.model;
 
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLEntity;
-import org.semanticweb.owlapi.inference.OWLReasonerException;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.ErrorHandler;
 

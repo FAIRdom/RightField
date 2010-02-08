@@ -44,6 +44,7 @@ public class RepositoryPanel extends JPanel {
     private WorkbookFrame frame;
 
     private Repository repository;
+
     private JList list;
 
     public RepositoryPanel(WorkbookFrame frame, Repository repository) {
