@@ -50,7 +50,9 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
  */
 public class WorkbookFrame extends JFrame {
 
-    private uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager workbookManager;
+    private WorkbookManager workbookManager;
+
+    private TaskManager taskManager = new TaskManager(this);
 
     private MainPanel mainPanel;
 
@@ -97,6 +99,10 @@ public class WorkbookFrame extends JFrame {
         });
     }
 
+    public TaskManager getTaskManager() {
+        return taskManager;
+    }
+
     public void handleWorkbookChanged() {
         updateTitleBar();
         Collection<IRI> ontologyIRIs = workbookManager.getOntologyTermValidationManager().getOntologyIRIs();
@@ -114,7 +120,7 @@ public class WorkbookFrame extends JFrame {
             sb.append("</body></html>");
             int ret = JOptionPane.showConfirmDialog(this, sb.toString(), "Load ontologies?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
             if(ret == JOptionPane.YES_OPTION) {
-                workbookManager.loadEmbeddedTermOntologies();
+                taskManager.runTask(new LoadEmbeddedTermsOntologies());
             }
         }
     }
@@ -158,7 +164,8 @@ public class WorkbookFrame extends JFrame {
         if(file == null) {
             return;
         }
-        workbookManager.loadOntology(file.toURI());
+        taskManager.runTask(new LoadOntologyTask(file));
+       
 
     }
 

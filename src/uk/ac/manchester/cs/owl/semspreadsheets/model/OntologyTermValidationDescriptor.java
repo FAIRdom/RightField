@@ -3,7 +3,6 @@ package uk.ac.manchester.cs.owl.semspreadsheets.model;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLEntity;
-import org.semanticweb.owlapi.inference.OWLReasonerException;
 
 import java.util.*;
 /*
@@ -60,8 +59,8 @@ public class OntologyTermValidationDescriptor {
         this.entityIRI = entityIRI;
         ontologyIRI2PhysicalIRIMap = new HashMap<IRI, IRI>();
         for(OWLOntology ont : workbookManager.getLoadedOntologies()) {
-            IRI physicalIRI = IRI.create(workbookManager.getOntologyManager().getPhysicalURIForOntology(ont));
-            ontologyIRI2PhysicalIRIMap.put(ont.getOntologyID().getOntologyIRI(), physicalIRI);
+            IRI documentIRI = workbookManager.getOntologyManager().getOntologyDocumentIRI(ont);
+            ontologyIRI2PhysicalIRIMap.put(ont.getOntologyID().getOntologyIRI(), documentIRI);
         }
         Set<OWLEntity> entities = type.getEntities(workbookManager, entityIRI);
         terms = new ArrayList<Term>();

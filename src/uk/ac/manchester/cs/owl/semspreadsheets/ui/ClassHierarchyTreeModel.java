@@ -1,5 +1,8 @@
 package uk.ac.manchester.cs.owl.semspreadsheets.ui;
 
+import org.semanticweb.owlapi.reasoner.Node;
+import org.semanticweb.owlapi.reasoner.NodeSet;
+import org.semanticweb.owlapi.reasoner.OWLReasonerException;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 
 import javax.swing.tree.TreeModel;
@@ -10,7 +13,6 @@ import javax.swing.event.TreeModelListener;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLEntity;
-import org.semanticweb.owlapi.inference.OWLReasonerException;
 
 import java.util.*;
 /*
@@ -66,7 +68,7 @@ public class ClassHierarchyTreeModel implements TreeModel {
 
     private void put(OWLEntity cls, DefaultMutableTreeNode node) {
         Collection<DefaultMutableTreeNode> nodes = cls2NodeMap.get(cls);
-        if(nodes == null) {
+        if (nodes == null) {
             nodes = new ArrayList<DefaultMutableTreeNode>();
             cls2NodeMap.put(cls, nodes);
         }
@@ -75,7 +77,7 @@ public class ClassHierarchyTreeModel implements TreeModel {
 
     public Collection<DefaultMutableTreeNode> getNodesForEntity(OWLEntity entity) {
         Collection<DefaultMutableTreeNode> hierarchyNodes = cls2NodeMap.get(entity);
-        if(hierarchyNodes == null) {
+        if (hierarchyNodes == null) {
             return Collections.emptyList();
         }
         else {
@@ -86,43 +88,38 @@ public class ClassHierarchyTreeModel implements TreeModel {
     public Collection<TreePath> getTreePathsForEntity(OWLEntity entity) {
         Collection<DefaultMutableTreeNode> nodes = getNodesForEntity(entity);
         List<TreePath> treePaths = new ArrayList<TreePath>();
-        for(DefaultMutableTreeNode node : nodes) {
+        for (DefaultMutableTreeNode node : nodes) {
             treePaths.add(new TreePath(node.getPath()));
         }
         return treePaths;
     }
 
     private void buildChildren(ClassHierarchyNode node) {
-        try {
-            Set<OWLClass> clses = node.getOWLClasses();
-            OWLClass representative = clses.iterator().next();
-            Set<Set<OWLClass>> subs = manager.getReasoner().getSubClasses(representative);
-            if (!subs.isEmpty()) {
-                List<Set<OWLClass>> sortedSubs = new ArrayList<Set<OWLClass>>(subs);
-                Collections.sort(sortedSubs, nodeContentComparator);
-                for(Set<OWLClass> sub : sortedSubs) {
-                    ClassHierarchyNode childNode = new ClassHierarchyNode(manager, sub);
-                    node.add(childNode);
-                    for(OWLClass cls : sub) {
-                        put(cls, childNode);
-                    }
-                    buildChildren(childNode);
+        Set<OWLClass> clses = node.getOWLClasses();
+        OWLClass representative = clses.iterator().next();
+        NodeSet<OWLClass> subs = manager.getReasoner().getSubClasses(representative, true);
+        if (!subs.isBottomSingleton()) {
+            List<Node<OWLClass>> sortedSubs = new ArrayList<Node<OWLClass>>(subs.getNodes());
+            Collections.sort(sortedSubs, nodeContentComparator);
+            for (Node<OWLClass> sub : sortedSubs) {
+                ClassHierarchyNode childNode = new ClassHierarchyNode(manager, sub);
+                node.add(childNode);
+                for (OWLClass cls : sub) {
+                    put(cls, childNode);
                 }
-            }
-            else {
-                Set<OWLNamedIndividual> individuals = manager.getReasoner().getIndividuals(representative, true);
-                List<OWLNamedIndividual> sortedIndividuals = new ArrayList<OWLNamedIndividual>(individuals);
-                Collections.sort(sortedIndividuals, individualNodeContentComparator);
-                for(OWLNamedIndividual ind : sortedIndividuals) {
-                    ClassHierarchyIndividualNode childNode = new ClassHierarchyIndividualNode(manager, ind);
-                    node.add(childNode);
-                    put(ind, childNode);
-                }
-
+                buildChildren(childNode);
             }
         }
-        catch (OWLReasonerException e) {
-            ErrorHandler.getErrorHandler().handleError(e);
+        else {
+            NodeSet<OWLNamedIndividual> individuals = manager.getReasoner().getInstances(representative, true);
+            List<OWLNamedIndividual> sortedIndividuals = new ArrayList<OWLNamedIndividual>(individuals.getFlattened());
+            Collections.sort(sortedIndividuals, individualNodeContentComparator);
+            for (OWLNamedIndividual ind : sortedIndividuals) {
+                ClassHierarchyIndividualNode childNode = new ClassHierarchyIndividualNode(manager, ind);
+                node.add(childNode);
+                put(ind, childNode);
+            }
+
         }
     }
 
@@ -157,9 +154,9 @@ public class ClassHierarchyTreeModel implements TreeModel {
     }
 
 
-    private class NodeContentComparator implements Comparator<Set<OWLClass>> {
+    private class NodeContentComparator implements Comparator<Node<OWLClass>> {
 
-        public int compare(Set<OWLClass> o1, Set<OWLClass> o2) {
+        public int compare(Node<OWLClass> o1, Node<OWLClass> o2) {
             OWLClass cls1 = o1.iterator().next();
             OWLClass cls2 = o2.iterator().next();
             String ren1 = manager.getRendering(cls1);

@@ -1,9 +1,11 @@
 package uk.ac.manchester.cs.owl.semspreadsheets.model;
 
 import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.inference.OWLReasoner;
-import org.semanticweb.owlapi.inference.OWLReasonerException;
 import org.semanticweb.owlapi.apibinding.OWLManager;
+import org.semanticweb.owlapi.reasoner.BufferingMode;
+import org.semanticweb.owlapi.reasoner.OWLReasoner;
+import org.semanticweb.owlapi.reasoner.SimpleConfiguration;
+import org.semanticweb.owlapi.reasoner.structural.StructuralReasoner;
 import org.semanticweb.owlapi.util.*;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
@@ -71,6 +73,7 @@ public class WorkbookManager {
 
     public WorkbookManager() {
         this.manager = OWLManager.createOWLOntologyManager();
+        manager.setSilentMissingImportsHandling(true);
         shortFormProvider = new BidirectionalShortFormProviderAdapter(new SimpleShortFormProvider());
         entitySelectionModel = new EntitySelectionModel(manager.getOWLDataFactory().getOWLThing());
         ontologyTermValidationManager = new OntologyTermValidationManager(this);
@@ -183,12 +186,17 @@ public class WorkbookManager {
     }
 
     public Workbook loadWorkbook(URI uri) throws IOException {
-        workbook = WorkbookFactory.createWorkbook(uri);
-        workbookURI = uri;
-        // Extract validation
-        ontologyTermValidationManager.readValidationFromWorkbook();
-        fireWorkbookLoaded();
-        return workbook;
+        try {
+            workbook = WorkbookFactory.createWorkbook(uri);
+            workbookURI = uri;
+            // Extract validation
+            ontologyTermValidationManager.readValidationFromWorkbook();
+            fireWorkbookLoaded();
+            return workbook;
+        }
+        catch (IOException e) {
+            throw new IOException("Could not open workbook: " + e.getMessage());
+        }
     }
 
     public void loadEmbeddedTermOntologies() {
@@ -268,8 +276,9 @@ public class WorkbookManager {
         return manager;
     }
 
-    public OWLOntology loadOntology(URI physicalURI) throws OWLOntologyCreationException {
-        this.ontology = manager.loadOntologyFromPhysicalURI(physicalURI);
+    public OWLOntology loadOntology(IRI physicalIRI) throws OWLOntologyCreationException {
+        System.out.println("Loading: " + physicalIRI);
+        this.ontology = manager.loadOntologyFromOntologyDocument(physicalIRI);
         updateReasoner();
         setLabelRendering(true);
         fireOntologiesChanged();
@@ -278,10 +287,12 @@ public class WorkbookManager {
 
     private void updateReasoner() {
         try {
-            getReasoner().clearOntologies();
-            getReasoner().loadOntologies(getLoadedOntologies());
+            OWLOntologyManager man = OWLManager.createOWLOntologyManager();
+            OWLOntology root = man.createOntology(IRI.create("owlapi:reasoner"), getLoadedOntologies());
+            reasoner = new StructuralReasoner(root, new SimpleConfiguration(), BufferingMode.NON_BUFFERING);
+            reasoner.prepareReasoner();
         }
-        catch (OWLReasonerException e) {
+        catch (OWLOntologyCreationException e) {
             ErrorHandler.getErrorHandler().handleError(e);
         }
     }
@@ -297,7 +308,7 @@ public class WorkbookManager {
 
     public OWLReasoner getReasoner() {
         if (reasoner == null) {
-            this.reasoner = new StrictlyToldReasoner(manager, getLoadedOntologies());
+            updateReasoner();
         }
         return reasoner;
     }
@@ -332,7 +343,7 @@ public class WorkbookManager {
             shortFormProvider = new BidirectionalShortFormProviderAdapter(manager.getOntologies(), provider);
             final Set<OWLEntity> entities = new HashSet<OWLEntity>();
             for(OWLOntology ont : manager.getOntologies()) {
-                entities.addAll(ont.getReferencedEntities());
+                entities.addAll(ont.getSignature());
             }
             shortFormProvider.rebuild(new OWLEntitySetProvider() {
                 public Set<OWLEntity> getEntities() {

@@ -1,8 +1,10 @@
 package uk.ac.manchester.cs.owl.semspreadsheets.repository.bioportal;
 
 import org.xml.sax.SAXException;
+import uk.ac.manchester.cs.owl.semspreadsheets.ui.ErrorHandler;
 
 import javax.xml.parsers.*;
+import java.net.UnknownHostException;
 import java.util.Collection;
 import java.util.ArrayList;
 import java.net.URL;
@@ -53,13 +55,18 @@ public class OntologyListAccessor {
                     items.add(handler);
                 }
             });
-            saxParser.parse(new BufferedInputStream(url.openStream()), handler);
+            BufferedInputStream bufferedInputStream = new BufferedInputStream(url.openStream());
+            saxParser.parse(bufferedInputStream, handler);
+            bufferedInputStream.close();
         }
         catch (ParserConfigurationException e) {
             e.printStackTrace();
         }
         catch (SAXException e) {
             e.printStackTrace();
+        }
+        catch (UnknownHostException e) {
+            ErrorHandler.getErrorHandler().handleError(e);
         }
         catch (MalformedURLException e) {
             e.printStackTrace();

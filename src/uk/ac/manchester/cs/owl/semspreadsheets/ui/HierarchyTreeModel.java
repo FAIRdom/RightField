@@ -1,9 +1,9 @@
 package uk.ac.manchester.cs.owl.semspreadsheets.ui;
 
-import org.semanticweb.owlapi.inference.OWLReasoner;
-import org.semanticweb.owlapi.inference.OWLReasonerAdapter;
-import org.semanticweb.owlapi.inference.OWLReasonerException;
 import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.reasoner.Node;
+import org.semanticweb.owlapi.reasoner.NodeSet;
+import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
 import org.semanticweb.owlapi.util.OWLOntologyChangeVisitorAdapter;
 
@@ -55,13 +55,13 @@ public class HierarchyTreeModel implements TreeModel, OWLOntologyChangeListener 
 
     private Map<OWLClassExpression, Collection<ClassHierarchyNode>> classNodeMap = new HashMap<OWLClassExpression, Collection<ClassHierarchyNode>>();
 
-    private SetOfSetsComparator comparator;
+    private NodeComparator comparator;
 
     private ChangeProcessor changeProcessor = new ChangeProcessor();
 
     public HierarchyTreeModel(WorkbookManager workbookManager) {
         this.workbookManager = workbookManager;
-        comparator = new SetOfSetsComparator();
+        comparator = new NodeComparator();
         this.reasoner = workbookManager.getReasoner();
         rootNode = new RootNode();
         workbookManager.getOntologyManager().addOntologyChangeListener(this);
@@ -378,19 +378,14 @@ public class HierarchyTreeModel implements TreeModel, OWLOntologyChangeListener 
 
         protected List<TreeHierarchyNode> createChildren() {
             List<TreeHierarchyNode> children = new ArrayList<TreeHierarchyNode>();
-            try {
                 if (!getObjects().isEmpty()) {
-                    Set<Set<OWLObjectProperty>> subs = reasoner.getSubProperties(getObjects().iterator().next());
-                    List<Set<OWLObjectProperty>> subsSorted = new ArrayList<Set<OWLObjectProperty>>(subs);
+                    NodeSet<OWLObjectProperty> subs = reasoner.getSubObjectProperties(getObjects().iterator().next(), true);
+                    List<Node<OWLObjectProperty>> subsSorted = new ArrayList<Node<OWLObjectProperty>>(subs.getNodes());
                     Collections.sort(subsSorted, comparator);
-                    for (Set<OWLObjectProperty> sub : subsSorted) {
-                        children.add(new ObjectPropertyHierarchyNode(getParent(), sub));
+                    for (Node<OWLObjectProperty> sub : subsSorted) {
+                        children.add(new ObjectPropertyHierarchyNode(getParent(), sub.getRepresentativeElement()));
                     }
                 }
-            }
-            catch (OWLReasonerException e) {
-//                ErrorHandler.getErrorHandler().handleError(e);
-            }
             return children;
         }
 
@@ -438,19 +433,14 @@ public class HierarchyTreeModel implements TreeModel, OWLOntologyChangeListener 
 
         protected List<TreeHierarchyNode> createChildren() {
             List<TreeHierarchyNode> children = new ArrayList<TreeHierarchyNode>();
-            try {
                 if (!getObjects().isEmpty()) {
-                    Set<Set<OWLDataProperty>> subs = reasoner.getSubProperties(getObjects().iterator().next());
-                    List<Set<OWLDataProperty>> subsSorted = new ArrayList<Set<OWLDataProperty>>(subs);
+                    NodeSet<OWLDataProperty> subs = reasoner.getSubDataProperties(getObjects().iterator().next(), true);
+                    List<Node<OWLDataProperty>> subsSorted = new ArrayList<Node<OWLDataProperty>>(subs.getNodes());
                     Collections.sort(subsSorted, comparator);
-                    for (Set<OWLDataProperty> sub : subsSorted) {
-                        children.add(new DataPropertyHierarchyNode(getParent(), sub));
+                    for (Node<OWLDataProperty> sub : subsSorted) {
+                        children.add(new DataPropertyHierarchyNode(getParent(), sub.getRepresentativeElement()));
                     }
                 }
-            }
-            catch (OWLReasonerException e) {
-//                ErrorHandler.getErrorHandler().handleError(e);
-            }
             return children;
         }
 
@@ -584,13 +574,12 @@ public class HierarchyTreeModel implements TreeModel, OWLOntologyChangeListener 
 
         protected String getObjectsRendering() {
             if (!isOWLNothing() && !isChildOfOWLNothing()) {
-                try {
                     StringBuilder sb = new StringBuilder(super.getObjectsRendering());
 
 
                     Set<OWLClass> supers = new HashSet<OWLClass>();
                     for (OWLClassExpression ce : getObjects()) {
-                        supers.addAll(OWLReasonerAdapter.flattenSetOfSets(reasoner.getSuperClasses(ce)));
+                        supers.addAll(reasoner.getSuperClasses(ce, true).getFlattened());
                     }
                     if (!isRoot()) {
                         supers.removeAll(getParent().getObjects());
@@ -610,10 +599,6 @@ public class HierarchyTreeModel implements TreeModel, OWLOntologyChangeListener 
 
                     return sb.toString();
 
-                }
-                catch (OWLReasonerException e) {
-                    e.printStackTrace();
-                }
             }
 
             return super.getObjectsRendering();
@@ -623,8 +608,7 @@ public class HierarchyTreeModel implements TreeModel, OWLOntologyChangeListener 
             List<TreeHierarchyNode> children;
             if (!getObjects().isEmpty()) {
                 children = new ArrayList<TreeHierarchyNode>(0);
-                try {
-                    Set<Set<OWLClass>> subs = reasoner.getSubClasses(getObjects().iterator().next());
+                    NodeSet<OWLClass> subs = reasoner.getSubClasses(getObjects().iterator().next(), true);
                     if (isOWLNothing()) {
                         for (OWLClass unsatCls : reasoner.getUnsatisfiableClasses()) {
                             if (!unsatCls.isOWLNothing()) {
@@ -635,17 +619,13 @@ public class HierarchyTreeModel implements TreeModel, OWLOntologyChangeListener 
                     else if (isOWLThing()) {
                         children.add(new ClassHierarchyNode(this, workbookManager.getDataFactory().getOWLNothing()));
                     }
-                    List<Set<OWLClass>> subsSorted = new ArrayList<Set<OWLClass>>(subs);
+                    List<Node<OWLClass>> subsSorted = new ArrayList<Node<OWLClass>>(subs.getNodes());
                     Collections.sort(subsSorted, comparator);
-                    for (Set<OWLClass> node : subsSorted) {
+                    for (Node<OWLClass> node : subsSorted) {
                         if (!node.contains(workbookManager.getDataFactory().getOWLNothing())) {
-                            children.add(new ClassHierarchyNode(this, node));
+                            children.add(new ClassHierarchyNode(this, node.getRepresentativeElement()));
                         }
                     }
-                }
-                catch (OWLReasonerException e) {
-//                    ErrorHandler.getErrorHandler().handleError(e);
-                }
             }
             else {
                 children = Collections.emptyList();
@@ -663,20 +643,20 @@ public class HierarchyTreeModel implements TreeModel, OWLOntologyChangeListener 
     /**
      * A comparator which is used to order nodes in the tree
      */
-    private class SetOfSetsComparator implements Comparator<Set<? extends OWLObject>> {
+    private class NodeComparator implements Comparator<Node<? extends OWLLogicalEntity>> {
 
 //        private WorkspaceObjectComparator comparator = new WorkspaceObjectComparator(spreadSheetManager);
 
-        public int compare(Set<? extends OWLObject> o1, Set<? extends OWLObject> o2) {
-            if (o1.isEmpty()) {
-                if (o2.isEmpty()) {
+        public int compare(Node<? extends OWLLogicalEntity> o1, Node<? extends OWLLogicalEntity> o2) {
+            if (o1.getSize() == 0) {
+                if (o2.getSize() == 0) {
                     return 0;
                 }
                 else {
                     return -1;
                 }
             }
-            else if (o2.isEmpty()) {
+            else if (o2.getSize() == 0) {
                 return 1;
             }
             else {
@@ -706,10 +686,9 @@ public class HierarchyTreeModel implements TreeModel, OWLOntologyChangeListener 
     private class AddAxiomProcessor extends OWLAxiomVisitorAdapter {
 
         public void visit(OWLDeclarationAxiom axiom) {
-            try {
                 if (axiom.getEntity().isOWLClass()) {
                     OWLClass cls = axiom.getEntity().asOWLClass();
-                    if (reasoner.getSuperClasses(cls).isEmpty()) {
+                    if (reasoner.getSuperClasses(cls, true).isEmpty()) {
                         Collection<ClassHierarchyNode> nodes = classNodeMap.get(workbookManager.getDataFactory().getOWLThing());
                         if (nodes != null) {
                             for (ClassHierarchyNode node : nodes) {
@@ -719,10 +698,6 @@ public class HierarchyTreeModel implements TreeModel, OWLOntologyChangeListener 
                     }
 
                 }
-            }
-            catch (OWLReasonerException e) {
-                e.printStackTrace();
-            }
         }
 
         public void visit(OWLSubClassOfAxiom axiom) {

@@ -1,12 +1,11 @@
 package uk.ac.manchester.cs.owl.semspreadsheets.model;
 
 import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.inference.OWLReasonerAdapter;
-import org.semanticweb.owlapi.inference.OWLReasonerException;
 
 import java.util.*;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
+import uk.ac.manchester.cs.owl.semspreadsheets.ui.UILabels;
 /*
  * Copyright (C) 2009, University of Manchester
  *
@@ -38,11 +37,11 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
  */
 public enum ValidationType {
 
-    NOVALIDATION("Any", null),
-    DIRECTSUBCLASSES("Subclass names", EntityType.CLASS),
-    SUBCLASSES("Descendent class names", EntityType.CLASS),
-    INDIVIDUALS("Individual names", EntityType.NAMED_INDIVIDUAL),
-    DIRECTINDIVIDUALS("Direct individual names", EntityType.NAMED_INDIVIDUAL);
+    NOVALIDATION(UILabels.getInstance().getFreeTextLabel(), null),
+    DIRECTSUBCLASSES(UILabels.getInstance().getDirectSubClassesLabel(), EntityType.CLASS),
+    SUBCLASSES(UILabels.getInstance().getSubClassesLabel(), EntityType.CLASS),
+    INDIVIDUALS(UILabels.getInstance().getInstancesLabel(), EntityType.NAMED_INDIVIDUAL),
+    DIRECTINDIVIDUALS(UILabels.getInstance().getDirectInstancesLabel(), EntityType.NAMED_INDIVIDUAL);
 
     private String label;
 
@@ -58,40 +57,33 @@ public enum ValidationType {
     }
 
     public Set<OWLEntity> getEntities(WorkbookManager workbookManager, IRI iri) {
-        try {
-            if(this.equals(SUBCLASSES)) {
-                OWLClass cls = workbookManager.getDataFactory().getOWLClass(iri);
-                return new HashSet<OWLEntity>(OWLReasonerAdapter.flattenSetOfSets(workbookManager.getReasoner().getDescendantClasses(cls)));
-            }
-            else if(this.equals(DIRECTSUBCLASSES)) {
-                OWLClass cls = workbookManager.getDataFactory().getOWLClass(iri);
-                return new HashSet<OWLEntity>(OWLReasonerAdapter.flattenSetOfSets(workbookManager.getReasoner().getSubClasses(cls)));
-
-            }
-            else if(this.equals(INDIVIDUALS)) {
-                OWLClass cls = workbookManager.getDataFactory().getOWLClass(iri);
-                return new HashSet<OWLEntity>(workbookManager.getReasoner().getIndividuals(cls, false));
-
-            }
-            else if(this.equals(DIRECTINDIVIDUALS)) {
-                OWLClass cls = workbookManager.getDataFactory().getOWLClass(iri);
-                return new HashSet<OWLEntity>(workbookManager.getReasoner().getIndividuals(cls, true));
-
-            }
-            else {
-                return Collections.emptySet();
-            }
+        if (this.equals(SUBCLASSES)) {
+            OWLClass cls = workbookManager.getDataFactory().getOWLClass(iri);
+            return new HashSet<OWLEntity>(workbookManager.getReasoner().getSubClasses(cls, false).getFlattened());
         }
-        catch (OWLReasonerException e) {
+        else if (this.equals(DIRECTSUBCLASSES)) {
+            OWLClass cls = workbookManager.getDataFactory().getOWLClass(iri);
+            return new HashSet<OWLEntity>(workbookManager.getReasoner().getSubClasses(cls, true).getFlattened());
 
-            e.printStackTrace();
         }
-        return Collections.emptySet();
+        else if (this.equals(INDIVIDUALS)) {
+            OWLClass cls = workbookManager.getDataFactory().getOWLClass(iri);
+            return new HashSet<OWLEntity>(workbookManager.getReasoner().getInstances(cls, false).getFlattened());
+
+        }
+        else if (this.equals(DIRECTINDIVIDUALS)) {
+            OWLClass cls = workbookManager.getDataFactory().getOWLClass(iri);
+            return new HashSet<OWLEntity>(workbookManager.getReasoner().getInstances(cls, true).getFlattened());
+
+        }
+        else {
+            return Collections.emptySet();
+        }
     }
 
     public Set<OWLEntity> getEntities(WorkbookManager workbookManager, Collection<Term> terms) {
         Set<OWLEntity> entities = new HashSet<OWLEntity>();
-        for(Term term : terms) {
+        for (Term term : terms) {
             entities.add(workbookManager.getDataFactory().getOWLEntity(getEntityType(), term.getIRI()));
         }
         return entities;
@@ -102,6 +94,7 @@ public enum ValidationType {
      * declaration.  This method may be overridden, though it typically
      * isn't necessary or desirable.  An enum type should override this
      * method when a more "programmer-friendly" string form exists.
+     *
      * @return the name of this enum constant
      */
     @Override

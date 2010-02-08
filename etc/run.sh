@@ -1,1 +1,1 @@
-java -Xmx500M -jar orcha-bin.jar
+java  -Xdock:name=Orcha -Dapple.laf.useScreenMenuBar=true  -Xmx500M -jar orcha-bin.jar

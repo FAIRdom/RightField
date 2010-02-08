@@ -3,8 +3,6 @@ package uk.ac.manchester.cs.owl.semspreadsheets.model;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.inference.OWLReasonerException;
-import org.semanticweb.owlapi.inference.OWLReasoner;
 
 import java.util.*;
 /*

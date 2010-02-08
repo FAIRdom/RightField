@@ -1,11 +1,6 @@
-package uk.ac.manchester.cs.owl.semspreadsheets.model;
-
-import org.semanticweb.owlapi.model.OWLOntologyIRIMapper;
-import org.semanticweb.owlapi.model.IRI;
-
-import java.net.URI;
+package uk.ac.manchester.cs.owl.semspreadsheets.ui;
 /*
- * Copyright (C) 2009, University of Manchester
+ * Copyright (C) 2010, University of Manchester
  *
  * Modifications to the initial code base are copyright of their
  * respective authors, or their employers as appropriate.  Authorship
@@ -31,23 +26,20 @@ import java.net.URI;
  * Author: Matthew Horridge<br>
  * The University of Manchester<br>
  * Information Management Group<br>
- * Date: 12-Nov-2009
+ * Date: 03-Feb-2010
  */
-public class OntologyTermValdiationManagerMapper implements OWLOntologyIRIMapper {
+public class LoadEmbeddedTermsOntologies extends AbstractTask<Object,RuntimeException> {
 
-    private OntologyTermValidationManager manager;
 
-    public OntologyTermValdiationManagerMapper(OntologyTermValidationManager manager) {
-        this.manager = manager;
+    public Object runTask() throws RuntimeException {
+        getWorkbookFrame().getWorkbookManager().loadEmbeddedTermOntologies();
+        return null;
     }
 
-    public IRI getDocumentIRI(IRI ontologyIRI) {
-        IRI physicalIRI = manager.getOntology2PhysicalIRIMap().get(ontologyIRI);
-        if(physicalIRI == null) {
-            return null;
-        }
-        else {
-            return physicalIRI;
-        }
+    public String getTitle() {
+        return "Loading embedded ontologies";
+    }
+
+    public void cancelTask() {
     }
 }

@@ -1,17 +1,15 @@
 package uk.ac.manchester.cs.owl.semspreadsheets.ui;
 
+import org.semanticweb.owlapi.reasoner.Node;
+import org.semanticweb.owlapi.reasoner.impl.NodeFactory;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import org.semanticweb.owlapi.inference.OWLReasoner;
-import org.semanticweb.owlapi.inference.OWLReasonerException;
 import org.semanticweb.owlapi.model.OWLClass;
 
 import java.util.Set;
 import java.util.Collections;
-import java.util.Map;
-import java.util.Collection;
 /*
  * Copyright (C) 2009, University of Manchester
  *
@@ -46,17 +44,17 @@ public class ClassHierarchyNode extends DefaultMutableTreeNode {
     private WorkbookManager workbookManager;
 
     public ClassHierarchyNode(WorkbookManager workbookManager) {
-        super(Collections.singleton(workbookManager.getDataFactory().getOWLThing()));
+        super(NodeFactory.getOWLClassTopNode());
         this.workbookManager = workbookManager;
     }
 
-    public ClassHierarchyNode(WorkbookManager workbookManager, Set<OWLClass> clses) {
+    public ClassHierarchyNode(WorkbookManager workbookManager, Node<OWLClass> clses) {
         super(clses);
         this.workbookManager = workbookManager;
     }
 
     public Set<OWLClass> getOWLClasses() {
-        return (Set<OWLClass>) getUserObject();
+        return ((Node<OWLClass>) getUserObject()).getEntities();
     }
 
 
