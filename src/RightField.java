@@ -35,7 +35,7 @@ import java.awt.event.WindowEvent;
  * Information Management Group<br>
  * Date: 24-Nov-2009
  */
-public class Orcha {
+public class RightField {
 
 
     private static final String WINDOW_X_KEY = "orch.window.x";
@@ -49,7 +49,7 @@ public class Orcha {
     public static void main(String[] args) {
         WorkbookManager manager = new WorkbookManager();
         final WorkbookFrame frame = new WorkbookFrame(manager);
-        Preferences preferences = Preferences.userNodeForPackage(Orcha.class);
+        Preferences preferences = Preferences.userNodeForPackage(RightField.class);
         int x = preferences.getInt(WINDOW_X_KEY, 50);
         int y = preferences.getInt(WINDOW_Y_KEY, 50);
         int width = preferences.getInt(WINDOW_WIDTH_KEY, 800);
@@ -60,7 +60,7 @@ public class Orcha {
         frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                Preferences preferences = Preferences.userNodeForPackage(Orcha.class);
+                Preferences preferences = Preferences.userNodeForPackage(RightField.class);
                 preferences.putInt(WINDOW_X_KEY, frame.getX());
                 preferences.putInt(WINDOW_Y_KEY, frame.getY());
                 preferences.putInt(WINDOW_WIDTH_KEY, frame.getWidth());

@@ -58,7 +58,7 @@ public class WorkbookFrame extends JFrame {
 
     public WorkbookFrame(WorkbookManager manager) {
         this.workbookManager = manager;
-        setTitle("Orcha");
+        setTitle("RightField");
         getContentPane().setLayout(new BorderLayout());
         getContentPane().add(mainPanel = new MainPanel(this));
         JMenuBar menuBar = new JMenuBar();
@@ -127,7 +127,7 @@ public class WorkbookFrame extends JFrame {
 
     public void updateTitleBar() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Orcha");
+        sb.append("RightField");
         URI uri = workbookManager.getWorkbookURI();
         if(uri != null) {
             sb.append(" - ");
