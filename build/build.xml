@@ -137,8 +137,7 @@
                 <include name="*.*"/>
             </fileset>
             <fileset file="${builddir}/${bin-name}"/>
-            <fileset file="${builddir}/${src-name}"/>
-            <fileset file=""/>
+            <fileset file="${builddir}/${src-name}"/>            
             <fileset file="${src-name}"/>
         </copy>
         <!--<copy todir="${distdir}/javadoc">-->
