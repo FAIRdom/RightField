@@ -1,45 +1,45 @@
 package uk.ac.manchester.cs.owl.semspreadsheets.model;
 
-import org.semanticweb.owlapi.model.*;
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.semanticweb.owlapi.apibinding.OWLManager;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAnnotationProperty;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyCreationException;
+import org.semanticweb.owlapi.model.OWLOntologyIRIMapper;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.reasoner.BufferingMode;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.reasoner.SimpleConfiguration;
 import org.semanticweb.owlapi.reasoner.structural.StructuralReasoner;
-import org.semanticweb.owlapi.util.*;
+import org.semanticweb.owlapi.util.AnnotationValueShortFormProvider;
+import org.semanticweb.owlapi.util.BidirectionalShortFormProviderAdapter;
+import org.semanticweb.owlapi.util.OWLEntitySetProvider;
+import org.semanticweb.owlapi.util.ShortFormProvider;
+import org.semanticweb.owlapi.util.SimpleShortFormProvider;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
-import java.util.*;
-import java.net.URI;
-import java.io.File;
-import java.io.IOException;
-
-import uk.ac.manchester.cs.owl.semspreadsheets.ui.*;
 import uk.ac.manchester.cs.owl.semspreadsheets.change.WorkbookChange;
-
-import javax.swing.*;
-/*
- * Copyright (C) 2009, University of Manchester
- *
- * Modifications to the initial code base are copyright of their
- * respective authors, or their employers as appropriate.  Authorship
- * of the modifications may be determined from the ChangeLog placed at
- * the end of this file.
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
-
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
-
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- */
+import uk.ac.manchester.cs.owl.semspreadsheets.ui.CellSelectionListener;
+import uk.ac.manchester.cs.owl.semspreadsheets.ui.CellSelectionModel;
+import uk.ac.manchester.cs.owl.semspreadsheets.ui.EntitySelectionModel;
+import uk.ac.manchester.cs.owl.semspreadsheets.ui.ErrorHandler;
+import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookManagerEvent;
+import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookManagerListener;
 
 /**
  * Author: Matthew Horridge<br>

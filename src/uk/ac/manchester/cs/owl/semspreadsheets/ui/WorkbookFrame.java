@@ -1,46 +1,30 @@
 package uk.ac.manchester.cs.owl.semspreadsheets.ui;
 
 
-import javax.swing.*;
-import java.awt.*;
-import java.io.IOException;
+import java.awt.BorderLayout;
+import java.awt.FileDialog;
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.net.URI;
-import java.util.Set;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
+
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JOptionPane;
 
 import org.semanticweb.owlapi.io.ToStringRenderer;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.util.SimpleRenderer;
 import org.semanticweb.owlapi.util.SimpleShortFormProvider;
-import org.semanticweb.owlapi.model.OWLOntologyCreationException;
-import org.semanticweb.owlapi.model.IRI;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
+
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
-/*
- * Copyright (C) 2009, University of Manchester
- *
- * Modifications to the initial code base are copyright of their
- * respective authors, or their employers as appropriate.  Authorship
- * of the modifications may be determined from the ChangeLog placed at
- * the end of this file.
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
-
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
-
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- */
+import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 
 /**
  * Author: Matthew Horridge<br>

@@ -21,13 +21,14 @@
 * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookFrame;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
-
-import javax.swing.*;
-import java.util.prefs.Preferences;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.prefs.Preferences;
+
+import javax.swing.JFrame;
+
+import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
+import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookFrame;
 
 /**
  * Author: Matthew Horridge<br>

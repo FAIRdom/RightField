@@ -1,14 +1,32 @@
 package uk.ac.manchester.cs.owl.semspreadsheets.impl;
 
-import org.apache.poi.hssf.usermodel.*;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.*;
-import uk.ac.manchester.cs.owl.semspreadsheets.change.*;
-
-import java.io.*;
-import java.util.List;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.net.URI;
+import java.util.List;
+
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFName;
+import org.apache.poi.hssf.usermodel.HSSFRichTextString;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+
+import uk.ac.manchester.cs.owl.semspreadsheets.change.SetCellValue;
+import uk.ac.manchester.cs.owl.semspreadsheets.change.WorkbookChange;
+import uk.ac.manchester.cs.owl.semspreadsheets.change.WorkbookChangeEvent;
+import uk.ac.manchester.cs.owl.semspreadsheets.change.WorkbookChangeListener;
+import uk.ac.manchester.cs.owl.semspreadsheets.change.WorkbookChangeVisitor;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.MutableWorkbook;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.NamedRange;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
 
 /*
  * Copyright (C) 2009, University of Manchester
