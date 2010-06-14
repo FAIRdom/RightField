@@ -1,6 +1,7 @@
 <project default="distribution">
 
-    <property name="version" value="0.9.0"/>
+
+    <property name="version" value="0.10.0"/>
 
     <!-- The directory that contains the jar file dependencies for
          the class path and building a release -->
@@ -16,10 +17,10 @@
     <property name="javadocdir" value="${builddir}/javadoc"/>
 
     <!-- The name of the jar file which contains the class files-->
-    <property name="bin-name" value="orcha-bin.jar"/>
+    <property name="bin-name" value="rightfield-bin.jar"/>
 
     <!-- The name of the jar file that contains the gathered source files-->
-    <property name="src-name" value="orcha-src.jar"/>
+    <property name="src-name" value="rightfield-src.jar"/>
 
     <property name="sourcepath" value="../src/**/*.java"/>
 
@@ -82,10 +83,10 @@
         <property prefix="svn" file="../build/svn.properties"/>
         <jar basedir="${classesdir}" destfile="${builddir}/${bin-name}">
             <manifest>
-                <attribute name="Title" value="Orcha"/>
+                <attribute name="Title" value="RightField"/>
                 <attribute name="Built-By" value="${user.name}"/>
                 <attribute name="Implementation-Version" value="${version}.${svn.Revision}"/>
-                <attribute name="Main-Class" value="Orcha"/>
+                <attribute name="Main-Class" value="RightField"/>
                 <attribute name="Class-Path" value="${manifestclasspath}"/>
             </manifest>
         </jar>
@@ -107,7 +108,7 @@
     <target name="srcjar">
         <jar destfile="${builddir}/${src-name}">
             <manifest>
-                <attribute name="title" value="Orcha Source Code"/>
+                <attribute name="title" value="RightField Source Code"/>
                 <attribute name="built-by" value="${user.name}"/>
                 <attribute name="version" value="${version}"/>
             </manifest>
@@ -143,7 +144,7 @@
         <!--<copy todir="${distdir}/javadoc">-->
         <!--<fileset dir="${javadocdir}"/>-->
         <!--</copy>-->
-        <zip destfile="${builddir}/orcha-${version}.zip">
+        <zip destfile="${builddir}/rightfield-${version}.zip">
             <fileset dir="${distdir}"/>
         </zip>
     </target>

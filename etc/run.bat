@@ -1,1 +1,1 @@
-java -Xmx500M -jar orcha-bin.jar
+java -Xmx500M -jar rightfield-bin.jar
