@@ -1,18 +1,21 @@
 package uk.ac.manchester.cs.owl.semspreadsheets.ui;
 
-import uk.ac.manchester.cs.owl.semspreadsheets.model.Cell;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
-
-import javax.swing.*;
-import javax.swing.event.CellEditorListener;
-import javax.swing.event.ChangeEvent;
-import javax.swing.table.TableCellEditor;
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.EventObject;
 import java.util.List;
+
+import javax.swing.BorderFactory;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.event.CellEditorListener;
+import javax.swing.event.ChangeEvent;
+import javax.swing.table.TableCellEditor;
+
+import uk.ac.manchester.cs.owl.semspreadsheets.model.Cell;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
 
 /*
  * Copyright (C) 2009, University of Manchester
