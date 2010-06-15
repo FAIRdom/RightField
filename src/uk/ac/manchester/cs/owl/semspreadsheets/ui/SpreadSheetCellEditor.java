@@ -146,13 +146,6 @@ public class SpreadSheetCellEditor implements TableCellEditor {
         else {
             return true;
         }
-//        System.out.println(anEvent);
-//        if(anEvent instanceof KeyEvent) {
-//            KeyEvent keyEvent = (KeyEvent) anEvent;
-//            System.out.println(keyEvent);
-//            return true;
-//        }
-//        return false;
     }
 
     /**

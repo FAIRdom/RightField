@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFName;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
@@ -52,14 +53,20 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
  */
 
 /**
- * Author: Matthew Horridge<br>
+ * Author: Matthew Horridge, Stuart Owen<br>
  * The University of Manchester<br>
  * Information Management Group<br>
  * Date: 20-Sep-2009
+ * 
+ * @author Stuart Owen
+ * @author Matthew Horridge
  */
+
 public class WorkbookHSSFImpl implements MutableWorkbook, WorkbookChangeVisitor {
 
     private HSSFWorkbook workbook;
+    
+    private static final Logger logger = Logger.getLogger(WorkbookHSSFImpl.class);
 
     private static final String VALUE_LIST_PREFIX = "semanticspreadsheetvalues";
 
@@ -80,7 +87,7 @@ public class WorkbookHSSFImpl implements MutableWorkbook, WorkbookChangeVisitor 
     }
 
     public void applyChange(WorkbookChange change) {
-        System.out.println("APPLY CHANGE: " + change);
+        logger.info("APPLY CHANGE: " + change);
         change.accept(this);
         for (WorkbookChangeListener listener : new ArrayList<WorkbookChangeListener>(changeListeners)) {
             try {

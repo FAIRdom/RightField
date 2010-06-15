@@ -23,6 +23,9 @@ import uk.ac.manchester.cs.owl.semspreadsheets.repository.RepositoryItemComparat
  * The University of Manchester<br>
  * Information Management Group<br>
  * Date: 11-Nov-2009
+ * 
+ * Author: Stuart Owen
+ * Date: 15-June-2010
  */
 public class RepositoryPanel extends JPanel {
 
@@ -54,7 +57,8 @@ public class RepositoryPanel extends JPanel {
 
         @Override
         public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-            return super.getListCellRendererComponent(list, ((RepositoryItem) value).getHumanReadableName(), index, isSelected, cellHasFocus);
+        	RepositoryItem item = (RepositoryItem) value;
+            return super.getListCellRendererComponent(list, item.getHumanReadableName()+" ("+item.getFormat()+")", index, isSelected, cellHasFocus);
         }
     }
 

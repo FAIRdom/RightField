@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.IRI;
 
 /**
@@ -23,6 +24,8 @@ public class OntologyTermValidationSheetParser {
     private WorkbookManager workbookManager;
 
     private Sheet sheet;
+    
+    private static final Logger logger = Logger.getLogger(OntologyTermValidationSheetParser.class);
 
 //    private static int counter = 0;
 
@@ -94,18 +97,18 @@ public class OntologyTermValidationSheetParser {
     }
 
     public Range getTermsShortNameRange() {
-        System.out.println("Getting short name range from sheet: " + sheet.getName());
+        logger.debug("Getting short name range from sheet: " + sheet.getName());
         int startRow = -1;
         int endRow = -1;
         for (int row = 1; ; row++) {
-            System.out.println("Row " + row);
+        	logger.debug("Row " + row);
             Cell cell = sheet.getCellAt(0, row);
             if (cell == null) {
                 System.out.println("\tCell is null");
                 endRow = row - 1;
                 break;
             }
-            System.out.println("\t" + cell.getValue());
+            logger.debug("\t" + cell.getValue());
             if (!cell.getValue().equals(ONTOLOGY_ROW_KEY)) {
                 if (startRow == -1) {
                     startRow = row;
@@ -212,9 +215,9 @@ public class OntologyTermValidationSheetParser {
     private void setTerms(OntologyTermValidationDescriptor descriptor) {
         int row = 1 + descriptor.getOntologyIRIs().size();
         Collection<Term> terms = descriptor.getTerms();
-        System.out.println("There are " + terms.size() + " terms");
+        logger.info("There are " + terms.size() + " terms");
         for (Term term : terms) {
-            System.out.println("\t" + term.getName());
+        	logger.debug("\t" + term.getName());
             Cell iriCell = sheet.getCellAt(0, row);
             if (iriCell == null) {
                 iriCell = sheet.addCellAt(0, row);

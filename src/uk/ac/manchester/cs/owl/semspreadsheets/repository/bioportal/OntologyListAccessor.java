@@ -12,6 +12,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.ErrorHandler;
@@ -23,17 +24,21 @@ import uk.ac.manchester.cs.owl.semspreadsheets.ui.ErrorHandler;
  * Date: 11-Nov-2009
  */
 public class OntologyListAccessor {
+	
+	private static Logger logger = Logger.getLogger(OntologyListAccessor.class);
 
     public Collection<BioPortalRepositoryItem> getOntologies() {
         final Collection<BioPortalRepositoryItem> items = new ArrayList<BioPortalRepositoryItem>();
         try {
             SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
-            SAXParser saxParser = saxParserFactory.newSAXParser();
-            URL url = new URL(BioPortalRepository.ONTOLOGY_LIST + "?" + BioPortalRepository.EMAIL_ID);
+            SAXParser saxParser = saxParserFactory.newSAXParser();            
+            URL url = new URL(BioPortalRepository.ONTOLOGY_LIST + "?email=" + BioPortalRepository.EMAIL_ID);
+            
+            logger.info("Contacting BioPortal REST API at: "+url.toExternalForm());
+            
             OntologyListHandler handler = new OntologyListHandler(new BioPortalRepositoryItemHandler() {
                 public void handleItem(BioPortalRepositoryItem handler) {
-                    System.out.println(handler);
-
+                    logger.debug("Found BioportalRepositoryItem handler: "+handler);
                     items.add(handler);
                 }
             });
@@ -42,19 +47,19 @@ public class OntologyListAccessor {
             bufferedInputStream.close();
         }
         catch (ParserConfigurationException e) {
-            e.printStackTrace();
+            logger.error("Error parsing configuration",e);
         }
         catch (SAXException e) {
-            e.printStackTrace();
+            logger.error("Error handling XML from BioPortal",e);
         }
         catch (UnknownHostException e) {
             ErrorHandler.getErrorHandler().handleError(e);
         }
         catch (MalformedURLException e) {
-            e.printStackTrace();
+            logger.error("Error with URL for BioPortal rest API",e);
         }
         catch (IOException e) {
-            e.printStackTrace();
+            logger.error("Error communiciating with BioPortal rest API",e);
         }
         return items;
     }

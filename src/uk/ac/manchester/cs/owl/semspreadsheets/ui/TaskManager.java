@@ -10,15 +10,22 @@ import java.util.concurrent.TimeoutException;
 
 import javax.swing.SwingUtilities;
 
+import org.apache.log4j.Logger;
+
 /**
- * Author: Matthew Horridge<br>
+ * Author: Matthew Horridge, Stuart Owen<br>
  * The University of Manchester<br>
  * Information Management Group<br>
  * Date: 03-Feb-2010
+ * 
+ * @author Matthew Horridge
+ * @author Stuart Owen
  */
 public class TaskManager implements TaskListener {
 
     public static final long TIME_UNTIL_PROGRESS = 500;
+    
+    private static final Logger logger = Logger.getLogger(TaskManager.class);
 
     private WorkbookFrame workbookFrame;
 
@@ -54,15 +61,14 @@ public class TaskManager implements TaskListener {
                     returnValue = future.get(TIME_UNTIL_PROGRESS, TimeUnit.MILLISECONDS);
                 }
                 catch (InterruptedException e) {
-                    // We were interrupted while waiting
-                    e.printStackTrace();
+                    logger.error("Interuption Error",e);
                 }
                 catch (ExecutionException e) {
                     // Early termination - an exception was thrown from within the task.  We get rid of the dialog
                     // and rethrow the exception.
                     hideDialog();
                     // Rethrow exception
-                    e.getCause().printStackTrace();
+                    logger.error("Exection Error",e);
                     if(e.getCause() instanceof RuntimeException) {
                         throw (RuntimeException) e.getCause();
                     }
@@ -206,20 +212,20 @@ public class TaskManager implements TaskListener {
         Thread starter = new Thread(new Runnable() {
             public void run() {
                 for(int i = 0; i < 10; i++) {
-                    System.out.println("Schduling " + count);
+                    logger.debug("Schduling " + count);
                     executor.execute(new Runnable() {
 
 
                         public void run() {
                             count++;
-                            System.out.println("Thread " + count + " starting");
+                            logger.debug("Thread " + count + " starting");
                             try {
                                 Thread.sleep(500);
                             }
                             catch (InterruptedException e) {
-                                e.printStackTrace();
+                                logger.error("Thread Interruption Error",e);
                             }
-                            System.out.println("    Thread " + count + " finished");
+                            logger.debug("\tThread " + count + " finished");
                         }
                     });
             }

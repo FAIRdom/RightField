@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAnnotationProperty;
@@ -42,14 +43,18 @@ import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookManagerEvent;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookManagerListener;
 
 /**
- * Author: Matthew Horridge<br>
+ * Author: Matthew Horridge, Stuart Owen<br>
  * The University of Manchester<br>
  * Information Management Group<br>
  * Date: 18-Sep-2009
  * Manages the current spread sheet, the current ontologies and validations
+ * 
+ * @author Stuart Owen
+ * @author Matthew Horridge
  */
 public class WorkbookManager {
 
+	private static final Logger logger = Logger.getLogger(WorkbookManager.class);
     private Workbook workbook;
 
     private URI workbookURI;
@@ -210,7 +215,8 @@ public class WorkbookManager {
                     manager.loadOntology(iri);
                 }
                 catch (OWLOntologyCreationException e) {
-                    System.out.println("Could not load ontology: " + e.getMessage());
+                	logger.error("Could not load ontology: " + e.getMessage());
+                	logger.debug("Error reading ontology",e);
                 }
             }
         }
@@ -277,7 +283,7 @@ public class WorkbookManager {
     }
 
     public OWLOntology loadOntology(IRI physicalIRI) throws OWLOntologyCreationException {
-        System.out.println("Loading: " + physicalIRI);
+        logger.info("Loading: " + physicalIRI);
         this.ontology = manager.loadOntologyFromOntologyDocument(physicalIRI);
         updateReasoner();
         setLabelRendering(true);
@@ -405,13 +411,13 @@ public class WorkbookManager {
         for (Sheet sheet : getWorkbook().getSheets()) {
             OntologyTermValidationSheetParser parser = new OntologyTermValidationSheetParser(this, sheet);
             if (parser.isValidationSheet()) {
-                System.out.println("Found validation: " + sheet.getName());
+                logger.info("Found validation: " + sheet.getName());
                 sheets.add(sheet);
                 NamedRange range = parser.parseNamedRange();
                 if (range != null) {
-                    System.out.println("Found named range associated with sheet: ");
-                    System.out.println("\t" + range.getName());
-                    System.out.println("\t" + range.getRange());
+                    logger.debug("Found named range associated with sheet: ");
+                    logger.debug("\t" + range.getName());
+                    logger.debug("\t" + range.getRange());
                 }
             }
 

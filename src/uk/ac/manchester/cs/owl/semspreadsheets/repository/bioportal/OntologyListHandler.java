@@ -15,6 +15,8 @@ public class OntologyListHandler extends DefaultHandler {
     public static final String ONTOLOGY_ID_ELEMENT_NAME = "ontologyId";
 
     public static final String DISPLAY_LABEL_ELEMENT_NAME = "displayLabel";
+    
+    public static final String FORMAT_ELEMENT_NAME = "format";
 
     private NullElementState nullElementState = new NullElementState();
 
@@ -23,11 +25,15 @@ public class OntologyListHandler extends DefaultHandler {
     private OntologyIDState ontologyIDState = new OntologyIDState();
 
     private DisplayLabelState displayLabelState = new DisplayLabelState();
+    
+    private FormatState formatState = new FormatState();
 
     private int lastOntologyID;
 
     private String lastDisplayLabel;
 
+    private String lastFormat;
+    
     private BioPortalRepositoryItemHandler itemHandler;
 
     public OntologyListHandler(BioPortalRepositoryItemHandler itemHandler) {
@@ -41,6 +47,9 @@ public class OntologyListHandler extends DefaultHandler {
         }
         else if(qName.equals(DISPLAY_LABEL_ELEMENT_NAME)) {
             elementState = displayLabelState;
+        }
+        else if (qName.equals(FORMAT_ELEMENT_NAME)) {
+        	elementState = formatState;
         }
         else {
             elementState = nullElementState;
@@ -72,12 +81,18 @@ public class OntologyListHandler extends DefaultHandler {
             lastOntologyID = Integer.parseInt(new String(ch, start,  length).trim());
         }
     }
+    
+    private class FormatState implements ElementState {
+    	public void characters(char[] ch, int start, int length) throws SAXException {
+            lastFormat = new String(ch, start, length);
+        }
+    }
 
     private class DisplayLabelState implements ElementState {
 
         public void characters(char[] ch, int start, int length) throws SAXException {
             lastDisplayLabel = new String(ch, start, length);
-            itemHandler.handleItem(new BioPortalRepositoryItem(lastOntologyID, lastDisplayLabel));
+            itemHandler.handleItem(new BioPortalRepositoryItem(lastOntologyID, lastDisplayLabel,lastFormat));
         }
     }
 }
