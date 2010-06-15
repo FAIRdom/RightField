@@ -133,6 +133,7 @@
 
 		<chmod file="${innerdir}/run.bat" perm="+x" />
 		<chmod file="${innerdir}/run.sh" perm="+x" />
+		<chmod file="${innerdir}/runmac.sh" perm="+x" />
 		<chmod file="${innerdir}/run.command" perm="+x" />
 
 		<copy todir="${innerdir}">
