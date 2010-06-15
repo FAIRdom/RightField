@@ -27,18 +27,26 @@ import java.util.prefs.Preferences;
 
 import javax.swing.JFrame;
 
+import org.apache.log4j.Logger;
+
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookFrame;
 
 /**
- * Author: Matthew Horridge<br>
+ * Author: Matthew Horridge, Stuart Owen<br>
  * The University of Manchester<br>
  * Information Management Group<br>
  * Date: 24-Nov-2009
  */
+
+/**
+ * @author Stuart Owen
+ * @author Matthew Horridge
+ */
 public class RightField {
 
-
+	private static Logger logger = Logger.getLogger(RightField.class);
+	
     private static final String WINDOW_X_KEY = "orch.window.x";
 
     private static final String WINDOW_Y_KEY = "orch.window.y";
@@ -48,6 +56,8 @@ public class RightField {
     private static final String WINDOW_HEIGHT_KEY = "orch.window.height";
 
     public static void main(String[] args) {
+    	logger.debug("Starting Up");
+    	
         WorkbookManager manager = new WorkbookManager();
         final WorkbookFrame frame = new WorkbookFrame(manager);
         Preferences preferences = Preferences.userNodeForPackage(RightField.class);

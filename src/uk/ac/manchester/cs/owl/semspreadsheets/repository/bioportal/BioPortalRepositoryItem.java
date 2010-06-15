@@ -8,7 +8,13 @@ import uk.ac.manchester.cs.owl.semspreadsheets.repository.RepositoryItem;
  * Author: Matthew Horridge<br>
  * The University of Manchester<br>
  * Information Management Group<br>
- * Date: 11-Nov-2009
+ * Date: 11-Nov-2009<br>
+ * 
+ * Author: Stuart Owen<br>
+ * Date: 15-June-2010
+ * 
+ * @author Matthew Horridge
+ * @author Stuart Owen
  */
 public class BioPortalRepositoryItem implements RepositoryItem {
 
@@ -16,13 +22,20 @@ public class BioPortalRepositoryItem implements RepositoryItem {
 
     private String humanReadableName;
 
-    public BioPortalRepositoryItem(int ontologyID, String humanReadableName) {
+    private String format;
+    
+    public BioPortalRepositoryItem(int ontologyID, String humanReadableName,String format) {
         this.ontologyID = ontologyID;
         this.humanReadableName = humanReadableName;
+        this.format=format;
     }
 
     public String getHumanReadableName() {
         return humanReadableName;
+    }
+    
+    public String getFormat() {
+    	return format;
     }
 
     public IRI getOntologyIRI() {
@@ -35,6 +48,10 @@ public class BioPortalRepositoryItem implements RepositoryItem {
 
     public IRI getPhysicalIRI() {
         return getOntologyIRI();
+    }
+    
+    public String toString() {
+    	return humanReadableName+" : "+ontologyID+" ("+format+")";
     }
     
 }

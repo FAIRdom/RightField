@@ -24,6 +24,7 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreePath;
 
+import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLObject;
@@ -55,10 +56,13 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
  */
 
 /**
- * Author: Matthew Horridge<br>
+ * Author: Matthew Horridge, Stuart Owen<br>
  * The University of Manchester<br>
  * Information Management Group<br>
  * Date: 18-Sep-2009
+ * 
+ * @author Matthew Horridge
+ * @author Stuart Owen
  */
 public class TermSelectionPanel extends JPanel {
 
@@ -69,6 +73,8 @@ public class TermSelectionPanel extends JPanel {
     private JRadioButton individualsRadioButton;
     private JRadioButton directIndividualsRadioButton;
     private JTree tree;
+    
+    private static final Logger logger = Logger.getLogger(TermSelectionPanel.class);
 
     public TermSelectionPanel(WorkbookManager man) {
         this.workbookManager = man;
@@ -184,7 +190,7 @@ public class TermSelectionPanel extends JPanel {
                 }
                 Collections.sort(listObjects);
                 for (OWLObject o : listObjects) {
-                    System.out.println(o);
+                    logger.debug("OWL Object: "+o);
                 }
                 list.setListData(listObjects.toArray());
             }
