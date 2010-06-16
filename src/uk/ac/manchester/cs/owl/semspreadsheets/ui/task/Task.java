@@ -1,4 +1,4 @@
-package uk.ac.manchester.cs.owl.semspreadsheets.ui.tasks;
+package uk.ac.manchester.cs.owl.semspreadsheets.ui.task;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookFrame;
 
