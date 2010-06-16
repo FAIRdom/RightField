@@ -1,8 +1,11 @@
-package uk.ac.manchester.cs.owl.semspreadsheets.ui;
+package uk.ac.manchester.cs.owl.semspreadsheets.ui.actions;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+
+import uk.ac.manchester.cs.owl.semspreadsheets.ui.ErrorHandler;
+import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookFrame;
 
 /**
  * Author: Matthew Horridge<br>

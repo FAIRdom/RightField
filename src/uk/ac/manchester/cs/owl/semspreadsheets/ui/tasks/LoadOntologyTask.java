@@ -1,4 +1,4 @@
-package uk.ac.manchester.cs.owl.semspreadsheets.ui;
+package uk.ac.manchester.cs.owl.semspreadsheets.ui.tasks;
 
 import java.io.File;
 

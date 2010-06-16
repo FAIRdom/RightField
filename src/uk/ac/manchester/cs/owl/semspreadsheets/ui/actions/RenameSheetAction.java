@@ -1,4 +1,4 @@
-package uk.ac.manchester.cs.owl.semspreadsheets.ui;
+package uk.ac.manchester.cs.owl.semspreadsheets.ui.actions;
 
 import java.awt.event.ActionEvent;
 
@@ -6,6 +6,7 @@ import javax.swing.JOptionPane;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
+import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookFrame;
 
 /**
  * Author: Matthew Horridge<br>

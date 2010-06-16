@@ -1,4 +1,6 @@
 package uk.ac.manchester.cs.owl.semspreadsheets.ui;
+
+import uk.ac.manchester.cs.owl.semspreadsheets.ui.tasks.AbstractTask;
 /*
  * Copyright (C) 2010, University of Manchester
  *

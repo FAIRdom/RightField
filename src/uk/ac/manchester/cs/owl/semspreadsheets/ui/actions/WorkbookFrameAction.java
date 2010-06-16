@@ -1,4 +1,4 @@
-package uk.ac.manchester.cs.owl.semspreadsheets.ui;
+package uk.ac.manchester.cs.owl.semspreadsheets.ui.actions;
 
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
@@ -6,6 +6,8 @@ import java.awt.event.KeyEvent;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.KeyStroke;
+
+import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookFrame;
 
 /**
  * Author: Matthew Horridge<br>

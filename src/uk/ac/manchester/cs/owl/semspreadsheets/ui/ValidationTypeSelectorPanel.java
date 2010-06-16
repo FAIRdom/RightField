@@ -37,7 +37,7 @@ public class ValidationTypeSelectorPanel extends JPanel implements ValidationTyp
         this.workbookManager = workbookManager;
         setLayout(new BorderLayout());
         Box box = new Box(BoxLayout.Y_AXIS);
-        add(box, BorderLayout.NORTH);
+        add(box, BorderLayout.NORTH);        
 
         ButtonGroup buttonGroup = new ButtonGroup();
 

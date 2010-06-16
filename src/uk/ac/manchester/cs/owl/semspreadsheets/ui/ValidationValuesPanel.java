@@ -88,8 +88,8 @@ public class ValidationValuesPanel extends JPanel {
                 updateFromModel();
             }
         });
-        termList.setFixedCellHeight(20);
-        termList.setVisibleRowCount(7);
+        termList.setFixedCellHeight(18);
+        termList.setVisibleRowCount(10);
 //        setMinimumSize(new Dimension(10, 200));
 //        setMaximumSize(new Dimension(500, 200));
     }

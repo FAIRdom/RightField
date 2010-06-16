@@ -1,4 +1,4 @@
-package uk.ac.manchester.cs.owl.semspreadsheets.ui;
+package uk.ac.manchester.cs.owl.semspreadsheets.ui.tasks;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -11,6 +11,9 @@ import java.util.concurrent.TimeoutException;
 import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
+
+import uk.ac.manchester.cs.owl.semspreadsheets.ui.ProgressDialog;
+import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookFrame;
 
 /**
  * Author: Matthew Horridge, Stuart Owen<br>
@@ -57,7 +60,7 @@ public class TaskManager implements TaskListener {
                 try {
                     // Get the return value after the timeout.  If the task is still running
                     // a timeout exception will be thrown, in which case we display the dialog
-                    // and then wait again for the task to finish.
+                    // and then wait again for the task to finish.                            	
                     returnValue = future.get(TIME_UNTIL_PROGRESS, TimeUnit.MILLISECONDS);
                 }
                 catch (InterruptedException e) {
@@ -67,8 +70,8 @@ public class TaskManager implements TaskListener {
                     // Early termination - an exception was thrown from within the task.  We get rid of the dialog
                     // and rethrow the exception.
                     hideDialog();
-                    // Rethrow exception
-                    logger.error("Exection Error",e);
+                    // Rethrow exception                    
+                    logger.error("Task execution error",e);
                     if(e.getCause() instanceof RuntimeException) {
                         throw (RuntimeException) e.getCause();
                     }
@@ -86,7 +89,7 @@ public class TaskManager implements TaskListener {
                     returnValue = future.get();
                 }
             }
-            else {
+            else {            	
                 returnValue = callableTask.call();
             }
             return returnValue;
@@ -94,8 +97,13 @@ public class TaskManager implements TaskListener {
         catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        catch (ExecutionException e) {
-            throw (E) e;
+        catch (ExecutionException e) {        	
+        	if(e.getCause() instanceof RuntimeException) {
+                throw (RuntimeException) e.getCause();
+            }
+            else {
+                throw (E) e.getCause();
+            }
         }
     }
 

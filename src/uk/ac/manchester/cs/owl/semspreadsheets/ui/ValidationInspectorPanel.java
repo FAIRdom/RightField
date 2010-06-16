@@ -37,6 +37,7 @@ public class ValidationInspectorPanel extends JPanel {
 //        selectedCellAddressLabel.setFont(font.deriveFont(Font.PLAIN, 16.0f));
 //        selectedCellAddressLabel.setForeground(textColor);
         JPanel outerPanel = new JPanel(new BorderLayout(7, 7));
+        
         add(outerPanel);
         outerPanel.setLayout(new BorderLayout(7, 7));
 
@@ -44,7 +45,7 @@ public class ValidationInspectorPanel extends JPanel {
         classHierarchyTreePanel.setBorder(createTitledBorder("HIERARCHY"));
         outerPanel.add(classHierarchyTreePanel);
 
-        JPanel innerPanel = new JPanel(new BorderLayout(7, 7));
+        JPanel innerPanel = new JPanel(new BorderLayout(7, 7));        
         outerPanel.add(innerPanel, BorderLayout.SOUTH);
         ValidationTypeSelectorPanel typeSelectorPanel = new ValidationTypeSelectorPanel(frame.getWorkbookManager());
         typeSelectorPanel.setBorder(createTitledBorder("TYPE OF ALLOWED VALUES"));
