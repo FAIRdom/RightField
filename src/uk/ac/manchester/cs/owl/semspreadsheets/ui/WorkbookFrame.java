@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -62,6 +63,9 @@ public class WorkbookFrame extends JFrame {
 	public WorkbookFrame(WorkbookManager manager) {
 		this.workbookManager = manager;
 		setTitle("RightField");
+		if (WorkbookFrame.class.getResource("/rightfield-logo.png")!=null) {
+			setIconImage(new ImageIcon(WorkbookFrame.class.getResource("/rightfield-logo.png")).getImage());
+		}
 		getContentPane().setLayout(new BorderLayout());
 		getContentPane().add(mainPanel = new MainPanel(this));
 		JMenuBar menuBar = new JMenuBar();

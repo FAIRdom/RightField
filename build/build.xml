@@ -66,11 +66,10 @@
 	<target name="compile">
 		<mkdir dir="${classesdir}" />
 		<javac srcdir="../src" destdir="${classesdir}" debug="on">
-			<classpath refid="classpath" />
-			<!--<include name="${sourcepath}"/>-->
+			<classpath refid="classpath" />			
 		</javac>
-		<copy todir="${classesdir}">
-			<fileset dir="../etc" />
+		<copy todir="${classesdir}">			
+			<fileset dir="../src/" includes="*.png,*.properties" />
 		</copy>
 	</target>
 
