@@ -19,6 +19,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
+import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.io.ToStringRenderer;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
@@ -54,6 +55,8 @@ public class WorkbookFrame extends JFrame {
 	private static final String[] WORKBOOK_EXT = new String[] { "xls", "xlsx" };
 	private static final String[] ONTOLOGY_EXT = new String[] { "obo", "owl", "rdf","rrf" };
 
+	private static final Logger logger = Logger.getLogger(WorkbookFrame.class);
+	
 	private WorkbookManager workbookManager;
 
 	private TaskManager taskManager = new TaskManager(this);
@@ -65,6 +68,9 @@ public class WorkbookFrame extends JFrame {
 		setTitle("RightField");
 		if (WorkbookFrame.class.getResource("/rightfield-logo.png")!=null) {
 			setIconImage(new ImageIcon(WorkbookFrame.class.getResource("/rightfield-logo.png")).getImage());
+		}
+		else {
+			logger.warn("Unable to find the rightfield-logo.png for the icon");
 		}
 		getContentPane().setLayout(new BorderLayout());
 		getContentPane().add(mainPanel = new MainPanel(this));
