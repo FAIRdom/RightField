@@ -1,8 +1,11 @@
-package uk.ac.manchester.cs.owl.semspreadsheets.ui;
+package uk.ac.manchester.cs.owl.semspreadsheets.ui.actions;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+
+import uk.ac.manchester.cs.owl.semspreadsheets.ui.ErrorHandler;
+import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookFrame;
 
 /**
  * Author: Matthew Horridge<br>
@@ -10,11 +13,11 @@ import java.io.IOException;
  * Information Management Group<br>
  * Date: 07-Nov-2009
  */
-public class SaveAction extends WorkbookFrameAction {
+public class SaveAsAction extends WorkbookFrameAction {
 
-    public SaveAction(WorkbookFrame workbookFrame) {
-        super("Save workbook", workbookFrame);
-        setAcceleratorKey(KeyEvent.VK_S);
+    public SaveAsAction(WorkbookFrame workbookFrame) {
+        super("Save workbook as...", workbookFrame);
+        setAcceleratorKey(KeyEvent.VK_S, true, false);
     }
 
     /**
@@ -22,7 +25,7 @@ public class SaveAction extends WorkbookFrameAction {
      */
     public void actionPerformed(ActionEvent e) {
         try {
-            getWorkbookFrame().saveWorkbook();
+            getWorkbookFrame().saveWorkbookAs();
         }
         catch (IOException e1) {
             ErrorHandler.getErrorHandler().handleError(e1);
