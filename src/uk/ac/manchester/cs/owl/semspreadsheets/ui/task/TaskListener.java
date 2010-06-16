@@ -1,4 +1,4 @@
-package uk.ac.manchester.cs.owl.semspreadsheets.ui.tasks;
+package uk.ac.manchester.cs.owl.semspreadsheets.ui.task;
 /*
  * Copyright (C) 2010, University of Manchester
  *

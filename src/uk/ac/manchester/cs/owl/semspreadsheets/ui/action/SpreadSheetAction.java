@@ -1,4 +1,4 @@
-package uk.ac.manchester.cs.owl.semspreadsheets.ui.actions;
+package uk.ac.manchester.cs.owl.semspreadsheets.ui.action;
 
 import javax.swing.AbstractAction;
 
