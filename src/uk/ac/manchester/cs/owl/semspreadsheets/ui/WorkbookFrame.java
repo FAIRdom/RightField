@@ -32,7 +32,6 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 import uk.ac.manchester.cs.owl.semspreadsheets.repository.RepositoryItem;
 import uk.ac.manchester.cs.owl.semspreadsheets.repository.RepositoryManager;
-import uk.ac.manchester.cs.owl.semspreadsheets.repository.bioportal.BioPortalRepositoryAccessor;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.ClearOntologyValuesAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.InsertSheetAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.OpenFromBioPortalAction;
@@ -41,8 +40,8 @@ import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.OpenWorkbookAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.SaveAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.SaveAsAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.task.FetchBioportalOntologyListTask;
-import uk.ac.manchester.cs.owl.semspreadsheets.ui.task.LoadRepositoryItemTask;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.task.LoadOntologyTask;
+import uk.ac.manchester.cs.owl.semspreadsheets.ui.task.LoadRepositoryItemTask;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.task.TaskManager;
 
 /**
