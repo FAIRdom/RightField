@@ -40,6 +40,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.OpenOntologyAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.OpenWorkbookAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.SaveAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.SaveAsAction;
+import uk.ac.manchester.cs.owl.semspreadsheets.ui.task.FetchBioportalOntologyListTask;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.task.LoadRepositoryItemTask;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.task.LoadOntologyTask;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.task.TaskManager;
@@ -53,28 +54,30 @@ import uk.ac.manchester.cs.owl.semspreadsheets.ui.task.TaskManager;
 
 public class WorkbookFrame extends JFrame {
 
+	
+	private static final long serialVersionUID = 8991252467294969145L;
+	
 	private static final String[] WORKBOOK_EXT = new String[] { "xls", "xlsx" };
-	private static final String[] ONTOLOGY_EXT = new String[] { "obo", "owl", "rdf","rrf" };
+	private static final String[] ONTOLOGY_EXT = new String[] { "obo", "owl",
+			"rdf", "rrf" };
 
 	private static final Logger logger = Logger.getLogger(WorkbookFrame.class);
-	
+
 	private WorkbookManager workbookManager;
 
 	private TaskManager taskManager = new TaskManager(this);
 
-	private MainPanel mainPanel;
-
 	public WorkbookFrame(WorkbookManager manager) {
 		this.workbookManager = manager;
 		setTitle("RightField");
-		if (WorkbookFrame.class.getResource("/rightfield-logo.png")!=null) {
-			setIconImage(new ImageIcon(WorkbookFrame.class.getResource("/rightfield-logo.png")).getImage());
-		}
-		else {
+		if (WorkbookFrame.class.getResource("/rightfield-logo.png") != null) {
+			setIconImage(new ImageIcon(WorkbookFrame.class
+					.getResource("/rightfield-logo.png")).getImage());
+		} else {
 			logger.warn("Unable to find the rightfield-logo.png for the icon");
 		}
 		getContentPane().setLayout(new BorderLayout());
-		getContentPane().add(mainPanel = new MainPanel(this));
+		getContentPane().add(new MainPanel(this));
 		JMenuBar menuBar = new JMenuBar();
 		JMenu fileMenu = menuBar.add(new JMenu("File"));
 		fileMenu.add(new OpenWorkbookAction(this));
@@ -173,21 +176,19 @@ public class WorkbookFrame extends JFrame {
 	}
 
 	public void loadOntology() throws OWLOntologyCreationException {
-		
-		File file = browseForFile("Load ontology", FileDialog.LOAD,"Ontology", ONTOLOGY_EXT);
+
+		File file = browseForFile("Load ontology", FileDialog.LOAD, "Ontology",
+				ONTOLOGY_EXT);
 		if (file == null) {
 			return;
 		}
 		taskManager.runTask(new LoadOntologyTask(file));
 	}
 
-	public void loadBioportalOntology() throws OWLOntologyCreationException {
-		BioPortalRepositoryAccessor bioPortalRepositoryAccessor = RepositoryManager
-				.getInstance().getBioPortalRepositoryAccessor();
-		if (!bioPortalRepositoryAccessor.getRepository().getOntologies()
-				.isEmpty()) {
-			RepositoryItem item = RepositoryPanel.showDialog(this,
-					bioPortalRepositoryAccessor);
+	public void loadBioportalOntology() throws Exception {
+		Collection<RepositoryItem> ontologies = taskManager.runTask(new FetchBioportalOntologyListTask());
+		if (!ontologies.isEmpty()) {
+			RepositoryItem item = RepositoryPanel.showDialog(this,RepositoryManager.getInstance().getBioPortalRepositoryAccessor());
 			if (item == null) {
 				return;
 			}
@@ -204,44 +205,47 @@ public class WorkbookFrame extends JFrame {
 		}
 	}
 
-	public void openWorkbook() throws IOException {		
-		File file = browseForFile("Open workbook", FileDialog.LOAD,"Workbook",WORKBOOK_EXT);
+	public void openWorkbook() throws IOException {
+		File file = browseForFile("Open workbook", FileDialog.LOAD, "Workbook",
+				WORKBOOK_EXT);
 		if (file != null) {
 			workbookManager.loadWorkbook(file);
 		}
 	}
 
-	public void saveWorkbookAs() throws IOException {		
-		File file = browseForFile("Save workbook as", FileDialog.SAVE,"Workbook",WORKBOOK_EXT);
+	public void saveWorkbookAs() throws IOException {
+		File file = browseForFile("Save workbook as", FileDialog.SAVE,
+				"Workbook", WORKBOOK_EXT);
 		if (file != null) {
 			workbookManager.saveWorkbook(file.toURI());
 		}
 	}
 
-	public File browseForFile(String title, int mode, final String filetype,final String [] extensions) {
+	public File browseForFile(String title, int mode, final String filetype,
+			final String[] extensions) {
 		String os = System.getProperty("os.name");
-		logger.debug("OS detected as: "+os);
-		if (os.toLowerCase().indexOf("linux")>-1) {
-			return browseFileJChooser(title, mode, filetype, extensions);
-		}
-		else {
-			return browseFileFileDialog(title, mode, extensions);
+		logger.debug("OS detected as: " + os);
+		//uses FileDialog for Mac and Windows, as this is preferred.
+		// but JFileChooser for Linux and the other unix's, as FileDialog is awful on those platforms
+		if (os.toLowerCase().indexOf("win") > -1 || os.toLowerCase().indexOf("mac") > -1) {			
+			return browseForFileWithFileDialog(title, mode, extensions);
+		} else {
+			return browseForFileWithJChooser(title, mode, filetype, extensions);
 		}
 	}
 
-	private File browseFileJChooser(String title, int mode,
+	private File browseForFileWithJChooser(String title, int mode,
 			final String filetype, final String[] extensions) {
-		JFileChooser chooser = new JFileChooser(title);	
-		if (extensions!=null && extensions.length>1) {
-			chooser.setFileFilter(new ExtensionFileFilter(filetype, Arrays.asList(extensions)));
+		JFileChooser chooser = new JFileChooser(title);
+		if (extensions != null && extensions.length > 1) {
+			chooser.setFileFilter(new ExtensionFileFilter(filetype, extensions));
 		}
-		
+
 		int retVal;
-		if (mode==FileDialog.LOAD) {
-			retVal= chooser.showOpenDialog(this);
-		}
-		else {
-			retVal= chooser.showSaveDialog(this);
+		if (mode == FileDialog.LOAD) {
+			retVal = chooser.showOpenDialog(this);
+		} else {
+			retVal = chooser.showSaveDialog(this);
 		}
 		if (retVal == JFileChooser.APPROVE_OPTION) {
 			return chooser.getSelectedFile();
@@ -250,45 +254,26 @@ public class WorkbookFrame extends JFrame {
 		}
 	}
 
-	private File browseFileFileDialog(String title, int mode,
+	private File browseForFileWithFileDialog(String title, int mode,
 			final String[] extensions) {
 		FileDialog fileDialog = new FileDialog(this, title, mode);
-		 
-		 if (extensions!=null && extensions.length>1) {
-			 FilenameFilter filenameFilter = new FilenameFilter() {
-				
-				public boolean accept(File dir, String name) {
-					for (String ext : extensions) {
-						if (name.endsWith("."+ext)) return true;
-					}
-					return false;
-				}
-			};
-		 
-		 fileDialog.setFilenameFilter(filenameFilter);
-		 }
-		 fileDialog.setVisible(true);
-		 String name = fileDialog.getFile();
-		 if(name == null) {
-		 return null;
-		 }
-		 String directory = fileDialog.getDirectory();
-		 return new File(directory + name);
+
+		if (extensions != null && extensions.length > 1) {			
+			fileDialog.setFilenameFilter(new ExtensionsFilenameFilter(
+					extensions));
+		}
+
+		fileDialog.setVisible(true);
+		String name = fileDialog.getFile();
+		if (name == null) {
+			return null;
+		}
+		String directory = fileDialog.getDirectory();
+		return new File(directory + name);
 	}
 
 	public static void main(String[] args) {
-		// try {
 		WorkbookManager manager = new WorkbookManager();
-		// manager.loadWorkbook(URI.create("file:/Users/matthewhorridge/Desktop/IDFExcelExample2_jerm.xls"));
-		// manager.loadWorkbook(URI.create("file:/Users/matthewhorridge/Desktop/sdrfExample2.xls"));
-		// ArrayList<OWLEntity> inds = new ArrayList<OWLEntity>();
-		// for(int i = 0; i < 10; i++) {
-		// inds.add(OWLDataFactoryImpl.getInstance().getOWLNamedIndividual(IRI.create("http://myont.com/ont/vals#Value"
-		// + 1)));
-		// }
-		// manager.loadOntology(URI.create("http://mged.sourceforge.net/ontologies/MGEDOntology.owl"));
-		// manager.getWorkbook().addValueList(new ValueList("myvals",
-		// ValueListType.INDIVIDUALS, inds));
 		WorkbookFrame frame = new WorkbookFrame(manager);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(800, 600);
@@ -296,12 +281,6 @@ public class WorkbookFrame extends JFrame {
 		SimpleRenderer renderer = new SimpleRenderer();
 		renderer.setShortFormProvider(new SimpleShortFormProvider());
 		ToStringRenderer.getInstance().setRenderer(renderer);
-
-		// }
-		// catch (IOException e) {
-		// e.printStackTrace();
-		// }
-
 	}
 
 	class ExtensionFileFilter extends FileFilter {
@@ -309,15 +288,15 @@ public class WorkbookFrame extends JFrame {
 		private final String description;
 		private final List<String> extensions;
 
-		public ExtensionFileFilter(String description, List<String> extensions) {
+		public ExtensionFileFilter(String description, String [] extensions) {
 			this.description = description;
-			this.extensions = extensions;
+			this.extensions = Arrays.asList(extensions);
 		}
 
 		@Override
-		public boolean accept(File f) {			 
+		public boolean accept(File f) {
 			String ext = getExtension(f);
-			return f.isDirectory() || ( ext != null && extensions.contains(ext));
+			return f.isDirectory() || (ext != null && extensions.contains(ext));
 		}
 
 		@Override
@@ -331,11 +310,26 @@ public class WorkbookFrame extends JFrame {
 				int i = filename.lastIndexOf('.');
 				if (i > 0 && i < filename.length() - 1) {
 					return filename.substring(i + 1).toLowerCase();
-				}				
+				}
 			}
 			return null;
 		}
+	}
 
+	class ExtensionsFilenameFilter implements FilenameFilter {
+		private String[] extensions;
+
+		public ExtensionsFilenameFilter(String[] extensions) {
+			this.extensions = extensions;
+		}
+
+		public boolean accept(File dir, String name) {
+			for (String ext : extensions) {
+				if (name.endsWith("." + ext))
+					return true;
+			}
+			return false;
+		}
 	}
 
 }

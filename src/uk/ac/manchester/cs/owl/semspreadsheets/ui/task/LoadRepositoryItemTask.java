@@ -1,5 +1,6 @@
 package uk.ac.manchester.cs.owl.semspreadsheets.ui.task;
 
+import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
@@ -8,6 +9,8 @@ import uk.ac.manchester.cs.owl.semspreadsheets.repository.RepositoryItem;
 public class LoadRepositoryItemTask extends AbstractTask<OWLOntology, OWLOntologyCreationException> {
 
 	private RepositoryItem repositoryItem;
+	
+	private static Logger logger = Logger.getLogger(LoadRepositoryItemTask.class);
 
     public LoadRepositoryItemTask(RepositoryItem repositoryItem) {
         this.repositoryItem = repositoryItem;
@@ -22,5 +25,6 @@ public class LoadRepositoryItemTask extends AbstractTask<OWLOntology, OWLOntolog
     }
 
     public void cancelTask() {
+    	logger.info("Cancel LoadRepositoryItemTask requested but ignored");
     }
 }
