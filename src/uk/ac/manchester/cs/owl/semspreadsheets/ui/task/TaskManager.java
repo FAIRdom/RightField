@@ -26,7 +26,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookFrame;
  */
 public class TaskManager implements TaskListener {
 
-    public static final long TIME_UNTIL_PROGRESS = 500;
+    public static final long TIME_UNTIL_PROGRESS = 1;
     
     private static final Logger logger = Logger.getLogger(TaskManager.class);
 
@@ -106,7 +106,6 @@ public class TaskManager implements TaskListener {
             }
         }
     }
-
 
     public void messageChanged(final Task task) {
         if (SwingUtilities.isEventDispatchThread()) {

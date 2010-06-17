@@ -30,9 +30,12 @@ package uk.ac.manchester.cs.owl.semspreadsheets.ui.task;
  */
 public interface TaskListener {
 
-    void messageChanged(Task task);
+    @SuppressWarnings("unchecked")
+	void messageChanged(Task task);
 
-    void lengthChanged(Task task);
+    @SuppressWarnings("unchecked")
+	void lengthChanged(Task task);
 
-    void progressChanged(Task task);
+    @SuppressWarnings("unchecked")
+	void progressChanged(Task task);
 }
