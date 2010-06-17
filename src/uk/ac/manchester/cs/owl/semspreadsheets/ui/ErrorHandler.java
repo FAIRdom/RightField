@@ -5,6 +5,7 @@ import java.net.UnknownHostException;
 
 import javax.swing.JOptionPane;
 
+import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.io.OWLOntologyCreationIOException;
 import org.semanticweb.owlapi.io.UnparsableOntologyException;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
@@ -18,6 +19,8 @@ import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 public class ErrorHandler {
 
     private static ErrorHandler instance = new ErrorHandler();
+    
+    private static Logger logger = Logger.getLogger(ErrorHandler.class);
 
     private ErrorHandler() {
     }
@@ -46,7 +49,9 @@ public class ErrorHandler {
         else if (throwable instanceof IOException) {
             JOptionPane.showMessageDialog(null, throwable.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-
-        throwable.printStackTrace();
+        else {
+        	JOptionPane.showMessageDialog(null, "An Unexpected "+throwable.getClass().getSimpleName() +" error occurred: " + throwable.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        	logger.error("Unexpected error reported",throwable);
+        }        
     }
 }

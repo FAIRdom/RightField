@@ -3,7 +3,6 @@ package uk.ac.manchester.cs.owl.semspreadsheets.ui.action;
 import java.awt.event.ActionEvent;
 
 import org.apache.log4j.Logger;
-import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.ErrorHandler;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookFrame;
@@ -21,9 +20,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookFrame;
  * @author Matthew Horridge
  */
 @SuppressWarnings("serial")
-public class OpenFromBioPortalAction extends WorkbookFrameAction {
-	
-	private static Logger logger = Logger.getLogger(OpenFromBioPortalAction.class);
+public class OpenFromBioPortalAction extends WorkbookFrameAction {		
 
     public OpenFromBioPortalAction(WorkbookFrame workbookFrame) {
         super("Open from BioPortal...", workbookFrame);
@@ -33,12 +30,8 @@ public class OpenFromBioPortalAction extends WorkbookFrameAction {
     	try {
             getWorkbookFrame().loadBioportalOntology();
         }
-        catch (OWLOntologyCreationException e1) {
+        catch (Exception e1) {
             ErrorHandler.getErrorHandler().handleError(e1);
-        }
-        catch (Exception e2) {
-        	//FIXME: need to report non OWLOntology errors back to the user.
-        	logger.error("Exception fetching BioportalOntologies",e2);
-        }
+        }        
     }
 }
