@@ -3,8 +3,6 @@ package uk.ac.manchester.cs.owl.semspreadsheets.ui.action;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
-import org.semanticweb.owlapi.model.OWLOntologyCreationException;
-
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.ErrorHandler;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookFrame;
 
@@ -14,6 +12,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookFrame;
  * Information Management Group<br>
  * Date: 08-Nov-2009
  */
+@SuppressWarnings("serial")
 public class OpenOntologyAction extends WorkbookFrameAction {
 
     public OpenOntologyAction(WorkbookFrame workbookFrame) {
@@ -25,7 +24,7 @@ public class OpenOntologyAction extends WorkbookFrameAction {
         try {
             getWorkbookFrame().loadOntology();
         }
-        catch (OWLOntologyCreationException e1) {
+        catch (Exception e1) {        	
             ErrorHandler.getErrorHandler().handleError(e1);
         }
     }
