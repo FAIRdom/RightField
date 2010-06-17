@@ -2,8 +2,6 @@ package uk.ac.manchester.cs.owl.semspreadsheets.ui.action;
 
 import java.awt.event.ActionEvent;
 
-import org.apache.log4j.Logger;
-
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.ErrorHandler;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookFrame;
 
