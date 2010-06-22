@@ -24,6 +24,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
  * Information Management Group<br>
  * Date: 01-Nov-2009
  */
+@SuppressWarnings("serial")
 public class ValidationTypeSelectorPanel extends JPanel implements ValidationTypeSelector {
 
 
