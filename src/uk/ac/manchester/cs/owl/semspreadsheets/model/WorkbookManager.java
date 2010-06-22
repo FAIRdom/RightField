@@ -255,7 +255,7 @@ public class WorkbookManager {
      * @param type
      */
     public void setValidationType(ValidationType type, IRI entityIRI) {
-        Range selectedRange = getSelectionModel().getSelectedRange();
+        Range selectedRange = getSelectionModel().getSelectedRange();        
         if(!selectedRange.isCellSelection()) {
             return;
         }

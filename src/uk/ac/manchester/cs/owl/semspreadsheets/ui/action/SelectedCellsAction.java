@@ -10,6 +10,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookFrame;
  * Information Management Group<br>
  * Date: 07-Nov-2009
  */
+@SuppressWarnings("serial")
 public abstract class SelectedCellsAction extends WorkbookFrameAction implements CellSelectionListener{
 
     protected SelectedCellsAction(String name, WorkbookFrame workbookFrame) {
