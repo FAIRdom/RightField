@@ -1,6 +1,5 @@
 <project default="distribution">
 
-
 	<property name="version" value="0.10-beta" />
 
 	<!-- The directory that contains the jar file dependencies for
