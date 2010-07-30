@@ -5,7 +5,6 @@ Contact::    mailto:stuart.owen@manchester.ac.uk
 Licence::    BSD (See LICENCE or http://www.opensource.org/licenses/bsd-license.php)
 Copyright::  (c) 2010 The University of Manchester, UK
 
-
 == Description
 
 For more information please visit http://www.sysmo-db.org/rightfield
@@ -18,5 +17,3 @@ To compile RightField you are required to have both {Apache Ant}[http://ant.apac
   >ant
   
 This will create both a packaged distrubution in the <em>build/out</em> directory, and also an unpacked copy in the <em>build/out/dist</em> directory
-
-  
