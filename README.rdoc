@@ -1,0 +1,22 @@
+= Simple Spreadsheet Extractor
+
+Authors::    {Matthew Horridge}[http://www.cs.man.ac.uk/~horridgm], Stuart Owen
+Contact::    mailto:stuart.owen@manchester.ac.uk
+Licence::    BSD (See LICENCE or http://www.opensource.org/licenses/bsd-license.php)
+Copyright::  (c) 2010 The University of Manchester, UK
+
+
+== Description
+
+For more information please visit http://www.sysmo-db.org/rightfield
+
+== Compiling
+
+To compile RightField you are required to have both {Apache Ant}[http://ant.apache.org/] and the {Java 1.6 JDK}[http://www.oracle.com/technetwork/java/javase/downloads/index.html] installed. 
+
+  >cd build
+  >ant
+  
+This will create both a packaged distrubution in the <em>build/out</em> directory, and also an unpacked copy in the <em>build/out/dist</em> directory
+
+  

@@ -1,0 +1,9 @@
+.svn
+.hgignore
+.hg
+bin/
+build/out/
+.classpath
+.project
+.settings
+build/svn.properties
