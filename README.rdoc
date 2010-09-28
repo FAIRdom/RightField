@@ -1,4 +1,4 @@
-= Simple Spreadsheet Extractor
+= RightField
 
 Authors::    {Matthew Horridge}[http://www.cs.man.ac.uk/~horridgm], Stuart Owen
 Contact::    mailto:stuart.owen@manchester.ac.uk
