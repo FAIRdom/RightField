@@ -15,8 +15,6 @@ import java.awt.event.KeyEvent;
 import javax.swing.JTable;
 import javax.swing.table.TableColumn;
 
-import com.sun.org.apache.xpath.internal.compiler.Keywords;
-
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidation;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
