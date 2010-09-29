@@ -80,7 +80,7 @@ public class RepositoryPanel extends JPanel {
 					list.clearSelection();
 				}				
 			}			
-		});
+		});        
         
         add(filterPanel,BorderLayout.SOUTH);        
     }

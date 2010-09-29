@@ -62,7 +62,7 @@ public class SpreadSheetCellEditor implements TableCellEditor {
 
     public SpreadSheetCellEditor(Sheet sheet) {
         this.sheet = sheet;
-        editorField.setBorder(BorderFactory.createEmptyBorder());
+        editorField.setBorder(BorderFactory.createEmptyBorder());        
     }
 
     /**

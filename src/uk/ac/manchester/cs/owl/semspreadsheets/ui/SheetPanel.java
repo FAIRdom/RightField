@@ -6,8 +6,21 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.ClipboardOwner;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -104,6 +117,47 @@ public class SheetPanel extends JPanel {
                 table.repaint();
             }
         };
+        
+        table.addKeyListener(new KeyAdapter() {
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				
+				if ((e.isControlDown() || e.isMetaDown()) && e.getKeyCode()==KeyEvent.VK_C) {
+					String value = "Monkey Magic";
+					Clipboard cb = getToolkit().getSystemClipboard();
+					ClipboardOwner o = new ClipboardOwner() {
+						
+						@Override
+						public void lostOwnership(Clipboard clipboard, Transferable contents) {
+							// TODO Auto-generated method stub
+							
+						}
+					};
+					cb.setContents(new StringSelection(value),null);
+					
+				}
+				if ((e.isControlDown() || e.isMetaDown()) && e.getKeyCode()==KeyEvent.VK_V) {
+								        
+					Transferable contents = getToolkit().getSystemClipboard().getContents(null);
+					DataFlavor df = DataFlavor.stringFlavor;
+					if (contents.isDataFlavorSupported(df)) {
+						try {
+							String str = (String)contents.getTransferData(df);
+							
+							System.out.println("Read from clipboard:"+str);
+						} catch (UnsupportedFlavorException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+					}					
+				}
+			}
+        	
+		});
         workbookManager.getOntologyTermValidationManager().addListener(ontologyTermValidationListener);
     }
 

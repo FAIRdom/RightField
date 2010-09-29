@@ -8,9 +8,14 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Stroke;
+import java.awt.datatransfer.Transferable;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 import javax.swing.JTable;
 import javax.swing.table.TableColumn;
+
+import com.sun.org.apache.xpath.internal.compiler.Keywords;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidation;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
@@ -62,8 +67,6 @@ public class SheetTable extends JTable {
         setShowGrid(true);
         setRowMargin(1);
         setGridColor(new Color(206, 206, 206));
-
-
     }
 
 
