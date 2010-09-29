@@ -51,7 +51,7 @@ public class BioPortalRepositoryItem implements RepositoryItem {
     }
     
     public String toString() {
-    	return humanReadableName+" : "+ontologyID+" ("+format+")";
+    	return humanReadableName+" : "+ontologyID+" ("+format+")";    	
     }
     
 }

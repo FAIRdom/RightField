@@ -40,7 +40,7 @@ public class FindClassPanel extends JPanel {
 
 	private JWindow resultWindow;
 
-	private WorkbookFrame frame;
+	private WorkbookFrame frame;		
 
 	public FindClassPanel(WorkbookFrame frame) {
 		this.frame = frame;
