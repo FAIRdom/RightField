@@ -124,17 +124,9 @@ public class SheetPanel extends JPanel {
 			public void keyPressed(KeyEvent e) {
 				
 				if ((e.isControlDown() || e.isMetaDown()) && e.getKeyCode()==KeyEvent.VK_C) {
-					String value = "Monkey Magic";
+					String v = "Monkey Magic";
 					Clipboard cb = getToolkit().getSystemClipboard();
-					ClipboardOwner o = new ClipboardOwner() {
-						
-						@Override
-						public void lostOwnership(Clipboard clipboard, Transferable contents) {
-							// TODO Auto-generated method stub
-							
-						}
-					};
-					cb.setContents(new StringSelection(value),null);
+					cb.setContents(new StringSelection(v),null);
 					
 				}
 				if ((e.isControlDown() || e.isMetaDown()) && e.getKeyCode()==KeyEvent.VK_V) {
