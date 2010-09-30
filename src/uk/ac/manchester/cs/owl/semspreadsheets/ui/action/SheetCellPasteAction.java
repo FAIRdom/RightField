@@ -1,16 +1,19 @@
 package uk.ac.manchester.cs.owl.semspreadsheets.ui.action;
 
 import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
+import java.util.Collection;
 
 import org.apache.log4j.Logger;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.change.SetCellValue;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Cell;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidation;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 
@@ -38,6 +41,30 @@ public class SheetCellPasteAction extends SelectedCellsAction {
 		Range selectedRange = getSelectedRange();
 		if (selectedRange.isCellSelection()) {
 			if (selectedRange.isSingleCellSelected()) {
+				Clipboard validationClipboard = OntologyValidationsClipboard.getClipboard();
+				Transferable ontologyContents = validationClipboard.getContents(null);
+				if (ontologyContents!=null) {
+					try {
+						Collection<OntologyTermValidation> contents = (Collection<OntologyTermValidation>)ontologyContents.getTransferData(OntologyValidationsTransferable.dataFlavour);
+						logger.debug("Pasting contents: "+contents);
+						getWorkbookManager().getOntologyTermValidationManager().removeValidation(selectedRange);
+						for (OntologyTermValidation validation : contents) {														
+							getWorkbookManager().getOntologyTermValidationManager().addValidation(new OntologyTermValidation(validation.getValidationDescriptor(), selectedRange));
+						}
+						
+					} catch (UnsupportedFlavorException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+				else {
+					logger.debug("Validation clipboard is empty");
+				}
+				
+				
 				Transferable contents = toolkit.getSystemClipboard()
 						.getContents(null);
 				DataFlavor df = DataFlavor.stringFlavor;

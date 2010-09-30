@@ -43,6 +43,10 @@ public class OntologyTermValidation {
         return validationDescriptor;
     }
 
+    public void setRange(Range newRange) {
+    	range=newRange;
+    }
+    
     public Range getRange() {
         return range;
     }

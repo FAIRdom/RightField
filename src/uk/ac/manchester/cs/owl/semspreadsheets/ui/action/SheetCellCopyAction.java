@@ -3,6 +3,7 @@ package uk.ac.manchester.cs.owl.semspreadsheets.ui.action;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.util.Collection;
 
@@ -38,17 +39,19 @@ public class SheetCellCopyAction extends SelectedCellsAction {
 	public void actionPerformed(ActionEvent e) {
 		logger.debug("Copy action invoked");
 		Range selectedRange = getSelectedRange();
-		Clipboard validationClipboard = new Clipboard("ontology_validations");
+		Clipboard validationClipboard = OntologyValidationsClipboard.getClipboard();
 		if (selectedRange.isCellSelection()) {
 			if (selectedRange.isSingleCellSelected()) {
 				Collection<OntologyTermValidation> containingValidations = getWorkbookManager()
 						.getOntologyTermValidationManager()
 						.getContainingValidations(selectedRange);
 				logger.debug("Selected validations = " + containingValidations);
+				
 				if (containingValidations.size() > 0) {
-					validationClipboard.setContents(new StringSelection(
-							"Some validations"), null);
-				} else {
+					Transferable tr = new OntologyValidationsTransferable(containingValidations);					
+					validationClipboard.setContents(tr, null);
+				}
+				else {
 					validationClipboard.setContents(null, null);
 				}
 
