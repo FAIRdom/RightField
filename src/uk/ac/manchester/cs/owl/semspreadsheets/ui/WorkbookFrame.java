@@ -39,8 +39,9 @@ import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.OpenOntologyAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.OpenWorkbookAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.SaveAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.SaveAsAction;
-import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.SheetCopyAction;
-import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.SheetPasteAction;
+import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.SheetCellCopyAction;
+import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.SheetCellCutAction;
+import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.SheetCellPasteAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.task.FetchBioportalOntologyListTask;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.task.LoadOntologyTask;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.task.LoadRepositoryItemTask;
@@ -92,10 +93,14 @@ public class WorkbookFrame extends JFrame {
 		fileMenu.add(new SaveAsAction(this));
 
 		JMenu editMenu = menuBar.add(new JMenu("Edit"));
+		
+		editMenu.add(new SheetCellCutAction(workbookManager,getToolkit()));
+		editMenu.add(new SheetCellCopyAction(workbookManager,getToolkit()));
+		editMenu.add(new SheetCellPasteAction(workbookManager,getToolkit()));
+		
 		editMenu.add(new ClearOntologyValuesAction(this));
 		editMenu.add(new SelectDownColumn(workbookManager, this));
-		editMenu.add(new SheetCopyAction(workbookManager,getToolkit()));
-		editMenu.add(new SheetPasteAction(workbookManager,getToolkit()));
+		
 		// JMenu viewMenu = menuBar.add(new JMenu("View"));
 		JMenu insertMenu = menuBar.add(new JMenu("Insert"));
 		insertMenu.add(new InsertSheetAction("Sheet", workbookManager, this));

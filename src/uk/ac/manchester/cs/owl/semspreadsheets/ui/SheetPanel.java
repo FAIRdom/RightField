@@ -40,8 +40,9 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidationListe
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
-import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.SheetCopyAction;
-import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.SheetPasteAction;
+import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.SheetCellCopyAction;
+import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.SheetCellCutAction;
+import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.SheetCellPasteAction;
 
 /**
  * Author: Matthew Horridge<br>
@@ -125,8 +126,9 @@ public class SheetPanel extends JPanel {
         };
         
         //Add copy/paste/cut actions
-        table.getActionMap().put("copy",new SheetCopyAction(workbookManager,getToolkit()));
-        table.getActionMap().put("paste",new SheetPasteAction(workbookManager, getToolkit()));
+        table.getActionMap().put("copy",new SheetCellCopyAction(workbookManager,getToolkit()));
+        table.getActionMap().put("paste",new SheetCellPasteAction(workbookManager, getToolkit()));
+        table.getActionMap().put("cut",new SheetCellCutAction(workbookManager, getToolkit()));
 
         workbookManager.getOntologyTermValidationManager().addListener(ontologyTermValidationListener);
     }
