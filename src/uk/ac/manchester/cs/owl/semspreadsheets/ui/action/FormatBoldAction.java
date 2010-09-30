@@ -5,7 +5,7 @@ import java.awt.event.KeyEvent;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Cell;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
-import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookFrame;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 
 /**
  * Author: Matthew Horridge<br>
@@ -13,10 +13,11 @@ import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookFrame;
  * Information Management Group<br>
  * Date: 07-Nov-2009
  */
+@SuppressWarnings("serial")
 public class FormatBoldAction extends SelectedCellsAction {
 
-    public FormatBoldAction(WorkbookFrame workbookFrame) {
-        super("Cells bold", workbookFrame);
+    public FormatBoldAction(WorkbookManager workbookManager) {
+        super("Cells bold", workbookManager);
         setAcceleratorKey(KeyEvent.VK_B);
     }
 

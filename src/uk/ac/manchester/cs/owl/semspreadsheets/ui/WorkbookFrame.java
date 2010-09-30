@@ -39,6 +39,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.OpenOntologyAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.OpenWorkbookAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.SaveAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.SaveAsAction;
+import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.SheetCopyAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.task.FetchBioportalOntologyListTask;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.task.LoadOntologyTask;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.task.LoadRepositoryItemTask;
@@ -89,6 +90,7 @@ public class WorkbookFrame extends JFrame {
 		JMenu editMenu = menuBar.add(new JMenu("Edit"));
 		editMenu.add(new ClearOntologyValuesAction(this));
 		editMenu.add(new SelectDownColumn(workbookManager, this));
+		editMenu.add(new SheetCopyAction(workbookManager));
 		// JMenu viewMenu = menuBar.add(new JMenu("View"));
 		JMenu insertMenu = menuBar.add(new JMenu("Insert"));
 		insertMenu.add(new InsertSheetAction("Sheet", workbookManager, this));

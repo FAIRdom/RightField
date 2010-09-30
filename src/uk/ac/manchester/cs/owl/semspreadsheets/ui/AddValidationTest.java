@@ -14,17 +14,18 @@ import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.SelectedCellsAction;
  * Information Management Group<br>
  * Date: 08-Nov-2009
  */
+@SuppressWarnings("serial")
 public class AddValidationTest extends SelectedCellsAction {
 
-    public AddValidationTest(WorkbookFrame workbookFrame) {
-        super("Test validation", workbookFrame);
+    public AddValidationTest(WorkbookManager workbookManager) {
+        super("Test validation", workbookManager);
     }
 
     /**
      * Invoked when an action occurs.
      */
     public void actionPerformed(ActionEvent e) {
-        WorkbookManager wm = getWorkbookFrame().getWorkbookManager();
+        WorkbookManager wm = getWorkbookManager();
         final Sheet sheet = wm.getWorkbook().getSheets().iterator().next();
         Workbook wb = wm.getWorkbook();
         final Range range = getSelectedRange();
