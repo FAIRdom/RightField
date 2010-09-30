@@ -1,6 +1,7 @@
 package uk.ac.manchester.cs.owl.semspreadsheets.ui.action;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.CellSelectionListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookFrame;
 
@@ -10,11 +11,12 @@ import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookFrame;
  * Information Management Group<br>
  * Date: 07-Nov-2009
  */
-public abstract class SelectedCellsAction extends WorkbookFrameAction implements CellSelectionListener{
+@SuppressWarnings("serial")
+public abstract class SelectedCellsAction extends WorkbookAction implements CellSelectionListener{
 
-    protected SelectedCellsAction(String name, WorkbookFrame workbookFrame) {
-        super(name, workbookFrame);
-        workbookFrame.getWorkbookManager().getSelectionModel().addCellSelectionListener(this);
+    protected SelectedCellsAction(String name, WorkbookManager workbookManager) {
+        super(name, workbookManager);
+        workbookManager.getSelectionModel().addCellSelectionListener(this);
     }
 
     public void selectionChanged(Range range) {
@@ -22,6 +24,6 @@ public abstract class SelectedCellsAction extends WorkbookFrameAction implements
     }
 
     public Range getSelectedRange() {
-        return getWorkbookFrame().getWorkbookManager().getSelectionModel().getSelectedRange();
+        return getWorkbookManager().getSelectionModel().getSelectedRange();
     }
 }

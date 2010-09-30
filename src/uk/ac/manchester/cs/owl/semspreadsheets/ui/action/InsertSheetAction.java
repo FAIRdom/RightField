@@ -23,6 +23,6 @@ public class InsertSheetAction extends SpreadSheetAction {
      */
     public void actionPerformed(ActionEvent e) {
         Sheet sheet = getSpreadSheetFrame().addSheet();
-        getSpreadSheetFrame().setSelectedSheet(sheet);
+        getSpreadSheetFrame().setSelectedSheet(sheet);        
     }
 }

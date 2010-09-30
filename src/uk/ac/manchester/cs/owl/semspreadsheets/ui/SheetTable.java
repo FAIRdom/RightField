@@ -105,7 +105,6 @@ public class SheetTable extends JTable {
                 int width = endRect.width + endRect.x - startRect.x - 2;
                 int height = endRect.y + endRect.height - startRect.y - 2;
                 Rectangle rect = new Rectangle(x1, y1, width, height);
-//                g2.drawString(validation.getListName(), x1 + 3, y1 + 10);
                 Composite oldComposite = g2.getComposite();
                 g2.setComposite(alphaComposite2);
                 g2.drawRoundRect(rect.x, rect.y, rect.width, rect.height, 5, 5);
@@ -115,25 +114,6 @@ public class SheetTable extends JTable {
 
             }
         }
-
-//        for (Validation validation : sheet.getValidations()) {
-//
-//            Rectangle startRect = getCellRect(validation.getFirstRow(), validation.getFirstColumn(), false);
-//            Rectangle endRect = getCellRect(validation.getLastRow(), validation.getLastColumn(), false);
-//            int x1 = startRect.x + 1;
-//            int y1 = startRect.y + 1;
-//            int width = endRect.width + endRect.x - startRect.x - 2;
-//            int height = endRect.y + endRect.height - startRect.y - 2;
-//            Rectangle rect = new Rectangle(x1, y1, width, height);
-//            g2.drawString(validation.getListName(), x1 + 3, y1 + 10);
-//            Composite oldComposite = g2.getComposite();
-//            g2.setComposite(alphaComposite2);
-//            g2.drawRoundRect(rect.x, rect.y, rect.width, rect.height, 5, 5);
-//            g2.setComposite(alphaComposite);
-//            g2.fill(rect);
-//            g2.setComposite(oldComposite);
-//
-//        }
 
         g2.setStroke(oldStroke);
         g.setColor(oldColor);

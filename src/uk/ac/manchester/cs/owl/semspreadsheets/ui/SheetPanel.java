@@ -12,6 +12,7 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -24,6 +25,7 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.swing.AbstractAction;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JViewport;
@@ -32,10 +34,13 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableColumn;
 
+import com.sun.corba.se.spi.orbutil.fsm.Action;
+
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidationListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
+import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.SheetCopyAction;
 
 /**
  * Author: Matthew Horridge<br>
@@ -118,38 +123,43 @@ public class SheetPanel extends JPanel {
             }
         };
         
-        table.addKeyListener(new KeyAdapter() {
-
-			@Override
-			public void keyPressed(KeyEvent e) {
-				
-				if ((e.isControlDown() || e.isMetaDown()) && e.getKeyCode()==KeyEvent.VK_C) {
-					String v = "Monkey Magic";
-					Clipboard cb = getToolkit().getSystemClipboard();
-					cb.setContents(new StringSelection(v),null);
-					
-				}
-				if ((e.isControlDown() || e.isMetaDown()) && e.getKeyCode()==KeyEvent.VK_V) {
-								        
-					Transferable contents = getToolkit().getSystemClipboard().getContents(null);
-					DataFlavor df = DataFlavor.stringFlavor;
-					if (contents.isDataFlavorSupported(df)) {
-						try {
-							String str = (String)contents.getTransferData(df);
-							
-							System.out.println("Read from clipboard:"+str);
-						} catch (UnsupportedFlavorException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						} catch (IOException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-					}					
-				}
-			}
-        	
-		});
+        //Add copy/paste/cut actions
+        table.getActionMap().put("copy",new SheetCopyAction(workbookManager));
+        
+//        table.addKeyListener(new KeyAdapter() {
+//
+//			@Override
+//			public void keyPressed(KeyEvent e) {
+//				
+//				if ((e.isControlDown() || e.isMetaDown()) && e.getKeyCode()==KeyEvent.VK_C) {
+//					System.out.println("Copy Selected");
+//					//String v = "Monkey Magic";
+//					//Clipboard cb = getToolkit().getSystemClipboard();
+//					//cb.setContents(new StringSelection(v),null);
+//					
+//				}
+//				if ((e.isControlDown() || e.isMetaDown()) && e.getKeyCode()==KeyEvent.VK_V) {
+//								        
+//					Transferable contents = getToolkit().getSystemClipboard().getContents(null);
+//					DataFlavor df = DataFlavor.stringFlavor;
+//					if (contents.isDataFlavorSupported(df)) {
+//						try {
+//							String str = (String)contents.getTransferData(df);
+//							
+//							System.out.println("Read from clipboard:"+str);
+//						} catch (UnsupportedFlavorException e1) {
+//							// TODO Auto-generated catch block
+//							e1.printStackTrace();
+//						} catch (IOException e1) {
+//							// TODO Auto-generated catch block
+//							e1.printStackTrace();
+//						}
+//					}					
+//				}
+//			}
+//        	
+//		});
+        //table.getActionMap().put("copy",new SheetCopyAction(workbookManager.getW));
         workbookManager.getOntologyTermValidationManager().addListener(ontologyTermValidationListener);
     }
 
