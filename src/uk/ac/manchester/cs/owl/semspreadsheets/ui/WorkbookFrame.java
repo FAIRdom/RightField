@@ -62,7 +62,7 @@ public class WorkbookFrame extends JFrame {
 	
 	private static final long serialVersionUID = 8991252467294969145L;
 	
-	private static final String[] WORKBOOK_EXT = new String[] { "xls", "xlsx" };
+	private static final String[] WORKBOOK_EXT = new String[] { "xls" };
 	private static final String[] ONTOLOGY_EXT = new String[] { "obo", "owl",
 			"rdf", "rrf" };
 
@@ -248,7 +248,7 @@ public class WorkbookFrame extends JFrame {
 	private File browseForFileWithJChooser(String title, int mode,
 			final String filetype, final String[] extensions) {
 		JFileChooser chooser = new JFileChooser(title);
-		if (extensions != null && extensions.length > 1) {
+		if (extensions != null && extensions.length > 0) {
 			chooser.setFileFilter(new ExtensionFileFilter(filetype, extensions));
 		}
 
@@ -269,7 +269,7 @@ public class WorkbookFrame extends JFrame {
 			final String[] extensions) {
 		FileDialog fileDialog = new FileDialog(this, title, mode);
 
-		if (extensions != null && extensions.length > 1) {			
+		if (extensions != null && extensions.length > 0) {			
 			fileDialog.setFilenameFilter(new ExtensionsFilenameFilter(
 					extensions));
 		}
