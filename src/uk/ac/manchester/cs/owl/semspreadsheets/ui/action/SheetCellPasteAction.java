@@ -14,6 +14,12 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.Cell;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 
+/**
+ * Action to handle 'pasting' into a cell
+ * 
+ * @author Stuart Owen
+ *
+ */
 @SuppressWarnings("serial")
 public class SheetCellPasteAction extends SelectedCellsAction {
 

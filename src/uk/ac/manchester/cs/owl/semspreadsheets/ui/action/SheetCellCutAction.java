@@ -10,6 +10,12 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.Cell;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 
+/**
+ * Action to handle 'cutting' a cell from a sheet
+ * 
+ * @author Stuart Owen
+ *
+ */
 @SuppressWarnings("serial")
 public class SheetCellCutAction extends SheetCellCopyAction {
 
