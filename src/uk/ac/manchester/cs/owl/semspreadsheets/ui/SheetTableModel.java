@@ -87,7 +87,7 @@ public class SheetTableModel extends AbstractTableModel implements SpreadSheetLi
         }
         workbook.applyChange(new SetCellValue(workbook, sheet, columnIndex, rowIndex, oldValue, aValue));
         fireTableCellUpdated(rowIndex, columnIndex);
-    }
+    }        
 
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////

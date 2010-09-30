@@ -41,6 +41,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.SheetCopyAction;
+import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.SheetPasteAction;
 
 /**
  * Author: Matthew Horridge<br>
@@ -125,41 +126,8 @@ public class SheetPanel extends JPanel {
         
         //Add copy/paste/cut actions
         table.getActionMap().put("copy",new SheetCopyAction(workbookManager,getToolkit()));
-        
-//        table.addKeyListener(new KeyAdapter() {
-//
-//			@Override
-//			public void keyPressed(KeyEvent e) {
-//				
-//				if ((e.isControlDown() || e.isMetaDown()) && e.getKeyCode()==KeyEvent.VK_C) {
-//					System.out.println("Copy Selected");
-//					//String v = "Monkey Magic";
-//					//Clipboard cb = getToolkit().getSystemClipboard();
-//					//cb.setContents(new StringSelection(v),null);
-//					
-//				}
-//				if ((e.isControlDown() || e.isMetaDown()) && e.getKeyCode()==KeyEvent.VK_V) {
-//								        
-//					Transferable contents = getToolkit().getSystemClipboard().getContents(null);
-//					DataFlavor df = DataFlavor.stringFlavor;
-//					if (contents.isDataFlavorSupported(df)) {
-//						try {
-//							String str = (String)contents.getTransferData(df);
-//							
-//							System.out.println("Read from clipboard:"+str);
-//						} catch (UnsupportedFlavorException e1) {
-//							// TODO Auto-generated catch block
-//							e1.printStackTrace();
-//						} catch (IOException e1) {
-//							// TODO Auto-generated catch block
-//							e1.printStackTrace();
-//						}
-//					}					
-//				}
-//			}
-//        	
-//		});
-        //table.getActionMap().put("copy",new SheetCopyAction(workbookManager.getW));
+        table.getActionMap().put("paste",new SheetPasteAction(workbookManager, getToolkit()));
+
         workbookManager.getOntologyTermValidationManager().addListener(ontologyTermValidationListener);
     }
 

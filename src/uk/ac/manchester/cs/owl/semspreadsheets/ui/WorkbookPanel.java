@@ -1,12 +1,17 @@
 package uk.ac.manchester.cs.owl.semspreadsheets.ui;
 
 import java.awt.BorderLayout;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import org.apache.log4j.Logger;
+
+import uk.ac.manchester.cs.owl.semspreadsheets.change.SetCellValue;
 import uk.ac.manchester.cs.owl.semspreadsheets.change.WorkbookChangeEvent;
 import uk.ac.manchester.cs.owl.semspreadsheets.change.WorkbookChangeListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
@@ -19,13 +24,18 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
  * The University of Manchester<br>
  * Information Management Group<br>
  * Date: 31-Oct-2009
+ * 
+ * Author: Stuart Owen
+ * Date: 30-Sep-2010
  */
+@SuppressWarnings("serial")
 public class WorkbookPanel extends JPanel {
+	
+	private Logger logger = Logger.getLogger(WorkbookPanel.class);
 
     private WorkbookManager manager;
 
     private JTabbedPane tabbedPane;
-
 
     private boolean transmittingSelectionToModel = false;
 
@@ -33,6 +43,8 @@ public class WorkbookPanel extends JPanel {
 
     private boolean rebuildingTabs = false;
     private WorkbookChangeListener workbookChangeListener;
+    
+    public Map<String,SheetPanel> sheetPanels = new HashMap<String,SheetPanel>();
 
 
     public WorkbookPanel(WorkbookManager workbookManager) {
@@ -42,7 +54,15 @@ public class WorkbookPanel extends JPanel {
         add(tabbedPane, BorderLayout.CENTER);
         workbookChangeListener = new WorkbookChangeListener() {
             public void workbookChanged(WorkbookChangeEvent event) {
-                System.out.println("WB CHG: " + event);
+                logger.debug("Workbook Change: " + event);
+                //FIMXE: Don't like this, but it works. Will revisit when I understand the code structure some more.
+                if (event.getChange() instanceof SetCellValue) {
+                	SetCellValue scv=(SetCellValue)event.getChange();
+                	scv.getSheet().getName();
+                	SheetPanel sheetPanel = (SheetPanel)tabbedPane.getSelectedComponent();
+                	SheetTableModel model = (SheetTableModel)sheetPanel.getSheetTable().getModel();
+                	model.fireTableCellUpdated(scv.getRow(),scv.getCol());
+                }
             }
 
             public void sheetAdded() {
@@ -103,7 +123,7 @@ public class WorkbookPanel extends JPanel {
         for (Sheet sheet : workbook.getSheets()) {
             if (!sheet.isHidden()) {
                 SheetPanel sheetPanel = new SheetPanel(manager, sheet);
-                tabbedPane.add(sheet.getName(), sheetPanel);
+                tabbedPane.add(sheet.getName(), sheetPanel);                
             }
         }
         rebuildingTabs = false;

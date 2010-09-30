@@ -8,12 +8,27 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.Workbook;
  * The University of Manchester<br>
  * Information Management Group<br>
  * Date: 01-Nov-2009
+ * 
+ * Author: Stuart Owen
+ * Date: 30-Sep-2010
  */
 public class SetCellValue extends SpreadsheetChange {
 
     private Object oldValue;
 
     private Object newValue;
+    
+    /**
+     * Constructs the change with the assumption the workbook is the same as the one that belongs to the sheet
+     * @param sheet
+     * @param col
+     * @param row
+     * @param oldValue
+     * @param newValue
+     */
+    public SetCellValue(Sheet sheet,int col,int row,Object oldValue,Object newValue) {
+    	this(sheet.getWorkbook(),sheet,col,row,oldValue,newValue);
+    }
 
     public SetCellValue(Workbook workbook, Sheet sheet, int col, int row, Object oldValue, Object newValue) {
         super(workbook, sheet, col, row);
