@@ -124,7 +124,7 @@ public class SheetPanel extends JPanel {
         };
         
         //Add copy/paste/cut actions
-        table.getActionMap().put("copy",new SheetCopyAction(workbookManager));
+        table.getActionMap().put("copy",new SheetCopyAction(workbookManager,getToolkit()));
         
 //        table.addKeyListener(new KeyAdapter() {
 //

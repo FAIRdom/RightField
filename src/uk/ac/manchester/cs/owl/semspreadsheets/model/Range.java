@@ -3,9 +3,12 @@ package uk.ac.manchester.cs.owl.semspreadsheets.model;
 
 /**
  * Author: Matthew Horridge<br>
+ * Author: Stuart Owen<br>
  * The University of Manchester<br>
  * Information Management Group<br>
  * Date: 20-Sep-2009
+ * Date: 30-Sep-2010
+ * 
  */
 public class Range {
 
@@ -41,6 +44,16 @@ public class Range {
         toColumn = -1;
         fromRow = -1;
         toRow = -1;
+    }
+    
+    /**
+     * @return Indicates whether a single cell is selected
+     */
+    public boolean isSingleCellSelected() {
+    	if (isCellSelection()) {
+    		return getFromColumn()==getToColumn() && getFromRow()==getToRow();
+    	}
+    	return false;
     }
 
     public boolean isCellSelection() {
