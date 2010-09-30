@@ -19,3 +19,4 @@ To compile RightField you are required to have both {Apache Ant}[http://ant.apac
   >ant
   
 This will create both a packaged distrubution in the <em>build/out</em> directory, and also an unpacked copy in the <em>build/out/dist</em> directory
+
