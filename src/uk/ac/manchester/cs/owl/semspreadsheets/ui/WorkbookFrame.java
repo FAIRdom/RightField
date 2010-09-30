@@ -90,7 +90,7 @@ public class WorkbookFrame extends JFrame {
 		JMenu editMenu = menuBar.add(new JMenu("Edit"));
 		editMenu.add(new ClearOntologyValuesAction(this));
 		editMenu.add(new SelectDownColumn(workbookManager, this));
-		editMenu.add(new SheetCopyAction(workbookManager));
+		editMenu.add(new SheetCopyAction(workbookManager,getToolkit()));
 		// JMenu viewMenu = menuBar.add(new JMenu("View"));
 		JMenu insertMenu = menuBar.add(new JMenu("Insert"));
 		insertMenu.add(new InsertSheetAction("Sheet", workbookManager, this));

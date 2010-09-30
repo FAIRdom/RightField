@@ -110,6 +110,7 @@ public class SheetHSSFImpl implements Sheet {
     }
 
     public boolean isCellAt(int col, int row) {
+    	//FIXME: is this always false??
         return false;
     }
 
