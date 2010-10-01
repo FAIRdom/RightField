@@ -26,13 +26,16 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.swing.AbstractAction;
+import javax.swing.InputMap;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JViewport;
+import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableColumn;
+import javax.swing.text.DefaultEditorKit;
 
 import com.sun.corba.se.spi.orbutil.fsm.Action;
 
@@ -40,6 +43,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidationListe
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
+import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.SheetCellClearAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.SheetCellCopyAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.SheetCellCutAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.SheetCellPasteAction;
@@ -125,10 +129,12 @@ public class SheetPanel extends JPanel {
             }
         };
         
-        //Add copy/paste/cut actions
+        //Add copy/paste/cut actions   
+        table.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE,0),"delete");
         table.getActionMap().put("copy",new SheetCellCopyAction(workbookManager,getToolkit()));
         table.getActionMap().put("paste",new SheetCellPasteAction(workbookManager, getToolkit()));
         table.getActionMap().put("cut",new SheetCellCutAction(workbookManager, getToolkit()));
+        table.getActionMap().put("delete",new SheetCellClearAction(workbookManager));
 
         workbookManager.getOntologyTermValidationManager().addListener(ontologyTermValidationListener);
     }

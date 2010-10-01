@@ -39,6 +39,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.OpenOntologyAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.OpenWorkbookAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.SaveAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.SaveAsAction;
+import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.SheetCellClearAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.SheetCellCopyAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.SheetCellCutAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.SheetCellPasteAction;
@@ -97,6 +98,8 @@ public class WorkbookFrame extends JFrame {
 		editMenu.add(new SheetCellCutAction(workbookManager,getToolkit()));
 		editMenu.add(new SheetCellCopyAction(workbookManager,getToolkit()));
 		editMenu.add(new SheetCellPasteAction(workbookManager,getToolkit()));
+		editMenu.add(new SheetCellClearAction(workbookManager));
+		
 		
 		editMenu.add(new ClearOntologyValuesAction(this));
 		editMenu.add(new SelectDownColumn(workbookManager, this));
