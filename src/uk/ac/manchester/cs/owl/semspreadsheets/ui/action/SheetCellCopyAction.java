@@ -2,7 +2,6 @@ package uk.ac.manchester.cs.owl.semspreadsheets.ui.action;
 
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.util.Collection;

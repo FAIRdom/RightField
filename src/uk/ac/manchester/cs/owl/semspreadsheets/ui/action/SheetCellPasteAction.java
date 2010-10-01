@@ -44,12 +44,13 @@ public class SheetCellPasteAction extends SelectedCellsAction {
 						.getContents(null);
 				DataFlavor df = CellContentsTransferable.dataFlavour;
 				if (contents.isDataFlavorSupported(df)) {
-					Object[] val;
+					Object[] dataValues;
 					try {
-						val = (Object[])contents.getTransferData(df);
+						dataValues = (Object[])contents.getTransferData(df);
 						logger.debug("OntologyValidationsTransferable contents found");
-						Object textValue=val[0];
-						Collection<OntologyTermValidation> validations = (Collection<OntologyTermValidation>)val[1];
+						Object textValue=dataValues[0];
+						@SuppressWarnings("unchecked")
+						Collection<OntologyTermValidation> validations = (Collection<OntologyTermValidation>)dataValues[1];
 						pasteTextValue(selectedRange, textValue);
 						pasteValidations(selectedRange, validations);
 					} catch (UnsupportedFlavorException e1) {
@@ -60,8 +61,8 @@ public class SheetCellPasteAction extends SelectedCellsAction {
 				}
 				else if (contents.isDataFlavorSupported(DataFlavor.stringFlavor)) {
 					try {
-						String val = (String)contents.getTransferData(DataFlavor.stringFlavor);
-						pasteTextValue(selectedRange, val);
+						String textValue = (String)contents.getTransferData(DataFlavor.stringFlavor);
+						pasteTextValue(selectedRange, textValue);
 					} catch (UnsupportedFlavorException e1) {
 						logger.error("Unsupported flavour.",e1);
 					} catch (IOException e1) {
