@@ -1,7 +1,6 @@
 package uk.ac.manchester.cs.owl.semspreadsheets.ui.action;
 
 import java.awt.Toolkit;
-import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
@@ -41,53 +40,32 @@ public class SheetCellPasteAction extends SelectedCellsAction {
 		Range selectedRange = getSelectedRange();
 		if (selectedRange.isCellSelection()) {
 			if (selectedRange.isSingleCellSelected()) {
-				Clipboard validationClipboard = OntologyValidationsClipboard.getClipboard();
-				Transferable ontologyContents = validationClipboard.getContents(null);
-				if (ontologyContents!=null) {
-					try {
-						Collection<OntologyTermValidation> contents = (Collection<OntologyTermValidation>)ontologyContents.getTransferData(OntologyValidationsTransferable.dataFlavour);
-						logger.debug("Pasting contents: "+contents);
-						getWorkbookManager().getOntologyTermValidationManager().removeValidation(selectedRange);
-						for (OntologyTermValidation validation : contents) {														
-							getWorkbookManager().getOntologyTermValidationManager().addValidation(new OntologyTermValidation(validation.getValidationDescriptor(), selectedRange));
-						}
-						
-					} catch (UnsupportedFlavorException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-				}
-				else {
-					logger.debug("Validation clipboard is empty");
-				}
-				
-				
 				Transferable contents = toolkit.getSystemClipboard()
 						.getContents(null);
-				DataFlavor df = DataFlavor.stringFlavor;
+				DataFlavor df = CellContentsTransferable.dataFlavour;
 				if (contents.isDataFlavorSupported(df)) {
+					Object[] val;
 					try {
-						String str = (String) contents.getTransferData(df);
-						logger.debug("Read from system clipboard:" + str);
-						int row = selectedRange.getFromRow();
-						int col = selectedRange.getFromColumn();
-						Cell cell = selectedRange.getSheet()
-								.getCellAt(col, row);
-						Object oldValue = null;
-						if (cell != null) {
-							oldValue = cell.getValue();
-						}
-						SetCellValue change = new SetCellValue(
-								selectedRange.getSheet(), col, row, oldValue,
-								str);
-						getWorkbookManager().applyChange(change);
+						val = (Object[])contents.getTransferData(df);
+						logger.debug("OntologyValidationsTransferable contents found");
+						Object textValue=val[0];
+						Collection<OntologyTermValidation> validations = (Collection<OntologyTermValidation>)val[1];
+						pasteTextValue(selectedRange, textValue);
+						pasteValidations(selectedRange, validations);
 					} catch (UnsupportedFlavorException e1) {
-						logger.warn(e1);
+						logger.error("Unsupported flavour.",e1);
 					} catch (IOException e1) {
-						logger.warn(e1);
+						logger.error("Error reading from clipboard.",e1);
+					}
+				}
+				else if (contents.isDataFlavorSupported(DataFlavor.stringFlavor)) {
+					try {
+						String val = (String)contents.getTransferData(DataFlavor.stringFlavor);
+						pasteTextValue(selectedRange, val);
+					} catch (UnsupportedFlavorException e1) {
+						logger.error("Unsupported flavour.",e1);
+					} catch (IOException e1) {
+						logger.error("Error reading from clipboard.",e1);
 					}
 				}
 			} else {
@@ -96,5 +74,28 @@ public class SheetCellPasteAction extends SelectedCellsAction {
 		} else {
 			logger.info("Nothing selected");
 		}
+	}
+
+	private void pasteValidations(Range selectedRange,
+			Collection<OntologyTermValidation> validations) {
+		getWorkbookManager().getOntologyTermValidationManager().removeValidation(selectedRange);
+		for (OntologyTermValidation validation : validations) {														
+			getWorkbookManager().getOntologyTermValidationManager().addValidation(new OntologyTermValidation(validation.getValidationDescriptor(), selectedRange));
+		}
+	}
+
+	private void pasteTextValue(Range selectedRange, Object textValue) {
+		int row = selectedRange.getFromRow();
+		int col = selectedRange.getFromColumn();
+		Cell cell = selectedRange.getSheet()
+				.getCellAt(col, row);
+		Object oldValue = null;
+		if (cell != null) {
+			oldValue = cell.getValue();
+		}
+		SetCellValue change = new SetCellValue(
+				selectedRange.getSheet(), col, row, oldValue,
+				textValue);
+		getWorkbookManager().applyChange(change);
 	}
 }

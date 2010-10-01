@@ -38,8 +38,7 @@ public class SheetCellCopyAction extends SelectedCellsAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		logger.debug("Copy action invoked");
-		Range selectedRange = getSelectedRange();
-		Clipboard validationClipboard = OntologyValidationsClipboard.getClipboard();
+		Range selectedRange = getSelectedRange();		
 		if (selectedRange.isCellSelection()) {
 			if (selectedRange.isSingleCellSelected()) {
 				Collection<OntologyTermValidation> containingValidations = getWorkbookManager()
@@ -47,28 +46,23 @@ public class SheetCellCopyAction extends SelectedCellsAction {
 						.getContainingValidations(selectedRange);
 				logger.debug("Selected validations = " + containingValidations);
 				
-				if (containingValidations.size() > 0) {
-					Transferable tr = new OntologyValidationsTransferable(containingValidations);					
-					validationClipboard.setContents(tr, null);
-				}
-				else {
-					validationClipboard.setContents(null, null);
-				}
-
 				int row = selectedRange.getFromRow();
 				int col = selectedRange.getFromColumn();
 				Cell cell = selectedRange.getSheet().getCellAt(col, row);
-				String value = "";
+				String textValue = "";
 				if (cell != null) {
-					value = cell.getValue();
+					textValue = cell.getValue();
 				} else {
 					logger.debug("Selected cell is returned as NULL");
 					// we assume that we are copying an empty value, rather than
 					// leaving the clipboard intact
-					value = "";
+					textValue = "";
 				}
+				
+				Transferable tr = new CellContentsTransferable(textValue,containingValidations);
+								
 				Clipboard clippy = toolkit.getSystemClipboard();
-				clippy.setContents(new StringSelection(value), null);
+				clippy.setContents(tr, null);
 			} else {
 				logger.info("Copying a range of cells is not yet supported");
 			}
