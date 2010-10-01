@@ -1,5 +1,6 @@
 package uk.ac.manchester.cs.owl.semspreadsheets.model;
 
+import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -34,6 +35,7 @@ import org.semanticweb.owlapi.util.ShortFormProvider;
 import org.semanticweb.owlapi.util.SimpleShortFormProvider;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
+import uk.ac.manchester.cs.owl.semspreadsheets.change.SetCellValue;
 import uk.ac.manchester.cs.owl.semspreadsheets.change.WorkbookChange;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.CellSelectionListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.CellSelectionModel;
@@ -89,7 +91,7 @@ public class WorkbookManager {
             public void selectionChanged(Range range) {
                 handleCellSelectionChanged();
             }
-        });
+        });        
     }
 
     public void applyChanges(List<? extends WorkbookChange> changes) {
@@ -255,19 +257,58 @@ public class WorkbookManager {
      * @param type
      */
     public void setValidationType(ValidationType type, IRI entityIRI) {
+    	
         Range selectedRange = getSelectionModel().getSelectedRange();
         if(!selectedRange.isCellSelection()) {
             return;
         }
+        Range rangeToApply;
         Collection<OntologyTermValidation> validations = ontologyTermValidationManager.getContainingValidations(selectedRange);
+        
         if(validations.isEmpty()) {
-            ontologyTermValidationManager.setValidation(selectedRange, type, entityIRI);
+            rangeToApply=selectedRange;
         }
         else {
             OntologyTermValidation validation = validations.iterator().next();
-            ontologyTermValidationManager.setValidation(validation.getRange(), type, entityIRI);
+            rangeToApply=validation.getRange();            
         }
-
+        String default_name=getRendering(manager.getOWLDataFactory().getOWLAnnotationProperty(entityIRI));
+        
+        ontologyTermValidationManager.setValidation(rangeToApply, type, entityIRI);
+        
+        for(int col = rangeToApply.getFromColumn(); col < rangeToApply.getToColumn() + 1; col++) {
+            for(int row = rangeToApply.getFromRow(); row < rangeToApply.getToRow() + 1; row++) {
+                Cell cell = rangeToApply.getSheet().getCellAt(col, row);
+                if (cell == null) {                	
+                	SetCellValue scv=new SetCellValue(rangeToApply.getSheet(),col,row,null,default_name);
+                	applyChange(scv);
+                	cell = rangeToApply.getSheet().getCellAt(col, row);
+                }
+                else if (cell.getValue().isEmpty()) {
+                	SetCellValue scv=new SetCellValue(rangeToApply.getSheet(),col,row,"",default_name);
+                	applyChange(scv);
+                	cell = rangeToApply.getSheet().getCellAt(col, row);
+                }
+                logger.debug("Current cell colour is:"+cell.getBackgroundFill().toString());
+                cell.setBackgroundFill(new Color(16777164)); //pale yellow
+            }
+        }
+    }
+    
+    public void removeValidations(Range range) {
+    	if (getOntologyTermValidationManager().getContainingValidations(range).size()>0)
+    	{
+	    	getOntologyTermValidationManager().removeValidation(range);
+	    	for(int col = range.getFromColumn(); col < range.getToColumn() + 1; col++) {
+	            for(int row = range.getFromRow(); row < range.getToRow() + 1; row++) {
+	                Cell cell = range.getSheet().getCellAt(col, row);
+	                if (cell!=null) {
+	                	//FIXME: the default colour may not white
+	                	cell.setBackgroundFill(Color.WHITE);
+	                }
+	            }
+	    	}
+    	}
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////

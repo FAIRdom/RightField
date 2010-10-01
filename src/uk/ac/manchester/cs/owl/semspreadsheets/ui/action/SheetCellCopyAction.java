@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Cell;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidation;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidationDescriptor;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 /**
@@ -40,10 +41,15 @@ public class SheetCellCopyAction extends SelectedCellsAction {
 		Range selectedRange = getSelectedRange();		
 		if (selectedRange.isCellSelection()) {
 			if (selectedRange.isSingleCellSelected()) {
+				OntologyTermValidationDescriptor descriptor = null;
+								
 				Collection<OntologyTermValidation> containingValidations = getWorkbookManager()
 						.getOntologyTermValidationManager()
 						.getContainingValidations(selectedRange);
 				logger.debug("Selected validations = " + containingValidations);
+				if (containingValidations.size()>0) {
+					descriptor=containingValidations.iterator().next().getValidationDescriptor();
+				}
 				
 				int row = selectedRange.getFromRow();
 				int col = selectedRange.getFromColumn();
@@ -58,7 +64,7 @@ public class SheetCellCopyAction extends SelectedCellsAction {
 					textValue = "";
 				}
 				
-				Transferable tr = new CellContentsTransferable(textValue,containingValidations);
+				Transferable tr = new CellContentsTransferable(textValue,descriptor);
 								
 				Clipboard clippy = toolkit.getSystemClipboard();
 				clippy.setContents(tr, null);

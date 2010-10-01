@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.swing.SwingConstants;
 import javax.swing.text.Style;
 
+import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFComment;
@@ -24,8 +25,13 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.Cell;
  * The University of Manchester<br>
  * Information Management Group<br>
  * Date: 20-Sep-2009
+ * 
+ * Author: Stuart Owen
+ * Date: 1 Oct 2010
  */
 public class CellHSSFImpl implements Cell {
+	
+	private static Logger logger = Logger.getLogger(CellHSSFImpl.class);
 
     public static final Font DEFAULT_FONT = new Font("verdana", Font.PLAIN, 10);
 
@@ -135,23 +141,23 @@ public class CellHSSFImpl implements Cell {
     }
 
     public void setBold(boolean b) {
-//        HSSFCellStyle cellStyle = theCell.getCellStyle();
-//        if (cellStyle == null) {
-//            cellStyle = workbook.createCellStyle();
-//            theCell.setCellStyle(cellStyle);
-//        }
-//        HSSFFont font = cellStyle.getFont(workbook);
-//        if (font == null) {
-//            font = workbook.createFont();
-//            cellStyle.setFont(font);
-//        }
-//        if (b) {
-//            font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
-//        }
-//        else {
-//            font.setBoldweight(HSSFFont.BOLDWEIGHT_NORMAL);
-//        }
-//        fontCache.clear();
+        HSSFCellStyle cellStyle = theCell.getCellStyle();        
+        if (cellStyle == null) {
+            cellStyle = workbook.createCellStyle();
+            theCell.setCellStyle(cellStyle);
+        }
+        HSSFFont font = cellStyle.getFont(workbook);
+        if (font == null) {
+            font = workbook.createFont();
+            cellStyle.setFont(font);
+        }
+        if (b) {
+            font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+        }
+        else {
+            font.setBoldweight(HSSFFont.BOLDWEIGHT_NORMAL);
+        }
+        fontCache.clear();
     }
 
     public Font getFont() {
@@ -184,6 +190,31 @@ public class CellHSSFImpl implements Cell {
         return font;
 
     }
+    
+    @Override
+	public Color getBackgroundFill() {		
+    	HSSFCellStyle cellStyle = theCell.getCellStyle();
+        if (cellStyle == null) {
+            return Color.WHITE;
+        }
+		short colorIndex=cellStyle.getFillBackgroundColor();
+		return translateColour(colorIndex);
+	}
+
+    @Override
+	public void setBackgroundFill(Color colour) {
+		HSSFColor col = translateColour(colour);
+		if (col==null) {
+			logger.warn("Unable to find similar colour in palette for "+colour.toString());
+		}
+		else {
+			HSSFCellStyle cellStyle = workbook.createCellStyle();
+			cellStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND );
+			cellStyle.setFillForegroundColor(col.getIndex());			
+			theCell.setCellStyle(cellStyle);
+			logger.debug("Cell colour changed to "+col.toString());
+		}
+	}
 
     public Color getForeground() {
         if (foreground == null) {
@@ -193,17 +224,39 @@ public class CellHSSFImpl implements Cell {
             }
             HSSFFont hssfFont = cellStyle.getFont(workbook);
             short colorIndex = hssfFont.getColor();
-            HSSFPalette palette = workbook.getCustomPalette();
-            HSSFColor color = palette.getColor(colorIndex);
-            Color theColor = Color.BLACK;
-            if (color != null) {
-                short[] triplet = color.getTriplet();
-                theColor = new Color(triplet[0], triplet[1], triplet[2]);
-            }
+            Color theColor = translateColour(colorIndex);
             foreground = theColor;
         }
         return foreground;
     }
+
+    /**
+     * Translates a java Color to the colour index in the workbook palette
+     * @param colour
+     * @return
+     */
+    private HSSFColor translateColour(Color colour) {
+    	HSSFPalette palette = workbook.getCustomPalette();
+    	
+    	HSSFColor col = palette.findSimilarColor((byte)colour.getRed(), (byte)colour.getGreen(), (byte)colour.getBlue());
+    	return col;
+    }
+    /**
+     * Translates the colorIndex from the workbook palette to a <br> 
+     * java Color.
+     * @param colorIndex
+     * @return java Color
+     */
+	private Color translateColour(short colorIndex) {
+		HSSFPalette palette = workbook.getCustomPalette();
+		HSSFColor color = palette.getColor(colorIndex);
+		Color theColor = Color.BLACK;
+		if (color != null) {
+		    short[] triplet = color.getTriplet();
+		    theColor = new Color(triplet[0], triplet[1], triplet[2]);
+		}
+		return theColor;
+	}
 
     public int getAlignment() {
         HSSFCellStyle cellStyle = theCell.getCellStyle();
@@ -236,4 +289,8 @@ public class CellHSSFImpl implements Cell {
     public boolean isDataValidation() {
         return false;
     }
+
+	
+
+	
 }

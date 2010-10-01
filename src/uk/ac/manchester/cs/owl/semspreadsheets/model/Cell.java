@@ -24,6 +24,8 @@ public interface Cell {
     Font getFont();
 
     Color getForeground();
+    
+    Color getBackgroundFill();
 
     int getAlignment();
 
@@ -38,6 +40,8 @@ public interface Cell {
     boolean isBold();
 
     void setBold(boolean b);
+    
+    void setBackgroundFill(Color colour);
 
     Style getStyle();
 

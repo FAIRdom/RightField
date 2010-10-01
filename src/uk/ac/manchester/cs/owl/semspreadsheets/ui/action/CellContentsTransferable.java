@@ -7,8 +7,9 @@ import java.io.IOException;
 import java.util.Collection;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidation;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidationDescriptor;
 /**
- * This is a Transferable implemenation to support the copy and paste of both cell text values, and the ontology validations.
+ * This is a Transferable implemenation to support the copy and paste of both cell text values, and the OntologyTermValidationDescriptor.
  * 
  * It will allow the copy/paste of both from within RightField, and also text values between RightField and other application.
  * 
@@ -20,24 +21,29 @@ public class CellContentsTransferable implements	Transferable {
 	/**
 	 * The DataFlavor for handling the collection of OntologyTermValidation's and the text value of the cell.
 	 */
-	public static DataFlavor dataFlavour;
+	public static DataFlavor dataFlavour = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType
+			+ OntologyTermValidationDescriptor.class.getCanonicalName(),"OntologyTermValidations");
 	
-	private final Collection<? extends OntologyTermValidation> validations;
+	
 	private final String textValue;
+
+
+	private final OntologyTermValidationDescriptor descriptor;
 	
-	public CellContentsTransferable(String textValue,Collection<? extends OntologyTermValidation> validations) {
+	public CellContentsTransferable(String textValue,OntologyTermValidationDescriptor descriptor) {
 		super();
 		this.textValue = textValue;
-		this.validations = validations;		
-		@SuppressWarnings("rawtypes")
-		Class theClass = validations.getClass();
-		dataFlavour=new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType
-				+ theClass.getCanonicalName(),"OntologyTermValidations");		
+		this.descriptor = descriptor;
+				
+		this.dataFlavour=new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType
+				+ OntologyTermValidationDescriptor.class.getCanonicalName(),"OntologyTermValidations");		
 	}
 
 	/**
 	 * This will provide either a single String object if the flavour is DataFlavor.stringFlavor<br>
-	 * or an array that contains [textValue,Collection<? extends OntologyTermValidation>] if the flavor is <br>
+	 * or an array that contains [textValue,OntologyTermValidationDescriptor] if the flavour is <br>
+	 * <br>
+	 * Note that the OntologyTermValidationDescriptor may be null if the copied cell did not have any validation applied.
 	 * {@link #dataFlavour}
 	 */
 	@Override
@@ -47,7 +53,7 @@ public class CellContentsTransferable implements	Transferable {
 			return textValue;
 		}
 		else {
-			return new Object[]{textValue,validations};
+			return new Object[]{textValue,descriptor};
 		}		
 	}
 

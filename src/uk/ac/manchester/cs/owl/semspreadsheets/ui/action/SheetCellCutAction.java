@@ -41,7 +41,7 @@ public class SheetCellCutAction extends SheetCellCopyAction {
 							selectedRange.getSheet(), col, row, oldValue, null);
 					getWorkbookManager().applyChange(change);
 				}
-				getWorkbookManager().getOntologyTermValidationManager().removeValidation(selectedRange);
+				getWorkbookManager().removeValidations(selectedRange);
 			}
 		}
 	}

@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 import uk.ac.manchester.cs.owl.semspreadsheets.change.SetCellValue;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Cell;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidation;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidationDescriptor;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 
@@ -50,9 +51,9 @@ public class SheetCellPasteAction extends SelectedCellsAction {
 						logger.debug("OntologyValidationsTransferable contents found");
 						Object textValue=dataValues[0];
 						@SuppressWarnings("unchecked")
-						Collection<OntologyTermValidation> validations = (Collection<OntologyTermValidation>)dataValues[1];
+						OntologyTermValidationDescriptor descriptor = (OntologyTermValidationDescriptor)dataValues[1];
 						pasteTextValue(selectedRange, textValue);
-						pasteValidations(selectedRange, validations);
+						pasteValidations(selectedRange, descriptor);
 					} catch (UnsupportedFlavorException e1) {
 						logger.error("Unsupported flavour.",e1);
 					} catch (IOException e1) {
@@ -78,10 +79,10 @@ public class SheetCellPasteAction extends SelectedCellsAction {
 	}
 
 	private void pasteValidations(Range selectedRange,
-			Collection<OntologyTermValidation> validations) {
-		getWorkbookManager().getOntologyTermValidationManager().removeValidation(selectedRange);
-		for (OntologyTermValidation validation : validations) {														
-			getWorkbookManager().getOntologyTermValidationManager().addValidation(new OntologyTermValidation(validation.getValidationDescriptor(), selectedRange));
+			OntologyTermValidationDescriptor descriptor) {
+		getWorkbookManager().removeValidations(selectedRange);
+		if (descriptor!=null) {			
+			getWorkbookManager().setValidationType(descriptor.getType(), descriptor.getEntityIRI());
 		}
 	}
 
