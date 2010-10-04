@@ -133,7 +133,7 @@ public class WorkbookHSSFImpl implements MutableWorkbook, WorkbookChangeVisitor 
                 listener.sheetRemoved();
             }
             catch (Exception e) {
-                e.printStackTrace();
+            	logger.error("Error removing a sheet",e);
             }
         }
     }
@@ -150,15 +150,15 @@ public class WorkbookHSSFImpl implements MutableWorkbook, WorkbookChangeVisitor 
     public void removeName(String name) {
         workbook.removeName(name);
     }
-
+        
     public Sheet addSheet() {
         Sheet sheet = new SheetHSSFImpl(this, workbook.createSheet());
         for(WorkbookChangeListener listener : new ArrayList<WorkbookChangeListener>(changeListeners)) {
             try {
-                listener.sheetRemoved();
+                listener.sheetAdded();
             }
             catch (Exception e) {
-                e.printStackTrace();
+                logger.error("Error adding a new sheet",e);
             }
         }
         return sheet;
@@ -248,5 +248,14 @@ public class WorkbookHSSFImpl implements MutableWorkbook, WorkbookChangeVisitor 
             }
         }
     }
+
+	@Override
+	public List<Sheet> getVisibleSheets() {
+		List<Sheet> result = new ArrayList<Sheet>();
+		for (Sheet sheet : getSheets()) {
+			if (!sheet.isHidden()) result.add(sheet);			
+		}
+		return result;
+	}
 
 }

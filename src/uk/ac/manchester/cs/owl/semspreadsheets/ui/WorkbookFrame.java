@@ -39,6 +39,8 @@ import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.InsertSheetAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.OpenFromBioPortalAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.OpenOntologyAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.OpenWorkbookAction;
+import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.RemoveSheetAction;
+import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.RenameSheetAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.SaveAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.SaveAsAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.SheetCellClearAction;
@@ -106,8 +108,10 @@ public class WorkbookFrame extends JFrame {
 		editMenu.add(new ClearOntologyValuesAction(this));
 		editMenu.add(new SelectDownColumn(workbookManager, this));
 		 
-		JMenu insertMenu = menuBar.add(new JMenu("Insert"));
-		insertMenu.add(new InsertSheetAction("Sheet", workbookManager, this));		
+		JMenu insertMenu = menuBar.add(new JMenu("Sheet"));
+		insertMenu.add(new InsertSheetAction(workbookManager, this));
+		insertMenu.add(new RemoveSheetAction(this));
+		insertMenu.add(new RenameSheetAction(this));
 		
 		setJMenuBar(menuBar);
 		updateTitleBar();
@@ -179,6 +183,10 @@ public class WorkbookFrame extends JFrame {
 
 	public Sheet addSheet() {
 		return workbookManager.getWorkbook().addSheet();
+	}
+	
+	public void removeSheet(Sheet sheet) {
+		workbookManager.getWorkbook().deleteSheet(sheet.getName());
 	}
 
 	public void setSelectedSheet(Sheet sheet) {

@@ -11,11 +11,15 @@ import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookFrame;
  * The University of Manchester<br>
  * Information Management Group<br>
  * Date: 20-Sep-2009
+ * 
+ * Author: Stuart Owen
+ * Date: 04 Oct 2010
  */
+@SuppressWarnings("serial")
 public class InsertSheetAction extends SpreadSheetAction {
 
-    public InsertSheetAction(String name, WorkbookManager workbookManager, WorkbookFrame workbookFrame) {
-        super(name, workbookManager, workbookFrame);
+    public InsertSheetAction(WorkbookManager workbookManager, WorkbookFrame workbookFrame) {
+        super("Insert", workbookManager, workbookFrame);        
     }
 
     /**

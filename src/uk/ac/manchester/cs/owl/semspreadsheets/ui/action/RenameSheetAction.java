@@ -13,7 +13,11 @@ import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookFrame;
  * The University of Manchester<br>
  * Information Management Group<br>
  * Date: 10-Nov-2009
+ * 
+ * Author: Stuart Owen
+ * Date: 04-Oct-2010
  */
+@SuppressWarnings("serial")
 public class RenameSheetAction extends WorkbookFrameAction {
 
     public RenameSheetAction(WorkbookFrame workbookFrame) {

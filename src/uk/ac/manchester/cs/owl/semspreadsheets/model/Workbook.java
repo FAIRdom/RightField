@@ -26,11 +26,13 @@ public interface Workbook {
 
     Sheet addHiddenSheet();
 
-    Sheet addVeryHiddenSheet();
+    Sheet addVeryHiddenSheet();      
 
     void deleteSheet(String name);
 
     List<Sheet> getSheets();
+    
+    List<Sheet> getVisibleSheets();
 
     boolean containsSheet(String name);
 
