@@ -7,6 +7,7 @@ import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import org.apache.log4j.Logger;
 
@@ -14,6 +15,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.change.SetCellValue;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Cell;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidationDescriptor;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 
 /**
@@ -28,12 +30,12 @@ public class SheetCellPasteAction extends SelectedCellsAction {
 	private static Logger logger = Logger.getLogger(SheetCellPasteAction.class);
 
 	private final Toolkit toolkit;
-
+		
 	public SheetCellPasteAction(WorkbookManager workbookManager, Toolkit toolkit) {
 		super("Paste", workbookManager);
 		this.toolkit = toolkit;
 	}
-
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		logger.debug("Paste action invoked");
@@ -43,10 +45,10 @@ public class SheetCellPasteAction extends SelectedCellsAction {
 				Transferable contents = toolkit.getSystemClipboard()
 						.getContents(null);
 				DataFlavor df = CellContentsTransferable.dataFlavour;
-				if (contents.isDataFlavorSupported(df)) {
-					List<SelectedCellDataContainer> dataValues;
+				if (contents.isDataFlavorSupported(df)) {					
 					try {
-						dataValues = (List<SelectedCellDataContainer>)contents.getTransferData(df);
+						@SuppressWarnings("unchecked")
+						List<SelectedCellDataContainer> dataValues = (List<SelectedCellDataContainer>)contents.getTransferData(df);
 						logger.debug("OntologyValidationsTransferable contents found");
 						
 						int row=selectedRange.getFromRow();
@@ -56,18 +58,32 @@ public class SheetCellPasteAction extends SelectedCellsAction {
 							pasteValidations(cellRange, cellContent.validationDescriptor);
 							pasteTextValue(cellRange, cellContent.textValue);
 						}
-						
-						
 					} catch (UnsupportedFlavorException e1) {
 						logger.error("Unsupported flavour.",e1);
 					} catch (IOException e1) {
 						logger.error("Error reading from clipboard.",e1);
 					}
 				}
-				else if (contents.isDataFlavorSupported(DataFlavor.stringFlavor)) {
+				else if (contents.isDataFlavorSupported(DataFlavor.stringFlavor)) {					
 					try {
 						String textValue = (String)contents.getTransferData(DataFlavor.stringFlavor);
-						pasteTextValue(selectedRange, textValue);
+						logger.debug("Simple string paste:"+textValue);
+						int row=selectedRange.getFromRow();
+						int col=selectedRange.getFromColumn();
+						//Excel and OO put a tab seperated string on the clipboard if there are a number
+						//of cells						
+						StringTokenizer rowTokenizer=new StringTokenizer(textValue, "\n");
+						while (rowTokenizer.hasMoreElements()) {
+							String rowText=rowTokenizer.nextToken();							
+							int startCol=col;
+							String[] splitByTab=rowText.split("\t");
+							for (String cellText : splitByTab) {								
+								pasteTextValue(selectedRange.getSheet(),row,col, cellText.trim());
+								col++;
+							}						
+							row++;
+							col=startCol;
+						}						
 					} catch (UnsupportedFlavorException e1) {
 						logger.error("Unsupported flavour.",e1);
 					} catch (IOException e1) {
@@ -89,8 +105,13 @@ public class SheetCellPasteAction extends SelectedCellsAction {
 			getWorkbookManager().setValidationTypeAt(range,descriptor.getType(), descriptor.getEntityIRI());
 		}
 	}
+	
+	private void pasteTextValue(Sheet sheet,int row, int col, String textValue) {
+		Range r = new Range(sheet, col, row, col, row);
+		pasteTextValue(r, textValue);
+	}
 
-	private void pasteTextValue(Range selectedRange, Object textValue) {
+	private void pasteTextValue(Range selectedRange, String textValue) {
 		int row = selectedRange.getFromRow();
 		int col = selectedRange.getFromColumn();
 		Cell cell = selectedRange.getSheet()

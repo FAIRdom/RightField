@@ -21,6 +21,12 @@ public class Range {
     private int toColumn;
 
     private int toRow;
+    
+    public long count() {
+    	int w=getToRow()-getFromColumn()+1;
+    	int h=getToColumn()-getFromColumn()+1;
+    	return w*h;
+    }
 
     public Range(Sheet sheet, int fromColumn, int fromRow, int toCol, int toRow) {
         this.sheet = sheet;

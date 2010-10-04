@@ -87,7 +87,7 @@ public class WorkbookHSSFImpl implements MutableWorkbook, WorkbookChangeVisitor 
     }
 
     public void applyChange(WorkbookChange change) {
-        logger.info("APPLY CHANGE: " + change);
+        logger.debug("APPLY CHANGE: " + change);
         change.accept(this);
         for (WorkbookChangeListener listener : new ArrayList<WorkbookChangeListener>(changeListeners)) {
             try {

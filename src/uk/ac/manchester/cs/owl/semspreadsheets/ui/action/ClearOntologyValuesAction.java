@@ -12,6 +12,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookFrame;
  * Information Management Group<br>
  * Date: 20-Sep-2009
  */
+@SuppressWarnings("serial")
 public class ClearOntologyValuesAction extends WorkbookFrameAction {
 
     public ClearOntologyValuesAction(WorkbookFrame workbookFrame) {
