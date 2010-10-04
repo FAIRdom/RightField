@@ -6,27 +6,12 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.ClipboardOwner;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.StringSelection;
-import java.awt.datatransfer.Transferable;
-import java.awt.datatransfer.UnsupportedFlavorException;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import javax.swing.AbstractAction;
-import javax.swing.InputMap;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JViewport;
@@ -35,9 +20,6 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableColumn;
-import javax.swing.text.DefaultEditorKit;
-
-import com.sun.corba.se.spi.orbutil.fsm.Action;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidationListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
@@ -53,7 +35,11 @@ import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.SheetCellPasteAction;
  * The University of Manchester<br>
  * Information Management Group<br>
  * Date: 31-Oct-2009
+ * 
+ * Author: Stuart Owen
+ * Date: 04-Oct-2010
  */
+@SuppressWarnings("serial")
 public class SheetPanel extends JPanel {
 
     public static final Color MARGIN_GRID_COLOR = new Color(150, 167, 180);
