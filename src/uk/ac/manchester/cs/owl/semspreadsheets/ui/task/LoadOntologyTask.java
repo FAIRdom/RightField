@@ -6,6 +6,8 @@ import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
+import uk.ac.manchester.cs.owl.semspreadsheets.ui.ErrorHandler;
+
 /**
  * Author: Matthew Horridge<br>
  * The University of Manchester<br>
@@ -20,9 +22,14 @@ public class LoadOntologyTask extends AbstractTask<OWLOntology, OWLOntologyCreat
         this.file = file;
     }
 
-
     public OWLOntology runTask() throws OWLOntologyCreationException {
-        return getWorkbookFrame().getWorkbookManager().loadOntology(IRI.create(file));
+    	try {
+    		return getWorkbookFrame().getWorkbookManager().loadOntology(IRI.create(file));
+    	}
+    	catch(OWLOntologyCreationException e) {    		
+    		ErrorHandler.getErrorHandler().handleError(e);
+    		throw e;
+    	}
     }
 
     public String getTitle() {
@@ -30,5 +37,6 @@ public class LoadOntologyTask extends AbstractTask<OWLOntology, OWLOntologyCreat
     }
 
     public void cancelTask() {
+    	setCancelled(true);
     }
 }

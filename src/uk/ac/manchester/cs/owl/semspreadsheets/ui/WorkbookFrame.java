@@ -192,7 +192,7 @@ public class WorkbookFrame extends JFrame {
 		if (file == null) {
 			return;
 		}
-		taskManager.runTask(new LoadOntologyTask(file));
+		taskManager.runTask(new LoadOntologyTask(file));					
 	}
 
 	public void loadBioportalOntology() throws Exception {

@@ -25,7 +25,7 @@ public class OpenOntologyAction extends WorkbookFrameAction {
             getWorkbookFrame().loadOntology();
         }
         catch (Exception e1) {        	
-            ErrorHandler.getErrorHandler().handleError(e1);
+            //will already have been handled inside LoadOntologyTask
         }
     }
 }
