@@ -2,6 +2,7 @@ package uk.ac.manchester.cs.owl.semspreadsheets.ui;
 
 import java.awt.BorderLayout;
 import java.awt.FileDialog;
+import java.awt.MenuItem;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
@@ -18,6 +19,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
+import javax.swing.JSeparator;
 import javax.swing.filechooser.FileFilter;
 
 import org.apache.log4j.Logger;
@@ -99,20 +101,14 @@ public class WorkbookFrame extends JFrame {
 		editMenu.add(new SheetCellCopyAction(workbookManager,getToolkit()));
 		editMenu.add(new SheetCellPasteAction(workbookManager,getToolkit()));
 		editMenu.add(new SheetCellClearAction(workbookManager));
-		
+		editMenu.add(new JSeparator());
 		
 		editMenu.add(new ClearOntologyValuesAction(this));
 		editMenu.add(new SelectDownColumn(workbookManager, this));
-		
-		// JMenu viewMenu = menuBar.add(new JMenu("View"));
+		 
 		JMenu insertMenu = menuBar.add(new JMenu("Insert"));
-		insertMenu.add(new InsertSheetAction("Sheet", workbookManager, this));
-		// JMenu formatMenu = menuBar.add(new JMenu("Format"));
-		// formatMenu.add(new FormatBoldAction(this));
-		// JMenu sheetMenu = new JMenu("Sheet");
-		// formatMenu.add(sheetMenu);
-		// sheetMenu.add(new RenameSheetAction(this));
-		// JMenu helpMenu = menuBar.add(new JMenu("Help"));
+		insertMenu.add(new InsertSheetAction("Sheet", workbookManager, this));		
+		
 		setJMenuBar(menuBar);
 		updateTitleBar();
 		workbookManager.addListener(new WorkbookManagerListener() {
