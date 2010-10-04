@@ -6,13 +6,12 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
-import java.util.Collection;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.change.SetCellValue;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Cell;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidation;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidationDescriptor;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
@@ -45,15 +44,20 @@ public class SheetCellPasteAction extends SelectedCellsAction {
 						.getContents(null);
 				DataFlavor df = CellContentsTransferable.dataFlavour;
 				if (contents.isDataFlavorSupported(df)) {
-					Object[] dataValues;
+					List<SelectedCellDataContainer> dataValues;
 					try {
-						dataValues = (Object[])contents.getTransferData(df);
+						dataValues = (List<SelectedCellDataContainer>)contents.getTransferData(df);
 						logger.debug("OntologyValidationsTransferable contents found");
-						Object textValue=dataValues[0];
-						@SuppressWarnings("unchecked")
-						OntologyTermValidationDescriptor descriptor = (OntologyTermValidationDescriptor)dataValues[1];
-						pasteTextValue(selectedRange, textValue);
-						pasteValidations(selectedRange, descriptor);
+						
+						int row=selectedRange.getFromRow();
+						int col=selectedRange.getFromColumn();
+						for (SelectedCellDataContainer cellContent : dataValues) {
+							Range cellRange = new Range(selectedRange.getSheet(),col+cellContent.col,row+cellContent.row,col+cellContent.col,row+cellContent.row);							
+							pasteValidations(cellRange, cellContent.validationDescriptor);
+							pasteTextValue(cellRange, cellContent.textValue);
+						}
+						
+						
 					} catch (UnsupportedFlavorException e1) {
 						logger.error("Unsupported flavour.",e1);
 					} catch (IOException e1) {
@@ -78,11 +82,11 @@ public class SheetCellPasteAction extends SelectedCellsAction {
 		}
 	}
 
-	private void pasteValidations(Range selectedRange,
+	private void pasteValidations(Range range,
 			OntologyTermValidationDescriptor descriptor) {
-		getWorkbookManager().removeValidations(selectedRange);
+		getWorkbookManager().removeValidations(range);
 		if (descriptor!=null) {			
-			getWorkbookManager().setValidationType(descriptor.getType(), descriptor.getEntityIRI());
+			getWorkbookManager().setValidationTypeAt(range,descriptor.getType(), descriptor.getEntityIRI());
 		}
 	}
 

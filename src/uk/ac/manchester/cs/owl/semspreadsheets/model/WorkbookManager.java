@@ -252,21 +252,12 @@ public class WorkbookManager {
         setValidationType(type, entitySelectionModel.getSelection().getIRI());
     }
 
-    /**
-     * Sets the validation type for the currently selected cells.
-     * @param type
-     */
-    public void setValidationType(ValidationType type, IRI entityIRI) {
-    	
-        Range selectedRange = getSelectionModel().getSelectedRange();
-        if(!selectedRange.isCellSelection()) {
-            return;
-        }
-        Range rangeToApply;
-        Collection<OntologyTermValidation> validations = ontologyTermValidationManager.getContainingValidations(selectedRange);
+    public void setValidationTypeAt(Range range,ValidationType type, IRI entityIRI) {
+    	Range rangeToApply;
+        Collection<OntologyTermValidation> validations = ontologyTermValidationManager.getContainingValidations(range);
         
         if(validations.isEmpty()) {
-            rangeToApply=selectedRange;
+            rangeToApply=range;
         }
         else {
             OntologyTermValidation validation = validations.iterator().next();
@@ -293,6 +284,18 @@ public class WorkbookManager {
                 cell.setBackgroundFill(new Color(16777164)); //pale yellow
             }
         }
+    }
+    /**
+     * Sets the validation type for the currently selected cells.
+     * @param type
+     */
+    public void setValidationType(ValidationType type, IRI entityIRI) {
+    	
+        Range selectedRange = getSelectionModel().getSelectedRange();
+        if(!selectedRange.isCellSelection()) {
+            return;
+        }
+        setValidationTypeAt(selectedRange, type, entityIRI);
     }
     
     public void removeValidations(Range range) {

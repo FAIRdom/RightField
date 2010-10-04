@@ -4,20 +4,22 @@ import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Cell;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidation;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidationDescriptor;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
+
 /**
  * Action to handle 'copying' a cell from a sheet
  * 
  * @author Stuart Owen
- *
+ * 
  */
 @SuppressWarnings("serial")
 public class SheetCellCopyAction extends SelectedCellsAction {
@@ -38,39 +40,44 @@ public class SheetCellCopyAction extends SelectedCellsAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		logger.debug("Copy action invoked");
-		Range selectedRange = getSelectedRange();		
+		Range selectedRange = getSelectedRange();
+		List<SelectedCellDataContainer> selectedContents = new ArrayList<SelectedCellDataContainer>();
 		if (selectedRange.isCellSelection()) {
-			if (selectedRange.isSingleCellSelected()) {
-				OntologyTermValidationDescriptor descriptor = null;
-								
-				Collection<OntologyTermValidation> containingValidations = getWorkbookManager()
-						.getOntologyTermValidationManager()
-						.getContainingValidations(selectedRange);
-				logger.debug("Selected validations = " + containingValidations);
-				if (containingValidations.size()>0) {
-					descriptor=containingValidations.iterator().next().getValidationDescriptor();
+			for (int col = selectedRange.getFromColumn(); col < selectedRange
+					.getToColumn() + 1; col++) {
+				for (int row = selectedRange.getFromRow(); row < selectedRange
+						.getToRow() + 1; row++) {
+					SelectedCellDataContainer cellContent = new SelectedCellDataContainer();
+					cellContent.row = row - selectedRange.getFromRow();
+					cellContent.col = col - selectedRange.getFromColumn();
+
+					Range singleCellRange = new Range(selectedRange.getSheet(),
+							col, row, col, row);
+					Collection<OntologyTermValidation> containingValidations = getWorkbookManager()
+							.getOntologyTermValidationManager()
+							.getContainingValidations(singleCellRange);
+					if (containingValidations.size() > 0) {
+						cellContent.validationDescriptor = containingValidations
+								.iterator().next().getValidationDescriptor();
+					}
+					Cell cell = selectedRange.getSheet().getCellAt(col, row);
+
+					if (cell != null) {
+						cellContent.textValue = cell.getValue();
+					} else {
+						logger.debug("Selected cell is returned as NULL");
+						// we assume that we are copying an empty value, rather
+						// than
+						// leaving the clipboard intact
+						cellContent.textValue = "";
+					}
+					selectedContents.add(cellContent);
 				}
-				
-				int row = selectedRange.getFromRow();
-				int col = selectedRange.getFromColumn();
-				Cell cell = selectedRange.getSheet().getCellAt(col, row);
-				String textValue = "";
-				if (cell != null) {
-					textValue = cell.getValue();
-				} else {
-					logger.debug("Selected cell is returned as NULL");
-					// we assume that we are copying an empty value, rather than
-					// leaving the clipboard intact
-					textValue = "";
-				}
-				
-				Transferable tr = new CellContentsTransferable(textValue,descriptor);
-								
-				Clipboard clippy = toolkit.getSystemClipboard();
-				clippy.setContents(tr, null);
-			} else {
-				logger.info("Copying a range of cells is not yet supported");
 			}
+			Transferable tr = new CellContentsTransferable(selectedContents);
+
+			Clipboard clippy = toolkit.getSystemClipboard();
+			clippy.setContents(tr, null);
 		} else {
 			logger.info("Nothing selected");
 		}

@@ -11,10 +11,10 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 
 /**
- * Action to handle 'cutting' a cell from a sheet
+ * Action to handle 'cutting' a range of cells from a sheet
  * 
  * @author Stuart Owen
- *
+ * 
  */
 @SuppressWarnings("serial")
 public class SheetCellCutAction extends SheetCellCopyAction {
@@ -31,19 +31,27 @@ public class SheetCellCutAction extends SheetCellCopyAction {
 
 		Range selectedRange = getSelectedRange();
 		if (selectedRange.isCellSelection()) {
-			if (selectedRange.isSingleCellSelected()) {
-				int row = selectedRange.getFromRow();
-				int col = selectedRange.getFromColumn();
-				Cell cell = selectedRange.getSheet().getCellAt(col, row);
-				if (cell != null) {
-					String oldValue = cell.getValue();
-					SetCellValue change = new SetCellValue(
-							selectedRange.getSheet(), col, row, oldValue, null);
-					getWorkbookManager().applyChange(change);
+			for (int col = selectedRange.getFromColumn(); col < selectedRange
+					.getToColumn() + 1; col++) {
+				for (int row = selectedRange.getFromRow(); row < selectedRange
+						.getToRow() + 1; row++) {
+					Cell cell = selectedRange.getSheet().getCellAt(col, row);
+					if (cell != null) {
+						String oldValue = cell.getValue();
+						SetCellValue change = new SetCellValue(
+								selectedRange.getSheet(), col, row, oldValue,
+								null);
+						getWorkbookManager().applyChange(change);
+					}
+					// FIXME: for some reason, remove validations on an
+					// entire range in one go isn't working
+					// so for now remove each one individually					
+					getWorkbookManager().removeValidations(
+							new Range(
+									selectedRange.getSheet(), col, row, col,
+									row));
 				}
-				getWorkbookManager().removeValidations(selectedRange);
-			}
+			}			
 		}
-	}
-
+	}	
 }
