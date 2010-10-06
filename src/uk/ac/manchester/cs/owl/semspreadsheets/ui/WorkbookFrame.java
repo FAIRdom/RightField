@@ -234,7 +234,7 @@ public class WorkbookFrame extends JFrame {
 	}
 
 	public void openWorkbook() throws IOException {
-		File file = browseForFile("Open workbook", FileDialog.LOAD, "Workbook",
+		File file = browseForFile("Open workbook", FileDialog.LOAD, "Excel Workbook",
 				WORKBOOK_EXT);
 		if (file != null) {
 			workbookManager.loadWorkbook(file);
@@ -243,7 +243,7 @@ public class WorkbookFrame extends JFrame {
 
 	public void saveWorkbookAs() throws IOException {
 		File file = browseForFile("Save workbook as", FileDialog.SAVE,
-				"Workbook", WORKBOOK_EXT);
+				"Excel Workbook", WORKBOOK_EXT);
 		if (file != null) {
 			workbookManager.saveWorkbook(file.toURI());
 		}
@@ -252,13 +252,20 @@ public class WorkbookFrame extends JFrame {
 	public File browseForFile(String title, int mode, final String filetype,
 			final String[] extensions) {
 		String os = System.getProperty("os.name");
+		String fileTypeWithExt = filetype + " (";
+		for (String ext : extensions) {
+			fileTypeWithExt+="."+ext+", ";
+		}
+		fileTypeWithExt=fileTypeWithExt.substring(0,fileTypeWithExt.length()-2); //chop off last ", "
+		fileTypeWithExt+=")";
+		
 		logger.debug("OS detected as: " + os);
 		//uses FileDialog for Mac and Windows, as this is preferred.
 		// but JFileChooser for Linux and the other unix's, as FileDialog is awful on those platforms
 		if (os.toLowerCase().indexOf("win") > -1 || os.toLowerCase().indexOf("mac") > -1) {			
 			return browseForFileWithFileDialog(title, mode, extensions);
 		} else {
-			return browseForFileWithJChooser(title, mode, filetype, extensions);
+			return browseForFileWithJChooser(title, mode, fileTypeWithExt, extensions);
 		}
 	}
 
