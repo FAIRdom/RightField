@@ -19,7 +19,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 public class SheetCellClearAction extends SelectedCellsAction {
 
 	public SheetCellClearAction(WorkbookManager workbookManager) {
-		super("Delete contents", workbookManager);
+		super("Clear", workbookManager);
 	}
 
 	@Override
@@ -27,7 +27,7 @@ public class SheetCellClearAction extends SelectedCellsAction {
 		int res = JOptionPane
 				.showConfirmDialog(
 						null,
-						"Are you sure you want to delete the contents of these cells?\nThey will not be recoverable.",
+						"Are you sure you want to clear the contents of these cells?\nThey will not be recoverable.",
 						"Clear cells?", JOptionPane.YES_NO_OPTION,
 						JOptionPane.WARNING_MESSAGE);
 		if (res == JOptionPane.YES_OPTION) {

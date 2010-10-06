@@ -110,14 +110,14 @@ public class WorkbookFrame extends JFrame {
 		editMenu.add(new SheetCellClearAction(workbookManager));
 		editMenu.add(new JSeparator());
 		
-		editMenu.add(sheetMenu);
-		
-		editMenu.add(new JSeparator());
+//		editMenu.add(sheetMenu);		
+//		editMenu.add(new JSeparator());
 		
 		editMenu.add(new ClearOntologyValuesAction(this));
 		//removed for now, as it doesn't work correctly and the behaviour is provided by selecting the column heading.
 		//editMenu.add(new SelectDownColumn(workbookManager, this));
 		
+		menuBar.add(sheetMenu);
 		
 		setJMenuBar(menuBar);
 		updateTitleBar();
