@@ -14,6 +14,9 @@ import org.semanticweb.owlapi.model.IRI;
  * Information Management Group<br>
  * Date: 07-Nov-2009
  * Extracts ontology term validation information from a sheet that is used to store the information
+ * 
+ * Author: Stuart Owen
+ * Date: 04-Oct-2010
  */
 public class OntologyTermValidationSheetParser {
 
@@ -104,7 +107,7 @@ public class OntologyTermValidationSheetParser {
         	logger.debug("Row " + row);
             Cell cell = sheet.getCellAt(0, row);
             if (cell == null) {
-                System.out.println("\tCell is null");
+                logger.debug("\tCell is null");
                 endRow = row - 1;
                 break;
             }

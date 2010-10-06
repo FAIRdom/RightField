@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Properties;
 
+import org.apache.log4j.Logger;
+
 /**
  * Author: Matthew Horridge<br>
  * The University of Manchester<br>
@@ -12,6 +14,8 @@ import java.util.Properties;
  * Date: 03-Feb-2010
  */
 public class UILabels {
+	
+	private static Logger logger = Logger.getLogger(UILabels.class);
 
     private static UILabels instance = new UILabels();
 
@@ -46,7 +50,7 @@ public class UILabels {
                 properties.load(inputStream);
             }
             else {
-                System.err.println("Could not load UI properties file: Could not find file.");
+                logger.error("Could not load UI properties file: Could not find file.");
             }
         }
         catch (IOException e) {
