@@ -244,9 +244,23 @@ public class WorkbookFrame extends JFrame {
 	public void saveWorkbookAs() throws IOException {
 		File file = browseForFile("Save workbook as", FileDialog.SAVE,
 				"Excel Workbook", WORKBOOK_EXT);
+		file = checkForDefaultExtension(file);
 		if (file != null) {
 			workbookManager.saveWorkbook(file.toURI());
 		}
+	}
+	
+	
+	private File checkForDefaultExtension(File file) {
+		return checkForDefaultExtension(file,".xls");
+	}
+
+	private File checkForDefaultExtension(File file,String defaultExtension) {
+		String filename = file.getName();
+		if (!filename.endsWith(".xls")) {
+			file = new File(file.getPath()+".xls");
+		}
+		return file;
 	}
 
 	public File browseForFile(String title, int mode, final String filetype,
@@ -260,7 +274,7 @@ public class WorkbookFrame extends JFrame {
 		fileTypeWithExt+=")";
 		
 		logger.debug("OS detected as: " + os);
-		//uses FileDialog for Mac and Windows, as this is preferred.
+		// uses FileDialog for Mac and Windows, as this is preferred.
 		// but JFileChooser for Linux and the other unix's, as FileDialog is awful on those platforms
 		if (os.toLowerCase().indexOf("win") > -1 || os.toLowerCase().indexOf("mac") > -1) {			
 			return browseForFileWithFileDialog(title, mode, extensions);
