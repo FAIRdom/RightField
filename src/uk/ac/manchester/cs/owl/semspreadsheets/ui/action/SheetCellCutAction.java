@@ -2,6 +2,7 @@ package uk.ac.manchester.cs.owl.semspreadsheets.ui.action;
 
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
 import org.apache.log4j.Logger;
 
@@ -23,6 +24,7 @@ public class SheetCellCutAction extends SheetCellCopyAction {
 
 	public SheetCellCutAction(WorkbookManager workbookManager, Toolkit toolkit) {
 		super("Cut", workbookManager, toolkit);
+		setAcceleratorKey(KeyEvent.VK_X);	
 	}
 
 	public void actionPerformed(ActionEvent e) {

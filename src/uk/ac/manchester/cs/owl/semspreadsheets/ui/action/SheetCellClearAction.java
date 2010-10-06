@@ -19,7 +19,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 public class SheetCellClearAction extends SelectedCellsAction {
 
 	public SheetCellClearAction(WorkbookManager workbookManager) {
-		super("Clear", workbookManager);
+		super("Clear", workbookManager);					
 	}
 
 	@Override

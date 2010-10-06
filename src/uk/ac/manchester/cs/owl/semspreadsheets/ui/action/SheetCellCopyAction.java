@@ -4,6 +4,7 @@ import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -33,6 +34,7 @@ public class SheetCellCopyAction extends SelectedCellsAction {
 
 	public SheetCellCopyAction(WorkbookManager workbookManager, Toolkit toolkit) {
 		this("Copy", workbookManager, toolkit);
+		setAcceleratorKey(KeyEvent.VK_C);
 	}
 
 	protected SheetCellCopyAction(String name, WorkbookManager workbookManager,

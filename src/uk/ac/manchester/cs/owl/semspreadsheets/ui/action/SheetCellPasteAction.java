@@ -5,6 +5,7 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -33,6 +34,7 @@ public class SheetCellPasteAction extends SelectedCellsAction {
 		
 	public SheetCellPasteAction(WorkbookManager workbookManager, Toolkit toolkit) {
 		super("Paste", workbookManager);
+		setAcceleratorKey(KeyEvent.VK_V);
 		this.toolkit = toolkit;
 	}
 	

@@ -3,6 +3,7 @@ package uk.ac.manchester.cs.owl.semspreadsheets.ui;
 import java.awt.BorderLayout;
 import java.awt.FileDialog;
 import java.awt.MenuItem;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
@@ -18,8 +19,10 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
+import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileFilter;
 
 import org.apache.log4j.Logger;
@@ -107,7 +110,8 @@ public class WorkbookFrame extends JFrame {
 		editMenu.add(new SheetCellCutAction(workbookManager,getToolkit()));
 		editMenu.add(new SheetCellCopyAction(workbookManager,getToolkit()));
 		editMenu.add(new SheetCellPasteAction(workbookManager,getToolkit()));
-		editMenu.add(new SheetCellClearAction(workbookManager));
+		JMenuItem menuItem = editMenu.add(new SheetCellClearAction(workbookManager));
+		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0));
 		editMenu.add(new JSeparator());
 		
 //		editMenu.add(sheetMenu);		

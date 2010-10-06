@@ -1,6 +1,7 @@
 package uk.ac.manchester.cs.owl.semspreadsheets.ui.action;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.ErrorHandler;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookFrame;
@@ -22,6 +23,7 @@ public class OpenFromBioPortalAction extends WorkbookFrameAction {
 
     public OpenFromBioPortalAction(WorkbookFrame workbookFrame) {
         super("Open from BioPortal...", workbookFrame);
+        setAcceleratorKey(KeyEvent.VK_B,true,false);
     }
 
     public void actionPerformed(ActionEvent e) {
