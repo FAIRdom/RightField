@@ -97,6 +97,11 @@ public class WorkbookFrame extends JFrame {
 		fileMenu.add(new SaveAction(this));
 		fileMenu.add(new SaveAsAction(this));
 
+		JMenu sheetMenu = new JMenu("Sheet");
+		sheetMenu.add(new InsertSheetAction(workbookManager, this));
+		sheetMenu.add(new RemoveSheetAction(this));
+		sheetMenu.add(new RenameSheetAction(this));
+		
 		JMenu editMenu = menuBar.add(new JMenu("Edit"));
 		
 		editMenu.add(new SheetCellCutAction(workbookManager,getToolkit()));
@@ -105,13 +110,14 @@ public class WorkbookFrame extends JFrame {
 		editMenu.add(new SheetCellClearAction(workbookManager));
 		editMenu.add(new JSeparator());
 		
+		editMenu.add(sheetMenu);
+		
+		editMenu.add(new JSeparator());
+		
 		editMenu.add(new ClearOntologyValuesAction(this));
-		editMenu.add(new SelectDownColumn(workbookManager, this));
-		 
-		JMenu insertMenu = menuBar.add(new JMenu("Sheet"));
-		insertMenu.add(new InsertSheetAction(workbookManager, this));
-		insertMenu.add(new RemoveSheetAction(this));
-		insertMenu.add(new RenameSheetAction(this));
+		//removed for now, as it doesn't work correctly and the behaviour is provided by selecting the column heading.
+		//editMenu.add(new SelectDownColumn(workbookManager, this));
+		
 		
 		setJMenuBar(menuBar);
 		updateTitleBar();
