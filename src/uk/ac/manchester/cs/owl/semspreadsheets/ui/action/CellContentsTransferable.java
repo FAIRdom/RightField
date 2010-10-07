@@ -4,13 +4,10 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
-
-import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidationDescriptor;
 /**
  * This is a Transferable implemenation to support the copy and paste of a range of cells, including both cell text values, and the OntologyTermValidationDescriptor.
  * 
@@ -25,7 +22,7 @@ public class CellContentsTransferable implements Transferable {
 	 * The DataFlavor for handling the collection of OntologyTermValidation's and the text value of the cell.
 	 */
 	public static DataFlavor dataFlavour = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType
-			+ SelectedCellDataContainer.class.getCanonicalName(),"SelectedCellDataContainer");
+			+ ";class="+ArrayList.class.getCanonicalName(),"SelectedCellDataContainer");
 	
 	private final List<SelectedCellDataContainer> data;
 	
