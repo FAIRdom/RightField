@@ -9,6 +9,7 @@ import javax.swing.KeyStroke;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 
+@SuppressWarnings("serial")
 public abstract class WorkbookAction extends AbstractAction {
 
 	private WorkbookManager workbookManager;

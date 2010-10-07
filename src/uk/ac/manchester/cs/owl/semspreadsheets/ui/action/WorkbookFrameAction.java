@@ -15,6 +15,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookFrame;
  * Information Management Group<br>
  * Date: 07-Nov-2009
  */
+@SuppressWarnings("serial")
 public abstract class WorkbookFrameAction extends AbstractAction {
 
     private WorkbookFrame workbookFrame;

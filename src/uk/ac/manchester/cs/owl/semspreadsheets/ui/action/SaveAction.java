@@ -13,6 +13,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookFrame;
  * Information Management Group<br>
  * Date: 07-Nov-2009
  */
+@SuppressWarnings("serial")
 public class SaveAction extends WorkbookFrameAction {
 
     public SaveAction(WorkbookFrame workbookFrame) {
