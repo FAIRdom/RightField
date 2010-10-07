@@ -2,12 +2,13 @@ package uk.ac.manchester.cs.owl.semspreadsheets.ui;
 
 import java.awt.BorderLayout;
 import java.awt.FileDialog;
-import java.awt.MenuItem;
+import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -73,6 +74,7 @@ public class WorkbookFrame extends JFrame {
 	private static final String[] WORKBOOK_EXT = new String[] { "xls" };
 	private static final String[] ONTOLOGY_EXT = new String[] { "obo", "owl",
 			"rdf", "rrf" };
+	private static final String [] APPLICATION_LOGO_FILENAMES = {"/rightfield-logo.png","/rightfield-logo-16x16.png"};
 
 	private static final Logger logger = Logger.getLogger(WorkbookFrame.class);
 
@@ -83,12 +85,17 @@ public class WorkbookFrame extends JFrame {
 	public WorkbookFrame(WorkbookManager manager) {
 		this.workbookManager = manager;
 		setTitle("RightField");
-		if (WorkbookFrame.class.getResource("/rightfield-logo.png") != null) {
-			setIconImage(new ImageIcon(WorkbookFrame.class
-					.getResource("/rightfield-logo.png")).getImage());
-		} else {
-			logger.warn("Unable to find the rightfield-logo.png for the icon");
+		List<Image> iconImages = new ArrayList<Image>();
+		for (String logoFilename : APPLICATION_LOGO_FILENAMES) {
+			if (WorkbookFrame.class.getResource(logoFilename) != null) {
+				iconImages.add(new ImageIcon(WorkbookFrame.class
+						.getResource(logoFilename)).getImage());
+			} else {
+				logger.warn("Unable to find the "+logoFilename+" for the icon");
+			}
 		}
+		setIconImages(iconImages);
+		
 		getContentPane().setLayout(new BorderLayout());
 		getContentPane().add(new MainPanel(this));
 		JMenuBar menuBar = new JMenuBar();
