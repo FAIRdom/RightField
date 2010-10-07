@@ -67,7 +67,6 @@ public class WorkbookManager {
 
     private OWLReasoner reasoner;
 
-
     private CellSelectionModel selectionModel;
 
     private EntitySelectionModel entitySelectionModel;

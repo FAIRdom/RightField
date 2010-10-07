@@ -26,6 +26,9 @@ import java.awt.event.WindowEvent;
 import java.util.prefs.Preferences;
 
 import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import org.apache.log4j.Logger;
 
@@ -58,7 +61,7 @@ public class RightField {
     public static void main(String[] args) {
     	logger.debug("Starting Up");
     	
-        WorkbookManager manager = new WorkbookManager();
+    	WorkbookManager manager = new WorkbookManager();
         final WorkbookFrame frame = new WorkbookFrame(manager);
         Preferences preferences = Preferences.userNodeForPackage(RightField.class);
         int x = preferences.getInt(WINDOW_X_KEY, 50);
