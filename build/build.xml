@@ -1,6 +1,6 @@
 <project default="distribution">
 
-	<property name="version" value="0.12-beta" />
+	<property name="version" value="0.12-beta2" />
 
 	<!-- The directory that contains the jar file dependencies for
          the class path and building a release -->
