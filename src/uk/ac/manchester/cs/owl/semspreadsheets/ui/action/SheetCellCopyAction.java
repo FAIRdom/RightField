@@ -5,9 +5,7 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import javax.swing.JOptionPane;
 
@@ -46,8 +44,9 @@ public class SheetCellCopyAction extends SelectedCellsAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		logger.debug("Copy action invoked");
+		logger.debug("Transferable data flavor is: "+CellContentsTransferable.dataFlavour.getHumanPresentableName());
 		Range selectedRange = getSelectedRange();
-		List<SelectedCellDataContainer> selectedContents = new ArrayList<SelectedCellDataContainer>();
+		SelectedCellDataContainerList selectedContents = new SelectedCellDataContainerList();
 		if (selectedRange.isCellSelection()) {
 			if (selectedRange.count() <= MAX_CELLS) {
 				for (int col = selectedRange.getFromColumn(); col < selectedRange
