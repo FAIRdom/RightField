@@ -1,5 +1,7 @@
 package uk.ac.manchester.cs.owl.semspreadsheets.ui.action;
 
+import java.io.Serializable;
+
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidationDescriptor;
 
 /**
@@ -10,7 +12,10 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidationDescr
  *
  * @see CellContentsTransferable
  */
-public class SelectedCellDataContainer {
+public class SelectedCellDataContainer implements Serializable {
+	
+	private static final long serialVersionUID = -367003586271754027L;
+
 	/**
 	 * The row of the cell
 	 */

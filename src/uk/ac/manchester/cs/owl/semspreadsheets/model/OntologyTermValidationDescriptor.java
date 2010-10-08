@@ -1,5 +1,6 @@
 package uk.ac.manchester.cs.owl.semspreadsheets.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -18,9 +19,11 @@ import org.semanticweb.owlapi.model.OWLOntology;
  * Information Management Group<br>
  * Date: 20-Sep-2009
  */
-public class OntologyTermValidationDescriptor {
+public class OntologyTermValidationDescriptor implements Serializable {
 
-    private ValidationType type;
+	private static final long serialVersionUID = 3278347556332276152L;
+
+	private ValidationType type;
 
     private IRI entityIRI;
 

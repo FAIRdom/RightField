@@ -4,12 +4,10 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 /**
- * This is a Transferable implemenation to support the copy and paste of a range of cells, including both cell text values, and the OntologyTermValidationDescriptor.
+ * This is a Transferable implementation to support the copy and paste of a range of cells, including both cell text values, and the OntologyTermValidationDescriptor.
  * 
  * It will allow the copy/paste of both from within RightField, and also text values between RightField and other application.
  * 
@@ -22,17 +20,17 @@ public class CellContentsTransferable implements Transferable {
 	 * The DataFlavor for handling the collection of OntologyTermValidation's and the text value of the cell.
 	 */
 	public static DataFlavor dataFlavour = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType
-			+ ";class="+ArrayList.class.getCanonicalName(),"SelectedCellDataContainer");
+			+ ";class="+SelectedCellDataContainerList.class.getCanonicalName(),"CellContentsList");
 	
-	private final List<SelectedCellDataContainer> data;
+	private final SelectedCellDataContainerList data;
 	
-	public CellContentsTransferable(List<SelectedCellDataContainer> data) {
+	public CellContentsTransferable(SelectedCellDataContainerList data) {
 		super();		
 		this.data = data;			
 	}
 	
 	/**
-	 * If the flavor is DataFlavor.stringFlavor then a tab seperated text value is returned.
+	 * If the flavor is DataFlavor.stringFlavor then a tab separated text value is returned.
 	 * If the flavor is CellContentsTransferable.dataFlavor then a List of SelectedCellDataContainer is returned.
 	 * 
 	 * @see SelectedCellDataContainer
@@ -77,9 +75,12 @@ public class CellContentsTransferable implements Transferable {
 			}
 			return result.toString();
 		}
-		else {
+		else if (CellContentsTransferable.dataFlavour.equals(flavor)){
 			return data;
 		}		
+		else {
+			throw new UnsupportedFlavorException(flavor);
+		}
 	}
 
 	@Override

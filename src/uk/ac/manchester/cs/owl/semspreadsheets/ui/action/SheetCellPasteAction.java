@@ -7,7 +7,6 @@ import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
-import java.util.List;
 import java.util.StringTokenizer;
 
 import org.apache.log4j.Logger;
@@ -49,9 +48,8 @@ public class SheetCellPasteAction extends SelectedCellsAction {
 				DataFlavor df = CellContentsTransferable.dataFlavour;
 				if (contents.isDataFlavorSupported(df)) {					
 					try {
-						@SuppressWarnings("unchecked")
-						List<SelectedCellDataContainer> dataValues = (List<SelectedCellDataContainer>)contents.getTransferData(df);
-						logger.debug("OntologyValidationsTransferable contents found");
+						SelectedCellDataContainerList dataValues = (SelectedCellDataContainerList)contents.getTransferData(df);
+						logger.debug("CellContentsList contents found");
 						
 						int row=selectedRange.getFromRow();
 						int col=selectedRange.getFromColumn();
