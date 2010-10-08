@@ -44,7 +44,6 @@ public class SheetCellCopyAction extends SelectedCellsAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		logger.debug("Copy action invoked");
-		logger.debug("Transferable data flavor is: "+CellContentsTransferable.dataFlavour.getHumanPresentableName());
 		Range selectedRange = getSelectedRange();
 		SelectedCellDataContainerList selectedContents = new SelectedCellDataContainerList();
 		if (selectedRange.isCellSelection()) {
