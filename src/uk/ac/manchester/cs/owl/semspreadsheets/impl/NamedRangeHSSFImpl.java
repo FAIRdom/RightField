@@ -22,7 +22,6 @@ public class NamedRangeHSSFImpl implements NamedRange {
     public NamedRangeHSSFImpl(WorkbookHSSFImpl workbook, HSSFName name) {
         this.workbook = workbook;
         this.name = name;
-
     }
 
     public String getName() {

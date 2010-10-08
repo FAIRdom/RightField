@@ -2,6 +2,7 @@ package uk.ac.manchester.cs.owl.semspreadsheets.ui;
 
 import java.awt.Component;
 import java.awt.Rectangle;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.EventObject;
@@ -143,8 +144,11 @@ public class SpreadSheetCellEditor implements TableCellEditor {
         if(anEvent instanceof MouseEvent) {
             return ((MouseEvent) anEvent).getClickCount() == 2;
         }
+        else if (anEvent instanceof KeyEvent) {
+        	return ((KeyEvent)anEvent).getKeyCode()!=157;
+        }
         else {
-            return true;
+        	return false;
         }
     }
 
