@@ -4,8 +4,6 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.Comparator;
 /**
  * This is a Transferable implementation to support the copy and paste of a range of cells, including both cell text values, and the OntologyTermValidationDescriptor.
  * 
@@ -41,22 +39,7 @@ public class CellContentsTransferable implements Transferable {
 		if (DataFlavor.stringFlavor.equals(flavor)) {
 			StringBuffer result = new StringBuffer();
 			if (data.size()>0) {
-				Collections.sort(data,new Comparator<SelectedCellDataContainer>() {
-					@Override
-					public int compare(SelectedCellDataContainer o1,
-							SelectedCellDataContainer o2) {					
-						Integer col1=new Integer(o1.col);
-						Integer col2=new Integer(o2.col);
-						if (o1.row==o2.row) {
-							return col1.compareTo(col2);
-						}
-						else {
-							Integer row1=new Integer(o1.row);
-							Integer row2=new Integer(o2.row);
-							return row1.compareTo(row2);
-						}						
-					}
-				});
+				data.sort();
 				
 				int lastRow=data.get(0).row;
 				
