@@ -85,23 +85,16 @@ public class WorkbookFrame extends JFrame {
 	public WorkbookFrame(WorkbookManager manager) {
 		this.workbookManager = manager;
 		setTitle("RightField");
-//		List<Image> iconImages = new ArrayList<Image>();
-//		for (String logoFilename : APPLICATION_LOGO_FILENAMES) {
-//			if (WorkbookFrame.class.getResource(logoFilename) != null) {
-//				iconImages.add(new ImageIcon(WorkbookFrame.class
-//						.getResource(logoFilename)).getImage());
-//			} else {
-//				logger.warn("Unable to find the "+logoFilename+" for the icon");
-//			}
-//		}
-//		setIconImages(iconImages);
-		String logoFilename = "/rightfield-logo.png";
-		if (WorkbookFrame.class.getResource(logoFilename) != null) {			
-			setIconImage((new ImageIcon(WorkbookFrame.class
-					.getResource(logoFilename)).getImage()));
-		} else {
-			logger.warn("Unable to find the "+logoFilename+" for the icon");
+		List<Image> iconImages = new ArrayList<Image>();
+		for (String logoFilename : APPLICATION_LOGO_FILENAMES) {
+			if (WorkbookFrame.class.getResource(logoFilename) != null) {
+				iconImages.add(new ImageIcon(WorkbookFrame.class
+						.getResource(logoFilename)).getImage());
+			} else {
+				logger.warn("Unable to find the "+logoFilename+" for the icon");
+			}
 		}
+		setIconImages(iconImages);
 		
 		getContentPane().setLayout(new BorderLayout());
 		getContentPane().add(new MainPanel(this));
