@@ -257,9 +257,9 @@ public class WorkbookFrame extends JFrame {
 
 	public void saveWorkbookAs() throws IOException {
 		File file = browseForFile("Save workbook as", FileDialog.SAVE,
-				"Excel Workbook", WORKBOOK_EXT);
-		file = checkForDefaultExtension(file);
+				"Excel Workbook", WORKBOOK_EXT);		
 		if (file != null) {
+			file = checkForDefaultExtension(file);
 			workbookManager.saveWorkbook(file.toURI());
 		}
 	}
