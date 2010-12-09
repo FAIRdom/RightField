@@ -39,6 +39,7 @@ public class OntologyTermValidationDescriptor implements Serializable {
         for(IRI iri : terms.keySet()) {
             this.terms.add(new Term(iri, terms.get(iri)));
         }
+        Collections.sort(this.terms);
     }
 
     public OntologyTermValidationDescriptor(ValidationType type, IRI entityIRI, WorkbookManager workbookManager) {
