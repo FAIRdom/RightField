@@ -60,7 +60,6 @@ public class RightField {
 
     public static void main(String[] args) {
     	logger.debug("Starting Up");
-    	
     	WorkbookManager manager = new WorkbookManager();
         final WorkbookFrame frame = new WorkbookFrame(manager);
         Preferences preferences = Preferences.userNodeForPackage(RightField.class);
