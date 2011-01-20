@@ -327,6 +327,9 @@ public class WorkbookManager {
 
     public OWLOntology loadOntology(IRI physicalIRI) throws OWLOntologyCreationException {
         logger.info("Loading: " + physicalIRI);
+        //See if an ontology with such ID had been loaded. If yes, unload it
+        //OWLOntology prevOntology = manager.getOntology(ontologyIRI)
+        
         this.ontology = manager.loadOntologyFromOntologyDocument(physicalIRI);
         updateReasoner();
         setLabelRendering(true);
@@ -336,10 +339,11 @@ public class WorkbookManager {
 
     private void updateReasoner() {
         try {
+        	
             OWLOntologyManager man = OWLManager.createOWLOntologyManager();
             OWLOntology root = man.createOntology(IRI.create("owlapi:reasoner"), getLoadedOntologies());
             reasoner = new StructuralReasoner(root, new SimpleConfiguration(), BufferingMode.NON_BUFFERING);
-            reasoner.prepareReasoner();
+            reasoner.precomputeInferences();
         }
         catch (OWLOntologyCreationException e) {
             ErrorHandler.getErrorHandler().handleError(e);

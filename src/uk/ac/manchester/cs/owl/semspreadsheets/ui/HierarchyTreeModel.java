@@ -36,6 +36,7 @@ import org.semanticweb.owlapi.model.RemoveAxiom;
 import org.semanticweb.owlapi.reasoner.Node;
 import org.semanticweb.owlapi.reasoner.NodeSet;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
+import org.semanticweb.owlapi.reasoner.impl.OWLObjectPropertyNode;
 import org.semanticweb.owlapi.util.OWLAxiomVisitorAdapter;
 import org.semanticweb.owlapi.util.OWLOntologyChangeVisitorAdapter;
 
@@ -381,15 +382,26 @@ public class HierarchyTreeModel implements TreeModel, OWLOntologyChangeListener 
         }
 
         protected List<TreeHierarchyNode> createChildren() {
+        	
             List<TreeHierarchyNode> children = new ArrayList<TreeHierarchyNode>();
+            
                 if (!getObjects().isEmpty()) {
-                    NodeSet<OWLObjectProperty> subs = reasoner.getSubObjectProperties(getObjects().iterator().next(), true);
-                    List<Node<OWLObjectProperty>> subsSorted = new ArrayList<Node<OWLObjectProperty>>(subs.getNodes());
+                	
+                    NodeSet<OWLObjectPropertyExpression> subs = reasoner.getSubObjectProperties(getObjects().iterator().next(), true);
+                    List<Node<OWLObjectProperty>> subsSorted = new ArrayList<Node<OWLObjectProperty>>(subs.getNodes().size());
+                    
+                    for (Node<OWLObjectPropertyExpression> node : subs) {
+                    	
+                    	subsSorted.add((Node)new OWLObjectPropertyNode(node.getRepresentativeElement().getNamedProperty()));
+                    }
+                    
                     Collections.sort(subsSorted, comparator);
+                    
                     for (Node<OWLObjectProperty> sub : subsSorted) {
                         children.add(new ObjectPropertyHierarchyNode(getParent(), sub.getRepresentativeElement()));
                     }
                 }
+                
             return children;
         }
 
