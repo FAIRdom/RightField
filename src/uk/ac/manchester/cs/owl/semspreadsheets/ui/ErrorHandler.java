@@ -36,7 +36,7 @@ public class ErrorHandler {
                 JOptionPane.showMessageDialog(null, e.getCause().getMessage(), "Could not load ontology", JOptionPane.ERROR_MESSAGE);
             }
             else if(throwable instanceof UnparsableOntologyException) {
-                JOptionPane.showMessageDialog(null, "The ontology document appears to be an unsupported format or contains syntax errors", "Could not load ontology", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "The ontology document appears to be in an unsupported format or contains syntax errors", "Could not load ontology", JOptionPane.ERROR_MESSAGE);
             }
             else {
                 JOptionPane.showMessageDialog(null, throwable.getMessage(), "Could not load ontology", JOptionPane.ERROR_MESSAGE);

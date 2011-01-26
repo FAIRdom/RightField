@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -14,21 +15,19 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.apibinding.OWLManager;
-import org.semanticweb.owlapi.model.AddAxiom;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAnnotationProperty;
-import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyAlreadyExistsException;
-import org.semanticweb.owlapi.model.OWLOntologyChange;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyID;
 import org.semanticweb.owlapi.model.OWLOntologyIRIMapper;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.SetOntologyID;
 import org.semanticweb.owlapi.reasoner.BufferingMode;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 import org.semanticweb.owlapi.reasoner.SimpleConfiguration;
@@ -330,32 +329,36 @@ public class WorkbookManager {
         return manager;
     }
 
+    public void unloadOntology(IRI physicalIRI) {
+    	
+    	OWLOntology loaded = null;
+    	
+    	for (OWLOntology ontology : manager.getOntologies()) {
+    		
+    		if (physicalIRI.equals(ontology.getOntologyID().getVersionIRI())) {
+    			
+    			loaded = ontology;
+    			break;
+    		}
+    	}
+    	
+    	if (loaded != null) manager.removeOntology(loaded);
+    }
+    
     public OWLOntology loadOntology(IRI physicalIRI) throws OWLOntologyCreationException {
+    	
+    	OWLOntologyID newID = null;
+    	IRI logIRI = null;
     	
         logger.info("Loading: " + physicalIRI);
         //See if an ontology with such ID had been loaded. If yes, unload it
-        try {
-        	
-        	this.ontology = manager.loadOntologyFromOntologyDocument(physicalIRI);
-        	
-        } catch (OWLOntologyAlreadyExistsException e) {
-        	//Load the ontology into a separate manager,
-        	//then copy it with a new version IRI into the old manager
-        	OWLOntologyManager man = OWLManager.createOWLOntologyManager();
-        	OWLOntology ontology = man.loadOntologyFromOntologyDocument(physicalIRI);
-        	//Create a new ID and use the physical IRI as a version ID
-        	OWLOntologyID newID = new OWLOntologyID(e.getDocumentIRI(), physicalIRI);
-        	//Why, oh why is there no method like createOntology(set_of-axioms, ID)??
-        	//There's createOntology(set_of-axioms, IRI) but it's helpless here
-        	this.ontology = manager.createOntology(newID);
-        	//Copy stuff
-        	List<OWLOntologyChange> changes = new ArrayList<OWLOntologyChange>();
-        	
-        	for (OWLAxiom axiom : ontology.getAxioms()) changes.add(new AddAxiom(this.ontology, axiom));
-        	
-        	manager.applyChanges(changes);
-        }
+        unloadOntology(physicalIRI);
         
+    	this.ontology = manager.loadOntologyFromOntologyDocument(physicalIRI);
+    	logIRI = this.ontology.getOntologyID().getOntologyIRI();
+    	//Create a new ID and use the physical IRI as a version ID        
+        newID = new OWLOntologyID(logIRI, physicalIRI);
+        manager.applyChange(new SetOntologyID(this.ontology, newID));
         updateReasoner();
         setLabelRendering(true);
         fireOntologiesChanged();
