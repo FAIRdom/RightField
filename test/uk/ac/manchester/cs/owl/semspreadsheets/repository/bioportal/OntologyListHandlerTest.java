@@ -10,6 +10,7 @@ import javax.xml.parsers.SAXParserFactory;
 
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class OntologyListHandlerTest {
 	
@@ -28,10 +29,11 @@ public class OntologyListHandlerTest {
         BufferedInputStream bufferedInputStream = new BufferedInputStream(getDummyXMLStream());
         saxParser.parse(bufferedInputStream, handler);
         bufferedInputStream.close();
-        assertEquals(0,items.size());
+        assertEquals(3,items.size());
+        fail("Test still incomplete");
 	}
 	
-	private InputStream getDummyXMLStream() {
+	private InputStream getDummyXMLStream() throws Exception {
 		return OntologyListHandlerTest.class.getResourceAsStream("/dummy_ontology_list.xml");
 	}
 
