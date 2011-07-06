@@ -1,6 +1,6 @@
 = RightField
 
-Authors::    {Matthew Horridge}[http://www.cs.man.ac.uk/~horridgm], Stuart Owen
+Authors::    Stuart Owen, {Matthew Horridge}[http://www.cs.man.ac.uk/~horridgm]
 Contact::    mailto:stuart.owen@manchester.ac.uk
 Licence::    BSD (See LICENCE or http://www.opensource.org/licenses/bsd-license.php)
 Copyright::  (c) 2010 The University of Manchester, UK
@@ -11,7 +11,11 @@ RightField is an open-source tool for adding ontology term selection to Excel sp
 
 For more information please visit http://www.rightfield.org.uk
 
-== Compiling
+== Configuring and Compiling
+
+If you wish your build of RightField to work with BioPortal you need an API key. To obtain an API key, register (if you have not already) and login with BioPortal[http://bioportal.bioontology.org/account] and go to "Account" where your API key will be displayed.
+This key should then be placed in a
+text file located at src/bioportal_api_key (unfortunately we are unable to include this key with the source code).
 
 To compile RightField you are required to have both {Apache Ant}[http://ant.apache.org/] and the {Java 1.6 JDK}[http://www.oracle.com/technetwork/java/javase/downloads/index.html] installed. 
 
