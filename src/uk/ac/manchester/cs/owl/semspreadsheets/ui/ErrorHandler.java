@@ -10,6 +10,8 @@ import org.semanticweb.owlapi.io.OWLOntologyCreationIOException;
 import org.semanticweb.owlapi.io.UnparsableOntologyException;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
+import uk.ac.manchester.cs.owl.semspreadsheets.repository.bioportal.BioPortalAccessDeniedException;
+
 /**
  * Author: Matthew Horridge<br>
  * The University of Manchester<br>
@@ -41,13 +43,15 @@ public class ErrorHandler {
             else {
                 JOptionPane.showMessageDialog(null, throwable.getMessage(), "Could not load ontology", JOptionPane.ERROR_MESSAGE);
             }
-
         }
         else if(throwable instanceof UnknownHostException) {
             JOptionPane.showMessageDialog(null, "You are not connected to the internet.  Please check your network connection.", "Not connected to network", JOptionPane.ERROR_MESSAGE);
         }
         else if (throwable instanceof IOException) {
             JOptionPane.showMessageDialog(null, throwable.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        else if (throwable instanceof BioPortalAccessDeniedException) {
+        	JOptionPane.showMessageDialog(null, "Access to the BioPortal API was forbidden. This could be due to an invalid API key.", "Error", JOptionPane.ERROR_MESSAGE);
         }
         else {
         	JOptionPane.showMessageDialog(null, "An Unexpected "+throwable.getClass().getSimpleName() +" error occurred: " + throwable.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);

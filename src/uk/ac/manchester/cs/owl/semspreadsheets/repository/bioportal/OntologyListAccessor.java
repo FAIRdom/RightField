@@ -2,6 +2,7 @@ package uk.ac.manchester.cs.owl.semspreadsheets.repository.bioportal;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
@@ -32,7 +33,7 @@ public class OntologyListAccessor {
         try {
             SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
             SAXParser saxParser = saxParserFactory.newSAXParser();            
-            URL url = new URL(BioPortalRepository.ONTOLOGY_LIST + "?email=" + BioPortalRepository.EMAIL_ID);
+            URL url = new URL(BioPortalRepository.ONTOLOGY_LIST + "?apikey=" + BioPortalRepository.API_KEY);
             
             logger.info("Contacting BioPortal REST API at: "+url.toExternalForm());
             
@@ -41,8 +42,12 @@ public class OntologyListAccessor {
                     logger.debug("Found BioportalRepositoryItem handler: "+handler);
                     items.add(handler);
                 }
-            });
-            BufferedInputStream bufferedInputStream = new BufferedInputStream(url.openStream());
+            });            
+            HttpURLConnection connection = (HttpURLConnection)url.openConnection();
+            if (connection.getResponseCode()==403) {
+            	throw new BioPortalAccessDeniedException();
+            }
+            BufferedInputStream bufferedInputStream = new BufferedInputStream(connection.getInputStream());
             saxParser.parse(bufferedInputStream, handler);
             bufferedInputStream.close();
         }
@@ -58,8 +63,11 @@ public class OntologyListAccessor {
         catch (MalformedURLException e) {
             logger.error("Error with URL for BioPortal rest API",e);
         }
-        catch (IOException e) {
-            logger.error("Error communiciating with BioPortal rest API",e);
+        catch (IOException e) {        	
+            logger.error("Error communiciating with BioPortal rest API",e);                    	
+        }
+        catch (BioPortalAccessDeniedException e) {
+        	ErrorHandler.getErrorHandler().handleError(e);
         }
         return items;
     }

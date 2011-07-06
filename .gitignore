@@ -6,4 +6,5 @@ build/out/
 .classpath
 .project
 .settings
+.externalToolBuilders
 build/svn.properties
