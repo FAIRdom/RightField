@@ -1,7 +1,14 @@
 package uk.ac.manchester.cs.owl.semspreadsheets.repository.bioportal;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.StringReader;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
+
+import org.apache.log4j.Logger;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.repository.Repository;
 import uk.ac.manchester.cs.owl.semspreadsheets.repository.RepositoryItem;
@@ -13,6 +20,8 @@ import uk.ac.manchester.cs.owl.semspreadsheets.repository.RepositoryItem;
  * Date: 11-Nov-2009
  */
 public class BioPortalRepository implements Repository {
+	
+	private static final Logger logger = Logger.getLogger(BioPortalRepository.class);
 
     public static final String NAME = "BioPortal";
 
@@ -22,7 +31,7 @@ public class BioPortalRepository implements Repository {
 
     public static final String ONTOLOGY_IRI_BASE = BASE + "ontologies/";
 
-    public static final String API_KEY = readAPIKey();
+    private static String API_KEY = null;
 
     private Collection<RepositoryItem> repositoryItems = new ArrayList<RepositoryItem>();
 
@@ -39,8 +48,26 @@ public class BioPortalRepository implements Repository {
         return repositoryItems;
     }
     
-    private static String readAPIKey() {
-    	return "xxx-xxx-xxx";
+    public static String readAPIKey() {
+    	URL resource;    	
+    	if (API_KEY == null) {
+	    	resource = BioPortalRepository.class.getResource("/bioportal_api_key");
+	    	if (resource != null) {
+	    		char [] buffer = new char[1024];
+	        	try {
+	        		InputStreamReader reader = new InputStreamReader(resource.openStream());
+	    			reader.read(buffer);
+	    			API_KEY = String.valueOf(buffer).trim();	    			
+	    		} catch (IOException e) {
+	    			logger.error("Error reading bioportal_api_key",e);
+	    		}
+	    	}
+	    	else {
+	    		logger.error("Unable to determine the API Key for BioPortal. The file bioportal_api_key file is missing");
+	    		API_KEY="unknown";
+	    	}
+    	}    	
+		return API_KEY;
     }
 
     

@@ -30,10 +30,11 @@ public class OntologyListAccessor {
 
     public Collection<BioPortalRepositoryItem> getOntologies() {
         final Collection<BioPortalRepositoryItem> items = new ArrayList<BioPortalRepositoryItem>();
+        URL url = null;
         try {
             SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
             SAXParser saxParser = saxParserFactory.newSAXParser();            
-            URL url = new URL(BioPortalRepository.ONTOLOGY_LIST + "?apikey=" + BioPortalRepository.API_KEY);
+            url = new URL(BioPortalRepository.ONTOLOGY_LIST + "?apikey=" + BioPortalRepository.readAPIKey());
             
             logger.info("Contacting BioPortal REST API at: "+url.toExternalForm());
             
@@ -67,6 +68,7 @@ public class OntologyListAccessor {
             logger.error("Error communiciating with BioPortal rest API",e);                    	
         }
         catch (BioPortalAccessDeniedException e) {
+        	logger.error("Access forbidden reading "+url.toExternalForm(),e); 
         	ErrorHandler.getErrorHandler().handleError(e);
         }
         return items;

@@ -8,3 +8,4 @@ build/out/
 .settings
 .externalToolBuilders
 build/svn.properties
+src/bioportal_api_key
