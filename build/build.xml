@@ -64,7 +64,7 @@
          the build directory -->
 	<target name="compile">
 		<mkdir dir="${classesdir}" />
-		<javac srcdir="../src" destdir="${classesdir}" debug="on">
+		<javac srcdir="../src" destdir="${classesdir}" debug="off">
 			<classpath refid="classpath" />
 		</javac>
 		<copy todir="${classesdir}">

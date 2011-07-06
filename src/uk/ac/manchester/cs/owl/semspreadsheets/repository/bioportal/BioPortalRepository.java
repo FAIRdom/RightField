@@ -22,7 +22,7 @@ public class BioPortalRepository implements Repository {
 
     public static final String ONTOLOGY_IRI_BASE = BASE + "ontologies/";
 
-    public static final String EMAIL_ID = "x@y";
+    public static final String API_KEY = readAPIKey();
 
     private Collection<RepositoryItem> repositoryItems = new ArrayList<RepositoryItem>();
 
@@ -37,6 +37,10 @@ public class BioPortalRepository implements Repository {
 
     public Collection<RepositoryItem> getOntologies() {
         return repositoryItems;
+    }
+    
+    private static String readAPIKey() {
+    	return "xxx-xxx-xxx";
     }
 
     
