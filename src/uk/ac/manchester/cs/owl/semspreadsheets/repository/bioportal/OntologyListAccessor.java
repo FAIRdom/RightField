@@ -68,7 +68,7 @@ public class OntologyListAccessor {
             logger.error("Error communiciating with BioPortal rest API",e);                    	
         }
         catch (BioPortalAccessDeniedException e) {
-        	logger.error("Access forbidden reading "+url.toExternalForm(),e); 
+        	//logger.error("Access forbidden reading "+url.toExternalForm(),e); 
         	ErrorHandler.getErrorHandler().handleError(e);
         }
         return items;
