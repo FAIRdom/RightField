@@ -1,0 +1,80 @@
+<success>
+	<accessedResource>/bioportal/ontologies</accessedResource>
+	<accessDate>2011-07-06 12:27:52.238 PDT</accessDate>
+	<data>
+		<list>
+			<ontologyBean>
+				<id>1</id>
+				<ontologyId>10</ontologyId>
+				<displayLabel>AAA</displayLabel>
+				<description>
+				AAA-desc
+				</description>
+				<abbreviation>A</abbreviation>
+				<format>OWL-DL</format>
+				<internalVersionNumber>2</internalVersionNumber>
+				<versionNumber>0.0</versionNumber>
+				<versionStatus>alpha</versionStatus>
+				<contactName>contactA</contactName>
+				<contactEmail>contactA@email.com</contactEmail>
+				<statusId>3</statusId>
+				<categoryIds/>
+				<groupIds/>
+				<isFoundry>0</isFoundry>
+				<isMetadataOnly>0</isMetadataOnly>
+				<dateCreated>2009-05-05 09:51:59.0 PDT</dateCreated>
+			</ontologyBean>
+			<ontologyBean>
+				<id>2</id>
+				<ontologyId>20</ontologyId>
+				<displayLabel>BBB</displayLabel>
+				<description>
+				BBB-desc
+				</description>
+				<abbreviation>B</abbreviation>
+				<format>OBO</format>
+				<downloadLocation>
+				http://nowhere.com
+				</downloadLocation>
+				<internalVersionNumber>12</internalVersionNumber>
+				<versionNumber>unknown</versionNumber>
+				<versionStatus>production</versionStatus>
+				<contactName>contactB</contactName>
+				<contactEmail>contactB@email.com</contactEmail>
+				<statusId>3</statusId>
+				<categoryIds>
+				<int>2818</int>
+				<int>2803</int>
+				</categoryIds>
+				<groupIds/>
+				<isFoundry>0</isFoundry>
+				<isMetadataOnly>0</isMetadataOnly>
+				<dateCreated>2011-02-15 18:05:07.0 PST</dateCreated>
+				</ontologyBean>
+			<ontologyBean>
+				<id>3</id>
+				<ontologyId>30</ontologyId>
+				<displayLabel>
+				CCC
+				</displayLabel>
+				<description>
+				CCC-desc
+				</description>
+				<abbreviation>C</abbreviation>
+				<format>OWL</format>
+				
+				<internalVersionNumber>2</internalVersionNumber>
+				<versionNumber>unknown</versionNumber>
+				<versionStatus>pre_production</versionStatus>
+				<contactName>contactC</contactName>
+				<contactEmail>contactC@email.com</contactEmail>
+				<statusId>3</statusId>
+				<categoryIds/>
+				<groupIds/>
+				<isFoundry>0</isFoundry>
+				<isMetadataOnly>0</isMetadataOnly>
+				<dateCreated>2010-11-19 18:09:14.0 PST</dateCreated>
+			</ontologyBean>
+		</list>
+	</data>
+</success>

@@ -58,7 +58,7 @@
 	<!-- Deletes all build products-->
 	<target name="clean">
 		<delete dir="${builddir}" />
-	</target>
+	</target>	
 
 	<!-- Compiles the source into a directory called classes inside
          the build directory -->
@@ -89,18 +89,6 @@
 			</manifest>
 		</jar>
 	</target>
-
-	<!-- We just include the documentation for non-implementation stuff-->
-	<!--- including documentation for the impl package wouldn't make sense-->
-	<!--because end API users aren't expected to deal with this kind of thing -->
-	<!--<target name="javadoc">-->
-	<!--<mkdir dir="${javadocdir}"/>-->
-	<!--<javadoc destdir="${javadocdir}" verbose="no" windowtitle="Kudu">-->
-	<!--<fileset dir="./.." defaultexcludes="yes">-->
-	<!--<include name="${sourcepath}"/>-->
-	<!--</fileset>-->
-	<!--</javadoc>-->
-	<!--</target>-->
 
 	<!-- Creates a jar containing the OWL API source code -->
 	<target name="srcjar">
