@@ -68,11 +68,11 @@
 			<classpath refid="classpath" />
 		</javac>
 		<copy todir="${classesdir}">
-			<fileset dir="../src/" includes="*.png,*.properties" />
+			<fileset dir="../src/" includes="*.png,*.properties,bioportal_api_key" />
 		</copy>
 	</target>
 
-	<!-- Creates a jar containing the OWL API binary code -->
+	<!-- Creates a jar containing the RightField binary code -->
 	<target name="binjar" depends="compile">
 		<!-- Get the SVN revision number -->
 		<exec executable="svn" output="../build/svn.properties">
@@ -90,7 +90,7 @@
 		</jar>
 	</target>
 
-	<!-- Creates a jar containing the OWL API source code -->
+	<!-- Creates a jar containing the RightField source code -->
 	<target name="srcjar">
 		<jar destfile="${builddir}/${src-name}">
 			<manifest>
