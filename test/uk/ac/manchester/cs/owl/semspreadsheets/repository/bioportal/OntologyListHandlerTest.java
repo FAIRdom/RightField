@@ -1,5 +1,7 @@
 package uk.ac.manchester.cs.owl.semspreadsheets.repository.bioportal;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -9,8 +11,6 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import org.junit.Test;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
 public class OntologyListHandlerTest {
 	
@@ -25,7 +25,7 @@ public class OntologyListHandlerTest {
 		
 		SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
         SAXParser saxParser = saxParserFactory.newSAXParser();
-        BufferedInputStream bufferedInputStream = new BufferedInputStream(getDummyXMLStream());
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(getDummyXMLStream("dummy_ontology_list.xml"));
         saxParser.parse(bufferedInputStream, handler);
         bufferedInputStream.close();
         
@@ -41,8 +41,28 @@ public class OntologyListHandlerTest {
         }
 	}
 	
-	private InputStream getDummyXMLStream() throws Exception {
-		return OntologyListHandlerTest.class.getResourceAsStream("/dummy_ontology_list.xml");
+	@Test
+	public void testFormatFiltering() throws Exception {
+		final Collection<BioPortalRepositoryItem> collection = new ArrayList<BioPortalRepositoryItem>();
+		OntologyListHandler handler = new OntologyListHandler(new BioPortalRepositoryItemHandler() {
+            public void handleItem(BioPortalRepositoryItem handler) {        
+            	collection.add(handler);
+            }
+        });
+		
+		SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
+        SAXParser saxParser = saxParserFactory.newSAXParser();
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(getDummyXMLStream("dummy_ontology_list_with_bad_formats.xml"));
+        saxParser.parse(bufferedInputStream, handler);
+        bufferedInputStream.close();
+        
+        assertEquals(1,collection.size());
+        BioPortalRepositoryItem item = collection.iterator().next();
+        assertEquals("OWL-DL",item.getFormat());
+	}
+	
+	private InputStream getDummyXMLStream(String filename) throws Exception {
+		return OntologyListHandlerTest.class.getResourceAsStream("/"+filename);
 	}
 
 }
