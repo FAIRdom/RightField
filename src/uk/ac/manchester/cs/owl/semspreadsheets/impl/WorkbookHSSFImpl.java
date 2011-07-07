@@ -219,8 +219,8 @@ public class WorkbookHSSFImpl implements MutableWorkbook, WorkbookChangeVisitor 
     public void saveAs(URI uri) throws IOException {
         File file = new File(uri);
         BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(file));
-        workbook.write(stream);
-        stream.flush();
+        workbook.write(stream);        
+        stream.close();
     }
 
 
