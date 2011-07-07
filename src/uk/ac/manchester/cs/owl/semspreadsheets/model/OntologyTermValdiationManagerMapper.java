@@ -3,11 +3,16 @@ package uk.ac.manchester.cs.owl.semspreadsheets.model;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntologyIRIMapper;
 
+import uk.ac.manchester.cs.owl.semspreadsheets.repository.bioportal.BioPortalRepository;
+
 /**
  * Author: Matthew Horridge<br>
  * The University of Manchester<br>
  * Information Management Group<br>
  * Date: 12-Nov-2009
+ * 
+ * @author Matthew Horridge
+ * @author Stuart Owen
  */
 public class OntologyTermValdiationManagerMapper implements OWLOntologyIRIMapper {
 
@@ -23,7 +28,7 @@ public class OntologyTermValdiationManagerMapper implements OWLOntologyIRIMapper
             return null;
         }
         else {
-            return physicalIRI;
+            return BioPortalRepository.handleBioPortalAPIKey(physicalIRI);
         }
     }
 }

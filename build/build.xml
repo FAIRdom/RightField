@@ -73,17 +73,12 @@
 	</target>
 
 	<!-- Creates a jar containing the RightField binary code -->
-	<target name="binjar" depends="compile">
-		<!-- Get the SVN revision number -->
-		<exec executable="svn" output="../build/svn.properties">
-			<arg value="info" />
-		</exec>
-		<property prefix="svn" file="../build/svn.properties" />
+	<target name="binjar" depends="compile">		
 		<jar basedir="${classesdir}" destfile="${builddir}/${bin-name}">
 			<manifest>
 				<attribute name="Title" value="RightField" />
 				<attribute name="Built-By" value="${user.name}" />
-				<attribute name="Implementation-Version" value="${version}.${svn.Revision}" />
+				<attribute name="Implementation-Version" value="${version}" />
 				<attribute name="Main-Class" value="RightField" />
 				<attribute name="Class-Path" value="${manifestclasspath}" />
 			</manifest>

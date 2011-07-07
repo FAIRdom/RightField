@@ -41,6 +41,9 @@ import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.change.SetCellValue;
 import uk.ac.manchester.cs.owl.semspreadsheets.change.WorkbookChange;
+import uk.ac.manchester.cs.owl.semspreadsheets.repository.RepositoryItem;
+import uk.ac.manchester.cs.owl.semspreadsheets.repository.bioportal.BioPortalRepository;
+import uk.ac.manchester.cs.owl.semspreadsheets.repository.bioportal.BioPortalRepositoryItem;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.CellSelectionListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.CellSelectionModel;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.EntitySelectionModel;
@@ -189,7 +192,6 @@ public class WorkbookManager {
 
 
     public Workbook createNewWorkbook() {
-//        workbook.createNewSpreadSheet();
         workbook = WorkbookFactory.createWorkbook();
         fireWorkbookCreated();
         return workbook;
@@ -214,12 +216,13 @@ public class WorkbookManager {
         final Map<IRI, IRI> ontologyIRIMap = ontologyTermValidationManager.getOntology2PhysicalIRIMap();
         OWLOntologyIRIMapper mapper = new OntologyTermValdiationManagerMapper(ontologyTermValidationManager);
         manager.addIRIMapper(mapper);
-        for(IRI iri : ontologyIRIMap.keySet()) {
+        for(IRI iri : ontologyIRIMap.keySet()) {        	
             if(!manager.contains(iri)) {
-                try {
+                try {                	
                     manager.loadOntology(iri);
                 }
                 catch (OWLOntologyCreationException e) {
+                	e.printStackTrace();
                 	logger.error("Could not load ontology: " + e.getMessage());
                 	logger.debug("Error reading ontology",e);
                 }
@@ -353,8 +356,9 @@ public class WorkbookManager {
         logger.info("Loading: " + physicalIRI);
         //See if an ontology with such ID had been loaded. If yes, unload it
         unloadOntology(physicalIRI);
-        
-    	this.ontology = manager.loadOntologyFromOntologyDocument(physicalIRI);
+                
+    	this.ontology = manager.loadOntologyFromOntologyDocument(BioPortalRepository.handleBioPortalAPIKey(physicalIRI));
+    	
     	logIRI = this.ontology.getOntologyID().getOntologyIRI();
     	//Create a new ID and use the physical IRI as a version ID        
         newID = new OWLOntologyID(logIRI, physicalIRI);
@@ -364,10 +368,9 @@ public class WorkbookManager {
         fireOntologiesChanged();
         
         return ontology;
-    }
+    }    
 
-    private void updateReasoner() {
-    	
+    private void updateReasoner() {    	
         try {
         	
             OWLOntologyManager man = OWLManager.createOWLOntologyManager();
