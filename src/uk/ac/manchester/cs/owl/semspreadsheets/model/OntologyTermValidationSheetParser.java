@@ -210,7 +210,7 @@ public class OntologyTermValidationSheetParser {
             if (physicalIRICell == null) {
                 physicalIRICell = sheet.addCellAt(2, row);
             }
-            physicalIRICell.setValue(descriptor.getPhysicslIRIForOntologyIRI(iri).toQuotedString());
+            physicalIRICell.setValue(descriptor.getPhysicalIRIForOntologyIRI(iri).toQuotedString());
             row++;
         }
     }

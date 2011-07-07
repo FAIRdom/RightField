@@ -13,6 +13,8 @@ import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 
+import uk.ac.manchester.cs.owl.semspreadsheets.repository.bioportal.BioPortalRepository;
+
 /**
  * Author: Matthew Horridge<br>
  * The University of Manchester<br>
@@ -48,6 +50,7 @@ public class OntologyTermValidationDescriptor implements Serializable {
         ontologyIRI2PhysicalIRIMap = new HashMap<IRI, IRI>();
         for(OWLOntology ont : workbookManager.getLoadedOntologies()) {
             IRI documentIRI = workbookManager.getOntologyManager().getOntologyDocumentIRI(ont);
+            documentIRI = BioPortalRepository.removeBioPortalAPIKey(documentIRI);
             ontologyIRI2PhysicalIRIMap.put(ont.getOntologyID().getOntologyIRI(), documentIRI);
         }
         Set<OWLEntity> entities = type.getEntities(workbookManager, entityIRI);
@@ -62,7 +65,7 @@ public class OntologyTermValidationDescriptor implements Serializable {
         return ontologyIRI2PhysicalIRIMap.keySet();
     }
 
-    public IRI getPhysicslIRIForOntologyIRI(IRI ontologyIRI) {
+    public IRI getPhysicalIRIForOntologyIRI(IRI ontologyIRI) {
         return ontologyIRI2PhysicalIRIMap.get(ontologyIRI);
     }
 

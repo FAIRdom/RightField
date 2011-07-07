@@ -39,7 +39,7 @@ public class BioPortalRepositoryItem implements RepositoryItem {
     }
 
     public IRI getOntologyIRI() {
-        return IRI.create(BioPortalRepository.BASE + "virtual/download/" + ontologyID + "?apikey="+BioPortalRepository.readAPIKey());
+        return IRI.create(BioPortalRepository.BASE + "virtual/download/" + ontologyID);
     }
 
     public IRI getVersionIRI() {

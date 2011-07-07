@@ -39,9 +39,9 @@ public class OntologyListAccessor {
             logger.info("Contacting BioPortal REST API at: "+url.toExternalForm());
             
             OntologyListHandler handler = new OntologyListHandler(new BioPortalRepositoryItemHandler() {
-                public void handleItem(BioPortalRepositoryItem handler) {
-                    logger.debug("Found BioportalRepositoryItem handler: "+handler);
-                    items.add(handler);
+                public void handleItem(BioPortalRepositoryItem item) {
+                    logger.debug("Found BioportalRepositoryItem handler: " + item);
+                    items.add(item);
                 }
             });            
             HttpURLConnection connection = (HttpURLConnection)url.openConnection();

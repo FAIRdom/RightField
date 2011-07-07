@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.apache.log4j.Logger;
+import org.semanticweb.owlapi.model.IRI;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.repository.Repository;
 import uk.ac.manchester.cs.owl.semspreadsheets.repository.RepositoryItem;
@@ -69,6 +70,35 @@ public class BioPortalRepository implements Repository {
     	}    	
 		return API_KEY;
     }
-
+    
+    /**
+     * Determines whether the IRI needs the BioPortal api key appending, and if so does so and returns the correct IRI
+     * @param iri
+     * @return the iri with the api key appended if necessary
+     */
+	public static IRI handleBioPortalAPIKey(IRI iri) {
+		IRI newIRI = iri;
+		String strIri=iri.toString();
+        if (strIri.contains(BioPortalRepository.BASE) && !strIri.contains("apikey")) {
+        	//FIXME: need to join the parameter, as it may not be the only parameter
+        	newIRI = IRI.create(strIri+"?apikey="+BioPortalRepository.readAPIKey());
+        }
+		return newIRI;
+	}
+	
+	/**
+	 * If appropriate, removes the appended apikey=XXX-XXX and returns a cleaned IRI
+	 */
+	public static IRI removeBioPortalAPIKey(IRI iri) {
+		IRI newIRI = iri;
+		String strIri=iri.toString();
+        if (strIri.contains(BioPortalRepository.BASE) && strIri.contains("apikey")) {
+        	//FIXME: this assumes that apikey is the last parameter - which currently is always the case but may not always be
+        	int i=strIri.indexOf("?apikey");
+        	strIri=strIri.substring(0,i);
+        	newIRI = IRI.create(strIri);
+        }
+		return newIRI;
+	}
     
 }

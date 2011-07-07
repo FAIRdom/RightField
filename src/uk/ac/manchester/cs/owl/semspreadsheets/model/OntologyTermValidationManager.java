@@ -142,7 +142,7 @@ public class OntologyTermValidationManager {
         Map<IRI, IRI> result = new HashMap<IRI, IRI>();
         for(OntologyTermValidation validation : ontologyTermValidations) {
             for(IRI ontologyIRI : validation.getValidationDescriptor().getOntologyIRIs()) {
-                result.put(ontologyIRI, validation.getValidationDescriptor().getPhysicslIRIForOntologyIRI(ontologyIRI));
+                result.put(ontologyIRI, validation.getValidationDescriptor().getPhysicalIRIForOntologyIRI(ontologyIRI));
             }
         }
         return result;

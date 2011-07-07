@@ -33,6 +33,7 @@ public class ErrorHandler {
 
     public void handleError(Throwable throwable) {
         if(throwable instanceof OWLOntologyCreationException) {
+        	throwable.printStackTrace();
             if(throwable instanceof OWLOntologyCreationIOException) {
                 OWLOntologyCreationIOException e = (OWLOntologyCreationIOException) throwable;
                 JOptionPane.showMessageDialog(null, e.getCause().getMessage(), "Could not load ontology", JOptionPane.ERROR_MESSAGE);
