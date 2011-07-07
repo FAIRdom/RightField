@@ -14,13 +14,12 @@ import static org.junit.Assert.fail;
 
 public class OntologyListHandlerTest {
 	
-
 	@Test
 	public void testListHandling() throws Exception {
-        final Collection<BioPortalRepositoryItem> items = new ArrayList<BioPortalRepositoryItem>();
+        final Collection<BioPortalRepositoryItem> collection = new ArrayList<BioPortalRepositoryItem>();
 		OntologyListHandler handler = new OntologyListHandler(new BioPortalRepositoryItemHandler() {
             public void handleItem(BioPortalRepositoryItem handler) {        
-                items.add(handler);
+            	collection.add(handler);
             }
         });
 		
@@ -29,8 +28,17 @@ public class OntologyListHandlerTest {
         BufferedInputStream bufferedInputStream = new BufferedInputStream(getDummyXMLStream());
         saxParser.parse(bufferedInputStream, handler);
         bufferedInputStream.close();
-        assertEquals(3,items.size());
-        fail("Test still incomplete");
+        
+        int [] ontologyIds = {10,20,30};
+        String [] labels = {"A-label","B-label","C-label"};
+        String [] formats = {"OWL-DL","OBO","OWL"};
+        BioPortalRepositoryItem [] items = collection.toArray(new BioPortalRepositoryItem[0]);
+        assertEquals(3,items.length);
+        for (int i=0;i<items.length;i++) {
+        	BioPortalRepositoryItem item = items[i];
+        	String asString = labels[i]+" : "+ontologyIds[i]+" ("+formats[i]+")";
+        	assertEquals(asString,item.toString());
+        }
 	}
 	
 	private InputStream getDummyXMLStream() throws Exception {
