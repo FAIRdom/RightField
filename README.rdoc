@@ -15,11 +15,14 @@ For more information please visit http://www.rightfield.org.uk
 
 If you wish your build of RightField to work with BioPortal you need an API key. To obtain an API key, register (if you have not already) and login with BioPortal[http://bioportal.bioontology.org/account] and go to "Account" where your API key will be displayed.
 This key should then be placed in a
-text file located at src/bioportal_api_key (unfortunately we are unable to include this key with the source code).
+text file located at src/main/resources/bioportal_api_key (unfortunately we are unable to include this key with the source code).
 
-To compile RightField you are required to have both {Apache Ant}[http://ant.apache.org/] and the {Java 1.6 JDK}[http://www.oracle.com/technetwork/java/javase/downloads/index.html] installed. 
+To compile RightField you are required to have both {Apache Maven2}[http://maven.apache.org/] and the {Java 1.6 JDK}[http://www.oracle.com/technetwork/java/javase/downloads/index.html] installed. 
 
-  >cd build
-  >ant
+  >mvn assembly:directory  
   
-This will create both a packaged distribution in the <em>build/out</em> directory, and also an unpacked copy in the <em>build/out/dist</em> directory
+This will create both an unzipped distribution directory in the <em>target/rightfield-{version}/</em> directory.
+
+To create a zipped package run
+
+  >mvn assembly:assembly

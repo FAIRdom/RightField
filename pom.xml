@@ -1,0 +1,85 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.sysmo-db</groupId>
+	<artifactId>rightfield</artifactId>
+	<version>0.14-SNAPSHOT</version>
+	<packaging>jar</packaging>
+	<name>RightField</name>
+	<description>
+	RightField is an open-source tool for adding ontology term selection to Excel spreadsheets. 
+	For each annotation field, RightField can specify a range of allowed terms from a chosen ontology (subclasses, individuals or combinations). 
+	The resulting spreadsheet presents these terms to the users as a simple drop-down list. 
+	This reduces the adoption barrier for using community ontologies as the annotation is made by the scientist that generated the data rather than a third party, and the annotation is collected at the time of data collection.
+	</description>
+	<url>http://www.rightfield.org.uk</url>
+	<build>
+		<finalName>rightfield-bin</finalName>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>				
+				<configuration>
+					<finalName>rightfield-${project.version}</finalName>
+					<appendAssemblyId>false</appendAssemblyId>
+					<descriptors>
+						<descriptor>src/main/assembly/assembly.xml</descriptor>
+					</descriptors>					
+				</configuration>
+			</plugin>
+			<plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>2.1</version>        
+        <configuration>
+          <archive>
+            <manifest>
+              <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+              <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+              <addClasspath>true</addClasspath>
+              <classpathPrefix>lib/</classpathPrefix>
+              <mainClass>RightField</mainClass>
+            </manifest>
+          </archive>
+        </configuration>        
+      </plugin>
+		</plugins>
+	</build>
+	<dependencies>
+		<dependency>
+			<groupId>org.sysmo-db</groupId>
+			<artifactId>poi-patched</artifactId>
+			<version>unknown</version>			
+		</dependency>
+		<dependency>
+			<groupId>owlapi-bin</groupId>
+			<artifactId>owlapi-bin</artifactId>
+			<version>unknown</version>
+		</dependency>
+
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.14</version>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.8.2</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+	<repositories>
+	  <repository>
+	    <id>local-artifacts</id>
+	    <url>file://${basedir}/local-artifacts</url>
+	  </repository>
+	</repositories>
+</project>
