@@ -23,8 +23,8 @@ public class OntologyListHandlerTest {
             }
         });
 		
-		SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
-        SAXParser saxParser = saxParserFactory.newSAXParser();
+		SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();		
+        SAXParser saxParser = saxParserFactory.newSAXParser();        
         BufferedInputStream bufferedInputStream = new BufferedInputStream(getDummyXMLStream("dummy_ontology_list.xml"));
         saxParser.parse(bufferedInputStream, handler);
         bufferedInputStream.close();
@@ -59,6 +59,49 @@ public class OntologyListHandlerTest {
         assertEquals(1,collection.size());
         BioPortalRepositoryItem item = collection.iterator().next();
         assertEquals("OWL-DL",item.getFormat());
+	}
+	
+	@Test
+	public void testSkipsNonNumericIDsFiltering() throws Exception {
+		final Collection<BioPortalRepositoryItem> collection = new ArrayList<BioPortalRepositoryItem>();
+		OntologyListHandler handler = new OntologyListHandler(new BioPortalRepositoryItemHandler() {
+            public void handleItem(BioPortalRepositoryItem handler) {        
+            	collection.add(handler);
+            }
+        });
+		
+		SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
+        SAXParser saxParser = saxParserFactory.newSAXParser();
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(getDummyXMLStream("ontology_list_with_non_numeric_ids.xml"));
+        saxParser.parse(bufferedInputStream, handler);
+        bufferedInputStream.close();
+        
+        int [] ontologyIds = {10,20};
+        String [] labels = {"A-label","B-label"};
+        String [] formats = {"OWL-DL","OBO"};
+        BioPortalRepositoryItem [] items = collection.toArray(new BioPortalRepositoryItem[0]);
+        assertEquals(2,items.length);
+        for (int i=0;i<items.length;i++) {
+        	BioPortalRepositoryItem item = items[i];
+        	String asString = labels[i]+" : "+ontologyIds[i]+" ("+formats[i]+")";
+        	assertEquals(asString,item.toString());
+        }
+	}
+	
+	@Test
+	public void testFullListHandling() throws Exception {
+		final Collection<BioPortalRepositoryItem> collection = new ArrayList<BioPortalRepositoryItem>();
+		OntologyListHandler handler = new OntologyListHandler(new BioPortalRepositoryItemHandler() {
+            public void handleItem(BioPortalRepositoryItem handler) {        
+            	collection.add(handler);
+            }
+        });
+		
+		SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
+        SAXParser saxParser = saxParserFactory.newSAXParser();
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(getDummyXMLStream("ontologies.xml"));
+        saxParser.parse(bufferedInputStream, handler);
+        bufferedInputStream.close();
 	}
 	
 	private InputStream getDummyXMLStream(String filename) throws Exception {

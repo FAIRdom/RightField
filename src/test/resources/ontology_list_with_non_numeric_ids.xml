@@ -48,7 +48,7 @@
 			</ontologyBean>
 			<ontologyBean>
 				<id>3</id>
-				<ontologyId>30</ontologyId>
+				<ontologyId>aaa</ontologyId>
 				<displayLabel>C-label</displayLabel>
 				<description>C-desc</description>
 				<abbreviation>NMR</abbreviation>

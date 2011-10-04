@@ -1,10 +1,9 @@
 package uk.ac.manchester.cs.owl.semspreadsheets.repository.bioportal;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -19,6 +18,8 @@ import org.xml.sax.helpers.DefaultHandler;
  * @author Matthew Horridge
  */
 public class OntologyListHandler extends DefaultHandler {
+	
+	private static Logger logger = Logger.getLogger(OntologyListHandler.class);
 
     public static final String ONTOLOGY_ID_ELEMENT_NAME = "ontologyId";
 
@@ -40,11 +41,11 @@ public class OntologyListHandler extends DefaultHandler {
     
     private FormatState formatState = new FormatState();
 
-    private int lastOntologyID;
+    private String lastOntologyID = "";
 
-    private String lastDisplayLabel;
+    private String lastDisplayLabel = "";
 
-    private String lastFormat;
+    private String lastFormat = "";
     
     private BioPortalRepositoryItemHandler itemHandler;
 
@@ -66,21 +67,24 @@ public class OntologyListHandler extends DefaultHandler {
         else {
             elementState = nullElementState;
         }
-    }
-    
-    
+    }    
 
-
-    @Override
+	@Override
 	public void endElement(String uri, String localName, String qName)
 			throws SAXException {
 		if (qName.equals(BEAN_ELEMENT_NAME)) {
 			if (acceptableFormat(lastFormat)) {
-				itemHandler.handleItem(new BioPortalRepositoryItem(lastOntologyID, lastDisplayLabel,lastFormat));
+				try {
+					int ontologyID=Integer.parseInt(lastOntologyID);
+					itemHandler.handleItem(new BioPortalRepositoryItem(ontologyID, lastDisplayLabel,lastFormat));
+				}
+				catch(Exception e) {
+					logger.warn("Error adding BioPortal ontology entry " + e.getClass().getCanonicalName() + ":" + e.getMessage());
+				}
 			}			
-			lastOntologyID=0;
-			lastDisplayLabel=null;
-			lastFormat=null;
+			lastOntologyID="";
+			lastDisplayLabel="";
+			lastFormat="";
 		}
 	}
 
@@ -92,8 +96,6 @@ public class OntologyListHandler extends DefaultHandler {
     public void characters(char[] ch, int start, int length) throws SAXException {
         elementState.characters(ch, start, length);
     }
-
-
 
     private interface ElementState {
 
@@ -107,22 +109,20 @@ public class OntologyListHandler extends DefaultHandler {
     }
 
     private class OntologyIDState implements ElementState {
-
         public void characters(char[] ch, int start, int length) throws SAXException {
-            lastOntologyID = Integer.parseInt(new String(ch, start,  length).trim());
+            lastOntologyID += new String(ch, start,  length).trim();
         }
     }
     
     private class FormatState implements ElementState {
     	public void characters(char[] ch, int start, int length) throws SAXException {
-            lastFormat = new String(ch, start, length);
+            lastFormat += new String(ch, start, length).trim();
         }
     }
 
     private class DisplayLabelState implements ElementState {
-
         public void characters(char[] ch, int start, int length) throws SAXException {
-            lastDisplayLabel = new String(ch, start, length);            
+            lastDisplayLabel += new String(ch, start, length).trim();            
         }
     }
 }
