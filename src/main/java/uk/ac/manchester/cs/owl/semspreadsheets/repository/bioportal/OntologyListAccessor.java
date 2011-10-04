@@ -19,10 +19,12 @@ import org.xml.sax.SAXException;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.ErrorHandler;
 
 /**
- * Author: Matthew Horridge<br>
+ * Author: Matthew Horridge, Stuart Owen<br>
  * The University of Manchester<br>
  * Information Management Group<br>
- * Date: 11-Nov-2009
+ * 
+ * @author Stuart Owen
+ * @author Matthew Horridge
  */
 public class OntologyListAccessor {
 	

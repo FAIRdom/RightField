@@ -12,7 +12,6 @@ import org.xml.sax.helpers.DefaultHandler;
  * Author: Matthew Horridge, Stuart Owen<br>
  * The University of Manchester<br>
  * Information Management Group<br>
- * Date: 11-Nov-2009
  * 
  * @author Stuart Owen
  * @author Matthew Horridge
