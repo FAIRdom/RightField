@@ -86,23 +86,7 @@ public class OntologyListHandlerTest {
         	String asString = labels[i]+" : "+ontologyIds[i]+" ("+formats[i]+")";
         	assertEquals(asString,item.toString());
         }
-	}
-	
-	@Test
-	public void testFullListHandling() throws Exception {
-		final Collection<BioPortalRepositoryItem> collection = new ArrayList<BioPortalRepositoryItem>();
-		OntologyListHandler handler = new OntologyListHandler(new BioPortalRepositoryItemHandler() {
-            public void handleItem(BioPortalRepositoryItem handler) {        
-            	collection.add(handler);
-            }
-        });
-		
-		SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
-        SAXParser saxParser = saxParserFactory.newSAXParser();
-        BufferedInputStream bufferedInputStream = new BufferedInputStream(getDummyXMLStream("ontologies.xml"));
-        saxParser.parse(bufferedInputStream, handler);
-        bufferedInputStream.close();
-	}
+	}		
 	
 	private InputStream getDummyXMLStream(String filename) throws Exception {
 		return OntologyListHandlerTest.class.getResourceAsStream("/"+filename);
