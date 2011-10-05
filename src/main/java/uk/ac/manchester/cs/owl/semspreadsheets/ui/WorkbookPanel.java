@@ -106,8 +106,6 @@ public class WorkbookPanel extends JPanel {
             public void ontologiesChanged(WorkbookManagerEvent event) {
             }
         });
-
-
     }
 
     private void rebuildTabs() {

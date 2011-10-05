@@ -15,6 +15,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.print.attribute.standard.JobHoldUntil;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -40,6 +41,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.repository.RepositoryItem;
 import uk.ac.manchester.cs.owl.semspreadsheets.repository.RepositoryManager;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.ClearOntologyValuesAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.InsertSheetAction;
+import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.OnlineHelpAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.OpenFromBioPortalAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.OpenOntologyAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.OpenWorkbookAction;
@@ -67,9 +69,8 @@ import uk.ac.manchester.cs.owl.semspreadsheets.ui.task.TaskManager;
  */
 
 public class WorkbookFrame extends JFrame {
-
 	
-	private static final long serialVersionUID = 8991252467294969145L;
+	private static final long serialVersionUID = 8991252467294969145L; 
 	
 	private static final String[] WORKBOOK_EXT = new String[] { "xls" };
 	private static final String[] ONTOLOGY_EXT = new String[] { "obo", "owl",
@@ -100,19 +101,16 @@ public class WorkbookFrame extends JFrame {
 		getContentPane().add(new MainPanel(this));
 		JMenuBar menuBar = new JMenuBar();
 		JMenu fileMenu = menuBar.add(new JMenu("File"));
+		fileMenu.setMnemonic(KeyEvent.VK_F);
 		fileMenu.add(new OpenWorkbookAction(this));
 		fileMenu.add(new OpenOntologyAction(this));
 		fileMenu.add(new OpenFromBioPortalAction(this));
 		fileMenu.addSeparator();
 		fileMenu.add(new SaveAction(this));
 		fileMenu.add(new SaveAsAction(this));
-
-		JMenu sheetMenu = new JMenu("Sheet");
-		sheetMenu.add(new InsertSheetAction(workbookManager, this));
-		sheetMenu.add(new RemoveSheetAction(this));
-		sheetMenu.add(new RenameSheetAction(this));
 		
 		JMenu editMenu = menuBar.add(new JMenu("Edit"));
+		editMenu.setMnemonic(KeyEvent.VK_E);
 		
 		editMenu.add(new SheetCellCutAction(workbookManager,getToolkit()));
 		editMenu.add(new SheetCellCopyAction(workbookManager,getToolkit()));
@@ -121,15 +119,20 @@ public class WorkbookFrame extends JFrame {
 		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0));
 		editMenu.add(new JSeparator());
 		
-//		editMenu.add(sheetMenu);		
-//		editMenu.add(new JSeparator());
-		
 		editMenu.add(new ClearOntologyValuesAction(this));
-		//removed for now, as it doesn't work correctly and the behaviour is provided by selecting the column heading.
-		//editMenu.add(new SelectDownColumn(workbookManager, this));
+
+		JMenu sheetMenu = menuBar.add(new JMenu("Sheet"));
+		sheetMenu.setMnemonic(KeyEvent.VK_S);
+		sheetMenu.add(new InsertSheetAction(workbookManager, this));
+		sheetMenu.add(new RemoveSheetAction(this));
+		sheetMenu.add(new RenameSheetAction(this));			
+				
+		JMenu helpMenu = menuBar.add(new JMenu("Help"));		
+		helpMenu.setMnemonic(KeyEvent.VK_H);
 		
-		menuBar.add(sheetMenu);
-		
+		JMenuItem onlineHelp = helpMenu.add(new OnlineHelpAction(this));
+		onlineHelp.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
+						
 		setJMenuBar(menuBar);
 		updateTitleBar();
 		workbookManager.addListener(new WorkbookManagerListener() {

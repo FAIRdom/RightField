@@ -8,17 +8,20 @@ import javax.swing.JSplitPane;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 
 /**
- * Author: Matthew Horridge<br>
+ * Author: Stuart Owen, Matthew Horridge<br>
  * The University of Manchester<br>
  * Information Management Group<br>
  * Date: 18-Sep-2009
+ * 
+ * @author Stuart Owen
+ * @author Matthew Horridge
  */
+@SuppressWarnings("serial")
 public class MainPanel extends JPanel {
 
     private WorkbookManager workbookManager;
 
     private WorkbookPanel workbookPanel;
-
 
     public MainPanel(WorkbookFrame frame) {
         this.workbookManager = frame.getWorkbookManager();
@@ -30,7 +33,6 @@ public class MainPanel extends JPanel {
         sp.setResizeWeight(0.8);
         add(sp);
     }
-
   
     public WorkbookManager getSpreadSheetManager() {
         return workbookManager;
