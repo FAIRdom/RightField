@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -22,7 +21,6 @@ import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyAlreadyExistsException;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyID;
 import org.semanticweb.owlapi.model.OWLOntologyIRIMapper;
@@ -41,15 +39,14 @@ import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.change.SetCellValue;
 import uk.ac.manchester.cs.owl.semspreadsheets.change.WorkbookChange;
-import uk.ac.manchester.cs.owl.semspreadsheets.repository.RepositoryItem;
 import uk.ac.manchester.cs.owl.semspreadsheets.repository.bioportal.BioPortalRepository;
-import uk.ac.manchester.cs.owl.semspreadsheets.repository.bioportal.BioPortalRepositoryItem;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.CellSelectionListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.CellSelectionModel;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.EntitySelectionModel;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.ErrorHandler;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookManagerEvent;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookManagerListener;
+import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookState;
 
 /**
  * Author: Matthew Horridge, Stuart Owen<br>
@@ -68,11 +65,13 @@ public class WorkbookManager {
 
     private URI workbookURI;
 
-    private OWLOntologyManager manager;
+    private OWLOntologyManager owlManager;
 
     private OWLOntology ontology;
 
     private OWLReasoner reasoner;
+    
+    private WorkbookState workbookState = new WorkbookState();
 
     private CellSelectionModel selectionModel;
 
@@ -85,10 +84,10 @@ public class WorkbookManager {
     private BidirectionalShortFormProviderAdapter shortFormProvider;
 
     public WorkbookManager() {
-        this.manager = OWLManager.createOWLOntologyManager();
-        manager.setSilentMissingImportsHandling(true);
+        this.owlManager = OWLManager.createOWLOntologyManager();
+        owlManager.setSilentMissingImportsHandling(true);
         shortFormProvider = new BidirectionalShortFormProviderAdapter(new SimpleShortFormProvider());
-        entitySelectionModel = new EntitySelectionModel(manager.getOWLDataFactory().getOWLThing());
+        entitySelectionModel = new EntitySelectionModel(owlManager.getOWLDataFactory().getOWLThing());
         ontologyTermValidationManager = new OntologyTermValidationManager(this);
         workbook = WorkbookFactory.createWorkbook();
         selectionModel = new CellSelectionModel(this);
@@ -97,7 +96,7 @@ public class WorkbookManager {
             public void selectionChanged(Range range) {
                 handleCellSelectionChanged();
             }
-        });        
+        });
     }
 
     public void applyChanges(List<? extends WorkbookChange> changes) {
@@ -108,6 +107,7 @@ public class WorkbookManager {
 
     public void applyChange(WorkbookChange change) {
         ((MutableWorkbook) workbook).applyChange(change);
+        getWorkbookState().changesUnsaved();
     }
 
     public void addListener(WorkbookManagerListener listener) {
@@ -141,7 +141,6 @@ public class WorkbookManager {
             }
         }
         entitySelectionModel.setSelection(selEnt);
-
     }
 
     private void fireWorkbookCreated() {
@@ -181,7 +180,6 @@ public class WorkbookManager {
         }
     }
 
-
     /**
      * Gets the primary workbook that this manager manager.
      * @return The primary workbook as managed by this manager
@@ -189,7 +187,6 @@ public class WorkbookManager {
     public Workbook getWorkbook() {
         return workbook;
     }
-
 
     public Workbook createNewWorkbook() {
         workbook = WorkbookFactory.createWorkbook();
@@ -215,11 +212,11 @@ public class WorkbookManager {
         ontologyTermValidationManager.getOntologyIRIs();
         final Map<IRI, IRI> ontologyIRIMap = ontologyTermValidationManager.getOntology2PhysicalIRIMap();
         OWLOntologyIRIMapper mapper = new OntologyTermValdiationManagerMapper(ontologyTermValidationManager);
-        manager.addIRIMapper(mapper);
+        owlManager.addIRIMapper(mapper);
         for(IRI iri : ontologyIRIMap.keySet()) {        	
-            if(!manager.contains(iri)) {
+            if(!owlManager.contains(iri)) {
                 try {                	
-                    manager.loadOntology(iri);
+                    owlManager.loadOntology(iri);
                 }
                 catch (OWLOntologyCreationException e) {
                 	e.printStackTrace();
@@ -228,7 +225,7 @@ public class WorkbookManager {
                 }
             }
         }
-        manager.removeIRIMapper(mapper);
+        owlManager.removeIRIMapper(mapper);
         updateReasoner();
         setLabelRendering(true);
         fireOntologiesChanged();
@@ -246,6 +243,7 @@ public class WorkbookManager {
         // Insert validation
         ontologyTermValidationManager.writeValidationToWorkbook();
         workbook.saveAs(uri);
+        getWorkbookState().changesSaved();
         OntologyTermValidationWorkbookParser workbookParser = new OntologyTermValidationWorkbookParser(this);
         workbookParser.clearOntologyTermValidations();
         if (workbookURI == null || !uri.equals(workbookURI)) {
@@ -269,7 +267,7 @@ public class WorkbookManager {
             OntologyTermValidation validation = validations.iterator().next();
             rangeToApply=validation.getRange();            
         }
-        String default_name=getRendering(manager.getOWLDataFactory().getOWLAnnotationProperty(entityIRI));
+        String default_name=getRendering(owlManager.getOWLDataFactory().getOWLAnnotationProperty(entityIRI));
         
         ontologyTermValidationManager.setValidation(rangeToApply, type, entityIRI);
         
@@ -329,14 +327,14 @@ public class WorkbookManager {
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public OWLOntologyManager getOntologyManager() {
-        return manager;
+        return owlManager;
     }
 
     public void unloadOntology(IRI physicalIRI) {
     	
     	OWLOntology loaded = null;
     	
-    	for (OWLOntology ontology : manager.getOntologies()) {
+    	for (OWLOntology ontology : owlManager.getOntologies()) {
     		
     		if (physicalIRI.equals(ontology.getOntologyID().getVersionIRI())) {
     			
@@ -345,7 +343,7 @@ public class WorkbookManager {
     		}
     	}
     	
-    	if (loaded != null) manager.removeOntology(loaded);
+    	if (loaded != null) owlManager.removeOntology(loaded);
     }
     
     public OWLOntology loadOntology(IRI physicalIRI) throws OWLOntologyCreationException {
@@ -357,12 +355,12 @@ public class WorkbookManager {
         //See if an ontology with such ID had been loaded. If yes, unload it
         unloadOntology(physicalIRI);
                 
-    	this.ontology = manager.loadOntologyFromOntologyDocument(BioPortalRepository.handleBioPortalAPIKey(physicalIRI));
+    	this.ontology = owlManager.loadOntologyFromOntologyDocument(BioPortalRepository.handleBioPortalAPIKey(physicalIRI));
     	
     	logIRI = this.ontology.getOntologyID().getOntologyIRI();
     	//Create a new ID and use the physical IRI as a version ID        
         newID = new OWLOntologyID(logIRI, physicalIRI);
-        manager.applyChange(new SetOntologyID(this.ontology, newID));
+        owlManager.applyChange(new SetOntologyID(this.ontology, newID));
         updateReasoner();
         setLabelRendering(true);
         fireOntologiesChanged();
@@ -384,7 +382,7 @@ public class WorkbookManager {
     }
 
     public Set<OWLOntology> getLoadedOntologies() {
-        return manager.getOntologies();
+        return owlManager.getOntologies();
     }
 
 
@@ -421,14 +419,14 @@ public class WorkbookManager {
     public void setLabelRendering(boolean b) {
         if(b) {
             IRI iri = OWLRDFVocabulary.RDFS_LABEL.getIRI();
-            OWLAnnotationProperty prop = manager.getOWLDataFactory().getOWLAnnotationProperty(iri);
+            OWLAnnotationProperty prop = owlManager.getOWLDataFactory().getOWLAnnotationProperty(iri);
             List<OWLAnnotationProperty> props = new ArrayList<OWLAnnotationProperty>();
             props.add(prop);
-            ShortFormProvider provider = new AnnotationValueShortFormProvider(props, new HashMap<OWLAnnotationProperty, List<String>>(), manager);
+            ShortFormProvider provider = new AnnotationValueShortFormProvider(props, new HashMap<OWLAnnotationProperty, List<String>>(), owlManager);
             shortFormProvider.dispose();
-            shortFormProvider = new BidirectionalShortFormProviderAdapter(manager.getOntologies(), provider);
+            shortFormProvider = new BidirectionalShortFormProviderAdapter(owlManager.getOntologies(), provider);
             final Set<OWLEntity> entities = new HashSet<OWLEntity>();
-            for(OWLOntology ont : manager.getOntologies()) {
+            for(OWLOntology ont : owlManager.getOntologies()) {
                 entities.addAll(ont.getSignature());
             }
             shortFormProvider.rebuild(new OWLEntitySetProvider() {
@@ -439,12 +437,12 @@ public class WorkbookManager {
         }
         else {
             ShortFormProvider provider = new SimpleShortFormProvider();
-            shortFormProvider = new BidirectionalShortFormProviderAdapter(manager.getOntologies(), provider);
+            shortFormProvider = new BidirectionalShortFormProviderAdapter(owlManager.getOntologies(), provider);
         }
     }
 
     public OWLDataFactory getDataFactory() {
-        return manager.getOWLDataFactory();
+        return owlManager.getOWLDataFactory();
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -505,5 +503,8 @@ public class WorkbookManager {
         return sheets;
     }
 
+	public WorkbookState getWorkbookState() {
+		return workbookState;
+	}	
 
 }

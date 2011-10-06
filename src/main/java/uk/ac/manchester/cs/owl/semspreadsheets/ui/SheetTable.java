@@ -13,7 +13,10 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 import javax.swing.JTable;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableModel;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidation;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
@@ -43,7 +46,16 @@ public class SheetTable extends JTable {
 
 
         setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        setModel(new SheetTableModel(sheet));
+        TableModel model = new SheetTableModel(sheet);
+        setModel(model);               
+        
+        model.addTableModelListener(new TableModelListener() {
+			@Override
+			public void tableChanged(TableModelEvent arg0) {
+				workbookManager.getWorkbookState().changesUnsaved();
+				
+			}        	
+        });
 
         setCellSelectionEnabled(true);
 

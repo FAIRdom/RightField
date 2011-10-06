@@ -9,10 +9,9 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.SpreadSheetListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Workbook;
 
 /**
- * Author: Matthew Horridge<br>
- * The University of Manchester<br>
- * Information Management Group<br>
- * Date: 18-Sep-2009
+ * 
+ * @author Stuart Owen
+ * @author Matthew Horridge
  */
 public class SheetTableModel extends AbstractTableModel implements SpreadSheetListener {
 

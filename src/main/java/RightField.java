@@ -73,9 +73,18 @@ public class RightField {
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         frame.addWindowListener(new WindowAdapter() {
+        	@Override
+        	public void windowClosed(WindowEvent e) {
+        		System.exit(0);
+        	}
             @Override
             public void windowClosing(WindowEvent e) {
-            	int res = JOptionPane.showConfirmDialog(frame,"Are you sure you wish to exit?");
+            	
+            	int res = JOptionPane.YES_OPTION;
+            	if (!frame.getWorkbookState().isChangesSaved()) {
+            		res = JOptionPane.showConfirmDialog(frame,"You have unsaved changes. Are you sure you wish to exit?","Exit RightField?",JOptionPane.YES_NO_OPTION);
+            	}
+            	
 				if (res==JOptionPane.YES_OPTION) {
 					Preferences preferences = Preferences.userNodeForPackage(RightField.class);
 	                preferences.putInt(WINDOW_X_KEY, frame.getX());

@@ -80,7 +80,10 @@ public class WorkbookFrame extends JFrame {
 			"rdf", "rrf" };
 	private static final String [] APPLICATION_LOGO_FILENAMES = {"/rightfield-logo.png","/rightfield-logo-16x16.png"};
 
-	private static final Logger logger = Logger.getLogger(WorkbookFrame.class);
+	private static final Logger logger = Logger.getLogger(WorkbookFrame.class);	
+	
+	//used for tracking whether there are unsaved changes
+	private boolean changeUnsaved=false;
 
 	private WorkbookManager workbookManager;
 
@@ -118,27 +121,7 @@ public class WorkbookFrame extends JFrame {
 				updateTitleBar();
 			}
 		});
-	}
-
-	private void addClosingHandler() {
-		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-		addWindowListener( new WindowAdapter() {
-
-			@Override
-			public void windowClosed(WindowEvent e) {
-				System.exit(0);
-			}
-
-			@Override
-			public void windowClosing(WindowEvent e) {
-				int res = JOptionPane.showConfirmDialog(getParent(),"Are you sure you wish to exit?");
-				if (res==JOptionPane.YES_OPTION) {
-					dispose();
-				}
-				
-			}			
-		});		
-	}
+	}	
 
 	private void setupMenuItems() {
 		JMenuBar menuBar = new JMenuBar();
@@ -213,7 +196,7 @@ public class WorkbookFrame extends JFrame {
 			if (ret == JOptionPane.YES_OPTION) {
 				taskManager.runTask(new LoadEmbeddedTermsOntologies());
 			}
-		}
+		}				
 	}
 
 	public void updateTitleBar() {
@@ -231,6 +214,10 @@ public class WorkbookFrame extends JFrame {
 		}
 		setTitle(sb.toString());
 
+	}
+	
+	public WorkbookState getWorkbookState() {
+		return getWorkbookManager().getWorkbookState();
 	}
 
 	public WorkbookManager getWorkbookManager() {
@@ -377,6 +364,8 @@ public class WorkbookFrame extends JFrame {
 		renderer.setShortFormProvider(new SimpleShortFormProvider());
 		ToStringRenderer.getInstance().setRenderer(renderer);
 	}
+
+	
 
 	class ExtensionFileFilter extends FileFilter {
 
