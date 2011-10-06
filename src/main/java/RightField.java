@@ -26,6 +26,7 @@ import java.awt.event.WindowEvent;
 import java.util.prefs.Preferences;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -70,16 +71,20 @@ public class RightField {
         frame.setLocation(x, y);
         frame.setSize(width, height);
         frame.setVisible(true);
+        frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                Preferences preferences = Preferences.userNodeForPackage(RightField.class);
-                preferences.putInt(WINDOW_X_KEY, frame.getX());
-                preferences.putInt(WINDOW_Y_KEY, frame.getY());
-                preferences.putInt(WINDOW_WIDTH_KEY, frame.getWidth());
-                preferences.putInt(WINDOW_HEIGHT_KEY, frame.getHeight());
+            	int res = JOptionPane.showConfirmDialog(frame,"Are you sure you wish to exit?");
+				if (res==JOptionPane.YES_OPTION) {
+					Preferences preferences = Preferences.userNodeForPackage(RightField.class);
+	                preferences.putInt(WINDOW_X_KEY, frame.getX());
+	                preferences.putInt(WINDOW_Y_KEY, frame.getY());
+	                preferences.putInt(WINDOW_WIDTH_KEY, frame.getWidth());
+	                preferences.putInt(WINDOW_HEIGHT_KEY, frame.getHeight());
+					frame.dispose();
+				}                
             }
-        });
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        });        
     }
 }

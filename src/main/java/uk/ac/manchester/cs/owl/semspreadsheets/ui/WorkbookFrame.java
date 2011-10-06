@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.FileDialog;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
@@ -40,6 +42,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 import uk.ac.manchester.cs.owl.semspreadsheets.repository.RepositoryItem;
 import uk.ac.manchester.cs.owl.semspreadsheets.repository.RepositoryManager;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.ClearOntologyValuesAction;
+import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.ExitAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.InsertSheetAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.OnlineHelpAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.OpenFromBioPortalAction;
@@ -95,10 +98,49 @@ public class WorkbookFrame extends JFrame {
 				logger.warn("Unable to find the "+logoFilename+" for the icon");
 			}
 		}
-		setIconImages(iconImages);
+		setIconImages(iconImages);		
 		
 		getContentPane().setLayout(new BorderLayout());
 		getContentPane().add(new MainPanel(this));
+		
+		setupMenuItems();
+		updateTitleBar();
+		workbookManager.addListener(new WorkbookManagerListener() {
+			public void workbookChanged(WorkbookManagerEvent event) {
+				handleWorkbookChanged();
+			}
+
+			public void workbookLoaded(WorkbookManagerEvent event) {
+				handleWorkbookChanged();
+			}
+
+			public void ontologiesChanged(WorkbookManagerEvent event) {
+				updateTitleBar();
+			}
+		});
+	}
+
+	private void addClosingHandler() {
+		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		addWindowListener( new WindowAdapter() {
+
+			@Override
+			public void windowClosed(WindowEvent e) {
+				System.exit(0);
+			}
+
+			@Override
+			public void windowClosing(WindowEvent e) {
+				int res = JOptionPane.showConfirmDialog(getParent(),"Are you sure you wish to exit?");
+				if (res==JOptionPane.YES_OPTION) {
+					dispose();
+				}
+				
+			}			
+		});		
+	}
+
+	private void setupMenuItems() {
 		JMenuBar menuBar = new JMenuBar();
 		JMenu fileMenu = menuBar.add(new JMenu("File"));
 		fileMenu.setMnemonic(KeyEvent.VK_F);
@@ -108,6 +150,8 @@ public class WorkbookFrame extends JFrame {
 		fileMenu.addSeparator();
 		fileMenu.add(new SaveAction(this));
 		fileMenu.add(new SaveAsAction(this));
+		fileMenu.add(new JSeparator());
+		fileMenu.add(new ExitAction(this));
 		
 		JMenu editMenu = menuBar.add(new JMenu("Edit"));
 		editMenu.setMnemonic(KeyEvent.VK_E);
@@ -132,22 +176,14 @@ public class WorkbookFrame extends JFrame {
 		
 		JMenuItem onlineHelp = helpMenu.add(new OnlineHelpAction(this));
 		onlineHelp.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
+		
+		
 						
 		setJMenuBar(menuBar);
-		updateTitleBar();
-		workbookManager.addListener(new WorkbookManagerListener() {
-			public void workbookChanged(WorkbookManagerEvent event) {
-				handleWorkbookChanged();
-			}
-
-			public void workbookLoaded(WorkbookManagerEvent event) {
-				handleWorkbookChanged();
-			}
-
-			public void ontologiesChanged(WorkbookManagerEvent event) {
-				updateTitleBar();
-			}
-		});
+	}
+	
+	public void exit() {
+		processWindowEvent(new WindowEvent(this,WindowEvent.WINDOW_CLOSING));
 	}
 
 	public TaskManager getTaskManager() {
