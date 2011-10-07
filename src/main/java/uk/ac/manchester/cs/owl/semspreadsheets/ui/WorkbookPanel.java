@@ -67,12 +67,12 @@ public class WorkbookPanel extends JPanel {
 
             public void sheetAdded() {
                 rebuildTabs();
-                manager.getWorkbookState().changesUnsaved();
+                manager.getWorkbookState().changesUnsaved();        		
             }
 
             public void sheetRemoved() {
-                rebuildTabs();
-                manager.getWorkbookState().changesUnsaved();
+                rebuildTabs();                
+                manager.getWorkbookState().changesUnsaved();        		
             }
 
             public void sheetRenamed(String oldName, String newName) {
@@ -80,9 +80,10 @@ public class WorkbookPanel extends JPanel {
                     if(tabbedPane.getTitleAt(i).equals(oldName)) {
                         tabbedPane.setTitleAt(i, newName);
                     }
-                }
-                manager.getWorkbookState().changesUnsaved();
-            }
+                }              
+        		manager.getWorkbookState().changesUnsaved();
+        		
+            }                       
         };
         manager.getWorkbook().addChangeListener(workbookChangeListener);
         rebuildTabs();

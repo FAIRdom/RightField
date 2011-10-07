@@ -241,14 +241,14 @@ public class WorkbookManager {
     public void saveWorkbook(URI uri) throws IOException {
         // Insert validation
         ontologyTermValidationManager.writeValidationToWorkbook();
-        workbook.saveAs(uri);
-        getWorkbookState().changesSaved();
+        workbook.saveAs(uri);        
         OntologyTermValidationWorkbookParser workbookParser = new OntologyTermValidationWorkbookParser(this);
         workbookParser.clearOntologyTermValidations();
         if (workbookURI == null || !uri.equals(workbookURI)) {
             // TODO: Fire workbook URI changed
             workbookURI = uri;
-        }
+        }        
+        getWorkbookState().changesSaved();
     }
 
     public void setValidationType(ValidationType type) {

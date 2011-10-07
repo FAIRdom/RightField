@@ -23,7 +23,7 @@ public class WorkbookState {
 		logger.debug("Changes saved");
 	}
 	
-	public void changesUnsaved() {
+	public void changesUnsaved() {				
 		this.changesSaved = false;
 		logger.debug("Unsaved changes");
 	}
