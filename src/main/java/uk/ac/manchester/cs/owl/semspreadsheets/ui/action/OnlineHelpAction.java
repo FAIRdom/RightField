@@ -20,7 +20,7 @@ public class OnlineHelpAction extends WorkbookFrameAction {
 
 	private String HELP_URI="http://rightfield.org.uk/guide";
 	
-	private Logger logger = Logger.getLogger(OnlineHelpAction.class);
+	private static Logger logger = Logger.getLogger(OnlineHelpAction.class);
 	
 	public OnlineHelpAction(WorkbookFrame workbookFrame) {
 		super("Online Help",workbookFrame);

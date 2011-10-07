@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -30,13 +29,10 @@ import uk.ac.manchester.cs.owl.semspreadsheets.repository.RepositoryItem;
 import uk.ac.manchester.cs.owl.semspreadsheets.repository.RepositoryItemComparator;
 
 /**
- * Author: Matthew Horridge<br>
- * The University of Manchester<br>
- * Information Management Group<br>
- * Date: 11-Nov-2009
- * 
- * Author: Stuart Owen Date: 15-June-2010
+ * @author Stuart Owen
+ * @author Matthew Horridge
  */
+
 @SuppressWarnings("serial")
 public class RepositoryPanel extends JPanel {
 	

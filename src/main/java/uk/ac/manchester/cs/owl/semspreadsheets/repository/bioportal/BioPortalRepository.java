@@ -15,11 +15,11 @@ import uk.ac.manchester.cs.owl.semspreadsheets.repository.Repository;
 import uk.ac.manchester.cs.owl.semspreadsheets.repository.RepositoryItem;
 
 /**
- * Author: Matthew Horridge<br>
- * The University of Manchester<br>
- * Information Management Group<br>
- * Date: 11-Nov-2009
- */
+ * 
+ * @author Stuart Owen
+ * @author Matthew Horridge
+**/
+
 public class BioPortalRepository implements Repository {
 	
 	private static final Logger logger = Logger.getLogger(BioPortalRepository.class);

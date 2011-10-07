@@ -41,6 +41,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 import uk.ac.manchester.cs.owl.semspreadsheets.repository.RepositoryItem;
 import uk.ac.manchester.cs.owl.semspreadsheets.repository.RepositoryManager;
+import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.AboutBoxAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.ClearOntologyValuesAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.ExitAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.InsertSheetAction;
@@ -159,6 +160,7 @@ public class WorkbookFrame extends JFrame {
 		
 		JMenuItem onlineHelp = helpMenu.add(new OnlineHelpAction(this));
 		onlineHelp.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
+		helpMenu.add(new AboutBoxAction(this));
 		
 		
 						
@@ -200,7 +202,7 @@ public class WorkbookFrame extends JFrame {
 	}
 
 	public void updateTitleBar() {
-		StringBuilder sb = new StringBuilder();
+		StringBuilder sb = new StringBuilder();		
 		sb.append("RightField");
 		URI uri = workbookManager.getWorkbookURI();
 		if (uri != null) {
