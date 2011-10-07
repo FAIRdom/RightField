@@ -17,7 +17,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookFrame;
 public class SaveAction extends WorkbookFrameAction {
 
     public SaveAction(WorkbookFrame workbookFrame) {
-        super("Save workbook", workbookFrame);
+        super("Save spreadsheet", workbookFrame);
         setAcceleratorKey(KeyEvent.VK_S);
     }
 

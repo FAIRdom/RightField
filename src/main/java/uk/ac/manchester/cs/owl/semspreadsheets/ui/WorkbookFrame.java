@@ -132,10 +132,10 @@ public class WorkbookFrame extends JFrame {
 	}	
 
 	private void suggestOpeningWorkbook() {
-		String message = "<html><center><p>Would you like to start by opening an existing workbook you have already created?</p>" +
+		String message = "<html><center><p>Would you like to start by opening an existing spreadsheet you have already created?</p>" +
 						 "<p></p>" +
-						 "<p>If not, you will begin by editing a new workbook which you can save as a new file.</p></center></html>";
-		int ret=JOptionPane.showOptionDialog(this, message, "Open workbook?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,null,null,null);
+						 "<p>If not, you will begin by editing a new spreadsheet which you can save as a new file.</p></center></html>";
+		int ret=JOptionPane.showOptionDialog(this, message, "Open spreadsheet?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,null,null,null);
 		if (ret==JOptionPane.YES_OPTION) {
 			openWorkbook();
 		}
@@ -206,7 +206,7 @@ public class WorkbookFrame extends JFrame {
 			StringBuilder sb = new StringBuilder();
 			sb.append("<html><body>");
 			sb
-					.append("The workbook contains information about terms from ontologies which<br>"
+					.append("The spreadsheet contains information about terms from ontologies which<br>"
 							+ "are not loaded.  Do you want to load these ontologies now?");
 			sb.append("</body></html>");
 			int ret = JOptionPane.showConfirmDialog(this, sb.toString(),
@@ -286,7 +286,7 @@ public class WorkbookFrame extends JFrame {
 	}
 
 	public void openWorkbook()  {
-		File file = browseForFile("Open workbook", FileDialog.LOAD, "Excel Workbook",
+		File file = browseForFile("Open spreadsheet", FileDialog.LOAD, "Excel spreadsheet",
 				WORKBOOK_EXT);
 		if (file != null) {
 			try {
@@ -298,8 +298,8 @@ public class WorkbookFrame extends JFrame {
 	}
 
 	public void saveWorkbookAs() throws IOException {
-		File file = browseForFile("Save workbook as", FileDialog.SAVE,
-				"Excel Workbook", WORKBOOK_EXT);		
+		File file = browseForFile("Save spreadsheet as", FileDialog.SAVE,
+				"Excel spreadsheet", WORKBOOK_EXT);		
 		if (file != null) {
 			file = checkForDefaultExtension(file);
 			workbookManager.saveWorkbook(file.toURI());

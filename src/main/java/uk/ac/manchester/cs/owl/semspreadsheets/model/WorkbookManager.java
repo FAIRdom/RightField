@@ -203,7 +203,7 @@ public class WorkbookManager {
             return workbook;
         }
         catch (IOException e) {
-            throw new IOException("Could not open workbook: " + e.getMessage());
+            throw new IOException("Could not open spreadsheet: " + e.getMessage());
         }
     }
 

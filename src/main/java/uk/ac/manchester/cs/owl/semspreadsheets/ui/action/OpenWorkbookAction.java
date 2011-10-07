@@ -15,7 +15,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookFrame;
 public class OpenWorkbookAction extends WorkbookFrameAction {
 
     public OpenWorkbookAction(WorkbookFrame workbookFrame) {
-        super("Open workbook...", workbookFrame);
+        super("Open spreadsheet...", workbookFrame);
         setAcceleratorKey(KeyEvent.VK_O);
     }
 
