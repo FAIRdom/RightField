@@ -106,8 +106,7 @@ public class WorkbookManager {
     }
 
     public void applyChange(WorkbookChange change) {
-        ((MutableWorkbook) workbook).applyChange(change);
-        getWorkbookState().changesUnsaved();
+        ((MutableWorkbook) workbook).applyChange(change);        
     }
 
     public void addListener(WorkbookManagerListener listener) {

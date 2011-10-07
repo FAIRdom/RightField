@@ -120,6 +120,7 @@ public class WorkbookFrame extends JFrame {
 
 			public void ontologiesChanged(WorkbookManagerEvent event) {
 				updateTitleBar();
+				workbookManager.getWorkbookState().changesUnsaved();
 			}
 		});
 		addWindowListener(new WindowAdapter() {
@@ -127,8 +128,7 @@ public class WorkbookFrame extends JFrame {
 			@Override
 			public void windowOpened(WindowEvent e) {
 				suggestOpeningWorkbook();
-			}
-			
+			}			
 		});
 	}	
 
@@ -245,7 +245,7 @@ public class WorkbookFrame extends JFrame {
 	}
 
 	public Sheet addSheet() {
-		return workbookManager.getWorkbook().addSheet();
+		return workbookManager.getWorkbook().addSheet();		
 	}
 	
 	public void removeSheet(Sheet sheet) {

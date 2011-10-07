@@ -8,9 +8,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Stroke;
-import java.awt.datatransfer.Transferable;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 
 import javax.swing.JTable;
 import javax.swing.event.TableModelEvent;
@@ -44,18 +41,9 @@ public class SheetTable extends JTable {
         this.sheet = sheet;
         workbook = workbookManager.getWorkbook();
 
-
         setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         TableModel model = new SheetTableModel(sheet);
-        setModel(model);               
-        
-        model.addTableModelListener(new TableModelListener() {
-			@Override
-			public void tableChanged(TableModelEvent arg0) {
-				workbookManager.getWorkbookState().changesUnsaved();
-				
-			}        	
-        });
+        setModel(model);                      
 
         setCellSelectionEnabled(true);
 

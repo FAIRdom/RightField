@@ -62,14 +62,17 @@ public class WorkbookPanel extends JPanel {
                 	SheetTableModel model = (SheetTableModel)sheetPanel.getSheetTable().getModel();
                 	model.fireTableCellUpdated(scv.getRow(),scv.getCol());
                 }
+                manager.getWorkbookState().changesUnsaved();
             }
 
             public void sheetAdded() {
                 rebuildTabs();
+                manager.getWorkbookState().changesUnsaved();
             }
 
             public void sheetRemoved() {
                 rebuildTabs();
+                manager.getWorkbookState().changesUnsaved();
             }
 
             public void sheetRenamed(String oldName, String newName) {
@@ -78,6 +81,7 @@ public class WorkbookPanel extends JPanel {
                         tabbedPane.setTitleAt(i, newName);
                     }
                 }
+                manager.getWorkbookState().changesUnsaved();
             }
         };
         manager.getWorkbook().addChangeListener(workbookChangeListener);
