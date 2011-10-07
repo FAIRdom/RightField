@@ -2,13 +2,8 @@ package uk.ac.manchester.cs.owl.semspreadsheets.ui.action;
 
 import java.awt.Desktop;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.net.URI;
-
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.KeyStroke;
 
 import org.apache.log4j.Logger;
 

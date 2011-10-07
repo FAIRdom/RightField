@@ -1,6 +1,5 @@
 package uk.ac.manchester.cs.owl.semspreadsheets.ui.action;
 
-import java.awt.Dialog;
 import java.awt.event.ActionEvent;
 
 import javax.swing.JDialog;

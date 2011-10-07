@@ -3,7 +3,6 @@ package uk.ac.manchester.cs.owl.semspreadsheets.ui.action;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
-import uk.ac.manchester.cs.owl.semspreadsheets.ui.ErrorHandler;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookFrame;
 
 /**

@@ -10,8 +10,6 @@ import java.awt.Rectangle;
 import java.awt.Stroke;
 
 import javax.swing.JTable;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
