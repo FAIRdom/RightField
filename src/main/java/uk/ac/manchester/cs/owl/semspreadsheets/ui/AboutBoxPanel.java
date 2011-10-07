@@ -8,8 +8,11 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.net.URI;
+import java.net.URL;
 
 import javax.swing.BoxLayout;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -28,12 +31,11 @@ public class AboutBoxPanel extends JPanel {
 	public AboutBoxPanel() {
 		super(true);
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		
-		setAlignmentX(CENTER_ALIGNMENT);
+				
 		JLabel title = new JLabel("RightField");
 		title.setFont(title.getFont().deriveFont(40f));
 		title.setAlignmentX(CENTER_ALIGNMENT);
-		add(title);
+		add(rightFieldLogo());
 		
 		JLabel version = new JLabel("Version "+applicationVersion());
 		version.setAlignmentX(CENTER_ALIGNMENT);
@@ -73,6 +75,16 @@ public class AboutBoxPanel extends JPanel {
 				
 	}
 	
+	private JLabel rightFieldLogo() {
+		JLabel result;
+		URL resource = AboutBoxPanel.class.getResource("/rightfield-about-logo.png");
+		Icon logo = new ImageIcon(resource);  
+		result = new JLabel(logo);
+		result.setAlignmentX(CENTER_ALIGNMENT);
+		
+		return result;
+	}
+	
 	private String applicationVersion() {
 		String v = AboutBoxPanel.class.getPackage().getImplementationVersion();
 		if (v==null) {
@@ -80,6 +92,16 @@ public class AboutBoxPanel extends JPanel {
 		}
 		return v;
 	}	
+	
+	public static void main(String[] args) {
+		AboutBoxPanel panel = new AboutBoxPanel();
+		JOptionPane op = new JOptionPane(panel, JOptionPane.PLAIN_MESSAGE,
+				JOptionPane.DEFAULT_OPTION);
+		
+		op.setOptions(new Object[]{"OK"});
+		JDialog dialog = op.createDialog("About RightField");
+		dialog.setVisible(true);
+	}
 }
 
 
