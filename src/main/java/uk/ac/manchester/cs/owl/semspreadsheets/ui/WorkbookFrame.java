@@ -122,7 +122,25 @@ public class WorkbookFrame extends JFrame {
 				updateTitleBar();
 			}
 		});
+		addWindowListener(new WindowAdapter() {
+
+			@Override
+			public void windowOpened(WindowEvent e) {
+				suggestOpeningWorkbook();
+			}
+			
+		});
 	}	
+
+	private void suggestOpeningWorkbook() {
+		String message = "<html><center><p>Would you like to start by opening an existing workbook you have already created?</p>" +
+						 "<p></p>" +
+						 "<p>If not, you will begin by editing a new workbook which you can save as a new file.</p></center></html>";
+		int ret=JOptionPane.showOptionDialog(this, message, "Open workbook?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,null,null,null);
+		if (ret==JOptionPane.YES_OPTION) {
+			openWorkbook();
+		}
+	}
 
 	private void setupMenuItems() {
 		JMenuBar menuBar = new JMenuBar();
@@ -268,11 +286,15 @@ public class WorkbookFrame extends JFrame {
 		}
 	}
 
-	public void openWorkbook() throws IOException {
+	public void openWorkbook()  {
 		File file = browseForFile("Open workbook", FileDialog.LOAD, "Excel Workbook",
 				WORKBOOK_EXT);
 		if (file != null) {
-			workbookManager.loadWorkbook(file);
+			try {
+				workbookManager.loadWorkbook(file);
+			} catch (IOException e) {
+				ErrorHandler.getErrorHandler().handleError(e);
+			}
 		}
 	}
 

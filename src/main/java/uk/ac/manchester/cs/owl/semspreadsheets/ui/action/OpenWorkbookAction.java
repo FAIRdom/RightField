@@ -24,11 +24,6 @@ public class OpenWorkbookAction extends WorkbookFrameAction {
      * Invoked when an action occurs.
      */
     public void actionPerformed(ActionEvent e) {
-        try {
-            getWorkbookFrame().openWorkbook();
-        }
-        catch (Exception e1) {
-            ErrorHandler.getErrorHandler().handleError(e1);
-        }
+        getWorkbookFrame().openWorkbook();        
     }
 }

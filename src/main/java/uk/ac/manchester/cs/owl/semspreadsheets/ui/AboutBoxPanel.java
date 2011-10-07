@@ -31,10 +31,7 @@ public class AboutBoxPanel extends JPanel {
 	public AboutBoxPanel() {
 		super(true);
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-				
-		JLabel title = new JLabel("RightField");
-		title.setFont(title.getFont().deriveFont(40f));
-		title.setAlignmentX(CENTER_ALIGNMENT);
+						
 		add(rightFieldLogo());
 		
 		JLabel version = new JLabel("Version "+applicationVersion());
