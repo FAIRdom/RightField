@@ -64,7 +64,7 @@ public class SheetHSSFImpl implements Sheet {
         hssfWorkbook.setSheetHidden(hssfWorkbook.getSheetIndex(sheet), b);
     }
 
-    public void setVeryHidden(boolean b) {
+    public void setVeryHidden(boolean b) {    	
         if (b) {
             hssfWorkbook.setSheetHidden(hssfWorkbook.getSheetIndex(sheet), 2);
         }
@@ -72,6 +72,11 @@ public class SheetHSSFImpl implements Sheet {
             hssfWorkbook.setSheetHidden(hssfWorkbook.getSheetIndex(sheet), false);
         }
     }
+    
+    @Override
+	public boolean isVeryHidden() {
+		return hssfWorkbook.isSheetVeryHidden(hssfWorkbook.getSheetIndex(sheet));
+	}
 
     public boolean equals(Object obj) {
         if (!(obj instanceof SheetHSSFImpl)) {
@@ -204,5 +209,7 @@ public class SheetHSSFImpl implements Sheet {
 
     public void removeValidation(Validation validation) {
     }
+
+	
 
 }

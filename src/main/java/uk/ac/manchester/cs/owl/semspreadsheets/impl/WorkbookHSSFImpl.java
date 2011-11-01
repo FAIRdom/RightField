@@ -223,11 +223,7 @@ public class WorkbookHSSFImpl implements MutableWorkbook, WorkbookChangeVisitor 
         stream.close();
     }
 
-
-
     /////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
 
     public void visit(SetCellValue setCellValue) {
         HSSFSheet hssfSheet = workbook.getSheet(setCellValue.getSheet().getName());

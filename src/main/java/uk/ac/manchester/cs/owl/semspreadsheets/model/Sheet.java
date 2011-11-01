@@ -17,6 +17,8 @@ public interface Sheet {
     Workbook getWorkbook();
 
     boolean isHidden();
+    
+    boolean isVeryHidden();
 
     void setVeryHidden(boolean b);
 
