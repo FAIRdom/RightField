@@ -249,7 +249,7 @@ public class WorkbookHSSFImpl implements MutableWorkbook, WorkbookChangeVisitor 
 	public List<Sheet> getVisibleSheets() {
 		List<Sheet> result = new ArrayList<Sheet>();
 		for (Sheet sheet : getSheets()) {
-			if (!sheet.isHidden()) result.add(sheet);			
+			if (!sheet.isHidden() && !sheet.isVeryHidden()) result.add(sheet);			
 		}
 		return result;
 	}

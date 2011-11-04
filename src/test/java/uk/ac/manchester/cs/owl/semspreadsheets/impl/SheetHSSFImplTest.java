@@ -131,7 +131,7 @@ public class SheetHSSFImplTest {
 		assertFalse(sheet.isHidden());
 		sheet.setVeryHidden(true);
 		assertTrue(sheet.isVeryHidden());
-		assertTrue(sheet.isHidden());
+		assertFalse(sheet.isHidden());
 	}
 	
 	@Test
@@ -139,7 +139,7 @@ public class SheetHSSFImplTest {
 		WorkbookHSSFImpl book = getTestWorkbook();
 		Sheet sheet = book.getSheet(2);
 		assertEquals("wksowlv0",sheet.getName());
-		assertTrue(sheet.isHidden());
+		assertFalse(sheet.isHidden());
 		assertTrue(sheet.isVeryHidden());		
 	}
 	

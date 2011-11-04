@@ -57,7 +57,7 @@ public class SheetHSSFImpl implements Sheet {
     }
 
     public boolean isHidden() {
-        return isVeryHidden() || hssfWorkbook.isSheetHidden(hssfWorkbook.getSheetIndex(sheet));
+        return hssfWorkbook.isSheetHidden(hssfWorkbook.getSheetIndex(sheet));
     }
 
     public void setHidden(boolean b) {
