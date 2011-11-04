@@ -95,7 +95,7 @@ public class SheetHSSFImplTest {
 		assertEquals(1,list.size());
 		Validation val = list.get(0);
 		assertEquals("wksowlv0",val.getListName());
-		assertEquals("Sheet3!B2:C3",val.getRange().toString());
+		assertEquals("Sheet1!B2:C3",val.getRange().toString());
 	}
 	
 	@Test

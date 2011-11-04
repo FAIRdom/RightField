@@ -152,7 +152,7 @@ public class WorkbookHSSFImpl implements MutableWorkbook, WorkbookChangeVisitor 
     }
         
     public Sheet addSheet() {
-        Sheet sheet = new SheetHSSFImpl(this, workbook.createSheet());
+        Sheet sheet = createSheet();
         for(WorkbookChangeListener listener : new ArrayList<WorkbookChangeListener>(changeListeners)) {
             try {
                 listener.sheetAdded();
@@ -163,18 +163,37 @@ public class WorkbookHSSFImpl implements MutableWorkbook, WorkbookChangeVisitor 
         }
         return sheet;
     }
-
-    public Sheet addHiddenSheet() {
-        HSSFSheet hssfSheet = workbook.createSheet();
-        workbook.setSheetHidden(workbook.getSheetIndex(hssfSheet.getSheetName()), true);
-        return new SheetHSSFImpl(this, hssfSheet);
+    
+    protected Sheet createSheet() { 
+    	int x=0;
+    	String name = "Sheet" + Integer.toString(x);
+    	while (sheetNameExists(name)) {
+    		x++;
+    		name = "Sheet" + Integer.toString(x);
+    	}
+    	HSSFSheet hssfSheet = workbook.createSheet(name);
+    	return new SheetHSSFImpl(this, hssfSheet);
+    }
+    
+    protected boolean sheetNameExists(String name) {    	
+    	for (Sheet sheet : getSheets()) {
+    		if (sheet.getName().equals(name)) {
+    			return true;
+    		}
+    	}
+    	return false;
     }
 
+    public Sheet addHiddenSheet() {
+        Sheet sheet = createSheet();
+        sheet.setHidden(true);
+        return sheet;
+    }
 
     public Sheet addVeryHiddenSheet() {
-        HSSFSheet hssfSheet = workbook.createSheet();
-        workbook.setSheetHidden(workbook.getSheetIndex(hssfSheet.getSheetName()), 2);
-        return new SheetHSSFImpl(this, hssfSheet);
+    	Sheet sheet = createSheet();
+        sheet.setVeryHidden(true);
+        return sheet;
     }
 
     protected void fireSheetRenamed(String oldName, String newName) {
@@ -221,7 +240,7 @@ public class WorkbookHSSFImpl implements MutableWorkbook, WorkbookChangeVisitor 
         BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(file));
         workbook.write(stream);        
         stream.close();
-    }
+    }        
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////
 

@@ -14,6 +14,11 @@ public class SpreadsheetTestHelper {
 		return openWorkbookHSSF(uri);
 	}
 	
+	public static WorkbookHSSFImpl getBlankWorkbook() throws Exception 
+	{
+		return new WorkbookHSSFImpl();
+	}
+	
 	public static SheetHSSFImpl getWorkbookSheet(String resourceName, int index) throws Exception {
 		WorkbookHSSFImpl book = openWorkbookHSSF(resourceName);
 		return (SheetHSSFImpl)book.getSheet(index);
