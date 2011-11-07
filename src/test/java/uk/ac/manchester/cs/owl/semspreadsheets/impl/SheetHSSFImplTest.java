@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.poi.hssf.usermodel.HSSFDataValidation;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.junit.Test;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
@@ -39,6 +41,31 @@ public class SheetHSSFImplTest {
 		assertEquals(11,val.getLastRow());
 		assertEquals(sheet,val.getSheet());
 		assertEquals("Sheet0!E12:E12",val.getRange().toString());
+	}
+	
+	@Test
+	public void testGetValidationData() throws Exception {
+		SheetHSSFImpl sheet = getTestSheet();
+		List<HSSFDataValidation> validationData = sheet.getValidationData();
+		assertEquals(1,validationData.size());
+		HSSFDataValidation val = validationData.get(0);
+		CellRangeAddress[] cellRangeAddresses = val.getRegions().getCellRangeAddresses();
+		assertEquals(1,cellRangeAddresses.length);
+		CellRangeAddress rangeAddresses = cellRangeAddresses[0];
+		assertEquals(4,rangeAddresses.getFirstColumn());
+		assertEquals(4,rangeAddresses.getLastColumn());
+		assertEquals(11,rangeAddresses.getFirstRow());
+		assertEquals(11,rangeAddresses.getLastRow());
+	}
+	
+	@Test
+	public void testClearValidationData() throws Exception {
+		SheetHSSFImpl sheet = getTestSheet();
+		List<HSSFDataValidation> validationData = sheet.getValidationData();
+		assertEquals(1,validationData.size());
+		sheet.clearValidationData();
+		validationData = sheet.getValidationData();
+		assertEquals(0,validationData.size());		
 	}
 	
 	@Test

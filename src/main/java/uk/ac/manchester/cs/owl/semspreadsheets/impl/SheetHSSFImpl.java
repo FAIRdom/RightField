@@ -5,12 +5,22 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.poi.hssf.record.DVRecord;
+import org.apache.poi.hssf.record.Record;
+import org.apache.poi.hssf.record.aggregates.DataValidityTable;
+import org.apache.poi.hssf.record.aggregates.RecordAggregate;
 import org.apache.poi.hssf.usermodel.DVConstraint;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFDataValidation;
+import org.apache.poi.hssf.usermodel.HSSFEvaluationWorkbook;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.formula.Formula;
+import org.apache.poi.ss.formula.ptg.IntPtg;
+import org.apache.poi.ss.formula.ptg.NamePtg;
+import org.apache.poi.ss.formula.ptg.Ptg;
+import org.apache.poi.ss.formula.ptg.StringPtg;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellRangeAddressList;
@@ -151,20 +161,8 @@ public class SheetHSSFImpl implements Sheet {
             HSSFCell theCell = theRow.getCell(col);
             theCell.setCellValue("");
         }
-    }
-
-    public Validation getValidationAt(int col, int row) {
-        for (HSSFDataValidation validation : sheet.getValidationData()) {
-            for (CellRangeAddress address : validation.getRegions().getCellRangeAddresses()) {
-                if (address.getFirstColumn() <= col && col <= address.getLastColumn()) {
-                    if (address.getFirstRow() <= row && row <= address.getLastRow()) {
-                        return new ValidationImpl(validation.getConstraint().getFormula1(), this, address.getFirstColumn(), address.getLastColumn(), address.getFirstRow(), address.getLastRow());
-                    }
-                }
-            }
-        }
-        return null;
-    }
+    }            
+        
 
     public Collection<Validation> getIntersectingValidations(Range range) {
         ArrayList<Validation> intersectingValidations = new ArrayList<Validation>();
@@ -186,10 +184,6 @@ public class SheetHSSFImpl implements Sheet {
         return containingValidations;
     }
 
-    public void clearValidation() {
-        sheet.clearValidationData();
-    }
-
     public void addValidation(String namedRange, int firstCol, int firstRow, int lastCol, int lastRow) {
         CellRangeAddressList addressList = new CellRangeAddressList(firstRow, lastRow, firstCol, lastCol);
         HSSFDataValidation dataValidation = new HSSFDataValidation(addressList, DVConstraint.createFormulaListConstraint(namedRange));
@@ -198,18 +192,21 @@ public class SheetHSSFImpl implements Sheet {
 
     public Collection<Validation> getValidations() {
         List<Validation> validationList = new ArrayList<Validation>();
-        for (HSSFDataValidation validation : sheet.getValidationData()) {
+        for (HSSFDataValidation validation : getValidationData()) {
             for (CellRangeAddress address : validation.getRegions().getCellRangeAddresses()) {
                 validationList.add(new ValidationImpl(validation.getConstraint().getFormula1(), this, address.getFirstColumn(), address.getLastColumn(), address.getFirstRow(), address.getLastRow()));
             }
 
         }
         return validationList;
+    }   
+    
+    public List<HSSFDataValidation> getValidationData() {    	    	
+    	return PatchedPoi.getInstance().getValidationData(sheet, hssfWorkbook);
+    }    
+    
+    public void clearValidationData() {
+        PatchedPoi.getInstance().clearValidationData(sheet);
     }
-
-    public void removeValidation(Validation validation) {
-    }
-
-	
 
 }

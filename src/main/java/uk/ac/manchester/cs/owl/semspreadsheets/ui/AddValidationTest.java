@@ -30,7 +30,7 @@ public class AddValidationTest extends SelectedCellsAction {
         Workbook wb = wm.getWorkbook();
         final Range range = getSelectedRange();
         wb.addName("test", range);
-        sheet.clearValidation();
+        sheet.clearValidationData();
         sheet.addValidation("test", 0, 0, 0, 0);
     }
 }

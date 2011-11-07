@@ -1,0 +1,43 @@
+diff -rupN ../poi-3.8-beta4-orig/src/java/org/apache/poi/hssf/record/aggregates/DataValidityTable.java ./src/java/org/apache/poi/hssf/record/aggregates/DataValidityTable.java
+--- ../poi-3.8-beta4-orig/src/java/org/apache/poi/hssf/record/aggregates/DataValidityTable.java	2011-08-12 15:11:36.000000000 +0100
++++ ./src/java/org/apache/poi/hssf/record/aggregates/DataValidityTable.java	2011-11-07 17:41:31.906931360 +0000
+@@ -67,4 +67,9 @@ public final class DataValidityTable ext
+ 		_validationList.add(dvRecord);
+ 		_headerRec.setDVRecNo(_validationList.size());
+ 	}
++	
++	public void clear() {
++		_validationList.clear();
++		_headerRec.setDVRecNo(0);
++	}
+ }
+diff -rupN ../poi-3.8-beta4-orig/src/java/org/apache/poi/hssf/record/DVRecord.java ./src/java/org/apache/poi/hssf/record/DVRecord.java
+--- ../poi-3.8-beta4-orig/src/java/org/apache/poi/hssf/record/DVRecord.java	2011-08-12 15:11:42.000000000 +0100
++++ ./src/java/org/apache/poi/hssf/record/DVRecord.java	2011-11-07 16:59:41.206932699 +0000
+@@ -320,4 +320,12 @@ public final class DVRecord extends Stan
+ 	public Object clone() {
+ 		return cloneViaReserialise();
+ 	}
++	
++	public Formula getFormula1() {
++        return _formula1;
++	}
++
++	public Formula getFormula2() {
++		return _formula2;
++	}
+ }
+diff -rupN ../poi-3.8-beta4-orig/src/java/org/apache/poi/hssf/usermodel/HSSFSheet.java ./src/java/org/apache/poi/hssf/usermodel/HSSFSheet.java
+--- ../poi-3.8-beta4-orig/src/java/org/apache/poi/hssf/usermodel/HSSFSheet.java	2011-08-12 15:11:16.000000000 +0100
++++ ./src/java/org/apache/poi/hssf/usermodel/HSSFSheet.java	2011-11-07 16:26:01.505683044 +0000
+@@ -98,6 +98,10 @@ public final class HSSFSheet implements 
+         this._workbook = workbook;
+         this._book = workbook.getWorkbook();
+     }
++    
++    public DataValidityTable getDataValidityTable() {
++    	return _sheet.getOrCreateDataValidityTable();
++    }
+ 
+     /**
+      * Creates an HSSFSheet representing the given Sheet object.  Should only be

@@ -40,9 +40,7 @@ public interface Sheet {
 
     void clearCellAt(int col, int row);
 
-    void addValidation(String namedRange, int firstCol, int firstRow, int lastCol, int lastRow);
-
-    void removeValidation(Validation validation);
+    void addValidation(String namedRange, int firstCol, int firstRow, int lastCol, int lastRow);    
 
     Collection<Validation> getValidations();
 
@@ -50,11 +48,6 @@ public interface Sheet {
 
     Collection<Validation> getContainingValidations(Range range);
 
-    Validation getValidationAt(int col, int row);
-
-    void clearValidation();
-
-
-
+    void clearValidationData();
 
 }

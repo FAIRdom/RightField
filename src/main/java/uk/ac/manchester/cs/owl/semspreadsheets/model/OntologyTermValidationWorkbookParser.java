@@ -57,7 +57,7 @@ public class OntologyTermValidationWorkbookParser {
             }
         }
         for (Sheet sheet2 : workbook.getSheets()) {
-            sheet2.clearValidation();
+            sheet2.clearValidationData();
         }
         for (Sheet sheet : validationSheets) {
             workbook.deleteSheet(sheet.getName());

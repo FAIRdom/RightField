@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <metadata>
   <groupId>org.sysmo-db</groupId>
-  <artifactId>poi-patched</artifactId>
-  <version>unknown</version>
+  <artifactId>poi-rightfield</artifactId>
+  <version>3.8-beta4</version>
   <versioning>
     <versions>
-      <version>unknown</version>
+      <version>3.8-beta4</version>
     </versions>
-    <lastUpdated>20110722104650</lastUpdated>
+    <lastUpdated>20111107174332</lastUpdated>
   </versioning>
 </metadata>
