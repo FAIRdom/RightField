@@ -30,9 +30,7 @@ public interface Sheet {
 
     int getColumnWidth(int col);
 
-    void clearAllCells();
-
-    boolean isCellAt(int col, int row);
+    void clearAllCells();    
 
     Cell getCellAt(int col, int row);
 

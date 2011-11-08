@@ -122,12 +122,7 @@ public class SheetHSSFImpl implements Sheet {
             Row row = it.next();
             sheet.removeRow(row);
         }
-    }
-
-    public boolean isCellAt(int col, int row) {
-    	//FIXME: is this always false??
-        return false;
-    }
+    }    
 
     public Cell getCellAt(int col, int row) {
         HSSFRow hssfRow = sheet.getRow(row);
