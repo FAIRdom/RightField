@@ -10,6 +10,7 @@ import java.util.Map;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
@@ -28,24 +29,39 @@ public class ValidationTypeSelectorPanel extends JPanel implements ValidationTyp
 
 
     private Map<JRadioButton, ValidationType> values = new LinkedHashMap<JRadioButton, ValidationType>();
+    private JButton applyButton = new JButton("Apply");
 
     private WorkbookManager workbookManager;
 
-    private CellSelectionListener cellSelectionListener;
+    private CellSelectionListener cellSelectionListener;	
 
     public ValidationTypeSelectorPanel(WorkbookManager workbookManager) {
-        this.workbookManager = workbookManager;
+        this.workbookManager = workbookManager;		
         setLayout(new BorderLayout());
         Box box = new Box(BoxLayout.Y_AXIS);
         add(box, BorderLayout.NORTH);        
-
+        add(applyButton);
         ButtonGroup buttonGroup = new ButtonGroup();
 
-        ActionListener actionListener = new ActionListener() {
+        applyButton.setEnabled(false);
+        
+        ActionListener applyButtonActionListener = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 transmitSelectionToModel();
+                applyButton.setEnabled(false);
             }
         };
+        
+        applyButton.addActionListener(applyButtonActionListener);
+        
+        ActionListener checkboxActionListener = new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	previewSelectionInList();
+                applyButton.setEnabled(true);
+            }			
+        };
+        
+        
 
         for(ValidationType type : ValidationType.values()) {
             JRadioButton button = new JRadioButton(type.toString());
@@ -57,7 +73,7 @@ public class ValidationTypeSelectorPanel extends JPanel implements ValidationTyp
             }
             values.put(button, type);
             buttonGroup.add(button);
-            button.addActionListener(actionListener);
+            button.addActionListener(checkboxActionListener);
         }
 
         cellSelectionListener = new CellSelectionListener() {
@@ -68,6 +84,12 @@ public class ValidationTypeSelectorPanel extends JPanel implements ValidationTyp
         workbookManager.getSelectionModel().addCellSelectionListener(cellSelectionListener);
         updateSelectionFromModel();
     }
+    
+    private void previewSelectionInList() {
+    	workbookManager.previewValidationType(getSelectedType());		
+	}
+    
+    
 
     private void transmitSelectionToModel() {
         workbookManager.setValidationType(getSelectedType());

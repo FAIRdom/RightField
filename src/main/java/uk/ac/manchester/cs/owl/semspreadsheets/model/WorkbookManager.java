@@ -251,8 +251,14 @@ public class WorkbookManager {
         getWorkbookState().changesSaved();
     }
 
+    public void previewValidationType(ValidationType selectedType) {
+    	IRI iri = entitySelectionModel.getSelection().getIRI();
+    	Range range = new Range(workbook.getSheet(0));
+    	ontologyTermValidationManager.previewValidation(range,selectedType, iri);
+	}	
+    
     public void setValidationType(ValidationType type) {
-        setValidationType(type, entitySelectionModel.getSelection().getIRI());
+        setValidationType(type,entitySelectionModel.getSelection().getIRI() );
     }
 
     public void setValidationTypeAt(Range range,ValidationType type, IRI entityIRI) {

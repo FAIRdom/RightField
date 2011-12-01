@@ -1,4 +1,6 @@
 package uk.ac.manchester.cs.owl.semspreadsheets.model;
+
+import java.util.List;
 /*
  * Copyright (C) 2009, University of Manchester
  *
@@ -31,4 +33,6 @@ package uk.ac.manchester.cs.owl.semspreadsheets.model;
 public interface OntologyTermValidationListener {
 
     void validationsChanged();
+
+	void ontologyTermSelected(List<OntologyTermValidation> previewList);
 }

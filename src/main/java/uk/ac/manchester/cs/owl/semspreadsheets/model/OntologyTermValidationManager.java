@@ -72,6 +72,20 @@ public class OntologyTermValidationManager {
             fireValidationsChanged();
         }
     }
+    
+    public void previewValidation(Range range, ValidationType type, IRI entityIRI) {
+    	List<OntologyTermValidation> previewList = new ArrayList<OntologyTermValidation>();
+    	
+        Collection<OntologyTermValidation> intersectingValidations = getIntersectingValidations(range);
+        if (!type.equals(ValidationType.NOVALIDATION)) {
+            // Add new validation
+            OntologyTermValidationDescriptor descriptor = new OntologyTermValidationDescriptor(type, entityIRI, workbookManager);
+            OntologyTermValidation validation = new OntologyTermValidation(descriptor, range); 
+            previewList.add(validation);
+        }
+        previewList.removeAll(intersectingValidations);
+        fireOntologyTermSelected(previewList);
+    }
 
     public void setValidation(Range range, ValidationType type, IRI entityIRI) {
         Collection<OntologyTermValidation> intersectingValidations = getIntersectingValidations(range);
@@ -152,6 +166,17 @@ public class OntologyTermValidationManager {
         for(OntologyTermValidationListener listener : new ArrayList<OntologyTermValidationListener>(listeners)) {
             try {
                 listener.validationsChanged();
+            }
+            catch (Throwable e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    
+    protected void fireOntologyTermSelected(List<OntologyTermValidation> previewList) {
+        for(OntologyTermValidationListener listener : new ArrayList<OntologyTermValidationListener>(listeners)) {
+            try {
+                listener.ontologyTermSelected(previewList);
             }
             catch (Throwable e) {
                 e.printStackTrace();

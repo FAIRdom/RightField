@@ -43,16 +43,17 @@ public class ValidationInspectorPanel extends JPanel {
 
         ClassHierarchyTreePanel classHierarchyTreePanel = new ClassHierarchyTreePanel(frame);
         classHierarchyTreePanel.setBorder(createTitledBorder("HIERARCHY"));
-        outerPanel.add(classHierarchyTreePanel);
-
+        outerPanel.add(classHierarchyTreePanel);        
+        
+        ValidationValuesPanel valuesPanel = new ValidationValuesPanel(frame.getWorkbookManager());
+        valuesPanel.setBorder(createTitledBorder("ALLOWED VALUES"));
+        
         JPanel innerPanel = new JPanel(new BorderLayout(7, 7));        
         outerPanel.add(innerPanel, BorderLayout.SOUTH);
         ValidationTypeSelectorPanel typeSelectorPanel = new ValidationTypeSelectorPanel(frame.getWorkbookManager());
         typeSelectorPanel.setBorder(createTitledBorder("TYPE OF ALLOWED VALUES"));
         innerPanel.add(typeSelectorPanel, BorderLayout.NORTH);
         
-        ValidationValuesPanel valuesPanel = new ValidationValuesPanel(frame.getWorkbookManager());
-        valuesPanel.setBorder(createTitledBorder("ALLOWED VALUES"));
         innerPanel.add(valuesPanel, BorderLayout.SOUTH);
         frame.getWorkbookManager().getSelectionModel().addCellSelectionListener(new CellSelectionListener() {
             public void selectionChanged(Range range) {

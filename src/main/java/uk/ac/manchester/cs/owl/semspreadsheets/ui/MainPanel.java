@@ -25,7 +25,7 @@ public class MainPanel extends JPanel {
 
     public MainPanel(WorkbookFrame frame) {
         this.workbookManager = frame.getWorkbookManager();
-        workbookPanel = new WorkbookPanel(workbookManager);
+        workbookPanel = new WorkbookPanel(workbookManager);        
         setLayout(new BorderLayout());
         JSplitPane sp = new JSplitPane();
         sp.setLeftComponent(workbookPanel);

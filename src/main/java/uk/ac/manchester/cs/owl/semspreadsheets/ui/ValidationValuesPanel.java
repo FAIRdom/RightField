@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.Collection;
+import java.util.List;
 import java.util.TreeSet;
 
 import javax.swing.BorderFactory;
@@ -84,9 +85,17 @@ public class ValidationValuesPanel extends JPanel {
         });
         termList.setCellRenderer(new ValueListItemCellRenderer());
         workbookManager.getOntologyTermValidationManager().addListener(new OntologyTermValidationListener() {
-            public void validationsChanged() {
+            @Override
+        	public void validationsChanged() {
                 updateFromModel();
-            }
+            }			
+
+			@Override
+			public void ontologyTermSelected(
+					List<OntologyTermValidation> previewList) {
+				updateFromPreviewList(previewList);
+				
+			}
         });
         termList.setFixedCellHeight(18);
         termList.setVisibleRowCount(10);
@@ -94,7 +103,19 @@ public class ValidationValuesPanel extends JPanel {
 //        setMaximumSize(new Dimension(500, 200));
     }
 
-    private void updateFromModel() {
+    protected void updateFromPreviewList(
+			List<OntologyTermValidation> previewList) {
+    	TreeSet<ValueListItem> listData = new TreeSet<ValueListItem>();
+    	for(OntologyTermValidation validation : previewList) {
+            for(Term term : validation.getValidationDescriptor().getTerms()) {
+                listData.add(new ValueListItem(term.getName(), validation.getValidationDescriptor().getType()));
+            }
+        }
+        termList.setListData(listData.toArray());
+		
+	}
+
+	private void updateFromModel() {
         termList.setListData(new Object [0]);
         Range range = workbookManager.getSelectionModel().getSelectedRange();
         if(!range.isCellSelection()) {

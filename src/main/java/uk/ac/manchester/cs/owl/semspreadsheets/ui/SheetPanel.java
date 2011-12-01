@@ -11,6 +11,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -21,6 +22,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableColumn;
 
+import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidation;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidationListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
@@ -111,9 +113,17 @@ public class SheetPanel extends JPanel {
             }
         });
         ontologyTermValidationListener = new OntologyTermValidationListener() {
+        	@Override
             public void validationsChanged() {
                 table.repaint();
-            }
+            }			
+
+			@Override
+			public void ontologyTermSelected(
+					List<OntologyTermValidation> previewList) {
+				// TODO Auto-generated method stub
+				
+			}
         };
         
         //Add copy/paste/cut actions   
