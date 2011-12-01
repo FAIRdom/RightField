@@ -12,12 +12,10 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
  * Information Management Group<br>
  * Date: 10-Nov-2009
  */
+@SuppressWarnings("serial")
 public class ClassHierarchyIndividualNode extends DefaultMutableTreeNode {
-
-    private OWLNamedIndividual individual;
 
     public ClassHierarchyIndividualNode(WorkbookManager manager, OWLNamedIndividual individual) {
         super(individual);
-        this.individual = individual;
     }
 }

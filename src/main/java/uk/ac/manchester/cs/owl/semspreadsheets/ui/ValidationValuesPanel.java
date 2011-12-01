@@ -27,11 +27,10 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.ValidationType;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 
 /**
- * Author: Matthew Horridge<br>
- * The University of Manchester<br>
- * Information Management Group<br>
- * Date: 08-Nov-2009
+ * @author Stuart Owen
+ * @author Matthew Horridge
  */
+@SuppressWarnings("serial")
 public class ValidationValuesPanel extends JPanel {
 
     private WorkbookManager workbookManager;
@@ -99,8 +98,6 @@ public class ValidationValuesPanel extends JPanel {
         });
         termList.setFixedCellHeight(18);
         termList.setVisibleRowCount(10);
-//        setMinimumSize(new Dimension(10, 200));
-//        setMaximumSize(new Dimension(500, 200));
     }
 
     protected void updateFromPreviewList(
@@ -137,7 +134,7 @@ public class ValidationValuesPanel extends JPanel {
         public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
             JLabel label = (JLabel) super.getListCellRendererComponent(list, ((ValueListItem) value), index, isSelected, cellHasFocus);
             ValueListItem item = (ValueListItem) value;
-            EntityType entityType = item.getType().getEntityType();
+            EntityType<?> entityType = item.getType().getEntityType();
             label.setIcon(Icons.getOWLEntityIcon(workbookManager, entityType));
             return label;
         }
@@ -158,11 +155,7 @@ public class ValidationValuesPanel extends JPanel {
         public String toString() {
             return name;
         }
-
-        public String getName() {
-            return name;
-        }
-
+        
         public ValidationType getType() {
             return type;
         }

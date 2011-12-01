@@ -20,11 +20,10 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.ValidationType;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 
 /**
- * Author: Matthew Horridge<br>
- * The University of Manchester<br>
- * Information Management Group<br>
- * Date: 01-Nov-2009
+ * @author Mathew Horridge
+ * @author Stuart Owen
  */
+@SuppressWarnings("serial")
 public class ValidationTypeSelectorPanel extends JPanel implements ValidationTypeSelector {
 
 

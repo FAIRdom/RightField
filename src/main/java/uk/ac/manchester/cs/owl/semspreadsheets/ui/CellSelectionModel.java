@@ -4,24 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 
 /**
- * Author: Matthew Horridge<br>
- * The University of Manchester<br>
- * Information Management Group<br>
- * Date: 20-Sep-2009
+ * @author Stuart Owen
+ * @author Matthew Horridge
  */
 public class CellSelectionModel {
 
     private List<CellSelectionListener> listeners = new ArrayList<CellSelectionListener>();
 
-    private WorkbookManager workbookManager;
-
     private Range range;
 
-    public CellSelectionModel(WorkbookManager workbookManager) {
-        this.workbookManager = workbookManager;
+    public CellSelectionModel() {
+        
     }
 
     public void addCellSelectionListener(CellSelectionListener listener) {

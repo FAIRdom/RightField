@@ -90,7 +90,7 @@ public class WorkbookManager {
         entitySelectionModel = new EntitySelectionModel(owlManager.getOWLDataFactory().getOWLThing());
         ontologyTermValidationManager = new OntologyTermValidationManager(this);
         workbook = WorkbookFactory.createWorkbook();
-        selectionModel = new CellSelectionModel(this);
+        selectionModel = new CellSelectionModel();
         selectionModel.setSelectedRange(new Range(workbook.getSheet(0)));
         selectionModel.addCellSelectionListener(new CellSelectionListener() {
             public void selectionChanged(Range range) {
@@ -434,7 +434,7 @@ public class WorkbookManager {
             for(OWLOntology ont : owlManager.getOntologies()) {
                 entities.addAll(ont.getSignature());
             }
-            shortFormProvider.rebuild(new OWLEntitySetProvider() {
+            shortFormProvider.rebuild(new OWLEntitySetProvider<OWLEntity>() {
                 public Set<OWLEntity> getEntities() {
                     return entities;
                 }
@@ -469,43 +469,6 @@ public class WorkbookManager {
 
     public Collection<OntologyTermValidation> getContainingOntologyTermValidations(Range range) {
         return ontologyTermValidationManager.getContainingValidations(range);
-    }
-
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    ////
-    ////  Internal stuff dealing with validations lists
-    ////
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-    /**
-     * Gets the sheets in the current workbook that are set up to be data validation sheets.  These sheets
-     * have a specific format.  They describe the type of ontology term validation (subclasses of a class,
-     * direct subclasses of a class, individuals of a class, direct individuals of a class), the ontology (IRI and
-     * version IRI (optional), physical IRI) and the terms.  The sheet also has a named range associated with it
-     * that is used to populate drop down boxes in Excel.
-     * @return A list of sheets that conform the above description
-     */
-    private List<Sheet> getValidationSheets() {
-        List<Sheet> sheets = new ArrayList<Sheet>();
-        for (Sheet sheet : getWorkbook().getSheets()) {
-            OntologyTermValidationSheetParser parser = new OntologyTermValidationSheetParser(this, sheet);
-            if (parser.isValidationSheet()) {
-                logger.info("Found validation: " + sheet.getName());
-                sheets.add(sheet);
-                NamedRange range = parser.parseNamedRange();
-                if (range != null) {
-                    logger.debug("Found named range associated with sheet: ");
-                    logger.debug("\t" + range.getName());
-                    logger.debug("\t" + range.getRange());
-                }
-            }
-
-        }
-        return sheets;
     }
 
 	public WorkbookState getWorkbookState() {
