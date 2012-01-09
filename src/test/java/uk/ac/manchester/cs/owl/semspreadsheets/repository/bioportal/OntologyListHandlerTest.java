@@ -12,13 +12,15 @@ import javax.xml.parsers.SAXParserFactory;
 
 import org.junit.Test;
 
+import uk.ac.manchester.cs.owl.semspreadsheets.repository.RepositoryItem;
+
 public class OntologyListHandlerTest {
 	
 	@Test
 	public void testListHandling() throws Exception {
-        final Collection<BioPortalRepositoryItem> collection = new ArrayList<BioPortalRepositoryItem>();
+        final Collection<RepositoryItem> collection = new ArrayList<RepositoryItem>();
 		OntologyListHandler handler = new OntologyListHandler(new BioPortalRepositoryItemHandler() {
-            public void handleItem(BioPortalRepositoryItem handler) {        
+            public void handleItem(RepositoryItem handler) {        
             	collection.add(handler);
             }
         });
@@ -43,9 +45,9 @@ public class OntologyListHandlerTest {
 	
 	@Test
 	public void testFormatFiltering() throws Exception {
-		final Collection<BioPortalRepositoryItem> collection = new ArrayList<BioPortalRepositoryItem>();
+		final Collection<RepositoryItem> collection = new ArrayList<RepositoryItem>();
 		OntologyListHandler handler = new OntologyListHandler(new BioPortalRepositoryItemHandler() {
-            public void handleItem(BioPortalRepositoryItem handler) {        
+            public void handleItem(RepositoryItem handler) {        
             	collection.add(handler);
             }
         });
@@ -57,15 +59,15 @@ public class OntologyListHandlerTest {
         bufferedInputStream.close();
         
         assertEquals(1,collection.size());
-        BioPortalRepositoryItem item = collection.iterator().next();
+        RepositoryItem item = collection.iterator().next();
         assertEquals("OWL-DL",item.getFormat());
 	}
 	
 	@Test
 	public void testSkipsNonNumericIDsFiltering() throws Exception {
-		final Collection<BioPortalRepositoryItem> collection = new ArrayList<BioPortalRepositoryItem>();
+		final Collection<RepositoryItem> collection = new ArrayList<RepositoryItem>();
 		OntologyListHandler handler = new OntologyListHandler(new BioPortalRepositoryItemHandler() {
-            public void handleItem(BioPortalRepositoryItem handler) {        
+            public void handleItem(RepositoryItem handler) {        
             	collection.add(handler);
             }
         });

@@ -1,4 +1,6 @@
 package uk.ac.manchester.cs.owl.semspreadsheets.repository.bioportal;
+
+import uk.ac.manchester.cs.owl.semspreadsheets.repository.RepositoryItem;
 /*
  * Copyright (C) 2009, University of Manchester
  *
@@ -30,5 +32,5 @@ package uk.ac.manchester.cs.owl.semspreadsheets.repository.bioportal;
  */
 public interface BioPortalRepositoryItemHandler {
 
-    void handleItem(BioPortalRepositoryItem handler);
+    void handleItem(RepositoryItem handler);
 }

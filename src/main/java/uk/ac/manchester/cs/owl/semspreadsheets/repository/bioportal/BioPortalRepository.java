@@ -11,6 +11,7 @@ import org.semanticweb.owlapi.model.IRI;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.repository.Repository;
 import uk.ac.manchester.cs.owl.semspreadsheets.repository.RepositoryItem;
+import uk.ac.manchester.cs.owl.semspreadsheets.repository.RepositoryManager;
 
 /**
  * 
@@ -35,8 +36,8 @@ public class BioPortalRepository implements Repository {
     private Collection<RepositoryItem> repositoryItems = new ArrayList<RepositoryItem>();
 
     public BioPortalRepository() {
-        OntologyListAccessor accessor = new OntologyListAccessor();
-            repositoryItems.addAll(accessor.getOntologies());
+    	BioPortalRepositoryAccessor accessor = RepositoryManager.getInstance().getBioPortalRepositoryAccessor();
+        repositoryItems.addAll(accessor.getOntologies());
     }
 
     public String getName() {
