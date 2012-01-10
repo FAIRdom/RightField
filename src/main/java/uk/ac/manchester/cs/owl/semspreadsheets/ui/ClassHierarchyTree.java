@@ -96,7 +96,7 @@ public class ClassHierarchyTree extends JTree {
                     }
                 }
                 workbookManager.getEntitySelectionModel().setSelection(selectedEntities.iterator().next());                
-                workbookManager.previewValidationType();                
+                workbookManager.previewValidation();                
             }
             finally {
                 transmittingSelectioToModel = false;

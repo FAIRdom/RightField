@@ -30,11 +30,11 @@ public class ValidationTypeSelectorPanel extends JPanel {
     private Map<JRadioButton, ValidationType> values = new LinkedHashMap<JRadioButton, ValidationType>();
     private JButton applyButton = new JButton("Apply");
 
-    private WorkbookManager workbookManager;    
+    private final WorkbookManager workbookManager;    
 
     private CellSelectionListener cellSelectionListener;	
 
-    public ValidationTypeSelectorPanel(WorkbookManager workbookManager) {
+    public ValidationTypeSelectorPanel(final WorkbookManager workbookManager) {
         this.workbookManager = workbookManager;		
         setLayout(new BorderLayout());
         Box box = new Box(BoxLayout.Y_AXIS);
@@ -54,7 +54,8 @@ public class ValidationTypeSelectorPanel extends JPanel {
         applyButton.addActionListener(applyButtonActionListener);
         
         ActionListener checkboxActionListener = new ActionListener() {
-            public void actionPerformed(ActionEvent e) {            	
+            public void actionPerformed(ActionEvent e) {       
+            	workbookManager.getEntitySelectionModel().setValidationType(getSelectedType());
             	previewSelectionInList();
                 applyButton.setEnabled(true);
             }			
@@ -82,13 +83,12 @@ public class ValidationTypeSelectorPanel extends JPanel {
         updateSelectionFromModel();
     }
     
-    private void previewSelectionInList() {    	
-    	workbookManager.getEntitySelectionModel().setValidationType(getSelectedType());
-    	workbookManager.previewValidationType();		
+    private void previewSelectionInList() {    	    	
+    	workbookManager.previewValidation();		
 	}
     
-    private void transmitSelectionToModel() {
-        workbookManager.setValidationType(getSelectedType());
+    private void transmitSelectionToModel() {    	
+        workbookManager.setValidation();
     }
 
     private void updateSelectionFromModel() {

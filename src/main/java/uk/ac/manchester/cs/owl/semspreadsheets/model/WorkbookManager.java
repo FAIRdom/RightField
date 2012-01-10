@@ -251,18 +251,22 @@ public class WorkbookManager {
         getWorkbookState().changesSaved();
     }
 
-    public void previewValidationType() {
+    public void previewValidation() {
     	IRI iri = entitySelectionModel.getSelection().getIRI();
     	ValidationType type = entitySelectionModel.getValidationType();
     	Range range = new Range(workbook.getSheet(0));
     	ontologyTermValidationManager.previewValidation(range,type, iri);
 	}	
     
-    public void setValidationType(ValidationType type) {
-        setValidationType(type,entitySelectionModel.getSelection().getIRI() );
+    public void setValidation() {
+    	ValidationType type = entitySelectionModel.getValidationType();
+    	IRI iri = entitySelectionModel.getSelection().getIRI();
+    	logger.debug("Setting validation for IRI "+iri.toString()+", type "+type.toString());
+    			
+        setValidation(type, iri);
     }
 
-    public void setValidationTypeAt(Range range,ValidationType type, IRI entityIRI) {
+    public void setValidationAt(Range range,ValidationType type, IRI entityIRI) {
     	Range rangeToApply;
         Collection<OntologyTermValidation> validations = ontologyTermValidationManager.getContainingValidations(range);
         
@@ -299,13 +303,13 @@ public class WorkbookManager {
      * Sets the validation type for the currently selected cells.
      * @param type
      */
-    public void setValidationType(ValidationType type, IRI entityIRI) {
+    public void setValidation(ValidationType type, IRI entityIRI) {
     	
         Range selectedRange = getSelectionModel().getSelectedRange();
         if(!selectedRange.isCellSelection()) {
             return;
         }
-        setValidationTypeAt(selectedRange, type, entityIRI);
+        setValidationAt(selectedRange, type, entityIRI);
     }
     
     public void removeValidations(Range range) {
