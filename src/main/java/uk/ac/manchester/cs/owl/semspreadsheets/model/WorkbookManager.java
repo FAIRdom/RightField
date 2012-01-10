@@ -285,7 +285,7 @@ public class WorkbookManager {
                 	applyChange(scv);
                 	cell = rangeToApply.getSheet().getCellAt(col, row);
                 }
-                else if (cell.getValue() == null || cell.getValue().length()==0) {
+                else {
                 	SetCellValue scv=new SetCellValue(rangeToApply.getSheet(),col,row,"",default_name);
                 	applyChange(scv);
                 	cell = rangeToApply.getSheet().getCellAt(col, row);
