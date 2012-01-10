@@ -11,28 +11,22 @@ import org.semanticweb.owlapi.reasoner.impl.NodeFactory;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 
 /**
- * Author: Matthew Horridge<br>
- * The University of Manchester<br>
- * Information Management Group<br>
- * Date: 08-Nov-2009
+ * @author Stuart Owen
+ * @author Matthew Horridge
  */
-public class ClassHierarchyNode extends DefaultMutableTreeNode {
-
-    private WorkbookManager workbookManager;
+@SuppressWarnings("serial")
+public class ClassHierarchyNode extends DefaultMutableTreeNode {    
 
     public ClassHierarchyNode(WorkbookManager workbookManager) {
-        super(NodeFactory.getOWLClassTopNode());
-        this.workbookManager = workbookManager;
+        super(NodeFactory.getOWLClassTopNode());        
     }
 
     public ClassHierarchyNode(WorkbookManager workbookManager, Node<OWLClass> clses) {
-        super(clses);
-        this.workbookManager = workbookManager;
+        super(clses);        
     }
 
-    public Set<OWLClass> getOWLClasses() {
+    @SuppressWarnings("unchecked")
+	public Set<OWLClass> getOWLClasses() {
         return ((Node<OWLClass>) getUserObject()).getEntities();
     }
-
-
 }

@@ -19,6 +19,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
  * Information Management Group<br>
  * Date: 08-Nov-2009
  */
+@SuppressWarnings("serial")
 public class ValidationInspectorPanel extends JPanel {
 
     private static Font font = new Font("Lucida Grande", Font.BOLD, 11);
@@ -34,8 +35,6 @@ public class ValidationInspectorPanel extends JPanel {
         setLayout(new BorderLayout(14, 14));
         setBorder(BorderFactory.createEmptyBorder(7, 2, 7, 7));
         add(selectedCellAddressLabel, BorderLayout.NORTH);
-//        selectedCellAddressLabel.setFont(font.deriveFont(Font.PLAIN, 16.0f));
-//        selectedCellAddressLabel.setForeground(textColor);
         JPanel outerPanel = new JPanel(new BorderLayout(7, 7));
         
         add(outerPanel);
@@ -51,6 +50,7 @@ public class ValidationInspectorPanel extends JPanel {
         JPanel innerPanel = new JPanel(new BorderLayout(7, 7));        
         outerPanel.add(innerPanel, BorderLayout.SOUTH);
         ValidationTypeSelectorPanel typeSelectorPanel = new ValidationTypeSelectorPanel(frame.getWorkbookManager());
+        
         typeSelectorPanel.setBorder(createTitledBorder("TYPE OF ALLOWED VALUES"));
         innerPanel.add(typeSelectorPanel, BorderLayout.NORTH);
         

@@ -58,7 +58,7 @@ public class RightField {
 
     public static void main(String[] args) {
     	logger.debug("Starting Up");
-    	WorkbookManager manager = new WorkbookManager();
+    	WorkbookManager manager = new WorkbookManager();    	
         final WorkbookFrame frame = new WorkbookFrame(manager);
         Preferences preferences = Preferences.userNodeForPackage(RightField.class);
         int x = preferences.getInt(WINDOW_X_KEY, 50);

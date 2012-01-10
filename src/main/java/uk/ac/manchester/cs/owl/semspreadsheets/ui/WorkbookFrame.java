@@ -376,20 +376,7 @@ public class WorkbookFrame extends JFrame {
 		String directory = fileDialog.getDirectory();
 		return new File(directory + name);
 	}
-
-	public static void main(String[] args) {
-		WorkbookManager manager = new WorkbookManager();
-		WorkbookFrame frame = new WorkbookFrame(manager);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(800, 600);
-		frame.setVisible(true);
-		SimpleRenderer renderer = new SimpleRenderer();
-		renderer.setShortFormProvider(new SimpleShortFormProvider());
-		ToStringRenderer.getInstance().setRenderer(renderer);
-	}
-
 	
-
 	class ExtensionFileFilter extends FileFilter {
 
 		private final String description;

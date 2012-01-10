@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.semanticweb.owlapi.model.OWLEntity;
 
+import uk.ac.manchester.cs.owl.semspreadsheets.model.ValidationType;
+
 /**
  * Author: Matthew Horridge<br>
  * The University of Manchester<br>
@@ -16,8 +18,10 @@ public class EntitySelectionModel {
     private OWLEntity defaultSelection;
 
     private OWLEntity selectedEntity;
+    
+    private ValidationType validationType = ValidationType.NOVALIDATION;    
 
-    private List<EntitySelectionModelListener> listeners = new ArrayList<EntitySelectionModelListener>();
+	private List<EntitySelectionModelListener> listeners = new ArrayList<EntitySelectionModelListener>();
 
     public EntitySelectionModel(OWLEntity defaultSelection) {
         this.defaultSelection = defaultSelection;
@@ -65,4 +69,12 @@ public class EntitySelectionModel {
             }
         }
     }
+    
+    public ValidationType getValidationType() {
+		return validationType;
+	}
+
+	public void setValidationType(ValidationType validationType) {
+		this.validationType = validationType;
+	}
 }

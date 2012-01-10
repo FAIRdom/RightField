@@ -24,13 +24,13 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
  * @author Stuart Owen
  */
 @SuppressWarnings("serial")
-public class ValidationTypeSelectorPanel extends JPanel implements ValidationTypeSelector {
+public class ValidationTypeSelectorPanel extends JPanel {
 
 
     private Map<JRadioButton, ValidationType> values = new LinkedHashMap<JRadioButton, ValidationType>();
     private JButton applyButton = new JButton("Apply");
 
-    private WorkbookManager workbookManager;
+    private WorkbookManager workbookManager;    
 
     private CellSelectionListener cellSelectionListener;	
 
@@ -54,13 +54,11 @@ public class ValidationTypeSelectorPanel extends JPanel implements ValidationTyp
         applyButton.addActionListener(applyButtonActionListener);
         
         ActionListener checkboxActionListener = new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e) {            	
             	previewSelectionInList();
                 applyButton.setEnabled(true);
             }			
         };
-        
-        
 
         for(ValidationType type : ValidationType.values()) {
             JRadioButton button = new JRadioButton(type.toString());
@@ -84,12 +82,11 @@ public class ValidationTypeSelectorPanel extends JPanel implements ValidationTyp
         updateSelectionFromModel();
     }
     
-    private void previewSelectionInList() {
-    	workbookManager.previewValidationType(getSelectedType());		
+    private void previewSelectionInList() {    	
+    	workbookManager.getEntitySelectionModel().setValidationType(getSelectedType());
+    	workbookManager.previewValidationType();		
 	}
     
-    
-
     private void transmitSelectionToModel() {
         workbookManager.setValidationType(getSelectedType());
     }
@@ -126,7 +123,7 @@ public class ValidationTypeSelectorPanel extends JPanel implements ValidationTyp
         }
     }
 
-    private ValidationType getSelectedType() {
+    public ValidationType getSelectedType() {
         for(JRadioButton radioButton : values.keySet()) {
             if(radioButton.isSelected()) {
                 return values.get(radioButton);

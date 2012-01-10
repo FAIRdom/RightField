@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.IRI;
 
 /**
@@ -19,6 +20,8 @@ import org.semanticweb.owlapi.model.IRI;
  */
 public class OntologyTermValidationManager {
 
+	private static Logger logger = Logger.getLogger(OntologyTermValidationManager.class);
+	
     private WorkbookManager workbookManager;
 
     private Set<OntologyTermValidation> ontologyTermValidations = new HashSet<OntologyTermValidation>();
@@ -74,6 +77,7 @@ public class OntologyTermValidationManager {
     }
     
     public void previewValidation(Range range, ValidationType type, IRI entityIRI) {
+    	logger.debug("Previewing validation for iri "+entityIRI.toString()+", type "+type.toString());
     	List<OntologyTermValidation> previewList = new ArrayList<OntologyTermValidation>();
     	
         Collection<OntologyTermValidation> intersectingValidations = getIntersectingValidations(range);

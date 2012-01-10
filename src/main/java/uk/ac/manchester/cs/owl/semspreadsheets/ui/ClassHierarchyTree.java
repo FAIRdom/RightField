@@ -13,7 +13,9 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
+import javax.swing.tree.TreeSelectionModel;
 
+import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
@@ -26,12 +28,14 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.ValidationType;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 
 /**
- * Author: Matthew Horridge<br>
- * The University of Manchester<br>
- * Information Management Group<br>
- * Date: 08-Nov-2009
+ * @author Matthew Horridge
+ * @author Stuart Owen
+ *
  */
+@SuppressWarnings("serial")
 public class ClassHierarchyTree extends JTree {
+	
+	private static Logger logger = Logger.getLogger(ClassHierarchyTree.class);
 
     private WorkbookManager workbookManager;
 
@@ -41,6 +45,7 @@ public class ClassHierarchyTree extends JTree {
 
     public ClassHierarchyTree(final WorkbookManager manager) {
         super(new ClassHierarchyTreeModel(manager));
+        getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);        
         this.workbookManager = manager;
         manager.addListener(new WorkbookManagerListener() {
             public void workbookChanged(WorkbookManagerEvent event) {
@@ -55,7 +60,7 @@ public class ClassHierarchyTree extends JTree {
         });
         addTreeSelectionListener(new TreeSelectionListener() {
             public void valueChanged(TreeSelectionEvent e) {
-                transmitSelectionToModel();
+                previewSelectedClass();
             }
         });
         manager.getEntitySelectionModel().addListener(new EntitySelectionModelListener() {
@@ -70,15 +75,17 @@ public class ClassHierarchyTree extends JTree {
         return (ClassHierarchyTreeModel) super.getModel();
     }
 
-    private void transmitSelectionToModel() {
-        if(!updatingSelectionFromModel) {
-            transmittingSelectioToModel = true;
+    private void previewSelectedClass() {
+    	logger.debug("In previewSelectedEntity");    	
+        if (!updatingSelectionFromModel) {
+            transmittingSelectioToModel = true;            
             try {
                 TreePath [] selectedPaths = getSelectionPaths();
                 if(selectedPaths == null) {
                     return;
                 }
                 Set<OWLEntity> selectedEntities = new HashSet<OWLEntity>();
+                //should only be 
                 for(TreePath path : selectedPaths) {
                     DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
                     if(node instanceof ClassHierarchyNode) {
@@ -88,28 +95,8 @@ public class ClassHierarchyTree extends JTree {
                         selectedEntities.add((OWLNamedIndividual) ((ClassHierarchyIndividualNode) node).getUserObject());
                     }
                 }
-                if(!selectedEntities.isEmpty()) {
-                    OWLEntity selectedEntity = selectedEntities.iterator().next();
-                    workbookManager.getEntitySelectionModel().setSelection(selectedEntity);
-                    if (workbookManager.getLoadedOntologies().size() > 0) {
-                        Range range = workbookManager.getSelectionModel().getSelectedRange();
-                        OntologyTermValidationManager validationManager = workbookManager.getOntologyTermValidationManager();
-                        Collection<OntologyTermValidation> validations = validationManager.getContainingValidations(range);
-                        for(OntologyTermValidation validation : validations) {
-                            if (!validation.getValidationDescriptor().getType().equals(ValidationType.NOVALIDATION)) {
-                                if(!validation.getValidationDescriptor().getEntityIRI().equals(selectedEntity.getIRI())) {
-                                    validationManager.removeValidation(validation);
-                                    OntologyTermValidationDescriptor oldDescriptor = validation.getValidationDescriptor();
-                                    OntologyTermValidationDescriptor newDescriptor = new OntologyTermValidationDescriptor(oldDescriptor.getType(), selectedEntity.getIRI(), workbookManager);
-                                    validationManager.addValidation(new OntologyTermValidation(newDescriptor, validation.getRange()));
-                                }
-                            }
-                        }
-                    }
-                }
-                else {
-                    workbookManager.getEntitySelectionModel().clearSelection();
-                }
+                workbookManager.getEntitySelectionModel().setSelection(selectedEntities.iterator().next());                
+                workbookManager.previewValidationType();                
             }
             finally {
                 transmittingSelectioToModel = false;
@@ -118,6 +105,7 @@ public class ClassHierarchyTree extends JTree {
     }
 
     private void updateSelectionFromModel() {
+    	logger.debug("In updateSelectionFromModel");
         if(!transmittingSelectioToModel) {
             try {
                 updatingSelectionFromModel = true;

@@ -64,7 +64,7 @@ public class WorkbookManager {
     private Workbook workbook;
 
     private URI workbookURI;
-
+    
     private OWLOntologyManager owlManager;
 
     private OWLOntology ontology;
@@ -83,7 +83,7 @@ public class WorkbookManager {
 
     private BidirectionalShortFormProviderAdapter shortFormProvider;
 
-    public WorkbookManager() {
+    public WorkbookManager() {    	
         this.owlManager = OWLManager.createOWLOntologyManager();
         owlManager.setSilentMissingImportsHandling(true);
         shortFormProvider = new BidirectionalShortFormProviderAdapter(new SimpleShortFormProvider());
@@ -97,7 +97,7 @@ public class WorkbookManager {
                 handleCellSelectionChanged();
             }
         });
-    }
+    }     
 
     public void applyChanges(List<? extends WorkbookChange> changes) {
         for(WorkbookChange change : changes) {
@@ -251,10 +251,11 @@ public class WorkbookManager {
         getWorkbookState().changesSaved();
     }
 
-    public void previewValidationType(ValidationType selectedType) {
+    public void previewValidationType() {
     	IRI iri = entitySelectionModel.getSelection().getIRI();
+    	ValidationType type = entitySelectionModel.getValidationType();
     	Range range = new Range(workbook.getSheet(0));
-    	ontologyTermValidationManager.previewValidation(range,selectedType, iri);
+    	ontologyTermValidationManager.previewValidation(range,type, iri);
 	}	
     
     public void setValidationType(ValidationType type) {
