@@ -258,13 +258,17 @@ public class WorkbookManager {
     	ontologyTermValidationManager.previewValidation(range,type, iri);
 	}	
     
-    public void setValidation() {
+    public void applyValidation() {
     	ValidationType type = entitySelectionModel.getValidationType();
     	IRI iri = entitySelectionModel.getSelection().getIRI();
-    	logger.debug("Setting validation for IRI "+iri.toString()+", type "+type.toString());
-    			
-        setValidation(type, iri);
-    }
+    	logger.debug("Setting validation for IRI "+iri.toString()+", type "+type.toString());    			        
+        
+        Range selectedRange = getSelectionModel().getSelectedRange();
+        if(!selectedRange.isCellSelection()) {
+            return;
+        }
+        setValidationAt(selectedRange, type, iri);
+    }       
 
     public void setValidationAt(Range range,ValidationType type, IRI entityIRI) {
     	Range rangeToApply;
@@ -277,7 +281,10 @@ public class WorkbookManager {
             OntologyTermValidation validation = validations.iterator().next();
             rangeToApply=validation.getRange();            
         }
-        String default_name=getRendering(owlManager.getOWLDataFactory().getOWLAnnotationProperty(entityIRI));
+        String cellText=getRendering(owlManager.getOWLDataFactory().getOWLAnnotationProperty(entityIRI));
+        if (type == ValidationType.NOVALIDATION) {
+        	cellText = "";
+        }
         
         ontologyTermValidationManager.setValidation(rangeToApply, type, entityIRI);
         
@@ -285,12 +292,12 @@ public class WorkbookManager {
             for(int row = rangeToApply.getFromRow(); row < rangeToApply.getToRow() + 1; row++) {
                 Cell cell = rangeToApply.getSheet().getCellAt(col, row);
                 if (cell == null) {                	
-                	SetCellValue scv=new SetCellValue(rangeToApply.getSheet(),col,row,null,default_name);
+                	SetCellValue scv=new SetCellValue(rangeToApply.getSheet(),col,row,null,cellText);
                 	applyChange(scv);
                 	cell = rangeToApply.getSheet().getCellAt(col, row);
                 }
                 else {
-                	SetCellValue scv=new SetCellValue(rangeToApply.getSheet(),col,row,"",default_name);
+                	SetCellValue scv=new SetCellValue(rangeToApply.getSheet(),col,row,"",cellText);
                 	applyChange(scv);
                 	cell = rangeToApply.getSheet().getCellAt(col, row);
                 }
@@ -299,18 +306,7 @@ public class WorkbookManager {
             }
         }
     }
-    /**
-     * Sets the validation type for the currently selected cells.
-     * @param type
-     */
-    public void setValidation(ValidationType type, IRI entityIRI) {
-    	
-        Range selectedRange = getSelectionModel().getSelectedRange();
-        if(!selectedRange.isCellSelection()) {
-            return;
-        }
-        setValidationAt(selectedRange, type, entityIRI);
-    }
+    
     
     public void removeValidations(Range range) {
     	if (getOntologyTermValidationManager().getContainingValidations(range).size()>0)

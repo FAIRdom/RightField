@@ -3,14 +3,17 @@ package uk.ac.manchester.cs.owl.semspreadsheets.ui;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.Collection;
+import java.util.Enumeration;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import javax.swing.AbstractButton;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
-import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
@@ -27,38 +30,27 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 public class ValidationTypeSelectorPanel extends JPanel {
 
 
-    private Map<JRadioButton, ValidationType> values = new LinkedHashMap<JRadioButton, ValidationType>();
-    private JButton applyButton = new JButton("Apply");
+    private Map<JRadioButton, ValidationType> values = new LinkedHashMap<JRadioButton, ValidationType>();    
 
     private final WorkbookManager workbookManager;    
 
-    private CellSelectionListener cellSelectionListener;	
+    private CellSelectionListener cellSelectionListener;
+    
+    ButtonGroup buttonGroup;
 
     public ValidationTypeSelectorPanel(final WorkbookManager workbookManager) {
         this.workbookManager = workbookManager;		
         setLayout(new BorderLayout());
         Box box = new Box(BoxLayout.Y_AXIS);
-        add(box, BorderLayout.NORTH);        
-        add(applyButton);
-        ButtonGroup buttonGroup = new ButtonGroup();
-
-        applyButton.setEnabled(false);
+        add(box, BorderLayout.NORTH);                
+        buttonGroup = new ButtonGroup();        
         
-        ActionListener applyButtonActionListener = new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                transmitSelectionToModel();
-                applyButton.setEnabled(false);
-            }
-        };
-        
-        applyButton.addActionListener(applyButtonActionListener);
-        
-        ActionListener checkboxActionListener = new ActionListener() {
-            public void actionPerformed(ActionEvent e) {       
-            	workbookManager.getEntitySelectionModel().setValidationType(getSelectedType());
+        ItemListener checkboxActionListener = new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				workbookManager.getEntitySelectionModel().setValidationType(getSelectedType());
             	previewSelectionInList();
-                applyButton.setEnabled(true);
-            }			
+			}
         };
 
         for(ValidationType type : ValidationType.values()) {
@@ -71,7 +63,7 @@ public class ValidationTypeSelectorPanel extends JPanel {
             }
             values.put(button, type);
             buttonGroup.add(button);
-            button.addActionListener(checkboxActionListener);
+            button.addItemListener(checkboxActionListener);            
         }
 
         cellSelectionListener = new CellSelectionListener() {
@@ -83,13 +75,16 @@ public class ValidationTypeSelectorPanel extends JPanel {
         updateSelectionFromModel();
     }
     
+    public void addRadioButtonItemListener(ItemListener listener) {
+    	Enumeration<AbstractButton> buttons = buttonGroup.getElements();
+    	while(buttons.hasMoreElements()) {
+    		buttons.nextElement().addItemListener(listener);
+    	}    	
+    }
+    
     private void previewSelectionInList() {    	    	
     	workbookManager.previewValidation();		
-	}
-    
-    private void transmitSelectionToModel() {    	
-        workbookManager.setValidation();
-    }
+	}        
 
     private void updateSelectionFromModel() {
         Range range = workbookManager.getSelectionModel().getSelectedRange();
@@ -143,7 +138,9 @@ public class ValidationTypeSelectorPanel extends JPanel {
 
     private void setRadioButtonsEnabled(boolean b) {
         for(JRadioButton button : values.keySet()) {
-            button.setEnabled(b);
+            if (b != button.isEnabled()) {
+            	button.setEnabled(b);
+            }
         }
     }
 }

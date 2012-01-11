@@ -29,11 +29,8 @@ import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileFilter;
 
 import org.apache.log4j.Logger;
-import org.semanticweb.owlapi.io.ToStringRenderer;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
-import org.semanticweb.owlapi.util.SimpleRenderer;
-import org.semanticweb.owlapi.util.SimpleShortFormProvider;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
@@ -80,10 +77,7 @@ public class WorkbookFrame extends JFrame {
 			"rdf", "rrf" };
 	private static final String [] APPLICATION_LOGO_FILENAMES = {"/rightfield-logo.png","/rightfield-logo-16x16.png"};
 
-	private static final Logger logger = Logger.getLogger(WorkbookFrame.class);	
-	
-	//used for tracking whether there are unsaved changes
-	private boolean changeUnsaved=false;
+	private static final Logger logger = Logger.getLogger(WorkbookFrame.class);			
 
 	private WorkbookManager workbookManager;
 
@@ -104,7 +98,7 @@ public class WorkbookFrame extends JFrame {
 		setIconImages(iconImages);		
 		
 		getContentPane().setLayout(new BorderLayout());
-		getContentPane().add(new MainPanel(this));
+		getContentPane().add(new MainPanel(this));		
 		
 		setupMenuItems();
 		updateTitleBar();
