@@ -3,8 +3,8 @@ package uk.ac.manchester.cs.owl.semspreadsheets.ui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -81,24 +81,29 @@ public class ValidationInspectorPanel extends JPanel {
 	private void setupApplyButton(
 			ClassHierarchyTreePanel classHierarchyTreePanel,
 			ValidationTypeSelectorPanel typeSelectorPanel) {
-		classHierarchyTreePanel.addTreeSelectionListener(new TreeSelectionListener() {			
+		classHierarchyTreePanel
+				.addTreeSelectionListener(new TreeSelectionListener() {
+					@Override
+					public void valueChanged(TreeSelectionEvent e) {
+						logger.debug("ClassHierarchyTree TreeSelectionEvent fired");
+						updateApplyButtonState();
+					}
+				});
+
+		typeSelectorPanel.addRadioButtonActionListener(new ActionListener() {			
 			@Override
-			public void valueChanged(TreeSelectionEvent e) {
-				logger.debug("ClassHierarchyTree TreeSelectionEvent fired");				
-				applyButton.setEnabled(true);
+			public void actionPerformed(ActionEvent e) {
+				logger.debug("Radio Button ActionEvent fired");
+				updateApplyButtonState();				
 			}
 		});
-        
-        typeSelectorPanel.addRadioButtonItemListener(new ItemListener() {			
-			@Override
-			public void itemStateChanged(ItemEvent e) {
-				logger.debug("Radio Button ChangeEvent fired");				
-				applyButton.setEnabled(true);
-			}
-		});
-                
-        applyButton.setAction(new ApplyValidationAction(workbookManager));
-        applyButton.setEnabled(false);
+
+		applyButton.setAction(new ApplyValidationAction(workbookManager));
+		applyButton.setEnabled(false);
+	}
+	
+	private void updateApplyButtonState() {
+		applyButton.setEnabled(workbookManager.applyButtonState());
 	}
 
     private void updateSelectionLabel() {

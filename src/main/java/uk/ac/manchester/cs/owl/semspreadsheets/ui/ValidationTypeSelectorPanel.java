@@ -16,6 +16,8 @@ import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidation;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
@@ -46,15 +48,16 @@ public class ValidationTypeSelectorPanel extends JPanel {
         buttonGroup = new ButtonGroup();        
         
         ItemListener checkboxActionListener = new ItemListener() {
+			
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				workbookManager.getEntitySelectionModel().setValidationType(getSelectedType());
-            	previewSelectionInList();
+				workbookManager.getEntitySelectionModel().setValidationType(values.get(e.getSource()));
+				previewSelectionInList();
 			}
-        };
+		};	
 
-        for(ValidationType type : ValidationType.values()) {
-            JRadioButton button = new JRadioButton(type.toString());
+        for(final ValidationType type : ValidationType.values()) {
+            JRadioButton button = new JRadioButton(type.toString());            
             box.add(button);
             button.putClientProperty("JRadioButton.size", "small");
             box.add(Box.createVerticalStrut(1));
@@ -62,7 +65,7 @@ public class ValidationTypeSelectorPanel extends JPanel {
                 button.setSelected(true);
             }
             values.put(button, type);
-            buttonGroup.add(button);
+            buttonGroup.add(button);                       
             button.addItemListener(checkboxActionListener);            
         }
 
@@ -75,10 +78,10 @@ public class ValidationTypeSelectorPanel extends JPanel {
         updateSelectionFromModel();
     }
     
-    public void addRadioButtonItemListener(ItemListener listener) {
+    public void addRadioButtonActionListener(ActionListener listener) {
     	Enumeration<AbstractButton> buttons = buttonGroup.getElements();
     	while(buttons.hasMoreElements()) {
-    		buttons.nextElement().addItemListener(listener);
+    		buttons.nextElement().addActionListener(listener);     		    
     	}    	
     }
     

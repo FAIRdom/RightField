@@ -302,9 +302,33 @@ public class WorkbookManager {
                 	cell = rangeToApply.getSheet().getCellAt(col, row);
                 }
                 logger.debug("Current cell colour is:"+cell.getBackgroundFill().toString());
-                cell.setBackgroundFill(new Color(16777164)); //pale yellow
+                cell.setBackgroundFill(new Color(16777164)); //pale yellow                
             }
         }
+    }
+    
+    /**
+     * Determines whether the apply button should be enabled or not depending on if the validation setting differ from the cell.
+     * @return the enabled state of the apply button
+     */
+    public boolean applyButtonState() {
+    	ValidationType type = entitySelectionModel.getValidationType();
+    	IRI iri = entitySelectionModel.getSelection().getIRI();
+    	Range selectedRange = getSelectionModel().getSelectedRange();
+    	Collection<OntologyTermValidation> validations = ontologyTermValidationManager.getContainingValidations(selectedRange);
+    	boolean result = false;
+    	for (OntologyTermValidation validation : validations) {
+    		OntologyTermValidationDescriptor validationDescriptor = validation.getValidationDescriptor();
+    		if (!validationDescriptor.getEntityIRI().equals(iri) || !validationDescriptor.getType().equals(type)) {
+    			result=true;
+    			break;
+    		}
+    	}
+    	if (validations.isEmpty()) {
+    		result = type!=ValidationType.NOVALIDATION;
+    	}
+    	logger.debug("Apply button state deterimned as "+result+" for type "+type.toString()+" and IRI "+iri.toString());
+    	return result;
     }
     
     
