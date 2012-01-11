@@ -42,7 +42,7 @@ public class AboutBoxPanel extends JPanel {
 		add(new JSeparator());
 		add(new JLabel(" "));
 		
-		JLabel copyright = new JLabel("(c) University of Manchester 2009-2011");
+		JLabel copyright = new JLabel("(c) University of Manchester 2009-2012");
 		copyright.setFont(copyright.getFont().deriveFont(Font.ITALIC));
 		copyright.setAlignmentX(CENTER_ALIGNMENT);
 		add(copyright);

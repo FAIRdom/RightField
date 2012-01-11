@@ -3,7 +3,7 @@
 Authors::    Stuart Owen, {Matthew Horridge}[http://www.cs.man.ac.uk/~horridgm]
 Contact::    mailto:stuart.owen@manchester.ac.uk
 Licence::    BSD (See LICENCE or http://www.opensource.org/licenses/bsd-license.php)
-Copyright::  (c) 2009-2011 The University of Manchester, UK
+Copyright::  (c) 2009-2012 The University of Manchester, UK
 
 == Description
 
