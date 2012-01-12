@@ -25,9 +25,5 @@ public class ClassHierarchyTreePanel extends JPanel {
         JScrollPane sp = new JScrollPane(tree);
         add(sp);
         sp.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
-    }
-    
-    public void addTreeSelectionListener(TreeSelectionListener listener) {
-    	tree.addTreeSelectionListener(listener);
-    }
+    }      
 }

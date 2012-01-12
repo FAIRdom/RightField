@@ -85,15 +85,15 @@ public class ValidationInspectorPanel extends JPanel {
 	private JPanel setupButtonPanel(
 			ClassHierarchyTreePanel classHierarchyTreePanel,
 			ValidationTypeSelectorPanel typeSelectorPanel) {
-        
-		classHierarchyTreePanel
-				.addTreeSelectionListener(new TreeSelectionListener() {
-					@Override
-					public void valueChanged(TreeSelectionEvent e) {
-						logger.debug("ClassHierarchyTree TreeSelectionEvent fired");
-						updateApplyButtonState();
-					}
-				});
+		
+        workbookManager.getEntitySelectionModel().addListener(new EntitySelectionModelListener() {			
+			@Override
+			public void selectionChanged() {
+				logger.debug("EntitySelectionModelListener selectionChanged fired");
+				updateApplyButtonState();
+			}
+		});
+		
 
 		typeSelectorPanel.addRadioButtonActionListener(new ActionListener() {			
 			@Override
