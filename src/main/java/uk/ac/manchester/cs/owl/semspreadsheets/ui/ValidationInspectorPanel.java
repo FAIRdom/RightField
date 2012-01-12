@@ -2,6 +2,7 @@ package uk.ac.manchester.cs.owl.semspreadsheets.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,6 +21,7 @@ import org.apache.log4j.Logger;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.ApplyValidationAction;
+import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.CancelValidationAction;
 
 /**
  * @author Stuart Owen
@@ -40,6 +42,7 @@ public class ValidationInspectorPanel extends JPanel {
     private static Color textColor = new Color(96, 110, 128);
     
     private JButton applyButton = new JButton("Apply");
+    private JButton cancelButton = new JButton("Cancel");
 
     public ValidationInspectorPanel(WorkbookFrame frame) {
         workbookManager = frame.getWorkbookManager();
@@ -67,8 +70,9 @@ public class ValidationInspectorPanel extends JPanel {
         
         innerPanel.add(valuesPanel, BorderLayout.CENTER);
         
-        setupApplyButton(classHierarchyTreePanel, typeSelectorPanel);
-        innerPanel.add(applyButton,BorderLayout.SOUTH);
+        JPanel buttonPanel = setupButtonPanel(classHierarchyTreePanel, typeSelectorPanel);
+        
+        innerPanel.add(buttonPanel, BorderLayout.SOUTH);        
         
         frame.getWorkbookManager().getSelectionModel().addCellSelectionListener(new CellSelectionListener() {
             public void selectionChanged(Range range) {
@@ -78,9 +82,10 @@ public class ValidationInspectorPanel extends JPanel {
         updateSelectionLabel();
     }
 
-	private void setupApplyButton(
+	private JPanel setupButtonPanel(
 			ClassHierarchyTreePanel classHierarchyTreePanel,
 			ValidationTypeSelectorPanel typeSelectorPanel) {
+        
 		classHierarchyTreePanel
 				.addTreeSelectionListener(new TreeSelectionListener() {
 					@Override
@@ -100,10 +105,45 @@ public class ValidationInspectorPanel extends JPanel {
 
 		applyButton.setAction(new ApplyValidationAction(workbookManager));
 		applyButton.setEnabled(false);
+				
+		cancelButton.setAction(new CancelValidationAction(workbookManager));
+		cancelButton.setEnabled(false);
+		
+		JPanel  buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        buttonPanel.add(applyButton);        
+        buttonPanel.add(cancelButton);
+        
+        workbookManager.addListener(new WorkbookManagerListener() {
+			
+			@Override
+			public void workbookLoaded(WorkbookManagerEvent event) {				
+				
+			}
+			
+			@Override
+			public void workbookChanged(WorkbookManagerEvent event) {
+				
+			}
+			
+			@Override
+			public void validationAppliedOrCancelled() {
+				applyButton.setEnabled(false);
+				cancelButton.setEnabled(false);
+			}
+			
+			@Override
+			public void ontologiesChanged(WorkbookManagerEvent event) {				
+				
+			}
+		});
+        
+        return buttonPanel;
 	}
 	
 	private void updateApplyButtonState() {
-		applyButton.setEnabled(workbookManager.applyButtonState());
+		boolean state = workbookManager.determineApplyButtonState();
+		applyButton.setEnabled(state);
+		cancelButton.setEnabled(state);
 	}
 
     private void updateSelectionLabel() {
@@ -116,7 +156,6 @@ public class ValidationInspectorPanel extends JPanel {
         }
     }
 
-
     private static Border createTitledBorder(String title) {
         Border border = BorderFactory.createEmptyBorder(1, 1, 1, 1);
 
@@ -124,7 +163,6 @@ public class ValidationInspectorPanel extends JPanel {
                 TitledBorder.LEFT, TitledBorder.TOP, font, textColor);
         Border innerBorder = BorderFactory.createEmptyBorder(3, 20, 0, 0);
         return BorderFactory.createCompoundBorder(titledBorder, innerBorder);
-
     }
 
 }

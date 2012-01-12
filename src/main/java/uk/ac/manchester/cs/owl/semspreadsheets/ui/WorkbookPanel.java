@@ -110,6 +110,11 @@ public class WorkbookPanel extends JPanel {
 
             public void ontologiesChanged(WorkbookManagerEvent event) {
             }
+
+			@Override
+			public void validationAppliedOrCancelled() {				
+				
+			}
         });
     }
 

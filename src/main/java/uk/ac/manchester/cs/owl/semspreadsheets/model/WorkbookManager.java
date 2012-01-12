@@ -153,6 +153,12 @@ public class WorkbookManager {
             }
         }
     }
+    
+    private void fireValidationAppliedOrCancelled() {
+    	for (WorkbookManagerListener listener : getCopyOfListeners()) {            
+                listener.validationAppliedOrCancelled();            
+        }
+    }
 
 
     private void fireWorkbookLoaded() {
@@ -258,7 +264,7 @@ public class WorkbookManager {
     	ontologyTermValidationManager.previewValidation(range,type, iri);
 	}	
     
-    public void applyValidation() {
+    public void applyValidationChange() {
     	ValidationType type = entitySelectionModel.getValidationType();
     	IRI iri = entitySelectionModel.getSelection().getIRI();
     	logger.debug("Setting validation for IRI "+iri.toString()+", type "+type.toString());    			        
@@ -268,7 +274,14 @@ public class WorkbookManager {
             return;
         }
         setValidationAt(selectedRange, type, iri);
-    }       
+        fireValidationAppliedOrCancelled();
+    }      
+    
+    public void cancelValidationChange() {
+    	Range selectedRange = getSelectionModel().getSelectedRange();
+    	getSelectionModel().setSelectedRange(selectedRange);
+    	fireValidationAppliedOrCancelled();
+    }
 
     public void setValidationAt(Range range,ValidationType type, IRI entityIRI) {
     	Range rangeToApply;
@@ -306,12 +319,13 @@ public class WorkbookManager {
             }
         }
     }
+        
     
     /**
      * Determines whether the apply button should be enabled or not depending on if the validation setting differ from the cell.
      * @return the enabled state of the apply button
      */
-    public boolean applyButtonState() {
+    public boolean determineApplyButtonState() {
     	ValidationType type = entitySelectionModel.getValidationType();
     	IRI iri = entitySelectionModel.getSelection().getIRI();
     	Range selectedRange = getSelectionModel().getSelectedRange();

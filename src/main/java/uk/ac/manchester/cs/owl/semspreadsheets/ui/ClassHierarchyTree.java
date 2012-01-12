@@ -57,6 +57,11 @@ public class ClassHierarchyTree extends JTree {
             public void ontologiesChanged(WorkbookManagerEvent event) {
                 setModel(new ClassHierarchyTreeModel(manager));
             }
+
+			@Override
+			public void validationAppliedOrCancelled() {				
+				
+			}
         });
         addTreeSelectionListener(new TreeSelectionListener() {
             public void valueChanged(TreeSelectionEvent e) {

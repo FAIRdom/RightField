@@ -115,6 +115,11 @@ public class WorkbookFrame extends JFrame {
 				updateTitleBar();
 				workbookManager.getWorkbookState().changesUnsaved();
 			}
+
+			@Override
+			public void validationAppliedOrCancelled() {				
+				
+			}
 		});
 		addWindowListener(new WindowAdapter() {
 
