@@ -14,6 +14,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
+import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
@@ -29,6 +30,8 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
  * Date: 08-Nov-2009
  */
 public class ClassHierarchyTreeModel implements TreeModel {
+	
+	private static final Logger logger = Logger.getLogger(ClassHierarchyTreeModel.class);
 
     private ClassHierarchyNode rootNode;
 
@@ -50,7 +53,7 @@ public class ClassHierarchyTreeModel implements TreeModel {
         }
     }
 
-    private void put(OWLEntity cls, DefaultMutableTreeNode node) {
+    private void put(OWLEntity cls, DefaultMutableTreeNode node) {    	
         Collection<DefaultMutableTreeNode> nodes = cls2NodeMap.get(cls);
         if (nodes == null) {
             nodes = new ArrayList<DefaultMutableTreeNode>();

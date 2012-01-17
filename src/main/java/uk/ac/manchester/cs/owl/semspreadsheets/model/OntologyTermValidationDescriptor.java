@@ -1,6 +1,7 @@
 package uk.ac.manchester.cs.owl.semspreadsheets.model;
 
 import java.io.Serializable;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -9,8 +10,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAnnotationSubjectVisitor;
+import org.semanticweb.owlapi.model.OWLAnnotationSubjectVisitorEx;
+import org.semanticweb.owlapi.model.OWLAnnotationValueVisitor;
+import org.semanticweb.owlapi.model.OWLAnnotationValueVisitorEx;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLDataProperty;
+import org.semanticweb.owlapi.model.OWLDatatype;
 import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
+import org.semanticweb.owlapi.model.OWLObjectVisitor;
+import org.semanticweb.owlapi.model.OWLObjectVisitorEx;
 import org.semanticweb.owlapi.model.OWLOntology;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.repository.bioportal.BioPortalRepository;
@@ -23,6 +38,8 @@ import uk.ac.manchester.cs.owl.semspreadsheets.repository.bioportal.BioPortalRep
  */
 public class OntologyTermValidationDescriptor implements Serializable {
 
+	private static final Logger logger = Logger.getLogger(OntologyTermValidationDescriptor.class);
+	
 	private static final long serialVersionUID = 3278347556332276152L;
 
 	private ValidationType type;
@@ -32,6 +49,8 @@ public class OntologyTermValidationDescriptor implements Serializable {
     private Map<IRI, IRI> ontologyIRI2PhysicalIRIMap = new HashMap<IRI, IRI>();
 
     private List<Term> terms;
+    
+    private URI NOTHING_URI = URI.create("http://www.w3.org/2002/07/owl#Nothing");
 
     public OntologyTermValidationDescriptor(ValidationType type, IRI entityIRI, Map<IRI, IRI> ontologyIRI2PhysicalIRIMap, Map<IRI, String> terms) {
         this.type = type;
@@ -56,7 +75,13 @@ public class OntologyTermValidationDescriptor implements Serializable {
         Set<OWLEntity> entities = type.getEntities(workbookManager, entityIRI);
         terms = new ArrayList<Term>();
         for(OWLEntity term : entities) {
-            terms.add(new Term(term.getIRI(), workbookManager.getRendering(term)));
+        	if (!term.getIRI().toURI().equals(NOTHING_URI)) {
+        		logger.debug("Adding term "+term.getIRI()+" to list of OntologyTermValidatorDescriptor terms");        	
+                terms.add(new Term(term.getIRI(), workbookManager.getRendering(term)));
+        	}        	
+        	else {
+        		logger.debug("Ignoring the term "+term.getIRI().toString());
+        	}
         }
         Collections.sort(terms);
     }
