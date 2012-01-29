@@ -10,3 +10,5 @@ build/out/
 build/svn.properties
 src/main/resources/bioportal_api_key
 target/
+*.tar.gz
+*.swp
