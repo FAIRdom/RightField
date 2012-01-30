@@ -1,3 +1,0 @@
-#!/bin/sh
-
-java -Xmx500M -cp /usr/share/java/log4j-1.2.jar:/usr/share/java/owlapi-bin-unknown.jar:/usr/share/java/poi-rightfield-3.8-beta5.jar:/usr/share/rightfield/rightfield-0.15.jar RightField
