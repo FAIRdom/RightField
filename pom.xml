@@ -17,24 +17,6 @@
 		<finalName>rightfield-bin</finalName>
 		<plugins>
 			<plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>deb-maven-plugin</artifactId>
-        <configuration>
-          <description>A test project</description>
-              <maintainer>Tim OBrien &lt;tobrien@discursive.com&gt;</maintainer>
-              <section>libs</section>
-              <priority>optional</priority>     
-              <architecture>all</architecture>
-        </configuration>
-        <executions>
-          <execution>
-            <goals>
-              <goal>deb</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
 					<source>1.6</source>
