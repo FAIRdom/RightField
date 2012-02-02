@@ -75,6 +75,7 @@ public class ValidationValuesPanel extends JPanel {
 
         };
         JScrollPane sp = new JScrollPane(termList);
+        
         add(sp, BorderLayout.CENTER);
         sp.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
         workbookManager.getSelectionModel().addCellSelectionListener(new CellSelectionListener() {
@@ -95,9 +96,7 @@ public class ValidationValuesPanel extends JPanel {
 				updateFromPreviewList(previewList);
 				
 			}
-        });
-        termList.setFixedCellHeight(18);
-        termList.setVisibleRowCount(10);
+        });        
     }
 
     protected void updateFromPreviewList(

@@ -26,7 +26,6 @@ import java.awt.event.WindowEvent;
 import java.util.prefs.Preferences;
 
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 
 import org.apache.log4j.Logger;
 

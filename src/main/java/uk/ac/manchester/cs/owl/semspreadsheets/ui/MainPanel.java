@@ -7,12 +7,7 @@ import javax.swing.JSplitPane;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 
-/**
- * Author: Stuart Owen, Matthew Horridge<br>
- * The University of Manchester<br>
- * Information Management Group<br>
- * Date: 18-Sep-2009
- * 
+/** 
  * @author Stuart Owen
  * @author Matthew Horridge
  */
@@ -32,10 +27,5 @@ public class MainPanel extends JPanel {
         sp.setRightComponent(new ValidationInspectorPanel(frame));
         sp.setResizeWeight(0.8);
         add(sp);
-    }
-  
-    public WorkbookManager getSpreadSheetManager() {
-        return workbookManager;
-    }
-
+    }     
 }

@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -43,45 +44,46 @@ public class ValidationInspectorPanel extends JPanel {
 
     public ValidationInspectorPanel(WorkbookFrame frame) {
         workbookManager = frame.getWorkbookManager();
-        setLayout(new BorderLayout(14, 14));
+        setLayout(new BorderLayout(14, 14));        
         setBorder(BorderFactory.createEmptyBorder(7, 2, 7, 7));
-        add(selectedCellAddressLabel, BorderLayout.NORTH);
-        JPanel outerPanel = new JPanel(new BorderLayout(7, 7));
         
-        add(outerPanel);
-        outerPanel.setLayout(new BorderLayout(7, 7));
+        JPanel outerPanel = new JPanel();                
+        outerPanel.setLayout(new BoxLayout(outerPanel, BoxLayout.PAGE_AXIS));
 
         ClassHierarchyTreePanel classHierarchyTreePanel = new ClassHierarchyTreePanel(frame);
         classHierarchyTreePanel.setBorder(createTitledBorder("HIERARCHY"));
-        outerPanel.add(classHierarchyTreePanel);        
         
         ValidationValuesPanel valuesPanel = new ValidationValuesPanel(frame.getWorkbookManager());
         valuesPanel.setBorder(createTitledBorder("ALLOWED VALUES"));
         
-        JPanel innerPanel = new JPanel(new BorderLayout(7, 7));        
-        outerPanel.add(innerPanel, BorderLayout.SOUTH);
+        JPanel validationSelectionPanel = new JPanel(new BorderLayout(7, 7));        
+        
         ValidationTypeSelectorPanel typeSelectorPanel = new ValidationTypeSelectorPanel(frame.getWorkbookManager());
         
         typeSelectorPanel.setBorder(createTitledBorder("TYPE OF ALLOWED VALUES"));
-        innerPanel.add(typeSelectorPanel, BorderLayout.NORTH);
         
-        innerPanel.add(valuesPanel, BorderLayout.CENTER);
-        
-        JPanel buttonPanel = setupButtonPanel(classHierarchyTreePanel, typeSelectorPanel);
-        
-        innerPanel.add(buttonPanel, BorderLayout.SOUTH);        
+        JPanel buttonPanel = setupButtonPanel(typeSelectorPanel);                      
         
         frame.getWorkbookManager().getSelectionModel().addCellSelectionListener(new CellSelectionListener() {
             public void selectionChanged(Range range) {
                 updateSelectionLabel();
             }
-        });        
+        });     
+                
+        validationSelectionPanel.add(typeSelectorPanel, BorderLayout.NORTH);        
+        validationSelectionPanel.add(valuesPanel, BorderLayout.CENTER);
+        validationSelectionPanel.add(buttonPanel, BorderLayout.SOUTH);
+        
+        outerPanel.add(classHierarchyTreePanel);        
+        outerPanel.add(validationSelectionPanel);
+       
+        add(selectedCellAddressLabel, BorderLayout.NORTH);
+        add(outerPanel,BorderLayout.CENTER);
+        
         updateSelectionLabel();
     }
 
-	private JPanel setupButtonPanel(
-			ClassHierarchyTreePanel classHierarchyTreePanel,
-			ValidationTypeSelectorPanel typeSelectorPanel) {
+	private JPanel setupButtonPanel(ValidationTypeSelectorPanel typeSelectorPanel) {
 		
         workbookManager.getEntitySelectionModel().addListener(new EntitySelectionModelListener() {			
 			@Override
