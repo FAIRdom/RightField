@@ -29,13 +29,13 @@ package uk.ac.manchester.cs.owl.semspreadsheets.ui.task;
  * Date: 03-Feb-2010
  */
 public interface TaskListener {
-
-    @SuppressWarnings("unchecked")
+    
+	@SuppressWarnings("rawtypes")
 	void messageChanged(Task task);
-
-    @SuppressWarnings("unchecked")
+    
+	@SuppressWarnings("rawtypes")
 	void lengthChanged(Task task);
-
-    @SuppressWarnings("unchecked")
+    
+	@SuppressWarnings("rawtypes")
 	void progressChanged(Task task);
 }

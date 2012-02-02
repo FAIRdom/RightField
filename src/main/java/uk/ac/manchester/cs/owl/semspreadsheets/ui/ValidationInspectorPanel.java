@@ -13,15 +13,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
 
 import org.apache.log4j.Logger;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.ApplyValidationAction;
-import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.CancelValidationAction;
 
 /**
  * @author Stuart Owen
@@ -94,7 +91,6 @@ public class ValidationInspectorPanel extends JPanel {
 			}
 		});
 		
-
 		typeSelectorPanel.addRadioButtonActionListener(new ActionListener() {			
 			@Override
 			public void actionPerformed(ActionEvent e) {

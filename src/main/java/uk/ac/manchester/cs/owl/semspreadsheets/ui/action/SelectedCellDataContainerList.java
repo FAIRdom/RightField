@@ -63,7 +63,6 @@ public class SelectedCellDataContainerList implements Iterable<SelectedCellDataC
 	}
 	public SelectedCellDataContainer get(int index) {
 		return innerList.get(index);
-	}
-	private static final long serialVersionUID = 7491188905082713610L;
+	}	
 
 }

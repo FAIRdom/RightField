@@ -51,7 +51,8 @@ public class TaskManager implements TaskListener {
      * @return The return value of the task
      * @throws E from the task
      */
-    public <V, E extends Exception> V runTask(Task<V, E> callable) throws E {
+    @SuppressWarnings("unchecked")
+	public <V, E extends Exception> V runTask(Task<V, E> callable) throws E {
         try {
             V returnValue = null;
             CallableTask<V, E> callableTask = new CallableTask<V, E>(callable);
@@ -107,7 +108,8 @@ public class TaskManager implements TaskListener {
         }
     }
 
-    public void messageChanged(final Task task) {
+    @SuppressWarnings("rawtypes")
+	public void messageChanged(final Task task) {
         if (SwingUtilities.isEventDispatchThread()) {
             dlg.setTitle(task.getTitle());
         }
@@ -120,7 +122,8 @@ public class TaskManager implements TaskListener {
         }
     }
 
-    public void lengthChanged(final Task task) {
+    @SuppressWarnings("rawtypes")
+	public void lengthChanged(final Task task) {
         if (SwingUtilities.isEventDispatchThread()) {
             dlg.setLength(task.getLength());
         }
@@ -133,7 +136,8 @@ public class TaskManager implements TaskListener {
         }
     }
 
-    public void progressChanged(final Task task) {
+    @SuppressWarnings("rawtypes")
+	public void progressChanged(final Task task) {
         Runnable runnable = new Runnable() {
             public void run() {
                 int progress = task.getProgress();
