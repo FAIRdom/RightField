@@ -106,12 +106,15 @@ public class ValidationInspectorPanel extends JPanel {
 		applyButton.setAction(new ApplyValidationAction(workbookManager));
 		applyButton.setEnabled(false);
 				
-		cancelButton.setAction(new CancelValidationAction(workbookManager));
-		cancelButton.setEnabled(false);
-		
 		JPanel  buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        buttonPanel.add(applyButton);        
-        buttonPanel.add(cancelButton);
+        buttonPanel.add(applyButton);
+		
+		//Cancel button is currently not visible, as Katy thought it was confusing and could be
+		//confused with an UNDO button to remove previous changes. Leaving the code here for now incase
+        //we decide to reintroduce it.
+		//cancelButton.setAction(new CancelValidationAction(workbookManager));
+		//cancelButton.setEnabled(false);
+		//buttonPanel.add(cancelButton);		               
         
         workbookManager.addListener(new WorkbookManagerListener() {
 			

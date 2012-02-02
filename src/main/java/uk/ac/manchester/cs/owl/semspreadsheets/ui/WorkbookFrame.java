@@ -39,6 +39,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.repository.RepositoryItem;
 import uk.ac.manchester.cs.owl.semspreadsheets.repository.RepositoryManager;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.AboutBoxAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.ClearOntologyValuesAction;
+import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.CloseWorkbookAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.ExitAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.InsertSheetAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.OnlineHelpAction;
@@ -145,6 +146,8 @@ public class WorkbookFrame extends JFrame {
 		JMenu fileMenu = menuBar.add(new JMenu("File"));
 		fileMenu.setMnemonic(KeyEvent.VK_F);
 		fileMenu.add(new OpenWorkbookAction(this));
+		fileMenu.add(new CloseWorkbookAction(this));
+		fileMenu.add(new JSeparator());
 		fileMenu.add(new OpenOntologyAction(this));
 		fileMenu.add(new OpenFromBioPortalAction(this));
 		fileMenu.addSeparator();
@@ -185,6 +188,12 @@ public class WorkbookFrame extends JFrame {
 	
 	public void exit() {
 		processWindowEvent(new WindowEvent(this,WindowEvent.WINDOW_CLOSING));
+	}
+	
+	public void closeWorkbook() {
+		if (checkSavedState("Close the workbook")) {
+			getWorkbookManager().createNewWorkbook();
+		}
 	}
 
 	public TaskManager getTaskManager() {
@@ -285,15 +294,17 @@ public class WorkbookFrame extends JFrame {
 	}
 
 	public void openWorkbook()  {
-		File file = browseForFile("Open spreadsheet", FileDialog.LOAD, "Excel spreadsheet",
-				WORKBOOK_EXT);
-		if (file != null) {
-			try {
-				workbookManager.loadWorkbook(file);
-			} catch (IOException e) {
-				ErrorHandler.getErrorHandler().handleError(e);
+		if (checkSavedState("Open a new workbook")) {
+			File file = browseForFile("Open spreadsheet", FileDialog.LOAD, "Excel spreadsheet",
+					WORKBOOK_EXT);
+			if (file != null) {
+				try {
+					workbookManager.loadWorkbook(file);
+				} catch (IOException e) {
+					ErrorHandler.getErrorHandler().handleError(e);
+				}
 			}
-		}
+		}		
 	}
 
 	public void saveWorkbookAs() throws IOException {
@@ -424,5 +435,15 @@ public class WorkbookFrame extends JFrame {
 			return false;
 		}
 	}
+
+	public boolean checkSavedState(String actionName) {
+		int res=JOptionPane.YES_OPTION;
+		if (!getWorkbookState().isChangesSaved()) {
+    		res = JOptionPane.showConfirmDialog(this,"You have unsaved changes. Are you sure you wish to "+actionName+"?","Continue to "+actionName+"?",JOptionPane.YES_NO_OPTION);
+    	}
+		return (res == JOptionPane.YES_OPTION);
+	}
+
+	
 
 }

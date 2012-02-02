@@ -6,10 +6,10 @@ import java.awt.event.KeyEvent;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookFrame;
 
 /**
- * Author: Matthew Horridge<br>
- * The University of Manchester<br>
- * Information Management Group<br>
- * Date: 07-Nov-2009
+ * Action to open a a spreadsheet from disk
+ * @author Stuart Owen
+ * @author Matthew Horridge
+ *
  */
 @SuppressWarnings("serial")
 public class OpenWorkbookAction extends WorkbookFrameAction {
@@ -22,6 +22,7 @@ public class OpenWorkbookAction extends WorkbookFrameAction {
     /**
      * Invoked when an action occurs.
      */
+    @Override
     public void actionPerformed(ActionEvent e) {
         getWorkbookFrame().openWorkbook();        
     }

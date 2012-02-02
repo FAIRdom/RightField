@@ -48,13 +48,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookManagerEvent;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookManagerListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookState;
 
-/**
- * Author: Matthew Horridge, Stuart Owen<br>
- * The University of Manchester<br>
- * Information Management Group<br>
- * Date: 18-Sep-2009
- * Manages the current spread sheet, the current ontologies and validations
- * 
+/** 
  * @author Stuart Owen
  * @author Matthew Horridge
  */
@@ -195,7 +189,10 @@ public class WorkbookManager {
 
     public Workbook createNewWorkbook() {
         workbook = WorkbookFactory.createWorkbook();
+        workbookURI=null;
+        getOntologyTermValidationManager().clearValidations();
         fireWorkbookCreated();
+        getWorkbookState().changesSaved();
         return workbook;
     }
 
@@ -204,8 +201,9 @@ public class WorkbookManager {
             workbook = WorkbookFactory.createWorkbook(uri);
             workbookURI = uri;
             // Extract validation
-            ontologyTermValidationManager.readValidationFromWorkbook();
+            getOntologyTermValidationManager().readValidationFromWorkbook();
             fireWorkbookLoaded();
+            getWorkbookState().changesSaved();
             return workbook;
         }
         catch (IOException e) {

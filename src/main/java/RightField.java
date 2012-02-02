@@ -77,12 +77,10 @@ public class RightField {
             @Override
             public void windowClosing(WindowEvent e) {
             	
-            	int res = JOptionPane.YES_OPTION;
-            	if (!frame.getWorkbookState().isChangesSaved()) {
-            		res = JOptionPane.showConfirmDialog(frame,"You have unsaved changes. Are you sure you wish to exit?","Exit RightField?",JOptionPane.YES_NO_OPTION);
-            	}
+            	boolean close = frame.checkSavedState("Exit RightField");
             	
-				if (res==JOptionPane.YES_OPTION) {
+            	
+				if (close) {
 					Preferences preferences = Preferences.userNodeForPackage(RightField.class);
 	                preferences.putInt(WINDOW_X_KEY, frame.getX());
 	                preferences.putInt(WINDOW_Y_KEY, frame.getY());
