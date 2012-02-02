@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.sysmo-db</groupId>
 	<artifactId>rightfield</artifactId>
-	<version>0.15</version>
+	<version>0.15.2-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>RightField</name>
 	<description>
@@ -53,9 +53,9 @@
 	</build>
 	<dependencies>		
 		<dependency>
-			<groupId>owlapi-bin</groupId>
-			<artifactId>owlapi-bin</artifactId>
-			<version>unknown</version>
+			<groupId>net.sourceforge.owlapi</groupId>
+			<artifactId>owl-api</artifactId>
+			<version>3.2.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.sysmo-db</groupId>
