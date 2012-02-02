@@ -22,8 +22,8 @@
 			<directory>etc/</directory>	
 			<outputDirectory>/</outputDirectory>
 			<includes>
-				<include>run.sh</include>
-				<include>run.bat</include>
+				<include>rightfield.sh</include>
+				<include>rightfield.bat</include>
 			</includes>
 		</fileSet>
 	</fileSets>

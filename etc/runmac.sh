@@ -1,1 +1,0 @@
-java -Xdock:name=RightField -Dapple.laf.useScreenMenuBar=true  -Xmx500M -jar rightfield-bin.jar
