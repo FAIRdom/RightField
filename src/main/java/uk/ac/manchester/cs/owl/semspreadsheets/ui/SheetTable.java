@@ -16,28 +16,22 @@ import javax.swing.table.TableModel;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidation;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.Workbook;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 
 /**
- * Author: Matthew Horridge<br>
- * The University of Manchester<br>
- * Information Management Group<br>
- * Date: 18-Sep-2009
+ * @author Stuart Owen
+ * @author Matthew Horridge
  */
+@SuppressWarnings("serial")
 public class SheetTable extends JTable {
-
-    private Workbook workbook;
-
+    
     private Sheet sheet;
 
     private WorkbookManager workbookManager;
 
-
     public SheetTable(WorkbookManager ss, Sheet sheet) {
         this.workbookManager = ss;
-        this.sheet = sheet;
-        workbook = workbookManager.getWorkbook();
+        this.sheet = sheet;        
 
         setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         TableModel model = new SheetTableModel(sheet);
@@ -46,7 +40,7 @@ public class SheetTable extends JTable {
         setCellSelectionEnabled(true);
 
         SheetCellRenderer ren = new SheetCellRenderer();
-        SpreadSheetCellEditor editor = new SpreadSheetCellEditor(sheet);
+        SpreadSheetCellEditor editor = new SpreadSheetCellEditor();
 
         for (int col = 0; col < sheet.getMaxColumns(); col++) {
             TableColumn column = getColumnModel().getColumn(col);

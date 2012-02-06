@@ -10,10 +10,8 @@ import javax.swing.JTable;
 import javax.swing.table.TableCellRenderer;
 
 /**
- * Author: Matthew Horridge<br>
- * The University of Manchester<br>
- * Information Management Group<br>
- * Date: 31-Oct-2009
+ * @author Stuart Owen
+ * @author Matthew Horridge
  */
 public class SheetHeaderRenderer implements TableCellRenderer {
 
@@ -59,7 +57,8 @@ public class SheetHeaderRenderer implements TableCellRenderer {
 
     private RenderingPanel renderingPanel = new RenderingPanel();
 
-    private class RenderingPanel extends JPanel {
+    @SuppressWarnings("serial")
+	private class RenderingPanel extends JPanel {
 
         private String text = "A";
 

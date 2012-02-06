@@ -1,42 +1,21 @@
 package uk.ac.manchester.cs.owl.semspreadsheets.ui;
 
-import java.awt.AlphaComposite;
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Stroke;
 
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.text.Style;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Cell;
 
 /**
- * Author: Matthew Horridge<br>
- * The University of Manchester<br>
- * Information Management Group<br>
- * Date: 18-Sep-2009
+ * @author Stuart Owen
+ * @author Matthew Horridge
  */
+@SuppressWarnings("serial")
 public class SheetCellRenderer extends DefaultTableCellRenderer {
-
-    private boolean comment = false;
-
-    private boolean validation = false;
-
-    private static Color COMMENT_COLOR = new Color(221, 8, 6);
-
-
-    private Stroke stroke = new BasicStroke(2.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
-
-    private AlphaComposite alphaComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.15f);
-
-    private Color color = new Color(50, 150, 60);
-
-
-    private Style style;
-
+   
     public SheetCellRenderer() {
 
     }
@@ -54,9 +33,7 @@ public class SheetCellRenderer extends DefaultTableCellRenderer {
      */
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         JLabel label = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-        Cell cell = (Cell) value;
-        comment = false;
-        validation = false;
+        Cell cell = (Cell) value;       
 
         if (cell != null && !cell.isEmpty()) {
             label.setForeground(cell.getForeground());

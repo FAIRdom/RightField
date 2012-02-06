@@ -43,10 +43,8 @@ import org.semanticweb.owlapi.util.OWLOntologyChangeVisitorAdapter;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 
 /**
- * Author: Matthew Horridge<br>
- * The University of Manchester<br>
- * Information Management Group<br>
- * Date: 18-Sep-2009
+ * @author Stuart Owen
+ * @auhtor Matthew Horridge
  */
 public class HierarchyTreeModel implements TreeModel, OWLOntologyChangeListener {
 

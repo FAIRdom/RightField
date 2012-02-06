@@ -20,10 +20,8 @@ import org.semanticweb.owlapi.model.OWLObjectProperty;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 
 /**
- * Author: Matthew Horridge<br>
- * The University of Manchester<br>
- * Information Management Group<br>
- * Date: 08-Nov-2009
+ * @author Stuart Owen
+ * @author Matthew Horridge
  */
 public class Icons {
 
@@ -61,7 +59,8 @@ public class Icons {
         }
     }
 
-    public static Icon getOWLEntityIcon(WorkbookManager manager, EntityType entity) {
+    @SuppressWarnings("rawtypes")
+	public static Icon getOWLEntityIcon(WorkbookManager manager, EntityType entity) {
         if (entity.equals(EntityType.CLASS)) {
             return OWLCLASS_ICON;
         }
@@ -134,11 +133,7 @@ public class Icons {
             g2.setColor(oldColor);
             g2.setStroke(oldStroke);
             g2.translate(-x, -y);
-        }
-
-        public void setSatisfiable(boolean b) {
-            this.satisfiable = b;
-        }
+        }       
 
         /**
          * Returns the icon's width.
@@ -165,8 +160,6 @@ public class Icons {
 
         public final static Stroke STROKE = new BasicStroke(2.0f);
 
-        private boolean satisfiable = true;
-
         /**
          * Draw the icon at the specified location.  Icon implementations
          * may use the Component argument to get properties useful for
@@ -184,11 +177,7 @@ public class Icons {
             g2.setColor(oldColor);
             g2.setStroke(oldStroke);
             g2.translate(-x, -y);
-        }
-
-        public void setSatisfiable(boolean b) {
-            this.satisfiable = b;
-        }
+        }       
 
         /**
          * Returns the icon's width.

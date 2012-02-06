@@ -9,8 +9,6 @@ import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.apache.log4j.Logger;
-
 import uk.ac.manchester.cs.owl.semspreadsheets.change.SetCellValue;
 import uk.ac.manchester.cs.owl.semspreadsheets.change.WorkbookChangeEvent;
 import uk.ac.manchester.cs.owl.semspreadsheets.change.WorkbookChangeListener;
@@ -20,18 +18,13 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.Workbook;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 
 /**
- * Author: Matthew Horridge<br>
- * The University of Manchester<br>
- * Information Management Group<br>
- * Date: 31-Oct-2009
- * 
- * Author: Stuart Owen
- * Date: 30-Sep-2010
+ * @author Stuart Owen
+ * @author Matthew Horridge
  */
 @SuppressWarnings("serial")
 public class WorkbookPanel extends JPanel {
 	
-	private Logger logger = Logger.getLogger(WorkbookPanel.class);
+	//private Logger logger = Logger.getLogger(WorkbookPanel.class);
 
     private WorkbookManager manager;
 

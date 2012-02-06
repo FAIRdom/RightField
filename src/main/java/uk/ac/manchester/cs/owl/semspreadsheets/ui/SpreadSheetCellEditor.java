@@ -16,7 +16,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.table.TableCellEditor;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Cell;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
 
 /*
  * Copyright (C) 2009, University of Manchester
@@ -42,27 +41,18 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
  */
 
 /**
- * Author: Matthew Horridge<br>
- * The University of Manchester<br>
- * Information Management Group<br>
- * Date: 18-Sep-2009
+ * @author Stuart Owen
+ * @author Matthew Horrige
  */
 public class SpreadSheetCellEditor implements TableCellEditor {
 
-    private Sheet sheet;
-
     private JTextField editorField = new JTextField();
 
-    private Cell cellBeingEdited = null;
-
-    private int row;
-
-    private int col;
+    private Cell cellBeingEdited = null;    
 
     private List<CellEditorListener> listeners = new ArrayList<CellEditorListener>();
 
-    public SpreadSheetCellEditor(Sheet sheet) {
-        this.sheet = sheet;
+    public SpreadSheetCellEditor() {        
         editorField.setBorder(BorderFactory.createEmptyBorder());        
     }
 
@@ -92,9 +82,7 @@ public class SpreadSheetCellEditor implements TableCellEditor {
     public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
         Rectangle rect = table.getCellRect(row, column, false);
         editorField.setSize(rect.width, rect.height + 4);
-        cellBeingEdited = (Cell) value;
-        this.row = row;
-        this.col = column;
+        cellBeingEdited = (Cell) value;        
         if (cellBeingEdited != null) {
             editorField.setText(cellBeingEdited.getValue());
             editorField.setFont(cellBeingEdited.getFont());

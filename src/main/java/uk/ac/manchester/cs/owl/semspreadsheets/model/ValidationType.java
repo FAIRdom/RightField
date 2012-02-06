@@ -13,10 +13,8 @@ import org.semanticweb.owlapi.model.OWLEntity;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.UILabels;
 
 /**
- * Author: Matthew Horridge<br>
- * The University of Manchester<br>
- * Information Management Group<br>
- * Date: 20-Sep-2009
+ * @author Stuart Owen
+ * @author Matthew Horridge
  */
 public enum ValidationType {
 
@@ -28,14 +26,17 @@ public enum ValidationType {
 
     private String label;
 
-    private EntityType entityType;
+    @SuppressWarnings("rawtypes")
+	private EntityType entityType;
 
-    ValidationType(String label, EntityType entityType) {
+    @SuppressWarnings("rawtypes")
+	ValidationType(String label, EntityType entityType) {
         this.label = label;
         this.entityType = entityType;
     }
 
-    public EntityType getEntityType() {
+    @SuppressWarnings("rawtypes")
+	public EntityType getEntityType() {
         return entityType;
     }
 
@@ -64,7 +65,8 @@ public enum ValidationType {
         }
     }
 
-    public Set<OWLEntity> getEntities(WorkbookManager workbookManager, Collection<Term> terms) {
+    @SuppressWarnings("unchecked")
+	public Set<OWLEntity> getEntities(WorkbookManager workbookManager, Collection<Term> terms) {
         Set<OWLEntity> entities = new HashSet<OWLEntity>();
         for (Term term : terms) {
             entities.add(workbookManager.getDataFactory().getOWLEntity(getEntityType(), term.getIRI()));

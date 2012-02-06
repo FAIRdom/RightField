@@ -13,6 +13,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.Workbook;
  * @author Stuart Owen
  * @author Matthew Horridge
  */
+@SuppressWarnings("serial")
 public class SheetTableModel extends AbstractTableModel implements SpreadSheetListener {
 
     private Sheet sheet;

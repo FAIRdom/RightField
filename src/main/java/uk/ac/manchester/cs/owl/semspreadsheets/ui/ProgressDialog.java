@@ -16,18 +16,14 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 
-import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.task.Task;
 
 /**
- * Author: Matthew Horridge<br>
- * The University of Manchester<br>
- * Information Management Group<br>
- * Date: 03-Feb-2010
+ * @author Stuart Owen
+ * @author Matthew Horridge
  */
-public class ProgressDialog extends JDialog {
-
-    private WorkbookManager workbookManager;
+@SuppressWarnings("serial")
+public class ProgressDialog extends JDialog {    
 
     private JLabel titleLabel = new JLabel("                                              ");
 
@@ -37,7 +33,8 @@ public class ProgressDialog extends JDialog {
 
     private AbstractAction cancelAction;
 
-    private Task task;
+    @SuppressWarnings("rawtypes")
+	private Task task;
 
     public ProgressDialog(WorkbookFrame workbookFrame) throws HeadlessException {
         super(workbookFrame != null ? workbookFrame : null, "Task in progress", true);
@@ -75,16 +72,7 @@ public class ProgressDialog extends JDialog {
         getAccessibleContext().setAccessibleDescription(title);
         titleLabel.setText(title);
         pack();
-    }
-
-    private String getTitleText() {
-        if(progressBar.isIndeterminate()) {
-            return title;
-        }
-        else {
-            return title + " - " + ((progressBar.getValue() * 100) / progressBar.getMaximum());
-        }
-    }
+    }    
 
     public void setLength(int length) {
         progressBar.setMaximum(length);
@@ -103,7 +91,8 @@ public class ProgressDialog extends JDialog {
         progressBar.setIndeterminate(indeterminate);
     }
 
-    public void setTask(Task task) {
+    @SuppressWarnings("rawtypes")
+	public void setTask(Task task) {
         this.task = task;
     }
 

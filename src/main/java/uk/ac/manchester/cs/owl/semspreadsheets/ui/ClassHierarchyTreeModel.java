@@ -14,7 +14,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
-import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
@@ -24,14 +23,10 @@ import org.semanticweb.owlapi.reasoner.NodeSet;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 
 /**
- * Author: Matthew Horridge<br>
- * The University of Manchester<br>
- * Information Management Group<br>
- * Date: 08-Nov-2009
+ * @author Stuart Owen
+ * @author Matthew Horridge
  */
-public class ClassHierarchyTreeModel implements TreeModel {
-	
-	private static final Logger logger = Logger.getLogger(ClassHierarchyTreeModel.class);
+public class ClassHierarchyTreeModel implements TreeModel {	
 
     private ClassHierarchyNode rootNode;
 

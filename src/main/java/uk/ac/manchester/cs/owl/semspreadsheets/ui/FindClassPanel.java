@@ -25,11 +25,10 @@ import org.semanticweb.owlapi.model.OWLEntity;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 
 /**
- * Author: Matthew Horridge<br>
- * The University of Manchester<br>
- * Information Management Group<br>
- * Date: 08-Nov-2009
+ * @author Stuart Owen
+ * @author Matthew Horridge
  */
+@SuppressWarnings("serial")
 public class FindClassPanel extends JPanel {
 
 	private WorkbookManager manager;
@@ -38,12 +37,9 @@ public class FindClassPanel extends JPanel {
 
 	private JList resultList = new JList();
 
-	private JWindow resultWindow;
+	private JWindow resultWindow;	
 
-	private WorkbookFrame frame;		
-
-	public FindClassPanel(WorkbookFrame frame) {
-		this.frame = frame;
+	public FindClassPanel(WorkbookFrame frame) {		
 		this.manager = frame.getWorkbookManager();
 		setLayout(new BorderLayout());
 		findField.putClientProperty("JTextField.variant", "search");

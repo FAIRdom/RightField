@@ -29,7 +29,6 @@ import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLObject;
 
-import uk.ac.manchester.cs.owl.semspreadsheets.model.Validation;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 
 /*
@@ -56,14 +55,10 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
  */
 
 /**
- * Author: Matthew Horridge, Stuart Owen<br>
- * The University of Manchester<br>
- * Information Management Group<br>
- * Date: 18-Sep-2009
- * 
  * @author Matthew Horridge
  * @author Stuart Owen
  */
+@SuppressWarnings("serial")
 public class TermSelectionPanel extends JPanel {
 
     private WorkbookManager workbookManager;
@@ -168,13 +163,12 @@ public class TermSelectionPanel extends JPanel {
         }
     }
 
-    private void fillList(Set<? extends OWLClassExpression> expressions) {
-        Validation validation = null;
+    private void fillList(Set<? extends OWLClassExpression> expressions) {        
         for (OWLClassExpression ce : expressions) {
             if (!ce.isAnonymous()) {
                 List<OWLObject> listObjects = new ArrayList<OWLObject>();
                 if (noneRadioButton.isSelected()) {
-                    validation = null;
+                    
                 }
                 else if (subClassesRadioButton.isSelected()) {
                     listObjects.addAll(workbookManager.getReasoner().getSubClasses(ce, true).getFlattened());
@@ -182,7 +176,6 @@ public class TermSelectionPanel extends JPanel {
                 else if (individualsRadioButton.isSelected()) {
                     Set<OWLNamedIndividual> individuals = workbookManager.getReasoner().getInstances(ce, false).getFlattened();
                     listObjects.addAll(individuals);
-//                        validation = new IndividualValuesValidation(col, row, row, ce.asOWLClass(), individuals);
                 }
                 else if (directIndividualsRadioButton.isSelected()) {
                     listObjects.addAll(workbookManager.getReasoner().getInstances(ce, true).getFlattened());

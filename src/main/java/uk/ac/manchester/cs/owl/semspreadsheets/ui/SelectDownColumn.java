@@ -7,11 +7,10 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.SpreadSheetAction;
 
 /**
- * Author: Matthew Horridge<br>
- * The University of Manchester<br>
- * Information Management Group<br>
- * Date: 20-Sep-2009
+ * @author Stuart Owen
+ * @author Matthew Horridge
  */
+@SuppressWarnings("serial")
 public class SelectDownColumn extends SpreadSheetAction {
 
     public SelectDownColumn(WorkbookManager workbookManager, WorkbookFrame workbookFrame) {
