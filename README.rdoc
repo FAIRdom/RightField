@@ -21,7 +21,7 @@ To compile RightField you are required to have both {Apache Maven2}[http://maven
 
   >mvn assembly:directory  
   
-This will create both an unzipped distribution directory in the <em>target/rightfield-{version}/</em> directory.
+This will create an unzipped distribution directory in the <em>target/rightfield-{version}/</em> directory.
 
 To create a zipped package run
 
