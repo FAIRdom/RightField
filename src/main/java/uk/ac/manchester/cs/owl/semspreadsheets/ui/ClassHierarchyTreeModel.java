@@ -42,7 +42,7 @@ public class ClassHierarchyTreeModel implements TreeModel {
         this.manager = manager;
         nodeContentComparator = new NodeContentComparator();
         if (manager.getLoadedOntologies().size() > 0) {
-            rootNode = new ClassHierarchyNode(manager);
+            rootNode = new ClassHierarchyNode();
             put(rootNode.getOWLClasses().iterator().next(), rootNode);
             buildChildren(rootNode);
         }
@@ -84,7 +84,7 @@ public class ClassHierarchyTreeModel implements TreeModel {
             List<Node<OWLClass>> sortedSubs = new ArrayList<Node<OWLClass>>(subs.getNodes());
             Collections.sort(sortedSubs, nodeContentComparator);
             for (Node<OWLClass> sub : sortedSubs) {
-                ClassHierarchyNode childNode = new ClassHierarchyNode(manager, sub);
+                ClassHierarchyNode childNode = new ClassHierarchyNode(sub);
                 node.add(childNode);
                 for (OWLClass cls : sub) {
                     put(cls, childNode);
@@ -97,11 +97,10 @@ public class ClassHierarchyTreeModel implements TreeModel {
             List<OWLNamedIndividual> sortedIndividuals = new ArrayList<OWLNamedIndividual>(individuals.getFlattened());
             Collections.sort(sortedIndividuals, individualNodeContentComparator);
             for (OWLNamedIndividual ind : sortedIndividuals) {
-                ClassHierarchyIndividualNode childNode = new ClassHierarchyIndividualNode(manager, ind);
+                ClassHierarchyIndividualNode childNode = new ClassHierarchyIndividualNode(ind);
                 node.add(childNode);
                 put(ind, childNode);
             }
-
         }
     }
 

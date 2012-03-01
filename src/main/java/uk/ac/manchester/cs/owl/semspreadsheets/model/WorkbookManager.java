@@ -61,8 +61,6 @@ public class WorkbookManager {
     
     private OWLOntologyManager owlManager;
 
-    private OWLOntology ontology;
-
     private OWLReasoner reasoner;
     
     private WorkbookState workbookState = new WorkbookState();
@@ -397,23 +395,22 @@ public class WorkbookManager {
         //See if an ontology with such ID had been loaded. If yes, unload it
         unloadOntology(physicalIRI);
                 
-    	this.ontology = owlManager.loadOntologyFromOntologyDocument(BioPortalRepository.handleBioPortalAPIKey(physicalIRI));
+    	OWLOntology ontology = owlManager.loadOntologyFromOntologyDocument(BioPortalRepository.handleBioPortalAPIKey(physicalIRI));
     	
-    	logIRI = this.ontology.getOntologyID().getOntologyIRI();
+    	logIRI = ontology.getOntologyID().getOntologyIRI();
     	//Create a new ID and use the physical IRI as a version ID        
         newID = new OWLOntologyID(logIRI, physicalIRI);
-        owlManager.applyChange(new SetOntologyID(this.ontology, newID));
+        owlManager.applyChange(new SetOntologyID(ontology, newID));
         updateReasoner();
         setLabelRendering(true);
-        fireOntologiesChanged();
+        fireOntologiesChanged();        
         
         return ontology;
     }    
 
     private void updateReasoner() {    	
-        try {
-        	
-            OWLOntologyManager man = OWLManager.createOWLOntologyManager();
+        try {        	
+            OWLOntologyManager man = OWLManager.createOWLOntologyManager();            
             OWLOntology root = man.createOntology(IRI.create("owlapi:reasoner"), getLoadedOntologies());
             reasoner = new StructuralReasoner(root, new SimpleConfiguration(), BufferingMode.NON_BUFFERING);
             reasoner.precomputeInferences();

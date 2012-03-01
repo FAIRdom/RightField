@@ -30,6 +30,7 @@ import javax.swing.filechooser.FileFilter;
 
 import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
@@ -204,10 +205,24 @@ public class WorkbookFrame extends JFrame {
 		updateTitleBar();
 		Collection<IRI> ontologyIRIs = workbookManager
 				.getOntologyTermValidationManager().getOntologyIRIs();
+		String protegeOntology = "http://protege.stanford.edu/plugins/owl/protege";
+				
 		Set<IRI> missingOntologies = new HashSet<IRI>();
-		for (IRI ontologyIRI : ontologyIRIs) {
-			if (!workbookManager.getOntologyManager().contains(ontologyIRI)) {
+		Set<OWLOntology> openOntologies = workbookManager.getOntologyManager().getOntologies();
+		
+		for (IRI ontologyIRI : ontologyIRIs) {			
+			boolean present = false;
+			//need to loop over like this because OWLOntologyManager.contains() seems to rely on being the same instance
+			//TODO: check if this is still the case with v3.2.5 when its released.
+			for (OWLOntology openOntology : openOntologies) {
+				present = openOntology.getOntologyID().getOntologyIRI().equals(ontologyIRI);
+				if (present) {
+					break;
+				}
+			}
+			if (!present) {
 				missingOntologies.add(ontologyIRI);
+				logger.debug("Missing ontology detected: "+ontologyIRI);
 			}
 		}
 		if (!missingOntologies.isEmpty()) {
@@ -215,7 +230,15 @@ public class WorkbookFrame extends JFrame {
 			sb.append("<html><body>");
 			sb
 					.append("The spreadsheet contains information about terms from ontologies which<br>"
-							+ "are not loaded.  Do you want to load these ontologies now?");
+							+ "are not loaded:");
+					sb.append("<ul>");
+					for (IRI missingIRI : missingOntologies) {
+						if (!missingIRI.toString().equals(protegeOntology)) {
+							sb.append("<li>"+missingIRI.toString()+"</li>");
+						}						
+					}
+					sb.append("</ul>");
+					sb.append("Would you like to load these ontologies now?");
 			sb.append("</body></html>");
 			int ret = JOptionPane.showConfirmDialog(this, sb.toString(),
 					"Load ontologies?", JOptionPane.YES_NO_OPTION,

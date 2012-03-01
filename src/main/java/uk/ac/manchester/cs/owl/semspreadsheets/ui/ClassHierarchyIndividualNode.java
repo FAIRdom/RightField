@@ -4,8 +4,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 
-import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
-
 /**
  * Author: Matthew Horridge<br>
  * The University of Manchester<br>
@@ -15,7 +13,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 @SuppressWarnings("serial")
 public class ClassHierarchyIndividualNode extends DefaultMutableTreeNode {
 
-    public ClassHierarchyIndividualNode(WorkbookManager manager, OWLNamedIndividual individual) {
+    public ClassHierarchyIndividualNode(OWLNamedIndividual individual) {
         super(individual);
     }
 }

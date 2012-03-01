@@ -42,22 +42,7 @@ public class ClassHierarchyTree extends JTree {
         super(new ClassHierarchyTreeModel(manager));
         getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);        
         this.workbookManager = manager;
-        manager.addListener(new WorkbookManagerListener() {
-            public void workbookChanged(WorkbookManagerEvent event) {
-            }
-
-            public void workbookLoaded(WorkbookManagerEvent event) {
-            }
-
-            public void ontologiesChanged(WorkbookManagerEvent event) {
-                setModel(new ClassHierarchyTreeModel(manager));
-            }
-
-			@Override
-			public void validationAppliedOrCancelled() {				
-				
-			}
-        });
+        
         addTreeSelectionListener(new TreeSelectionListener() {
             public void valueChanged(TreeSelectionEvent e) {
                 previewSelectedClass();
@@ -71,6 +56,10 @@ public class ClassHierarchyTree extends JTree {
         setCellRenderer(new WorkbookManagerCellRenderer(workbookManager));
     }
 
+    public void updateModel() {
+    	setModel(new ClassHierarchyTreeModel(workbookManager));
+    }
+    
     public ClassHierarchyTreeModel getClassHierarchyTreeModel() {
         return (ClassHierarchyTreeModel) super.getModel();
     }
@@ -125,23 +114,5 @@ public class ClassHierarchyTree extends JTree {
             scrollPathToVisible(path);
         }
 
-    }
-
-    private Font ontologyNotLoadedFont = new Font("Lucida Grande", Font.BOLD, 14);
-
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        if (workbookManager.getLoadedOntologies().size() == 0) {
-            Color oldColor = g.getColor();
-            g.setColor(Color.LIGHT_GRAY);
-            Font oldFont = g.getFont();
-            g.setFont(ontologyNotLoadedFont);
-            String msg = "No ontologies loaded";
-            Rectangle bounds = g.getFontMetrics().getStringBounds(msg, g).getBounds();
-            g.drawString(msg, getWidth() / 2 - bounds.width / 2, getHeight() / 2 - g.getFontMetrics().getAscent());
-            g.setFont(oldFont);
-            g.setColor(oldColor);
-        }
-    }
+    }   
 }

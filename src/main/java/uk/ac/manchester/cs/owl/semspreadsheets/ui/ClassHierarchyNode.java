@@ -8,8 +8,6 @@ import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.reasoner.Node;
 import org.semanticweb.owlapi.reasoner.impl.NodeFactory;
 
-import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
-
 /**
  * @author Stuart Owen
  * @author Matthew Horridge
@@ -17,11 +15,11 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 @SuppressWarnings("serial")
 public class ClassHierarchyNode extends DefaultMutableTreeNode {    
 
-    public ClassHierarchyNode(WorkbookManager workbookManager) {
+    public ClassHierarchyNode() {
         super(NodeFactory.getOWLClassTopNode());        
     }
 
-    public ClassHierarchyNode(WorkbookManager workbookManager, Node<OWLClass> clses) {
+    public ClassHierarchyNode(Node<OWLClass> clses) {
         super(clses);        
     }
 

@@ -34,7 +34,8 @@ public interface WorkbookManagerListener {
 
     void workbookLoaded(WorkbookManagerEvent event);
 
-    void ontologiesChanged(WorkbookManagerEvent event);
+    void ontologiesChanged(WorkbookManagerEvent event);      
     
     void validationAppliedOrCancelled();
+        
 }
