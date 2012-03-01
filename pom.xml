@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.sysmo-db</groupId>
 	<artifactId>rightfield</artifactId>
-	<version>0.15</version>
+	<version>0.16-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>RightField</name>
 	<description>
@@ -59,7 +59,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.sysmo-db</groupId>
-			<artifactId>poi-rightfield</artifactId>
+			<artifactId>rightfield-poi</artifactId>
 			<version>3.8-beta5</version>			
 		</dependency>
 		<dependency>
