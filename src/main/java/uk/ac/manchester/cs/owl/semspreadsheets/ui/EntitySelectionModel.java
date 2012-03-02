@@ -25,7 +25,7 @@ public class EntitySelectionModel {
 
     public EntitySelectionModel(OWLEntity defaultSelection) {
         this.defaultSelection = defaultSelection;
-        selectedEntity = defaultSelection;
+        selectedEntity = defaultSelection;        
     }
 
     public void setSelection(OWLEntity entity) {

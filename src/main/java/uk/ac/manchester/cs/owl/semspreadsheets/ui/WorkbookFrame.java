@@ -33,6 +33,7 @@ import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
+import uk.ac.manchester.cs.owl.semspreadsheets.model.KnownOntologies;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
@@ -204,8 +205,7 @@ public class WorkbookFrame extends JFrame {
 	public void handleWorkbookChanged() {
 		updateTitleBar();
 		Collection<IRI> ontologyIRIs = workbookManager
-				.getOntologyTermValidationManager().getOntologyIRIs();
-		String protegeOntology = "http://protege.stanford.edu/plugins/owl/protege";
+				.getOntologyTermValidationManager().getOntologyIRIs();		
 				
 		Set<IRI> missingOntologies = new HashSet<IRI>();
 		Set<OWLOntology> openOntologies = workbookManager.getOntologyManager().getOntologies();
@@ -233,7 +233,7 @@ public class WorkbookFrame extends JFrame {
 							+ "are not loaded:");
 					sb.append("<ul>");
 					for (IRI missingIRI : missingOntologies) {
-						if (!missingIRI.toString().equals(protegeOntology)) {
+						if (!missingIRI.toString().equals(KnownOntologies.PROTEGE_ONTOLOGY)) {
 							sb.append("<li>"+missingIRI.toString()+"</li>");
 						}						
 					}

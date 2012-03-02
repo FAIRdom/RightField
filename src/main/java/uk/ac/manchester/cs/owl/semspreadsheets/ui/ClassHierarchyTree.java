@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.swing.JTabbedPane;
 import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
@@ -37,9 +38,12 @@ public class ClassHierarchyTree extends JTree {
     
     private OWLOntology ontology;
 
-    public ClassHierarchyTree(final WorkbookManager manager, OWLOntology ontology) {
+	private final JTabbedPane pane;
+
+    public ClassHierarchyTree(final WorkbookManager manager, OWLOntology ontology, final JTabbedPane pane) {
         super(new ClassHierarchyTreeModel(manager,ontology));
 		this.ontology = ontology;
+		this.pane = pane;
         getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);        
         this.workbookManager = manager;
         
@@ -107,11 +111,17 @@ public class ClassHierarchyTree extends JTree {
     }
 
     public void setSelectedClass(OWLClass cls) {
-        Collection<TreePath> treePaths = getClassHierarchyTreeModel().getTreePathsForEntity(cls);
+        Collection<TreePath> treePaths = getClassHierarchyTreeModel().getTreePathsForEntity(cls);        
         clearSelection();
         for(TreePath path : treePaths) {
             addSelectionPath(path);
             scrollPathToVisible(path);
+        }
+        if (!treePaths.isEmpty()) {
+        	int index = pane.indexOfTab(ontology.getOntologyID().getOntologyIRI().getFragment());
+        	if (index!=-1) {
+        		pane.setSelectedIndex(index);
+        	}
         }
 
     }   

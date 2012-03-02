@@ -55,7 +55,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookState;
 public class WorkbookManager {
 
 	private static final Logger logger = Logger.getLogger(WorkbookManager.class);
-    private Workbook workbook;
+    private Workbook workbook;      
 
     private URI workbookURI;
     
