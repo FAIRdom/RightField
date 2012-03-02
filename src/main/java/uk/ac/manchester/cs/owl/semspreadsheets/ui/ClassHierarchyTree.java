@@ -1,9 +1,5 @@
 package uk.ac.manchester.cs.owl.semspreadsheets.ui;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Rectangle;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -19,6 +15,7 @@ import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLOntology;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 
@@ -37,9 +34,12 @@ public class ClassHierarchyTree extends JTree {
     private boolean transmittingSelectioToModel;
 
     private boolean updatingSelectionFromModel;
+    
+    private OWLOntology ontology;
 
-    public ClassHierarchyTree(final WorkbookManager manager) {
-        super(new ClassHierarchyTreeModel(manager));
+    public ClassHierarchyTree(final WorkbookManager manager, OWLOntology ontology) {
+        super(new ClassHierarchyTreeModel(manager,ontology));
+		this.ontology = ontology;
         getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);        
         this.workbookManager = manager;
         
@@ -57,7 +57,7 @@ public class ClassHierarchyTree extends JTree {
     }
 
     public void updateModel() {
-    	setModel(new ClassHierarchyTreeModel(workbookManager));
+    	setModel(new ClassHierarchyTreeModel(workbookManager,ontology));
     }
     
     public ClassHierarchyTreeModel getClassHierarchyTreeModel() {

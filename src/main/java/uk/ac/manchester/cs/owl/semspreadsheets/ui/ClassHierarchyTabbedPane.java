@@ -55,7 +55,7 @@ public class ClassHierarchyTabbedPane extends JTabbedPane {
 	private void updateTabs() {
 		removeTabs();
 		for (OWLOntology ontology : getLoadedOntologies()) {
-			ClassHierarchyTree tree = new ClassHierarchyTree(getWorkbookManager());
+			ClassHierarchyTree tree = new ClassHierarchyTree(getWorkbookManager(),ontology);
 	        tree.updateModel();
 	        JScrollPane sp = new JScrollPane(tree);
 	        sp.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));

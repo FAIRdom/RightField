@@ -17,8 +17,13 @@ import javax.swing.tree.TreePath;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.reasoner.BufferingMode;
 import org.semanticweb.owlapi.reasoner.Node;
 import org.semanticweb.owlapi.reasoner.NodeSet;
+import org.semanticweb.owlapi.reasoner.OWLReasoner;
+import org.semanticweb.owlapi.reasoner.SimpleConfiguration;
+import org.semanticweb.owlapi.reasoner.structural.StructuralReasoner;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 
@@ -30,16 +35,19 @@ public class ClassHierarchyTreeModel implements TreeModel {
 
     private ClassHierarchyNode rootNode;
 
-    private WorkbookManager manager;
+    private WorkbookManager manager;    
 
-    private Map<OWLEntity, Collection<DefaultMutableTreeNode>> cls2NodeMap = new HashMap<OWLEntity, Collection<DefaultMutableTreeNode>>();
+	private Map<OWLEntity, Collection<DefaultMutableTreeNode>> cls2NodeMap = new HashMap<OWLEntity, Collection<DefaultMutableTreeNode>>();
 
     private ClassHierarchyTreeModel.NodeContentComparator nodeContentComparator;
 
     private IndividualNodeContentComparator individualNodeContentComparator = new IndividualNodeContentComparator();
 
-    public ClassHierarchyTreeModel(WorkbookManager manager) {
+	private final OWLOntology ontology;    
+
+	public ClassHierarchyTreeModel(WorkbookManager manager, OWLOntology ontology) {
         this.manager = manager;
+		this.ontology = ontology;
         nodeContentComparator = new NodeContentComparator();
         if (manager.getLoadedOntologies().size() > 0) {
             rootNode = new ClassHierarchyNode();
@@ -79,7 +87,7 @@ public class ClassHierarchyTreeModel implements TreeModel {
     private void buildChildren(ClassHierarchyNode node) {
         Set<OWLClass> clses = node.getOWLClasses();
         OWLClass representative = clses.iterator().next();
-        NodeSet<OWLClass> subs = manager.getReasoner().getSubClasses(representative, true);
+        NodeSet<OWLClass> subs = getReasoner().getSubClasses(representative, true);
         if (!subs.isBottomSingleton()) {
             List<Node<OWLClass>> sortedSubs = new ArrayList<Node<OWLClass>>(subs.getNodes());
             Collections.sort(sortedSubs, nodeContentComparator);
@@ -93,7 +101,7 @@ public class ClassHierarchyTreeModel implements TreeModel {
             }
         }
         else {
-            NodeSet<OWLNamedIndividual> individuals = manager.getReasoner().getInstances(representative, true);
+            NodeSet<OWLNamedIndividual> individuals = getReasoner().getInstances(representative, true);
             List<OWLNamedIndividual> sortedIndividuals = new ArrayList<OWLNamedIndividual>(individuals.getFlattened());
             Collections.sort(sortedIndividuals, individualNodeContentComparator);
             for (OWLNamedIndividual ind : sortedIndividuals) {
@@ -102,7 +110,7 @@ public class ClassHierarchyTreeModel implements TreeModel {
                 put(ind, childNode);
             }
         }
-    }
+    }        
 
     public Object getRoot() {
         return rootNode;
@@ -134,6 +142,17 @@ public class ClassHierarchyTreeModel implements TreeModel {
     public void removeTreeModelListener(TreeModelListener l) {
     }
 
+    protected OWLOntology getOntology() {
+		return ontology;
+	}
+    
+    protected WorkbookManager getWorkbookManager() {
+		return manager;
+	}
+    
+    private OWLReasoner getReasoner() {
+    	return getWorkbookManager().getStructuralReasoner(getOntology());    	
+    }
 
     private class NodeContentComparator implements Comparator<Node<OWLClass>> {
 

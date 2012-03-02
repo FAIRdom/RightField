@@ -62,6 +62,7 @@ public class WorkbookManager {
     private OWLOntologyManager owlManager;
 
     private OWLReasoner reasoner;
+    public Map<OWLOntologyID,OWLReasoner> ontologyReasoners = new HashMap<OWLOntologyID, OWLReasoner>();
     
     private WorkbookState workbookState = new WorkbookState();
 
@@ -227,7 +228,7 @@ public class WorkbookManager {
             }
         }
         owlManager.removeIRIMapper(mapper);
-        updateReasoner();
+        updateStructuralReasoner();
         setLabelRendering(true);
         fireOntologiesChanged();
     }
@@ -401,14 +402,60 @@ public class WorkbookManager {
     	//Create a new ID and use the physical IRI as a version ID        
         newID = new OWLOntologyID(logIRI, physicalIRI);
         owlManager.applyChange(new SetOntologyID(ontology, newID));
-        updateReasoner();
+        updateStructuralReasoner();
+        updateStructuralReasoner(ontology);
         setLabelRendering(true);
         fireOntologiesChanged();        
         
         return ontology;
-    }    
+    }        
 
-    private void updateReasoner() {    	
+    public Set<OWLOntology> getLoadedOntologies() {
+        return owlManager.getOntologies();
+    }
+
+    public CellSelectionModel getSelectionModel() {
+        return selectionModel;
+    }
+
+    /**
+     * Returns a StructuralReasoner that works over all loaded ontologies
+     * @see #getStructuralReasoner(OWLOntology) for reasoners over individual ontologies
+     * @return
+     */
+    public OWLReasoner getStructuralReasoner() {
+        if (reasoner == null) {
+            updateStructuralReasoner();
+        }
+        return reasoner;
+    }
+    
+    /**
+     * returns (and setsup if necessary) a StucturalReasoner that works over the given ontology only
+     * @see #getStructuralReasoner()
+     * @param ontology
+     * @return
+     */
+    public OWLReasoner getStructuralReasoner(OWLOntology ontology) {
+    	OWLReasoner reasoner = null;
+    	synchronized (ontologyReasoners) {
+    		reasoner = ontologyReasoners.get(ontology.getOntologyID());
+    		if (reasoner==null) {
+    			reasoner = updateStructuralReasoner(ontology);
+    		}
+		}
+    	return reasoner;
+    }
+
+	private OWLReasoner updateStructuralReasoner(OWLOntology ontology) {
+		OWLReasoner reasoner;
+		reasoner = new StructuralReasoner(ontology, new SimpleConfiguration(), BufferingMode.NON_BUFFERING);
+		reasoner.precomputeInferences();
+		ontologyReasoners.put(ontology.getOntologyID(), reasoner);
+		return reasoner;
+	}
+	
+	private OWLReasoner updateStructuralReasoner() {    	
         try {        	
             OWLOntologyManager man = OWLManager.createOWLOntologyManager();            
             OWLOntology root = man.createOntology(IRI.create("owlapi:reasoner"), getLoadedOntologies());
@@ -417,21 +464,6 @@ public class WorkbookManager {
         }
         catch (OWLOntologyCreationException e) {
             ErrorHandler.getErrorHandler().handleError(e);
-        }
-    }
-
-    public Set<OWLOntology> getLoadedOntologies() {
-        return owlManager.getOntologies();
-    }
-
-
-    public CellSelectionModel getSelectionModel() {
-        return selectionModel;
-    }
-
-    public OWLReasoner getReasoner() {
-        if (reasoner == null) {
-            updateReasoner();
         }
         return reasoner;
     }

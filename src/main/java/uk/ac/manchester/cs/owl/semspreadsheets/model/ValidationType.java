@@ -43,21 +43,21 @@ public enum ValidationType {
     public Set<OWLEntity> getEntities(WorkbookManager workbookManager, IRI iri) {
         if (this.equals(SUBCLASSES)) {
             OWLClass cls = workbookManager.getDataFactory().getOWLClass(iri);
-            return new HashSet<OWLEntity>(workbookManager.getReasoner().getSubClasses(cls, false).getFlattened());
+            return new HashSet<OWLEntity>(workbookManager.getStructuralReasoner().getSubClasses(cls, false).getFlattened());
         }
         else if (this.equals(DIRECTSUBCLASSES)) {
             OWLClass cls = workbookManager.getDataFactory().getOWLClass(iri);
-            return new HashSet<OWLEntity>(workbookManager.getReasoner().getSubClasses(cls, true).getFlattened());
+            return new HashSet<OWLEntity>(workbookManager.getStructuralReasoner().getSubClasses(cls, true).getFlattened());
 
         }
         else if (this.equals(INDIVIDUALS)) {
             OWLClass cls = workbookManager.getDataFactory().getOWLClass(iri);
-            return new HashSet<OWLEntity>(workbookManager.getReasoner().getInstances(cls, false).getFlattened());
+            return new HashSet<OWLEntity>(workbookManager.getStructuralReasoner().getInstances(cls, false).getFlattened());
 
         }
         else if (this.equals(DIRECTINDIVIDUALS)) {
             OWLClass cls = workbookManager.getDataFactory().getOWLClass(iri);
-            return new HashSet<OWLEntity>(workbookManager.getReasoner().getInstances(cls, true).getFlattened());
+            return new HashSet<OWLEntity>(workbookManager.getStructuralReasoner().getInstances(cls, true).getFlattened());
 
         }
         else {
