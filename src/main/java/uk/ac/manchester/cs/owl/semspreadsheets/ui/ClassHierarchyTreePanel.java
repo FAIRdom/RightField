@@ -21,5 +21,5 @@ public class ClassHierarchyTreePanel extends JPanel {
         
         add(tabbedPane);
         
-    }      
+    }         
 }

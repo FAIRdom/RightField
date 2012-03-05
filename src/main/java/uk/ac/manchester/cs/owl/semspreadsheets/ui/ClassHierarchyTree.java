@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.swing.JTabbedPane;
 import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
@@ -32,15 +31,13 @@ public class ClassHierarchyTree extends JTree {
 
     private WorkbookManager workbookManager;
 
-    private boolean transmittingSelectioToModel;
-
-    private boolean updatingSelectionFromModel;
+    private boolean transmittingSelectioToModel;    
     
     private OWLOntology ontology;
 
-	private final JTabbedPane pane;
+	private final ClassHierarchyTabbedPane pane;
 
-    public ClassHierarchyTree(final WorkbookManager manager, OWLOntology ontology, final JTabbedPane pane) {
+    public ClassHierarchyTree(final WorkbookManager manager, OWLOntology ontology, final ClassHierarchyTabbedPane pane) {
         super(new ClassHierarchyTreeModel(manager,ontology));
 		this.ontology = ontology;
 		this.pane = pane;
@@ -48,12 +45,14 @@ public class ClassHierarchyTree extends JTree {
         this.workbookManager = manager;
         
         addTreeSelectionListener(new TreeSelectionListener() {
-            public void valueChanged(TreeSelectionEvent e) {
+            @Override
+			public void valueChanged(TreeSelectionEvent e) {
                 previewSelectedClass();
             }
         });
         manager.getEntitySelectionModel().addListener(new EntitySelectionModelListener() {
-            public void selectionChanged() {
+            @Override
+			public void selectionChanged() {
                 updateSelectionFromModel();
             }
         });
@@ -70,7 +69,7 @@ public class ClassHierarchyTree extends JTree {
 
     private void previewSelectedClass() {
     	logger.debug("In previewSelectedEntity");    	
-        if (!updatingSelectionFromModel) {
+        
             transmittingSelectioToModel = true;            
             try {
                 TreePath [] selectedPaths = getSelectionPaths();
@@ -94,19 +93,13 @@ public class ClassHierarchyTree extends JTree {
             finally {
                 transmittingSelectioToModel = false;
             }
-        }
+        
     }
 
     private void updateSelectionFromModel() {
     	logger.debug("In updateSelectionFromModel");
-        if(!transmittingSelectioToModel) {
-            try {
-                updatingSelectionFromModel = true;
-                setSelectedClass((OWLClass) workbookManager.getEntitySelectionModel().getSelection());
-            }
-            finally {
-                updatingSelectionFromModel = false;
-            }
+        if(!transmittingSelectioToModel) {                            
+            setSelectedClass((OWLClass) workbookManager.getEntitySelectionModel().getSelection());                      
         }
     }
 
@@ -118,11 +111,10 @@ public class ClassHierarchyTree extends JTree {
             scrollPathToVisible(path);
         }
         if (!treePaths.isEmpty()) {
-        	int index = pane.indexOfTab(ontology.getOntologyID().getOntologyIRI().getFragment());
+        	int index = pane.tabIndexForOntology(ontology);
         	if (index!=-1) {
         		pane.setSelectedIndex(index);
         	}
         }
-
-    }   
+    }         
 }

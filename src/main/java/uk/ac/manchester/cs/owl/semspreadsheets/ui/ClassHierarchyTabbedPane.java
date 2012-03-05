@@ -12,7 +12,6 @@ import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 
-import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.OWLOntology;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.KnownOntologies;
@@ -27,9 +26,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
  */
 
 @SuppressWarnings("serial")
-public class ClassHierarchyTabbedPane extends JTabbedPane {
-	
-	private static final Logger logger=Logger.getLogger(ClassHierarchyTabbedPane.class);
+public class ClassHierarchyTabbedPane extends JTabbedPane {	
 	
 	private final WorkbookManager workbookManager;	
 	
@@ -65,6 +62,14 @@ public class ClassHierarchyTabbedPane extends JTabbedPane {
 		
 	}
 	
+	public int tabIndexForOntology(OWLOntology ontology) {
+		return indexOfTab(tabTitle(ontology));
+	}
+	
+	public String tabTitle(OWLOntology ontology) {
+		return ontology.getOntologyID().getOntologyIRI().getFragment();
+	}
+	
 	private void updateTabs() {		
 		for (OWLOntology ontology : getLoadedOntologies()) {
 			if (!ontology.getOntologyID().getOntologyIRI().toString().equals(KnownOntologies.PROTEGE_ONTOLOGY)) {
@@ -80,29 +85,19 @@ public class ClassHierarchyTabbedPane extends JTabbedPane {
 		ClassHierarchyTree tree = new ClassHierarchyTree(getWorkbookManager(),ontology,this);
 		tree.updateModel();
 		JScrollPane sp = new JScrollPane(tree);
-		sp.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
-		String tabTitle = ontology.getOntologyID().getOntologyIRI().getFragment();
-		logger.debug("Adding tab with title:"+tabTitle+" for ontology "+ ontology.getOntologyID().toString());
-		addTab(tabTitle, sp);
+		sp.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));				
+		addTab(tabTitle(ontology), sp);
 	}		
 	
 	private Set<OWLOntology> getLoadedOntologies() {
 		return getWorkbookManager().getLoadedOntologies();
-	}
-	
-	private void removeTabs() {
-		while(getTabCount()>0) {
-			removeTabAt(0);
-			logger.debug("Removing tab at 0");
-		}
-	}
-	
-	private Font ontologyNotLoadedFont = new Font("Lucida Grande", Font.BOLD, 14);
-	
+	}	
+			
 	
 	@Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        Font ontologyNotLoadedFont = new Font("Lucida Grande", Font.BOLD, 14);
         if (getTabCount() == 0) {
             Color oldColor = g.getColor();
             g.setColor(Color.LIGHT_GRAY);
