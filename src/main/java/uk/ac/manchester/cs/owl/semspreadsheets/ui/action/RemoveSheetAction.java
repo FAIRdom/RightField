@@ -31,7 +31,7 @@ public class RemoveSheetAction extends WorkbookFrameAction {
 			if (res == JOptionPane.YES_OPTION) {
 				frame.removeSheet(sheet);			
 				Sheet firstSheet = frame.getWorkbookManager().getWorkbook().getVisibleSheets().get(0);
-				frame.setSelectedSheet(firstSheet);
+				frame.setSelectedSheet(firstSheet);				
 			}
 		}
 		else {

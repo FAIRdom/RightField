@@ -39,13 +39,6 @@ public class SheetCellCutAction extends SheetCellCopyAction {
 					for (int row = selectedRange.getFromRow(); row < selectedRange
 							.getToRow() + 1; row++) {
 						Cell cell = selectedRange.getSheet().getCellAt(col, row);
-						if (cell != null) {
-							String oldValue = cell.getValue();
-							SetCellValue change = new SetCellValue(
-									selectedRange.getSheet(), col, row, oldValue,
-									null);
-							getWorkbookManager().applyChange(change);
-						}
 						// FIXME: for some reason, remove validations on an
 						// entire range in one go isn't working
 						// so for now remove each one individually					
@@ -53,6 +46,13 @@ public class SheetCellCutAction extends SheetCellCopyAction {
 								new Range(
 										selectedRange.getSheet(), col, row, col,
 										row));
+						if (cell != null) {
+							String oldValue = cell.getValue();
+							SetCellValue change = new SetCellValue(
+									selectedRange.getSheet(), col, row, oldValue,
+									null);
+							getWorkbookManager().applyChange(change);
+						}						
 					}
 				}			
 			}

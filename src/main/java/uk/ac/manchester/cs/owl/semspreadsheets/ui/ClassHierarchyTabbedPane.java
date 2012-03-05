@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -12,6 +13,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 
+import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.OWLOntology;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.KnownOntologies;
@@ -28,36 +30,39 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 @SuppressWarnings("serial")
 public class ClassHierarchyTabbedPane extends JTabbedPane {	
 	
-	private final WorkbookManager workbookManager;	
+	private static final Logger logger = Logger.getLogger(ClassHierarchyTabbedPane.class);	
 	
 	private List<OWLOntology> knownOntologies = new ArrayList<OWLOntology>();
+
+	private final WorkbookFrame workbookFrame;
 	
 
-	public ClassHierarchyTabbedPane(WorkbookManager workbookManager) {
+	public ClassHierarchyTabbedPane(WorkbookFrame workbookFrame) {
 		super();
-		this.workbookManager = workbookManager;		
+		this.workbookFrame = workbookFrame;		
 		
-		workbookManager.addListener(new WorkbookManagerListener() {
+		getWorkbookManager().addListener(new WorkbookManagerListener() {
 			
 			@Override
 			public void workbookLoaded(WorkbookManagerEvent event) {
-				// TODO Auto-generated method stub				
+								
 			}
 			
 			@Override
 			public void workbookChanged(WorkbookManagerEvent event) {
-				// TODO Auto-generated method stub				
+								
 			}
 			
 			@Override
 			public void validationAppliedOrCancelled() {
-				// TODO Auto-generated method stub				
+								
 			}
 			
 			@Override
 			public void ontologiesChanged(WorkbookManagerEvent event) {
-				updateTabs();			
+				updateTabs();							
 			}
+			
 		});						
 	}
 	
@@ -67,17 +72,29 @@ public class ClassHierarchyTabbedPane extends JTabbedPane {
 	
 	public String tabTitle(OWLOntology ontology) {
 		return ontology.getOntologyID().getOntologyIRI().getFragment();
-	}
+	}	
 	
-	private void updateTabs() {		
-		for (OWLOntology ontology : getLoadedOntologies()) {
+	private synchronized void updateTabs() {		
+		Set<OWLOntology> loadedOntologies = getLoadedOntologies();
+		for (OWLOntology ontology : loadedOntologies) {
 			if (!ontology.getOntologyID().getOntologyIRI().toString().equals(KnownOntologies.PROTEGE_ONTOLOGY)) {
 				if (!knownOntologies.contains(ontology)) {				
 					createTab(ontology);
 					knownOntologies.add(ontology);
 				}	
 			}					
-		}		
+		}
+		//remove tabs that are no longer required
+		Set<OWLOntology> forRemoval = new HashSet<OWLOntology>();
+		for (OWLOntology ontology : knownOntologies) {
+			if (!loadedOntologies.contains(ontology)) {
+				forRemoval.add(ontology);
+			}
+		}
+		
+		for (OWLOntology ontology : forRemoval) {
+			removeTab(ontology);
+		}				
 	}
 
 	private void createTab(OWLOntology ontology) {
@@ -85,10 +102,21 @@ public class ClassHierarchyTabbedPane extends JTabbedPane {
 		tree.updateModel();
 		JScrollPane sp = new JScrollPane(tree);
 		sp.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
-		String title = tabTitle(ontology);
-		addTab(title,sp);
-		setTabComponentAt(indexOfTab(title), new ClassHierarchyTabComponent(this,workbookManager,ontology));		
+		if (tabIndexForOntology(ontology)==-1) {
+			String title = tabTitle(ontology);
+			addTab(title,sp);
+			setTabComponentAt(tabIndexForOntology(ontology), new ClassHierarchyTabComponent(this,getWorkbookFrame(),ontology));
+		}
+		else {
+			logger.warn("Attempting to create duplicate tab for ontology: "+ontology.getOntologyID().toString());
+		}				
 	}		
+	
+	private void removeTab(OWLOntology ontology) {
+		int i = tabIndexForOntology(ontology);
+		knownOntologies.remove(ontology);
+		removeTabAt(i);
+	}
 	
 	private Set<OWLOntology> getLoadedOntologies() {
 		return getWorkbookManager().getLoadedOntologies();
@@ -112,6 +140,10 @@ public class ClassHierarchyTabbedPane extends JTabbedPane {
     }
 
 	public WorkbookManager getWorkbookManager() {
-		return workbookManager;
+		return getWorkbookFrame().getWorkbookManager();
+	}
+
+	public WorkbookFrame getWorkbookFrame() {
+		return workbookFrame;
 	}
 }

@@ -3,12 +3,29 @@ package uk.ac.manchester.cs.owl.semspreadsheets.impl;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookManagerEvent;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookManagerListener;
 
+/**
+ * 
+ * @author Stuart Owen
+ *
+ */
 class DummyWorkbookManagerListener implements
 		WorkbookManagerListener {
 	public boolean workbookLoadedFired = false;
 	public boolean workbookChangedFired = false;
 	public boolean validationAppliedFired = false;
 	public boolean ontologiesChanedFired = false;
+	
+	public DummyWorkbookManagerListener() {
+		reset();
+	}
+	
+	//resets the state of all flags
+	public void reset() {
+		workbookLoadedFired = false;
+		workbookChangedFired = false;
+		validationAppliedFired = false;
+		ontologiesChanedFired = false;
+	}
 	
 	public boolean isWorkbookLoadedFired() {
 		return workbookLoadedFired;
@@ -45,4 +62,5 @@ class DummyWorkbookManagerListener implements
 	public void ontologiesChanged(WorkbookManagerEvent event) {
 		ontologiesChanedFired=true;
 	}
+	
 }

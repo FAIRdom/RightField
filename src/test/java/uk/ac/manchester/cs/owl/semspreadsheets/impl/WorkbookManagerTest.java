@@ -11,6 +11,8 @@ import java.net.URI;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLOntology;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Workbook;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
@@ -22,14 +24,11 @@ public class WorkbookManagerTest {
 	
 	@Before
 	public void setUp() {
-		manager = new WorkbookManager();
-		
-		testListener=new DummyWorkbookManagerListener();
-		
+		manager = new WorkbookManager();		
+		testListener=new DummyWorkbookManagerListener();		
 		manager.addListener(testListener);
 	}
 	
-
 	@Test
 	public void testCreateNewWorkbook() throws Exception {		
 		Workbook book=manager.getWorkbook();
@@ -60,6 +59,30 @@ public class WorkbookManagerTest {
 		assertNotNull(manager.getWorkbookURI());
 		assertEquals(uri,manager.getWorkbookURI());
 		assertTrue(testListener.isWorkbookLoadedFired());
+	}
+	
+	@Test
+	public void testLoadOntology() throws Exception {
+		URI uri = ontologyURI();
+		assertEquals(0,manager.getLoadedOntologies().size());
+		manager.loadOntology(IRI.create(uri));
+		assertTrue(testListener.isOntologiesChanedFired());
+		assertEquals(1,manager.getLoadedOntologies().size());
+		assertEquals(manager.getOntologyManager().getOntologies(),manager.getLoadedOntologies());
+	}
+	
+	@Test
+	public void testRemoveOntology() throws Exception {
+		URI uri = ontologyURI();
+		manager.loadOntology(IRI.create(uri));		
+		OWLOntology ont = manager.getLoadedOntologies().iterator().next();
+		testListener.reset();
+		manager.removeOntology(ont);		
+		assertEquals(0,manager.getLoadedOntologies().size());		
+	}
+	
+	private URI ontologyURI() throws Exception {
+		return WorkbookManagerTest.class.getResource("/JERM.owl").toURI();
 	}
 	
 	private URI workbookURI() throws Exception {

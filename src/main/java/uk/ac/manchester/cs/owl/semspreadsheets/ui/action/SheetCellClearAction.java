@@ -39,21 +39,20 @@ public class SheetCellClearAction extends SelectedCellsAction {
 							.getToRow() + 1; row++) {
 						Cell cell = selectedRange.getSheet()
 								.getCellAt(col, row);
+						// FIXME: for some reason, remove validations on an
+						// entire range in one go isn't working
+						// so for now remove each one individually
+						Range rangeForOneCell = new Range(
+								selectedRange.getSheet(), col, row, col,
+								row);
+						getWorkbookManager().removeValidations(
+								rangeForOneCell);
 						if (cell != null) {
 							String oldValue = cell.getValue();
 							SetCellValue change = new SetCellValue(
 									selectedRange.getSheet(), col, row,
 									oldValue, null);
-							getWorkbookManager().applyChange(change);
-
-							// FIXME: for some reason, remove validations on an
-							// entire range in one go isn't working
-							// so for now remove each one individually
-							Range rangeForOneCell = new Range(
-									selectedRange.getSheet(), col, row, col,
-									row);
-							getWorkbookManager().removeValidations(
-									rangeForOneCell);
+							getWorkbookManager().applyChange(change);							
 						}
 					}
 				}

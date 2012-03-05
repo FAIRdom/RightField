@@ -62,13 +62,8 @@ import uk.ac.manchester.cs.owl.semspreadsheets.ui.task.LoadRepositoryItemTask;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.task.TaskManager;
 
 /**
- * Author: Matthew Horridge<br>
- * The University of Manchester<br>
- * Information Management Group<br>
- * Date: 18-Sep-2009
- * 
- * Author: Stuart Owen
- * Date: 30 Sep 2010
+ * @author Stuart Owen
+ * @author Matthew Horridge
  */
 
 public class WorkbookFrame extends JFrame {
@@ -465,6 +460,13 @@ public class WorkbookFrame extends JFrame {
     		res = JOptionPane.showConfirmDialog(this,"You have unsaved changes. Are you sure you wish to "+actionName+"?","Continue to "+actionName+"?",JOptionPane.YES_NO_OPTION);
     	}
 		return (res == JOptionPane.YES_OPTION);
+	}
+
+	public void removeOntology(OWLOntology ontology) {
+		int res = JOptionPane.showConfirmDialog(this,"Are you sure you wish to remove the '"+ontology.getOntologyID().getOntologyIRI() +"' ontology?","Remove ontology?",JOptionPane.YES_NO_OPTION);
+		if (res == JOptionPane.YES_OPTION) {
+			getWorkbookManager().removeOntology(ontology);
+		}
 	}
 
 	

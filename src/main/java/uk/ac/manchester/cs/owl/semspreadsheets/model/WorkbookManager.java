@@ -99,7 +99,8 @@ public class WorkbookManager {
     }
 
     public void applyChange(WorkbookChange change) {
-        ((MutableWorkbook) workbook).applyChange(change);        
+        ((MutableWorkbook) workbook).applyChange(change); 
+        fireWorkbookChanged();
     }
 
     public void addListener(WorkbookManagerListener listener) {
@@ -135,7 +136,7 @@ public class WorkbookManager {
         entitySelectionModel.setSelection(selEnt);
     }
 
-    private void fireWorkbookCreated() {
+    private void fireWorkbookChanged() {
         WorkbookManagerEvent event = new WorkbookManagerEvent(this);
         for (WorkbookManagerListener listener : getCopyOfListeners()) {
             try {
@@ -190,7 +191,7 @@ public class WorkbookManager {
         workbook = WorkbookFactory.createWorkbook();
         workbookURI=null;
         getOntologyTermValidationManager().clearValidations();
-        fireWorkbookCreated();
+        fireWorkbookChanged();
         getWorkbookState().changesSaved();
         return workbook;
     }
@@ -371,19 +372,15 @@ public class WorkbookManager {
         return owlManager;
     }
 
-    public void unloadOntology(IRI physicalIRI) {
-    	
+    public void unloadOntology(IRI physicalIRI) {    	
     	OWLOntology loaded = null;
     	
-    	for (OWLOntology ontology : owlManager.getOntologies()) {
-    		
-    		if (physicalIRI.equals(ontology.getOntologyID().getVersionIRI())) {
-    			
+    	for (OWLOntology ontology : getLoadedOntologies()) {    		
+    		if (physicalIRI.equals(ontology.getOntologyID().getVersionIRI())) {    			
     			loaded = ontology;
     			break;
     		}
-    	}
-    	
+    	}    	
     	if (loaded != null) owlManager.removeOntology(loaded);
     }
     
@@ -400,7 +397,7 @@ public class WorkbookManager {
     	
     	logIRI = ontology.getOntologyID().getOntologyIRI();
     	//Create a new ID and use the physical IRI as a version ID        
-        newID = new OWLOntologyID(logIRI, physicalIRI);
+        newID = new OWLOntologyID(logIRI,physicalIRI);        
         owlManager.applyChange(new SetOntologyID(ontology, newID));
         updateStructuralReasoner();
         updateStructuralReasoner(ontology);
@@ -409,6 +406,11 @@ public class WorkbookManager {
         
         return ontology;
     }        
+    
+    public void removeOntology(OWLOntology ontology) {
+    	owlManager.removeOntology(ontology);    	
+    	fireOntologiesChanged();
+    }
 
     public Set<OWLOntology> getLoadedOntologies() {
         return owlManager.getOntologies();

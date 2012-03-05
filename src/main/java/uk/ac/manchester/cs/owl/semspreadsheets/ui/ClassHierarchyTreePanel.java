@@ -17,7 +17,7 @@ public class ClassHierarchyTreePanel extends JPanel {
     public ClassHierarchyTreePanel(WorkbookFrame frame) {
         setLayout(new BorderLayout(5, 5));
         add(new FindClassPanel(frame), BorderLayout.NORTH);
-        tabbedPane = new ClassHierarchyTabbedPane(frame.getWorkbookManager());               
+        tabbedPane = new ClassHierarchyTabbedPane(frame);               
         
         add(tabbedPane);
         

@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.Collection;
 
 import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
@@ -17,97 +18,158 @@ import javax.swing.JPanel;
 import javax.swing.plaf.basic.BasicButtonUI;
 
 import org.apache.log4j.Logger;
+import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntology;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 
+/**
+ * @author Stuart Owen
+ * 
+ *         Component that appears on the tab for the tabbed panel, and in
+ *         particular handles the closing of ontologies.
+ */
 
-//the component that goes into the tab
 @SuppressWarnings("serial")
 class ClassHierarchyTabComponent extends JPanel {
-		private final ClassHierarchyTabbedPane pane;
-		private final WorkbookManager workbookManager;
-		private final OWLOntology ontology;
-		private static Logger logger = Logger.getLogger(ClassHierarchyTabComponent.class);
+	private final ClassHierarchyTabbedPane pane;
+	private final OWLOntology ontology;
+	private static Logger logger = Logger
+			.getLogger(ClassHierarchyTabComponent.class);
+	JButton closeButton;
+	private final WorkbookFrame workbookFrame;
 
-		public ClassHierarchyTabComponent(final ClassHierarchyTabbedPane pane,WorkbookManager workbookManager,OWLOntology ontology) {
-			super(new FlowLayout(FlowLayout.LEFT, 0, 0));
-			this.pane=pane;
-			this.workbookManager = workbookManager;
-			this.ontology = ontology;	
-			setOpaque(false);
-			setText();
-			setButton();
-		}
-		
-		protected void removeOntology() {
-			logger.debug("About to remove ontology:"+ontology.toString());
-		}
-		
-		private void setText() {
-			JLabel label = new JLabel() {
-	            public String getText() {
-	                int i = pane.indexOfTabComponent(ClassHierarchyTabComponent.this);	                
-	                if (i != -1) {
-	                    return pane.getTitleAt(i);
-	                }
-	                return null;
-	            }
-	        };
-	        add(label);
-		}
-		
-		private void setButton() {
-			JButton button = new TabButton();
-			add(button);
-		}
-		
-		private class TabButton extends JButton implements ActionListener {
-	        public TabButton() {
-	        	super("x");
-	            int size = 17;
-	            setPreferredSize(new Dimension(size, size));
-	            setToolTipText("close this tab");
-	            //Make the button looks the same for all Laf's
-	            setUI(new BasicButtonUI());
-	            //Make it transparent
-	            setContentAreaFilled(false);
-	            //No need to be focusable
-	            setFocusable(false);
-	            setBorder(BorderFactory.createEtchedBorder());
-	            setBorderPainted(false);
-	            //Making nice rollover effect
-	            //we use the same listener for all buttons
-	            addMouseListener(buttonMouseListener);
-	            setRolloverEnabled(true);
-	            //Close the proper tab by clicking the button
-	            addActionListener(this);	            
-	        }
-	 
-	        public void actionPerformed(ActionEvent e) {
-	        	ClassHierarchyTabComponent.this.removeOntology();
-	        }
-	 
-	        //we don't want to update UI for this button
-	        public void updateUI() {
-	        }		       
-		}
-		
-		private final MouseListener buttonMouseListener = new MouseAdapter() {
-	        public void mouseEntered(MouseEvent e) {
-	            Component component = e.getComponent();
-	            if (component instanceof AbstractButton) {
-	                AbstractButton button = (AbstractButton) component;
-	                button.setBorderPainted(true);	                
-	            }
-	        }
-	 
-	        public void mouseExited(MouseEvent e) {
-	            Component component = e.getComponent();
-	            if (component instanceof AbstractButton) {
-	                AbstractButton button = (AbstractButton) component;
-	                button.setBorderPainted(false);	                
-	            }
-	        }
-	    };
+	public ClassHierarchyTabComponent(final ClassHierarchyTabbedPane pane,
+			WorkbookFrame workbookFrame, OWLOntology ontology) {
+		super(new FlowLayout(FlowLayout.LEFT, 0, 0));
+		this.pane = pane;
+		this.workbookFrame = workbookFrame;
+		this.ontology = ontology;
+		setOpaque(false);
+		setText();
+		setButton();
+		addWorkbookManagerListener();
 	}
+
+	public OWLOntology getOntology() {
+		return ontology;
+	}
+
+	protected void removeOntology() {
+		logger.debug("About to remove ontology:" + ontology.toString());
+		getWorkbookFrame().removeOntology(ontology);
+	}
+
+	private String getTitle() {
+		int i = pane.indexOfTabComponent(ClassHierarchyTabComponent.this);
+		if (i != -1) {
+			return pane.getTitleAt(i);
+		}
+		return null;
+	}
+
+	private void setText() {
+		JLabel label = new JLabel() {
+			public String getText() {
+				return getTitle();
+			}
+		};
+		add(label);
+	}
+
+	private void setButton() {
+		closeButton = new TabButton();
+		add(closeButton);
+	}
+
+	private void updateTabClosableStatus() {
+		
+		Collection<IRI> ontologyIRIs = getWorkbookManager()
+				.getOntologyTermValidationManager().getOntologyIRIs();
+		boolean used = ontologyIRIs.contains(getOntology().getOntologyID()
+				.getOntologyIRI());
+		logger.debug("Checking wether the ontology is used in the workbook = "+used);
+		closeButton.setEnabled(!used);
+	}
+
+	private WorkbookFrame getWorkbookFrame() {
+		return workbookFrame;
+	}
+
+	private WorkbookManager getWorkbookManager() {
+		return getWorkbookFrame().getWorkbookManager();
+	}
+
+	private void addWorkbookManagerListener() {
+		getWorkbookManager().addListener(new WorkbookManagerListener() {
+			@Override
+			public void workbookLoaded(WorkbookManagerEvent event) {
+				updateTabClosableStatus();
+			}
+
+			@Override
+			public void workbookChanged(WorkbookManagerEvent event) {
+				updateTabClosableStatus();
+			}
+
+			@Override
+			public void validationAppliedOrCancelled() {
+				updateTabClosableStatus();
+			}
+
+			@Override
+			public void ontologiesChanged(WorkbookManagerEvent event) {
+				updateTabClosableStatus();
+			}
+		});
+	}
+
+	private class TabButton extends JButton implements ActionListener {
+		public TabButton() {
+			super("x");
+			int size = 17;
+			setPreferredSize(new Dimension(size, size));
+			setToolTipText("close this tab");
+			// Make the button looks the same for all Laf's
+			setUI(new BasicButtonUI());
+			// Make it transparent
+			setContentAreaFilled(false);
+			// No need to be focusable
+			setFocusable(false);
+			setBorder(BorderFactory.createEtchedBorder());
+			setBorderPainted(false);
+			// Making nice rollover effect
+			// we use the same listener for all buttons
+			addMouseListener(buttonMouseListener);
+			setRolloverEnabled(true);
+			// Close the proper tab by clicking the button
+			addActionListener(this);
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			ClassHierarchyTabComponent.this.removeOntology();
+		}
+
+		// we don't want to update UI for this button
+		public void updateUI() {
+		}
+	}
+
+	private final MouseListener buttonMouseListener = new MouseAdapter() {
+		public void mouseEntered(MouseEvent e) {
+			Component component = e.getComponent();
+			if (component instanceof AbstractButton) {
+				AbstractButton button = (AbstractButton) component;
+				button.setBorderPainted(true);
+			}
+		}
+
+		public void mouseExited(MouseEvent e) {
+			Component component = e.getComponent();
+			if (component instanceof AbstractButton) {
+				AbstractButton button = (AbstractButton) component;
+				button.setBorderPainted(false);
+			}
+		}
+	};
+}

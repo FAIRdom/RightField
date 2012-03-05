@@ -3,10 +3,8 @@ package uk.ac.manchester.cs.owl.semspreadsheets.ui;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 
 /**
- * Author: Matthew Horridge<br>
- * The University of Manchester<br>
- * Information Management Group<br>
- * Date: 07-Nov-2009
+ * @author Stuart Owen
+ * @author Matthew Horridge
  */
 public class WorkbookManagerEvent {
 
