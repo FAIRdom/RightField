@@ -31,7 +31,7 @@ public class ClassHierarchyTabbedPane extends JTabbedPane {
 	private final WorkbookManager workbookManager;	
 	
 	private List<OWLOntology> knownOntologies = new ArrayList<OWLOntology>();
-
+	
 
 	public ClassHierarchyTabbedPane(WorkbookManager workbookManager) {
 		super();
@@ -58,8 +58,7 @@ public class ClassHierarchyTabbedPane extends JTabbedPane {
 			public void ontologiesChanged(WorkbookManagerEvent event) {
 				updateTabs();			
 			}
-		});
-		
+		});						
 	}
 	
 	public int tabIndexForOntology(OWLOntology ontology) {
@@ -85,14 +84,15 @@ public class ClassHierarchyTabbedPane extends JTabbedPane {
 		ClassHierarchyTree tree = new ClassHierarchyTree(getWorkbookManager(),ontology,this);
 		tree.updateModel();
 		JScrollPane sp = new JScrollPane(tree);
-		sp.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));				
-		addTab(tabTitle(ontology), sp);
+		sp.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+		String title = tabTitle(ontology);
+		addTab(title,sp);
+		setTabComponentAt(indexOfTab(title), new ClassHierarchyTabComponent(this,workbookManager,ontology));		
 	}		
 	
 	private Set<OWLOntology> getLoadedOntologies() {
 		return getWorkbookManager().getLoadedOntologies();
-	}	
-			
+	}				
 	
 	@Override
     protected void paintComponent(Graphics g) {
@@ -114,5 +114,4 @@ public class ClassHierarchyTabbedPane extends JTabbedPane {
 	public WorkbookManager getWorkbookManager() {
 		return workbookManager;
 	}
-
 }

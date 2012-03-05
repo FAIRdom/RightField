@@ -151,7 +151,7 @@ public class WorkbookFrame extends JFrame {
 		fileMenu.add(new CloseWorkbookAction(this));
 		fileMenu.add(new JSeparator());
 		fileMenu.add(new OpenOntologyAction(this));
-		fileMenu.add(new OpenFromBioPortalAction(this));
+		fileMenu.add(new OpenFromBioPortalAction(this));		
 		fileMenu.addSeparator();
 		fileMenu.add(new SaveAction(this));
 		fileMenu.add(new SaveAsAction(this));

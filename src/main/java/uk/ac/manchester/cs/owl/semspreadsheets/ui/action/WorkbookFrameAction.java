@@ -7,13 +7,12 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.KeyStroke;
 
+import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookFrame;
 
 /**
- * Author: Matthew Horridge<br>
- * The University of Manchester<br>
- * Information Management Group<br>
- * Date: 07-Nov-2009
+ * @author Stuart Owen
+ * @author Matthew Horridge
  */
 @SuppressWarnings("serial")
 public abstract class WorkbookFrameAction extends AbstractAction {
@@ -47,5 +46,9 @@ public abstract class WorkbookFrameAction extends AbstractAction {
 
     public WorkbookFrame getWorkbookFrame() {
         return workbookFrame;
+    }
+    
+    public WorkbookManager getWorkbookManager() {
+    	return workbookFrame.getWorkbookManager();
     }
 }
