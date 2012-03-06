@@ -270,11 +270,11 @@ public class WorkbookFrame extends JFrame {
 	}
 
 	public Sheet addSheet() {
-		return workbookManager.getWorkbook().addSheet();		
+		return workbookManager.addSheet();		
 	}
 	
 	public void removeSheet(Sheet sheet) {
-		workbookManager.getWorkbook().deleteSheet(sheet.getName());
+		workbookManager.deleteSheet(sheet.getName());
 	}
 
 	public void setSelectedSheet(Sheet sheet) {

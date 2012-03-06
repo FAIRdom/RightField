@@ -14,6 +14,7 @@ import org.junit.Test;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntology;
 
+import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Workbook;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 
@@ -79,6 +80,22 @@ public class WorkbookManagerTest {
 		testListener.reset();
 		manager.removeOntology(ont);		
 		assertEquals(0,manager.getLoadedOntologies().size());		
+	}
+	
+	@Test
+	public void testInsertSheet() throws Exception {
+		Sheet sheet = manager.addSheet();
+		assertNotNull(sheet);
+		assertEquals("Sheet1",sheet.getName());
+		assertTrue(testListener.isWorkbookChangedFired());
+		assertEquals(2,manager.getWorkbook().getSheets().size());
+	}
+	
+	@Test
+	public void testRemoveSheet() throws Exception {
+		manager.deleteSheet("Sheet0");
+		assertTrue(testListener.isWorkbookChangedFired());
+		assertEquals(0,manager.getWorkbook().getSheets().size());
 	}
 	
 	private URI ontologyURI() throws Exception {

@@ -36,18 +36,20 @@ class ClassHierarchyTabComponent extends JPanel {
 	private final OWLOntology ontology;
 	private static Logger logger = Logger
 			.getLogger(ClassHierarchyTabComponent.class);
+	
 	JButton closeButton;
 	private final WorkbookFrame workbookFrame;
-
+	
 	public ClassHierarchyTabComponent(final ClassHierarchyTabbedPane pane,
 			WorkbookFrame workbookFrame, OWLOntology ontology) {
-		super(new FlowLayout(FlowLayout.LEFT, 0, 0));
+		super(new FlowLayout(FlowLayout.LEFT, 0, 0));		
 		this.pane = pane;
 		this.workbookFrame = workbookFrame;
 		this.ontology = ontology;
-		setOpaque(false);
+		setOpaque(false);		
 		setText();
-		setButton();
+		add(new JLabel(" "));
+		setButton();					
 		addWorkbookManagerListener();
 	}
 
@@ -99,7 +101,7 @@ class ClassHierarchyTabComponent extends JPanel {
 	private WorkbookManager getWorkbookManager() {
 		return getWorkbookFrame().getWorkbookManager();
 	}
-
+	
 	private void addWorkbookManagerListener() {
 		getWorkbookManager().addListener(new WorkbookManagerListener() {
 			@Override
@@ -125,6 +127,7 @@ class ClassHierarchyTabComponent extends JPanel {
 	}
 
 	private class TabButton extends JButton implements ActionListener {
+		
 		public TabButton() {
 			super("x");
 			int size = 17;
@@ -145,6 +148,8 @@ class ClassHierarchyTabComponent extends JPanel {
 			// Close the proper tab by clicking the button
 			addActionListener(this);
 		}
+		
+		
 
 		public void actionPerformed(ActionEvent e) {
 			ClassHierarchyTabComponent.this.removeOntology();

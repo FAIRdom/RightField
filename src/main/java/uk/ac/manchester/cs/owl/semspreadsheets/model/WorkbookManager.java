@@ -541,6 +541,18 @@ public class WorkbookManager {
 
 	public WorkbookState getWorkbookState() {
 		return workbookState;
+	}
+
+	public Sheet addSheet() {
+		Sheet sheet = getWorkbook().addSheet();
+		fireWorkbookChanged();
+		return sheet;
+	}
+
+	public void deleteSheet(String name) {
+		getWorkbook().deleteSheet(name);
+		fireWorkbookChanged();
+		
 	}	
 
 }
