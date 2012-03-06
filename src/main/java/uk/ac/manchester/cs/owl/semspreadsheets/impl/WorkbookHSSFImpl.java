@@ -123,7 +123,7 @@ public class WorkbookHSSFImpl implements MutableWorkbook, WorkbookChangeVisitor 
         }
         for(WorkbookChangeListener listener : new ArrayList<WorkbookChangeListener>(changeListeners)) {
             try {
-                listener.sheetRemoved();
+                listener.sheetRemoved();                
             }
             catch (Exception e) {
             	logger.error("Error removing a sheet",e);

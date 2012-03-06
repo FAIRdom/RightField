@@ -6,6 +6,7 @@ import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 import java.net.URI;
 
@@ -22,12 +23,16 @@ public class WorkbookManagerTest {
 	
 	WorkbookManager manager;
 	DummyWorkbookManagerListener testListener;
+	DummyWorkbookChangeListener testChangeListener;
+	
 	
 	@Before
 	public void setUp() {
 		manager = new WorkbookManager();		
-		testListener=new DummyWorkbookManagerListener();		
+		testListener=new DummyWorkbookManagerListener();
+		testChangeListener=new DummyWorkbookChangeListener();
 		manager.addListener(testListener);
+		manager.getWorkbook().addChangeListener(testChangeListener);
 	}
 	
 	@Test
@@ -87,15 +92,35 @@ public class WorkbookManagerTest {
 		Sheet sheet = manager.addSheet();
 		assertNotNull(sheet);
 		assertEquals("Sheet1",sheet.getName());
-		assertTrue(testListener.isWorkbookChangedFired());
+		assertTrue(testChangeListener.isSheetAddedFired());
+		//FIXME: workbookChanged should also probably be fired		
+		assertFalse(testChangeListener.isWorkbookChangedFired());
+		assertFalse(testChangeListener.isSheetRemovedFired());
+		assertFalse(testChangeListener.isSheetRenamedFired());
 		assertEquals(2,manager.getWorkbook().getSheets().size());
 	}
 	
 	@Test
 	public void testRemoveSheet() throws Exception {
-		manager.deleteSheet("Sheet0");
-		assertTrue(testListener.isWorkbookChangedFired());
+		manager.deleteSheet("Sheet0");		
+		assertTrue(testChangeListener.isSheetRemovedFired());
+		//FIXME: workbookChanged should also probably be fired
+		assertFalse(testChangeListener.isWorkbookChangedFired());		
+		assertFalse(testChangeListener.isSheetAddedFired());
+		assertFalse(testChangeListener.isSheetRenamedFired());
 		assertEquals(0,manager.getWorkbook().getSheets().size());
+	}
+	
+	@Test
+	public void testRenameSheet() throws Exception {
+		manager.renameSheet("Sheet0", "fred");
+		assertEquals(1,manager.getWorkbook().getSheets().size());
+		assertEquals("fred",manager.getWorkbook().getSheet(0).getName());
+		assertTrue(testChangeListener.isSheetRenamedFired());
+		assertFalse(testChangeListener.isSheetRemovedFired());
+		//FIXME: workbookChanged should also probably be fired
+		assertFalse(testChangeListener.isWorkbookChangedFired());		
+		assertFalse(testChangeListener.isSheetAddedFired());
 	}
 	
 	private URI ontologyURI() throws Exception {

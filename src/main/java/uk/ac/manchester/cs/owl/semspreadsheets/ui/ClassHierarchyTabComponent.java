@@ -113,7 +113,7 @@ class ClassHierarchyTabComponent extends JPanel {
 			
 			@Override
 			public void sheetRenamed(String oldName, String newName) {
-				
+				updateTabClosableStatus();
 			}
 			
 			@Override
@@ -123,7 +123,7 @@ class ClassHierarchyTabComponent extends JPanel {
 			
 			@Override
 			public void sheetAdded() {
-				
+				updateTabClosableStatus();
 			}
 		});
 	}

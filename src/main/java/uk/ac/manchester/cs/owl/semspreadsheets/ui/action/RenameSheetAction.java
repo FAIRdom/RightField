@@ -6,6 +6,7 @@ import javax.swing.JOptionPane;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
+import uk.ac.manchester.cs.owl.semspreadsheets.ui.ErrorHandler;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookFrame;
 
 /**
@@ -29,9 +30,19 @@ public class RenameSheetAction extends WorkbookFrameAction {
         Range range = frame.getWorkbookManager().getSelectionModel().getSelectedRange();
         Sheet sheet = range.getSheet();
         if(sheet != null) {
-            String name = JOptionPane.showInputDialog(frame, "Rename sheet to", sheet.getName());
-            if (name != null) {
-                sheet.setName(name);
+            String newName = JOptionPane.showInputDialog(frame, "Rename sheet to", sheet.getName());
+            if (newName != null) {
+            	if (getWorkbookManager().getWorkbook().getSheet(newName)==null) {
+            		try {
+                		getWorkbookManager().renameSheet(sheet.getName(),newName);
+                	}
+                	catch(IllegalArgumentException ex) {
+                		ErrorHandler.getErrorHandler().handleError(ex);
+                	}
+            	}
+            	else {
+            		JOptionPane.showMessageDialog(getWorkbookFrame(), "A sheet with the name "+newName+" already exists","Duplicate sheet name",JOptionPane.ERROR_MESSAGE);
+            	}            	
             }
         }
     }

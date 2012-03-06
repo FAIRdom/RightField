@@ -549,6 +549,13 @@ public class WorkbookManager {
 
 	public void deleteSheet(String name) {
 		getWorkbook().deleteSheet(name);				
+	}
+
+	public void renameSheet(String oldName, String newName) {
+		Sheet sheet = getWorkbook().getSheet(oldName);
+		if (sheet!=null) {
+			sheet.setName(newName);
+		}
 	}	
 
 }
