@@ -101,12 +101,12 @@ public class WorkbookFrame extends JFrame {
 		setupMenuItems();
 		updateTitleBar();
 		workbookManager.addListener(new WorkbookManagerListener() {
-			public void workbookChanged(WorkbookManagerEvent event) {
-				handleWorkbookChanged();
+			public void workbookCreated(WorkbookManagerEvent event) {
+				handleNewWorkbook();
 			}
 
 			public void workbookLoaded(WorkbookManagerEvent event) {
-				handleWorkbookChanged();
+				handleNewWorkbook();
 			}
 
 			public void ontologiesChanged(WorkbookManagerEvent event) {
@@ -197,7 +197,7 @@ public class WorkbookFrame extends JFrame {
 		return taskManager;
 	}
 
-	public void handleWorkbookChanged() {
+	public void handleNewWorkbook() {
 		updateTitleBar();
 		Collection<IRI> ontologyIRIs = workbookManager
 				.getOntologyTermValidationManager().getOntologyIRIs();		

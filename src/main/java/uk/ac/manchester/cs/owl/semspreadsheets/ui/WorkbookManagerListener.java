@@ -30,7 +30,7 @@ package uk.ac.manchester.cs.owl.semspreadsheets.ui;
  */
 public interface WorkbookManagerListener {
 
-     void workbookChanged(WorkbookManagerEvent event);
+     void workbookCreated(WorkbookManagerEvent event);
 
     void workbookLoaded(WorkbookManagerEvent event);
 

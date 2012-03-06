@@ -87,7 +87,7 @@ public class WorkbookHSSFImpl implements MutableWorkbook, WorkbookChangeVisitor 
                 listener.workbookChanged(new WorkbookChangeEvent(change));
             }
             catch (Throwable e) {
-                e.printStackTrace();
+                logger.error("Error notifying listener",e);
             }
         }
     }

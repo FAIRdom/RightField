@@ -49,7 +49,7 @@ public class ClassHierarchyTabbedPane extends JTabbedPane {
 			}
 			
 			@Override
-			public void workbookChanged(WorkbookManagerEvent event) {
+			public void workbookCreated(WorkbookManagerEvent event) {
 								
 			}
 			

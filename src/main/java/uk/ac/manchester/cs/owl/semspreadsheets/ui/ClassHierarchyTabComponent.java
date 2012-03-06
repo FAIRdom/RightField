@@ -21,6 +21,8 @@ import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntology;
 
+import uk.ac.manchester.cs.owl.semspreadsheets.change.WorkbookChangeEvent;
+import uk.ac.manchester.cs.owl.semspreadsheets.change.WorkbookChangeListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 
 /**
@@ -103,25 +105,25 @@ class ClassHierarchyTabComponent extends JPanel {
 	}
 	
 	private void addWorkbookManagerListener() {
-		getWorkbookManager().addListener(new WorkbookManagerListener() {
+		getWorkbookManager().getWorkbook().addChangeListener(new WorkbookChangeListener() {			
 			@Override
-			public void workbookLoaded(WorkbookManagerEvent event) {
+			public void workbookChanged(WorkbookChangeEvent event) {
 				updateTabClosableStatus();
 			}
-
+			
 			@Override
-			public void workbookChanged(WorkbookManagerEvent event) {
-				updateTabClosableStatus();
+			public void sheetRenamed(String oldName, String newName) {
+				
 			}
-
+			
 			@Override
-			public void validationAppliedOrCancelled() {
-				updateTabClosableStatus();
+			public void sheetRemoved() {
+				
 			}
-
+			
 			@Override
-			public void ontologiesChanged(WorkbookManagerEvent event) {
-				updateTabClosableStatus();
+			public void sheetAdded() {
+				
 			}
 		});
 	}

@@ -49,7 +49,7 @@ class DummyWorkbookManagerListener implements
 	}
 
 	@Override
-	public void workbookChanged(WorkbookManagerEvent event) {
+	public void workbookCreated(WorkbookManagerEvent event) {
 		workbookChangedFired=true;
 	}
 

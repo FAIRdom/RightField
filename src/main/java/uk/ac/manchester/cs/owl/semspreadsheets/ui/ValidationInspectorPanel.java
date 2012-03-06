@@ -122,7 +122,7 @@ public class ValidationInspectorPanel extends JPanel {
 			}
 			
 			@Override
-			public void workbookChanged(WorkbookManagerEvent event) {
+			public void workbookCreated(WorkbookManagerEvent event) {
 				
 			}
 			

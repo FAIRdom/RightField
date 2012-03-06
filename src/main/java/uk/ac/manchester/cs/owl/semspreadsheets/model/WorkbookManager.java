@@ -99,8 +99,7 @@ public class WorkbookManager {
     }
 
     public void applyChange(WorkbookChange change) {
-        ((MutableWorkbook) workbook).applyChange(change); 
-        fireWorkbookChanged();
+        ((MutableWorkbook) workbook).applyChange(change);         
     }
 
     public void addListener(WorkbookManagerListener listener) {
@@ -136,11 +135,11 @@ public class WorkbookManager {
         entitySelectionModel.setSelection(selEnt);
     }
 
-    private void fireWorkbookChanged() {
+    private void fireWorkbookCreated() {
         WorkbookManagerEvent event = new WorkbookManagerEvent(this);
         for (WorkbookManagerListener listener : getCopyOfListeners()) {
             try {
-                listener.workbookChanged(event);
+                listener.workbookCreated(event);
             }
             catch (Throwable e) {
                 ErrorHandler.getErrorHandler().handleError(e);
@@ -191,7 +190,7 @@ public class WorkbookManager {
         workbook = WorkbookFactory.createWorkbook();
         workbookURI=null;
         getOntologyTermValidationManager().clearValidations();
-        fireWorkbookChanged();
+        fireWorkbookCreated();
         getWorkbookState().changesSaved();
         return workbook;
     }
@@ -544,15 +543,12 @@ public class WorkbookManager {
 	}
 
 	public Sheet addSheet() {
-		Sheet sheet = getWorkbook().addSheet();
-		fireWorkbookChanged();
+		Sheet sheet = getWorkbook().addSheet();		
 		return sheet;
 	}
 
 	public void deleteSheet(String name) {
-		getWorkbook().deleteSheet(name);
-		fireWorkbookChanged();
-		
+		getWorkbook().deleteSheet(name);				
 	}	
 
 }

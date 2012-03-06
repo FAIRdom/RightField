@@ -13,10 +13,8 @@ import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.IRI;
 
 /**
- * Author: Matthew Horridge<br>
- * The University of Manchester<br>
- * Information Management Group<br>
- * Date: 08-Nov-2009
+ * @author Stuart Owen
+ * @author Matthew Horridge
  */
 public class OntologyTermValidationManager {
 
