@@ -32,7 +32,9 @@ import java.io.InputStream;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -63,7 +65,7 @@ public class WorkbookHSSFImpl implements MutableWorkbook, WorkbookChangeVisitor 
     
     private static final Logger logger = Logger.getLogger(WorkbookHSSFImpl.class);    
 
-    private List<WorkbookChangeListener> changeListeners = new ArrayList<WorkbookChangeListener>();
+    private Set<WorkbookChangeListener> changeListeners = new HashSet<WorkbookChangeListener>();
 
     public WorkbookHSSFImpl() {
         workbook = new HSSFWorkbook();
@@ -105,8 +107,8 @@ public class WorkbookHSSFImpl implements MutableWorkbook, WorkbookChangeVisitor 
     }
 
     public void addChangeListener(WorkbookChangeListener changeListener) {
-        changeListeners.add(changeListener);
-    }
+    	changeListeners.add(changeListener);    	
+    }        
 
     public void removeChangeListener(WorkbookChangeListener changeListener) {
         changeListeners.remove(changeListener);
@@ -235,8 +237,6 @@ public class WorkbookHSSFImpl implements MutableWorkbook, WorkbookChangeVisitor 
         stream.close();
     }        
 
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////
-
     public void visit(SetCellValue setCellValue) {
         HSSFSheet hssfSheet = workbook.getSheet(setCellValue.getSheet().getName());
         HSSFRow hssfRow = hssfSheet.getRow(setCellValue.getRow());
@@ -264,6 +264,16 @@ public class WorkbookHSSFImpl implements MutableWorkbook, WorkbookChangeVisitor 
 			if (!sheet.isHidden() && !sheet.isVeryHidden()) result.add(sheet);			
 		}
 		return result;
+	}
+
+	@Override
+	public List<WorkbookChangeListener> getAllChangeListeners() {
+		return new ArrayList<WorkbookChangeListener>(changeListeners);
+	}
+
+	@Override
+	public void clearChangeListeners() {
+		changeListeners.clear();
 	}
 
 }

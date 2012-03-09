@@ -15,6 +15,7 @@ import org.junit.Test;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntology;
 
+import uk.ac.manchester.cs.owl.semspreadsheets.change.WorkbookChangeListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Workbook;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
@@ -121,6 +122,26 @@ public class WorkbookManagerTest {
 		//FIXME: workbookChanged should also probably be fired
 		assertFalse(testChangeListener.isWorkbookChangedFired());		
 		assertFalse(testChangeListener.isSheetAddedFired());
+	}
+	
+	@Test
+	public void testWorkbookChangeListenersRetainedAferNewOrLoad() throws Exception {
+		Workbook book = manager.getWorkbook();
+		WorkbookChangeListener l1=new DummyWorkbookChangeListener();
+		WorkbookChangeListener l2=new DummyWorkbookChangeListener();
+		book.addChangeListener(l1);
+		book.addChangeListener(l2);
+		manager.createNewWorkbook();
+		Workbook newBook = manager.getWorkbook();
+		assertNotSame(book, newBook);
+		assertTrue(newBook.getAllChangeListeners().contains(l1));
+		assertTrue(newBook.getAllChangeListeners().contains(l2));
+		URI workbookURI = workbookURI();
+		manager.loadWorkbook(workbookURI);
+		Workbook newBook2 = manager.getWorkbook();
+		assertNotSame(newBook, newBook2);
+		assertTrue(newBook2.getAllChangeListeners().contains(l1));
+		assertTrue(newBook2.getAllChangeListeners().contains(l2));
 	}
 	
 	private URI ontologyURI() throws Exception {

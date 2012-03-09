@@ -9,6 +9,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Collection;
+import java.util.List;
 
 import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
@@ -21,8 +22,8 @@ import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntology;
 
-import uk.ac.manchester.cs.owl.semspreadsheets.change.WorkbookChangeEvent;
-import uk.ac.manchester.cs.owl.semspreadsheets.change.WorkbookChangeListener;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidation;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidationListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 
 /**
@@ -52,7 +53,7 @@ class ClassHierarchyTabComponent extends JPanel {
 		setText();
 		add(new JLabel(" "));
 		setButton();					
-		addWorkbookManagerListener();
+		addOntologyTermValidationListener();
 	}
 
 	public OWLOntology getOntology() {
@@ -86,8 +87,7 @@ class ClassHierarchyTabComponent extends JPanel {
 		add(closeButton);
 	}
 
-	private void updateTabClosableStatus() {
-		
+	private void updateTabClosableStatus() {		
 		Collection<IRI> ontologyIRIs = getWorkbookManager()
 				.getOntologyTermValidationManager().getOntologyIRIs();
 		boolean used = ontologyIRIs.contains(getOntology().getOntologyID()
@@ -104,28 +104,19 @@ class ClassHierarchyTabComponent extends JPanel {
 		return getWorkbookFrame().getWorkbookManager();
 	}
 	
-	private void addWorkbookManagerListener() {
-		getWorkbookManager().getWorkbook().addChangeListener(new WorkbookChangeListener() {			
+	private void addOntologyTermValidationListener() {
+		getWorkbookManager().getOntologyTermValidationManager().addListener(new OntologyTermValidationListener() {
+			
 			@Override
-			public void workbookChanged(WorkbookChangeEvent event) {
+			public void validationsChanged() {
 				updateTabClosableStatus();
 			}
 			
 			@Override
-			public void sheetRenamed(String oldName, String newName) {
-				updateTabClosableStatus();
-			}
-			
-			@Override
-			public void sheetRemoved() {
+			public void ontologyTermSelected(List<OntologyTermValidation> previewList) {
 				
 			}
-			
-			@Override
-			public void sheetAdded() {
-				updateTabClosableStatus();
-			}
-		});
+		});		
 	}
 
 	private class TabButton extends JButton implements ActionListener {
@@ -149,9 +140,7 @@ class ClassHierarchyTabComponent extends JPanel {
 			setRolloverEnabled(true);
 			// Close the proper tab by clicking the button
 			addActionListener(this);
-		}
-		
-		
+		}		
 
 		public void actionPerformed(ActionEvent e) {
 			ClassHierarchyTabComponent.this.removeOntology();
