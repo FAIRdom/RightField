@@ -81,7 +81,7 @@ public class SheetTable extends JTable {
         Graphics2D g2 = (Graphics2D) g;
         Stroke oldStroke = g2.getStroke();
         g2.setStroke(stroke);
-        for (OntologyTermValidation ontologyTermValidation : workbookManager.getOntologyTermValidation()) {
+        for (OntologyTermValidation ontologyTermValidation : workbookManager.getOntologyTermValidations()) {
             if (ontologyTermValidation.getRange().getSheet().equals(sheet)) {
                 Range validation = ontologyTermValidation.getRange();
                 if(ontologyTermValidation.getValidationDescriptor().getTerms().isEmpty()) {

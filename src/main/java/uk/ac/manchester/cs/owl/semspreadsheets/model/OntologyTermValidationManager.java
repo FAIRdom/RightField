@@ -24,8 +24,7 @@ public class OntologyTermValidationManager {
 
     private Set<OntologyTermValidation> ontologyTermValidations = new HashSet<OntologyTermValidation>();
 
-    private List<OntologyTermValidationListener> listeners = new ArrayList<OntologyTermValidationListener>();
-
+    private Set<OntologyTermValidationListener> listeners = new HashSet<OntologyTermValidationListener>();
 
     public OntologyTermValidationManager(WorkbookManager workbookManager) {
         this.workbookManager = workbookManager;
@@ -66,13 +65,7 @@ public class OntologyTermValidationManager {
         if (ontologyTermValidations.removeAll(getIntersectingValidations(range))) {
             fireValidationsChanged();
         }
-    }
-
-    public void addValidation(OntologyTermValidation validation) {
-        if(ontologyTermValidations.add(validation)) {
-            fireValidationsChanged();
-        }
-    }
+    }    
     
     public void previewValidation(Range range, ValidationType type, IRI entityIRI) {
     	logger.debug("Previewing validation for iri "+entityIRI.toString()+", type "+type.toString());
@@ -110,7 +103,7 @@ public class OntologyTermValidationManager {
 
     public Collection<OntologyTermValidation> getIntersectingValidations(Range range) {
          List<OntologyTermValidation> result = new ArrayList<OntologyTermValidation>();
-        for(OntologyTermValidation validation : ontologyTermValidations) {
+        for(OntologyTermValidation validation : ontologyTermValidations) {        	
             if(validation.getRange().intersectsRange(range)) {
                 result.add(validation);
             }
@@ -170,7 +163,7 @@ public class OntologyTermValidationManager {
                 listener.validationsChanged();
             }
             catch (Throwable e) {
-                e.printStackTrace();
+                logger.error("Error firing validation changed",e);
             }
         }
     }
@@ -181,15 +174,26 @@ public class OntologyTermValidationManager {
                 listener.ontologyTermSelected(previewList);
             }
             catch (Throwable e) {
-                e.printStackTrace();
+            	logger.error("Error firing term set",e);
             }
         }
     }
 
-    public void removeValidation(Range selectedRange) {
+    public void removeValidations(Range selectedRange) {
         for(Iterator<OntologyTermValidation> it = ontologyTermValidations.iterator(); it.hasNext(); ) {
             OntologyTermValidation validation = it.next();
             if(validation.getRange().intersectsRange(selectedRange)) {
+                it.remove();
+            }
+        }
+        fireValidationsChanged();
+    }
+    
+    //removes validations that match a given sheet
+    public void removeValidations(Sheet sheet) {
+    	for(Iterator<OntologyTermValidation> it = ontologyTermValidations.iterator(); it.hasNext(); ) {
+            OntologyTermValidation validation = it.next();
+            if(validation.getRange().getSheet().equals(sheet)) {
                 it.remove();
             }
         }

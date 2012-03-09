@@ -39,6 +39,7 @@ import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.change.SetCellValue;
 import uk.ac.manchester.cs.owl.semspreadsheets.change.WorkbookChange;
+import uk.ac.manchester.cs.owl.semspreadsheets.change.WorkbookChangeListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.repository.bioportal.BioPortalRepository;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.CellSelectionListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.CellSelectionModel;
@@ -70,7 +71,7 @@ public class WorkbookManager {
 
     private EntitySelectionModel entitySelectionModel;
 
-    private List<WorkbookManagerListener> workbookManagerListeners = new ArrayList<WorkbookManagerListener>();
+    private Set<WorkbookManagerListener> workbookManagerListeners = new HashSet<WorkbookManagerListener>();
 
     private OntologyTermValidationManager ontologyTermValidationManager;
 
@@ -187,7 +188,12 @@ public class WorkbookManager {
     }
 
     public Workbook createNewWorkbook() {
-        workbook = WorkbookFactory.createWorkbook();
+    	List<WorkbookChangeListener> existingListeners = workbook.getAllChangeListeners();
+    	workbook.clearChangeListeners();
+        workbook = WorkbookFactory.createWorkbook();  
+        for (WorkbookChangeListener l : existingListeners) {
+        	workbook.addChangeListener(l);
+        }
         workbookURI=null;
         getOntologyTermValidationManager().clearValidations();
         fireWorkbookCreated();
@@ -197,7 +203,14 @@ public class WorkbookManager {
 
     public Workbook loadWorkbook(URI uri) throws IOException {
         try {
+        	//need to preserve the listeners on the workbook
+        	List<WorkbookChangeListener> existingListeners = workbook.getAllChangeListeners();
+        	workbook.clearChangeListeners(); //to free it and allow it to be garbage collected
             workbook = WorkbookFactory.createWorkbook(uri);
+            for (WorkbookChangeListener l : existingListeners) {
+            	workbook.addChangeListener(l);
+            }
+            
             workbookURI = uri;
             // Extract validation
             getOntologyTermValidationManager().readValidationFromWorkbook();
@@ -346,7 +359,7 @@ public class WorkbookManager {
     public void removeValidations(Range range) {
     	if (getOntologyTermValidationManager().getContainingValidations(range).size()>0)
     	{
-	    	getOntologyTermValidationManager().removeValidation(range);
+	    	getOntologyTermValidationManager().removeValidations(range);
 	    	for(int col = range.getFromColumn(); col < range.getToColumn() + 1; col++) {
 	            for(int row = range.getFromRow(); row < range.getToRow() + 1; row++) {
 	                Cell cell = range.getSheet().getCellAt(col, row);
@@ -526,7 +539,7 @@ public class WorkbookManager {
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-    public Collection<OntologyTermValidation> getOntologyTermValidation() {
+    public Collection<OntologyTermValidation> getOntologyTermValidations() {
         return ontologyTermValidationManager.getValidations();
     }
 
@@ -548,6 +561,14 @@ public class WorkbookManager {
 	}
 
 	public void deleteSheet(String name) {
+		//cleanup validations linked to this sheet
+		Sheet sheet = getWorkbook().getSheet(name);
+		if (sheet!=null) {
+			getOntologyTermValidationManager().removeValidations(sheet);
+		}
+		else {
+			logger.warn("Attempt to delete sheet with unrecognised name:"+name);
+		}		
 		getWorkbook().deleteSheet(name);				
 	}
 

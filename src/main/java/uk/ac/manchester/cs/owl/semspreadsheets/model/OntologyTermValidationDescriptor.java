@@ -50,12 +50,14 @@ public class OntologyTermValidationDescriptor implements Serializable {
 
     public OntologyTermValidationDescriptor(ValidationType type, IRI entityIRI, WorkbookManager workbookManager) {
         this.type = type;
-        this.entityIRI = entityIRI;
+        this.entityIRI = entityIRI;        
         ontologyIRI2PhysicalIRIMap = new HashMap<IRI, IRI>();
-        for(OWLOntology ont : workbookManager.getLoadedOntologies()) {
-            IRI documentIRI = workbookManager.getOntologyManager().getOntologyDocumentIRI(ont);
-            documentIRI = BioPortalRepository.removeBioPortalAPIKey(documentIRI);
-            ontologyIRI2PhysicalIRIMap.put(ont.getOntologyID().getOntologyIRI(), documentIRI);
+        for(OWLOntology ont : workbookManager.getLoadedOntologies()) {    
+        	if (ont.containsClassInSignature(entityIRI)) {
+        		IRI documentIRI = workbookManager.getOntologyManager().getOntologyDocumentIRI(ont);
+                documentIRI = BioPortalRepository.removeBioPortalAPIKey(documentIRI);
+                ontologyIRI2PhysicalIRIMap.put(ont.getOntologyID().getOntologyIRI(), documentIRI);
+        	}            
         }
         Set<OWLEntity> entities = type.getEntities(workbookManager, entityIRI);
         terms = new ArrayList<Term>();

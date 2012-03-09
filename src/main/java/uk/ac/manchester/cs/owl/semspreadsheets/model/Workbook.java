@@ -21,6 +21,10 @@ public interface Workbook {
     void addChangeListener(WorkbookChangeListener changeListener);
 
     void removeChangeListener(WorkbookChangeListener changeListener);
+    
+    List<WorkbookChangeListener> getAllChangeListeners();
+    
+    void clearChangeListeners();
 
     Sheet addSheet();
 

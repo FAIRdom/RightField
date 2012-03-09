@@ -36,7 +36,7 @@ public class ClassHierarchyTabbedPane extends JTabbedPane {
 	
 	private List<OWLOntology> knownOntologies = new ArrayList<OWLOntology>();
 
-	private final WorkbookFrame workbookFrame;
+	private final WorkbookFrame workbookFrame;		
 	
 
 	public ClassHierarchyTabbedPane(WorkbookFrame workbookFrame) {
@@ -134,8 +134,11 @@ public class ClassHierarchyTabbedPane extends JTabbedPane {
 			String title = tabTitle(ontology);
 			addTab(title,sp);
 			int index = tabIndexForOntology(ontology);
-			setTabComponentAt(index, new ClassHierarchyTabComponent(this,getWorkbookFrame(),ontology));
+			setTabComponentAt(index, new ClassHierarchyTabComponent(this,getWorkbookFrame(),ontology));			
 			setSelectedIndex(index);
+			//FIXME: needs to fire again to get round a problem that when the tab is created and selected, the ClassHierarchyTabComponent
+			//that holds the ontology has not yet been set.
+			fireStateChanged();
 		}
 		else {
 			logger.warn("Attempting to create duplicate tab for ontology: "+ontology.getOntologyID().toString());

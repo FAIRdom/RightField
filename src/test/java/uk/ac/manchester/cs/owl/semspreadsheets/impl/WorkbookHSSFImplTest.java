@@ -1,12 +1,14 @@
 package uk.ac.manchester.cs.owl.semspreadsheets.impl;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+import uk.ac.manchester.cs.owl.semspreadsheets.change.WorkbookChangeListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.Workbook;
 
 
 public class WorkbookHSSFImplTest {
@@ -30,6 +32,26 @@ public class WorkbookHSSFImplTest {
 		sheet.setName("Frog");
 		assertTrue(book.sheetNameExists("Frog"));
 		assertFalse(book.sheetNameExists("Sheet1"));		
+	}
+	
+	@Test
+	public void testGetAllChangeListeners() throws Exception {
+		Workbook book = getTestWorkbook();
+		assertEquals(0,book.getAllChangeListeners().size());
+		WorkbookChangeListener listener = new DummyWorkbookChangeListener();
+		book.addChangeListener(listener);
+		assertEquals(1,book.getAllChangeListeners().size());
+		assert(book.getAllChangeListeners().contains(listener));
+	}
+	
+	@Test
+	public void testClearChangeListeners() throws Exception {
+		Workbook book = getTestWorkbook();
+		assertEquals(0,book.getAllChangeListeners().size());
+		WorkbookChangeListener listener = new DummyWorkbookChangeListener();
+		book.addChangeListener(listener);
+		book.clearChangeListeners();
+		assertEquals(0,book.getAllChangeListeners().size());
 	}
 	
 	@Test 
@@ -115,4 +137,6 @@ public class WorkbookHSSFImplTest {
 	private WorkbookHSSFImpl getTestWorkbook() throws Exception {
 		return SpreadsheetTestHelper.openWorkbookHSSF("simple_annotated_book.xls");
 	}
+	
+	
 }

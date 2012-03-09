@@ -51,7 +51,7 @@ public class ValidationInspectorPanel extends JPanel {
         outerPanel.setLayout(new BoxLayout(outerPanel, BoxLayout.PAGE_AXIS));
 
         ClassHierarchyTreePanel classHierarchyTreePanel = new ClassHierarchyTreePanel(frame);
-        classHierarchyTreePanel.setBorder(createTitledBorder("HIERARCHY"));
+        classHierarchyTreePanel.setBorder(createTitledBorder("ONTOLOGY HIERARCHIES"));
         
         ValidationValuesPanel valuesPanel = new ValidationValuesPanel(frame.getWorkbookManager());
         valuesPanel.setBorder(createTitledBorder("ALLOWED VALUES"));
