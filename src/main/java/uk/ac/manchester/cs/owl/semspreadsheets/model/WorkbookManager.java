@@ -77,8 +77,8 @@ public class WorkbookManager {
     private BidirectionalShortFormProviderAdapter shortFormProvider;
 
     public WorkbookManager() {    	
-        this.owlManager = OWLManager.createOWLOntologyManager();
-        owlManager.setSilentMissingImportsHandling(true);
+        this.owlManager = OWLManager.createOWLOntologyManager();        
+        owlManager.setSilentMissingImportsHandling(true);        
         shortFormProvider = new BidirectionalShortFormProviderAdapter(new SimpleShortFormProvider());
         entitySelectionModel = new EntitySelectionModel(owlManager.getOWLDataFactory().getOWLThing());
         ontologyTermValidationManager = new OntologyTermValidationManager(this);
