@@ -12,6 +12,8 @@ import java.util.Set;
 import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.OWLOntology;
@@ -63,7 +65,33 @@ public class ClassHierarchyTabbedPane extends JTabbedPane {
 				updateTabs();							
 			}
 			
-		});						
+		});			
+		
+		addChangeListener(new ChangeListener() {
+			
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				int index = getSelectedIndex();
+				logger.debug("Selected tab index: "+index);
+				OWLOntology ontology = null;
+				if (index!=-1) {
+					ClassHierarchyTabComponent comp = ((ClassHierarchyTabComponent)getTabComponentAt(index));
+					if (comp!=null) {
+						ontology = comp.getOntology();
+					}					
+					else {
+						logger.debug("Selected tab component was NULL");
+					}
+				}
+				if (ontology!=null) {
+					getWorkbookFrame().setSelectedOntology(ontology);
+				}								
+				else {
+					logger.debug("Selected ontology was NULL");
+				}
+			}
+		});
+				
 	}
 	
 	public int tabIndexForOntology(OWLOntology ontology) {
@@ -105,7 +133,9 @@ public class ClassHierarchyTabbedPane extends JTabbedPane {
 		if (tabIndexForOntology(ontology)==-1) {
 			String title = tabTitle(ontology);
 			addTab(title,sp);
-			setTabComponentAt(tabIndexForOntology(ontology), new ClassHierarchyTabComponent(this,getWorkbookFrame(),ontology));
+			int index = tabIndexForOntology(ontology);
+			setTabComponentAt(index, new ClassHierarchyTabComponent(this,getWorkbookFrame(),ontology));
+			setSelectedIndex(index);
 		}
 		else {
 			logger.warn("Attempting to create duplicate tab for ontology: "+ontology.getOntologyID().toString());

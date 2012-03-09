@@ -45,9 +45,7 @@ public class WorkbookPanel extends JPanel {
 		setLayout(new BorderLayout());
 		add(tabbedPane, BorderLayout.CENTER);
 		workbookChangeListener = new WorkbookChangeListener() {
-			public void workbookChanged(WorkbookChangeEvent event) {
-				// FIMXE: Don't like this, but it works. Will revisit when I
-				// understand the code structure some more.
+			public void workbookChanged(WorkbookChangeEvent event) {				
 				if (event.getChange() instanceof SetCellValue) {
 					SetCellValue scv = (SetCellValue) event.getChange();
 					scv.getSheet().getName();

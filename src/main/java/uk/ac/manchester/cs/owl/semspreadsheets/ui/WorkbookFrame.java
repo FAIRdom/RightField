@@ -48,6 +48,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.OnlineHelpAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.OpenFromBioPortalAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.OpenOntologyAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.OpenWorkbookAction;
+import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.RemoveSelectedOntologyAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.RemoveSheetAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.RenameSheetAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.SaveAction;
@@ -80,6 +81,10 @@ public class WorkbookFrame extends JFrame {
 	private WorkbookManager workbookManager;
 
 	private TaskManager taskManager = new TaskManager(this);
+	
+	private OWLOntology selectedOntology = null;
+
+	private JMenuItem removeOntologyMenuItem;
 
 	public WorkbookFrame(WorkbookManager manager) {
 		this.workbookManager = manager;
@@ -112,6 +117,7 @@ public class WorkbookFrame extends JFrame {
 			public void ontologiesChanged(WorkbookManagerEvent event) {
 				updateTitleBar();
 				workbookManager.getWorkbookState().changesUnsaved();
+				setRemoveOntologyMenuState();
 			}
 
 			@Override
@@ -146,7 +152,8 @@ public class WorkbookFrame extends JFrame {
 		fileMenu.add(new CloseWorkbookAction(this));
 		fileMenu.add(new JSeparator());
 		fileMenu.add(new OpenOntologyAction(this));
-		fileMenu.add(new OpenFromBioPortalAction(this));		
+		fileMenu.add(new OpenFromBioPortalAction(this));
+		removeOntologyMenuItem = fileMenu.add(new RemoveSelectedOntologyAction(this));
 		fileMenu.addSeparator();
 		fileMenu.add(new SaveAction(this));
 		fileMenu.add(new SaveAsAction(this));
@@ -177,10 +184,10 @@ public class WorkbookFrame extends JFrame {
 		JMenuItem onlineHelp = helpMenu.add(new OnlineHelpAction(this));
 		onlineHelp.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
 		helpMenu.add(new AboutBoxAction(this));
-		
-		
-						
+										
 		setJMenuBar(menuBar);
+		
+		setRemoveOntologyMenuState();
 	}
 	
 	public void exit() {
@@ -461,11 +468,39 @@ public class WorkbookFrame extends JFrame {
     	}
 		return (res == JOptionPane.YES_OPTION);
 	}
+	
+	public void removeOntology() {
+		OWLOntology ontology = getSelectedOntology();
+		if (ontology!=null) {
+			removeOntology(ontology);			
+		}
+	}
+	
+	public void setSelectedOntology(OWLOntology ontology) {
+		logger.debug("Selected ontology updated to be: "+ontology.getOntologyID().toString());
+		selectedOntology = ontology;
+		setRemoveOntologyMenuState();
+	}
+	
+	private void setRemoveOntologyMenuState() {
+		if (selectedOntology==null) {
+			removeOntologyMenuItem.setEnabled(false);
+		}
+		else {
+			Collection<IRI> ontologyIRIs = getWorkbookManager().getOntologyTermValidationManager().getOntologyIRIs();
+			removeOntologyMenuItem.setEnabled(!ontologyIRIs.contains(selectedOntology.getOntologyID().getOntologyIRI()));
+		}				
+	}
+
+	private OWLOntology getSelectedOntology() {
+		return selectedOntology;
+	}
 
 	public void removeOntology(OWLOntology ontology) {
 		int res = JOptionPane.showConfirmDialog(this,"Are you sure you wish to remove the '"+ontology.getOntologyID().getOntologyIRI() +"' ontology?","Remove ontology?",JOptionPane.YES_NO_OPTION);
 		if (res == JOptionPane.YES_OPTION) {
 			getWorkbookManager().removeOntology(ontology);
+			selectedOntology=null;
 		}
 	}
 
