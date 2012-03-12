@@ -35,7 +35,7 @@ public class ValidationInspectorPanel extends JPanel {
 
     private WorkbookManager workbookManager;
 
-    private JLabel selectedCellAddressLabel = new JLabel("No cells selected");
+    private JLabel selectedCellAddressLabel = new JLabel("No cells currently selected");
 
     private static Color textColor = new Color(96, 110, 128);
     
@@ -43,6 +43,7 @@ public class ValidationInspectorPanel extends JPanel {
     private JButton cancelButton = new JButton("Cancel");
 
     public ValidationInspectorPanel(WorkbookFrame frame) {
+    	selectedCellAddressLabel.setBorder(BorderFactory.createEmptyBorder(5, 7, 5, 0));
         workbookManager = frame.getWorkbookManager();
         setLayout(new BorderLayout(14, 14));        
         setBorder(BorderFactory.createEmptyBorder(7, 2, 7, 7));
@@ -149,11 +150,11 @@ public class ValidationInspectorPanel extends JPanel {
 
     private void updateSelectionLabel() {
         Range selectedRange = workbookManager.getSelectionModel().getSelectedRange();
-        if (selectedRange.isCellSelection()) {
-            selectedCellAddressLabel.setText("CELLS: " + selectedRange.getColumnRowAddress());
+        if (selectedRange.isCellSelection()) {        	
+            selectedCellAddressLabel.setText("Cells: " + selectedRange.getColumnRowAddress());
         }
         else {
-            selectedCellAddressLabel.setText("");
+            selectedCellAddressLabel.setText("No cells currently selected");
         }
     }
 
