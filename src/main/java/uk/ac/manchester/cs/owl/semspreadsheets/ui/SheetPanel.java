@@ -85,9 +85,7 @@ public class SheetPanel extends JPanel {
         }
         ListSelectionListener selectionListener = new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent e) {
-            	if (!e.getValueIsAdjusting()) {
-            		transmitSelectionToModel();
-            	}                                       
+            		transmitSelectionToModel();                                       
             }
         };
         table.getSelectionModel().addListSelectionListener(selectionListener);
