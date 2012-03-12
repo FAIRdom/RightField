@@ -88,7 +88,7 @@ public class ValidationInspectorPanel extends JPanel {
         workbookManager.getEntitySelectionModel().addListener(new EntitySelectionModelListener() {			
 			@Override
 			public void selectionChanged() {
-				logger.debug("EntitySelectionModelListener selectionChanged fired");
+				logger.debug("ValidationInspectorPanel's EntitySelectionModelListener selectionChanged fired");
 				updateApplyButtonState();
 			}
 		});

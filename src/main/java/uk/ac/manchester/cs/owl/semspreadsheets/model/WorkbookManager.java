@@ -14,6 +14,8 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.apibinding.OWLManager;
+import org.semanticweb.owlapi.io.IRIDocumentSource;
+import org.semanticweb.owlapi.io.OWLOntologyDocumentSource;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAnnotationProperty;
 import org.semanticweb.owlapi.model.OWLClass;
@@ -24,6 +26,7 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyID;
 import org.semanticweb.owlapi.model.OWLOntologyIRIMapper;
+import org.semanticweb.owlapi.model.OWLOntologyLoaderConfiguration;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.SetOntologyID;
 import org.semanticweb.owlapi.reasoner.BufferingMode;
@@ -76,10 +79,12 @@ public class WorkbookManager {
     private OntologyTermValidationManager ontologyTermValidationManager;
 
     private BidirectionalShortFormProviderAdapter shortFormProvider;
+    
+    private OWLOntologyLoaderConfiguration ontologyLoaderConfiguration = new OWLOntologyLoaderConfiguration();
 
     public WorkbookManager() {    	
-        this.owlManager = OWLManager.createOWLOntologyManager();        
-        owlManager.setSilentMissingImportsHandling(true);        
+        this.owlManager = OWLManager.createOWLOntologyManager();
+        ontologyLoaderConfiguration.setSilentMissingImportsHandling(true);
         shortFormProvider = new BidirectionalShortFormProviderAdapter(new SimpleShortFormProvider());
         entitySelectionModel = new EntitySelectionModel(owlManager.getOWLDataFactory().getOWLThing());
         ontologyTermValidationManager = new OntologyTermValidationManager(this);
@@ -227,11 +232,12 @@ public class WorkbookManager {
         ontologyTermValidationManager.getOntologyIRIs();
         final Map<IRI, IRI> ontologyIRIMap = ontologyTermValidationManager.getOntology2PhysicalIRIMap();
         OWLOntologyIRIMapper mapper = new OntologyTermValdiationManagerMapper(ontologyTermValidationManager);
-        owlManager.addIRIMapper(mapper);
+        owlManager.addIRIMapper(mapper);                
         for(IRI iri : ontologyIRIMap.keySet()) {        	
             if(!owlManager.contains(iri)) {
-                try {                	
-                    owlManager.loadOntology(iri);
+                try {               
+                	OWLOntologyDocumentSource source = new IRIDocumentSource(iri);
+                    owlManager.loadOntologyFromOntologyDocument(source,ontologyLoaderConfiguration);
                 }
                 catch (OWLOntologyCreationException e) {
                 	e.printStackTrace();
@@ -405,7 +411,9 @@ public class WorkbookManager {
         //See if an ontology with such ID had been loaded. If yes, unload it
         unloadOntology(physicalIRI);
                 
-    	OWLOntology ontology = owlManager.loadOntologyFromOntologyDocument(BioPortalRepository.handleBioPortalAPIKey(physicalIRI));
+        OWLOntologyDocumentSource source = new IRIDocumentSource(BioPortalRepository.handleBioPortalAPIKey(physicalIRI));
+        
+    	OWLOntology ontology = owlManager.loadOntologyFromOntologyDocument(source,ontologyLoaderConfiguration);
     	
     	logIRI = ontology.getOntologyID().getOntologyIRI();
     	//Create a new ID and use the physical IRI as a version ID        
