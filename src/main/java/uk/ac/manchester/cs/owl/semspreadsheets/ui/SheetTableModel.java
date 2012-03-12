@@ -5,7 +5,6 @@ import javax.swing.table.AbstractTableModel;
 import uk.ac.manchester.cs.owl.semspreadsheets.change.SetCellValue;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Cell;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.SpreadSheetListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Workbook;
 
 /**
@@ -14,18 +13,13 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.Workbook;
  * @author Matthew Horridge
  */
 @SuppressWarnings("serial")
-public class SheetTableModel extends AbstractTableModel implements SpreadSheetListener {
+public class SheetTableModel extends AbstractTableModel {
 
     private Sheet sheet;
 
     public SheetTableModel(Sheet sheet) {
-        this.sheet = sheet;
-//        sheet.addSpreadSheetListener(this);
-    }
-
-    public void sheetAdded(Sheet sheet) {
-
-    }
+        this.sheet = sheet;        
+    }   
 
     /**
      * Returns the number of rows in the model. A
@@ -89,28 +83,4 @@ public class SheetTableModel extends AbstractTableModel implements SpreadSheetLi
         fireTableCellUpdated(rowIndex, columnIndex);
     }        
 
-
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ////
-    ////  Implementation of Spreadsheet listener
-    ////
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    public void cellAdded(Cell cell) {
-        fireTableCellUpdated(cell.getRow(), cell.getColumn());
-    }
-
-    public void cellRemoved(Cell cell) {
-        fireTableCellUpdated(cell.getRow(), cell.getColumn());
-    }
-
-    public void allCellsRemoved() {
-        fireTableDataChanged();
-    }
-
-    public void cellContentsChanged(Cell cell) {
-        fireTableCellUpdated(cell.getRow(), cell.getColumn());
-    }
 }

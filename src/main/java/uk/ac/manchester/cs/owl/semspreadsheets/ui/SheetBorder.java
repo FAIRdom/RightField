@@ -18,10 +18,8 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 
 /**
- * Author: Matthew Horridge<br>
- * The University of Manchester<br>
- * Information Management Group<br>
- * Date: 30-Oct-2009
+ * @author Stuart Owen
+ * @author Matthew Horridge
  */
 public class SheetBorder implements Border, Disposable {
 

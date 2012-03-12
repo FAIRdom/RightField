@@ -28,8 +28,10 @@ public class SheetTable extends JTable {
     private Sheet sheet;
 
     private WorkbookManager workbookManager;
+    
+    private SpreadSheetCellEditor editor;    
 
-    public SheetTable(WorkbookManager ss, Sheet sheet) {
+	public SheetTable(WorkbookManager ss, Sheet sheet) {
         this.workbookManager = ss;
         this.sheet = sheet;        
 
@@ -40,7 +42,7 @@ public class SheetTable extends JTable {
         setCellSelectionEnabled(true);
 
         SheetCellRenderer ren = new SheetCellRenderer();
-        SpreadSheetCellEditor editor = new SpreadSheetCellEditor();
+        editor = new SpreadSheetCellEditor();
 
         for (int col = 0; col < sheet.getMaxColumns(); col++) {        	
             TableColumn column = getColumnModel().getColumn(col);
@@ -52,11 +54,15 @@ public class SheetTable extends JTable {
         setShowGrid(true);
         setRowMargin(1);
         setGridColor(new Color(206, 206, 206));
-    }
+    }    
 
     public Sheet getSheet() {
         return sheet;
     }
+    
+    public boolean stopCellEditing() {
+		return editor.stopCellEditing();
+	}
 
     private Stroke stroke = new BasicStroke(2.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
 
@@ -96,7 +102,6 @@ public class SheetTable extends JTable {
                 g2.setComposite(alphaComposite);
                 g2.fill(rect);
                 g2.setComposite(oldComposite);
-
             }
         }
 

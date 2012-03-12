@@ -85,8 +85,7 @@ public class SheetPanel extends JPanel {
         }
         ListSelectionListener selectionListener = new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent e) {
-                    transmitSelectionToModel();
-                   
+                    transmitSelectionToModel();                   
             }
         };
         table.getSelectionModel().addListSelectionListener(selectionListener);
@@ -98,12 +97,12 @@ public class SheetPanel extends JPanel {
         };
         workbookManager.getSelectionModel().addCellSelectionListener(cellSelectionListener);
         scrollPane.addMouseListener(new MouseAdapter() {
-            public void mousePressed(MouseEvent e) {
+            public void mousePressed(MouseEvent e) {            	
                 handleRowSelectionRequest(e);
             }
         });
         table.getTableHeader().addMouseListener(new MouseAdapter() {
-            public void mousePressed(MouseEvent e) {
+            public void mousePressed(MouseEvent e) {              	
                 handleColumnSelectionRequest(e);
             }
         });
@@ -151,6 +150,7 @@ public class SheetPanel extends JPanel {
     }
 
     private void handleRowSelectionRequest(MouseEvent e) {
+    	table.stopCellEditing();
         int y = e.getY() - table.getTableHeader().getHeight();
         int row = table.rowAtPoint(new Point(1, y));
         if(row < 0) {
@@ -161,6 +161,7 @@ public class SheetPanel extends JPanel {
     }
 
     private void handleColumnSelectionRequest(MouseEvent e) {
+    	table.stopCellEditing();
         int x = e.getX();
         int col = table.columnAtPoint(new Point(x, 1));
         if(col < 0) {
