@@ -230,7 +230,7 @@ public class OntologyTermValidationSheetParser {
             if (shortNameCell == null) {
                 shortNameCell = sheet.addCellAt(1, row);
             }
-            shortNameCell.setValue(term.getName());
+            shortNameCell.setValue(term.getFormattedName());
             row++;
         }
 

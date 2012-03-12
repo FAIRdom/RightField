@@ -100,19 +100,6 @@ public class SpreadSheetCellEditor implements TableCellEditor {
      */
     public Object getCellEditorValue() {
         return editorField.getText();
-//        if(s.length() > 0) {
-//            if(cellBeingEdited == null) {
-//                cellBeingEdited = sheet.addCellAt(col, row);
-//            }
-//            cellBeingEdited.setValue(s);
-//        }
-//        else {
-////             Clear
-//            if(cellBeingEdited != null) {
-//                cellBeingEdited.setValue("");
-//            }
-//        }
-//        return cellBeingEdited;
     }
 
     /**

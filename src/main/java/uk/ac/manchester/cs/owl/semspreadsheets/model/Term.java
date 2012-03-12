@@ -3,10 +3,8 @@ package uk.ac.manchester.cs.owl.semspreadsheets.model;
 import org.semanticweb.owlapi.model.IRI;
 
 /**
- * Author: Matthew Horridge<br>
- * The University of Manchester<br>
- * Information Management Group<br>
- * Date: 08-Nov-2009
+ * @author Stuart Owen
+ * @author Matthew Horridge
  */
 public class Term implements Comparable<Term> {
 
@@ -25,6 +23,13 @@ public class Term implements Comparable<Term> {
 
     public String getName() {
         return name;
+    }
+    
+    /**
+     * @return an improved formatting of the name - e.g removing underscores between words
+     */
+    public String getFormattedName() {
+    	return name.replaceAll("_", " ");
     }
 
     public int compareTo(Term o) {

@@ -104,7 +104,7 @@ public class ValidationValuesPanel extends JPanel {
     	TreeSet<ValueListItem> listData = new TreeSet<ValueListItem>();
     	for(OntologyTermValidation validation : previewList) {
             for(Term term : validation.getValidationDescriptor().getTerms()) {
-                listData.add(new ValueListItem(term.getName(), validation.getValidationDescriptor().getType()));
+                listData.add(new ValueListItem(term.getFormattedName(), validation.getValidationDescriptor().getType()));
             }
         }
         termList.setListData(listData.toArray());
@@ -121,7 +121,7 @@ public class ValidationValuesPanel extends JPanel {
         TreeSet<ValueListItem> listData = new TreeSet<ValueListItem>();
         for(OntologyTermValidation validation : validations) {
             for(Term term : validation.getValidationDescriptor().getTerms()) {
-                listData.add(new ValueListItem(term.getName(), validation.getValidationDescriptor().getType()));
+                listData.add(new ValueListItem(term.getFormattedName(), validation.getValidationDescriptor().getType()));
             }
         }
         termList.setListData(listData.toArray());

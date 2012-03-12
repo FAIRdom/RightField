@@ -33,13 +33,8 @@ import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.SheetCellCutAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.SheetCellPasteAction;
 
 /**
- * Author: Matthew Horridge<br>
- * The University of Manchester<br>
- * Information Management Group<br>
- * Date: 31-Oct-2009
- * 
- * Author: Stuart Owen
- * Date: 04-Oct-2010
+ * @author Stuart Owen
+ * @author Matthew Horridge
  */
 @SuppressWarnings("serial")
 public class SheetPanel extends JPanel {
@@ -112,6 +107,7 @@ public class SheetPanel extends JPanel {
                 handleColumnSelectionRequest(e);
             }
         });
+        
         ontologyTermValidationListener = new OntologyTermValidationListener() {
         	@Override
             public void validationsChanged() {
@@ -120,9 +116,7 @@ public class SheetPanel extends JPanel {
 
 			@Override
 			public void ontologyTermSelected(
-					List<OntologyTermValidation> previewList) {
-				// TODO Auto-generated method stub
-				
+					List<OntologyTermValidation> previewList) {						
 			}
         };
         
