@@ -42,16 +42,11 @@ public class SheetTable extends JTable {
         SheetCellRenderer ren = new SheetCellRenderer();
         SpreadSheetCellEditor editor = new SpreadSheetCellEditor();
 
-        for (int col = 0; col < sheet.getMaxColumns(); col++) {
+        for (int col = 0; col < sheet.getMaxColumns(); col++) {        	
             TableColumn column = getColumnModel().getColumn(col);
             column.setCellRenderer(ren);
             column.setCellEditor(editor);
-            if (col % 2 == 0) {
-                column.setPreferredWidth(sheet.getColumnWidth(col));
-            }
-            else {
-                column.setPreferredWidth(sheet.getColumnWidth(col));
-            }
+            column.setPreferredWidth(sheet.getColumnWidth(col));            
         }
 
         setShowGrid(true);
@@ -59,11 +54,9 @@ public class SheetTable extends JTable {
         setGridColor(new Color(206, 206, 206));
     }
 
-
     public Sheet getSheet() {
         return sheet;
     }
-
 
     private Stroke stroke = new BasicStroke(2.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
 

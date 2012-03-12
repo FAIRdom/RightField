@@ -98,11 +98,11 @@ public class SheetTableModel extends AbstractTableModel implements SpreadSheetLi
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public void cellAdded(Sheet sheet, Cell cell) {
+    public void cellAdded(Cell cell) {
         fireTableCellUpdated(cell.getRow(), cell.getColumn());
     }
 
-    public void cellRemoved(Sheet sheet, Cell cell) {
+    public void cellRemoved(Cell cell) {
         fireTableCellUpdated(cell.getRow(), cell.getColumn());
     }
 
@@ -110,7 +110,7 @@ public class SheetTableModel extends AbstractTableModel implements SpreadSheetLi
         fireTableDataChanged();
     }
 
-    public void cellContentsChanged(Sheet sheet, Cell cell) {
+    public void cellContentsChanged(Cell cell) {
         fireTableCellUpdated(cell.getRow(), cell.getColumn());
     }
 }

@@ -32,12 +32,12 @@ public interface SpreadSheetListener {
 
     void sheetAdded(Sheet sheet);
 
-    void cellAdded(Sheet sheet, Cell cell);
+    void cellAdded(Cell cell);
 
-    void cellRemoved(Sheet sheet, Cell cell);
+    void cellRemoved(Cell cell);
 
     void allCellsRemoved();
 
-    void cellContentsChanged(Sheet sheet, Cell cell);
+    void cellContentsChanged(Cell cell);
 
 }
