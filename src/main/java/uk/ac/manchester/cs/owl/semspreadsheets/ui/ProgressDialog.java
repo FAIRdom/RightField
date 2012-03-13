@@ -2,7 +2,6 @@ package uk.ac.manchester.cs.owl.semspreadsheets.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.HeadlessException;
