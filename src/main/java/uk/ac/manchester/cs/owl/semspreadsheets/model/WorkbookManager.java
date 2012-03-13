@@ -217,6 +217,7 @@ public class WorkbookManager {
             }
             
             workbookURI = uri;
+            
             // Extract validation
             getOntologyTermValidationManager().readValidationFromWorkbook();
             fireWorkbookLoaded();
@@ -226,31 +227,7 @@ public class WorkbookManager {
         catch (IOException e) {
             throw new IOException("Could not open spreadsheet: " + e.getMessage());
         }
-    }
-
-    public void loadEmbeddedTermOntologies() {
-        ontologyTermValidationManager.getOntologyIRIs();
-        final Map<IRI, IRI> ontologyIRIMap = ontologyTermValidationManager.getOntology2PhysicalIRIMap();
-        OWLOntologyIRIMapper mapper = new OntologyTermValdiationManagerMapper(ontologyTermValidationManager);
-        owlManager.addIRIMapper(mapper);                
-        for(IRI iri : ontologyIRIMap.keySet()) {        	
-            if(!owlManager.contains(iri)) {
-                try {               
-                	OWLOntologyDocumentSource source = new IRIDocumentSource(iri);
-                    owlManager.loadOntologyFromOntologyDocument(source,ontologyLoaderConfiguration);
-                }
-                catch (OWLOntologyCreationException e) {
-                	e.printStackTrace();
-                	logger.error("Could not load ontology: " + e.getMessage());
-                	logger.debug("Error reading ontology",e);
-                }
-            }
-        }
-        owlManager.removeIRIMapper(mapper);
-        updateStructuralReasoner();
-        setLabelRendering(true);
-        fireOntologiesChanged();
-    }
+    }    
 
     public void loadWorkbook(File file) throws IOException {
         loadWorkbook(file.toURI());
@@ -400,6 +377,24 @@ public class WorkbookManager {
     		}
     	}    	
     	if (loaded != null) owlManager.removeOntology(loaded);
+    }
+    
+    public void loadEmbeddedTermOntologies() {
+        ontologyTermValidationManager.getOntologyIRIs();
+        final Map<IRI, IRI> ontologyIRIMap = ontologyTermValidationManager.getOntology2PhysicalIRIMap();
+        OWLOntologyIRIMapper mapper = new OntologyTermValdiationManagerMapper(ontologyTermValidationManager);
+        owlManager.addIRIMapper(mapper);                
+        for(IRI iri : ontologyIRIMap.keySet()) {        	
+            if(!owlManager.contains(iri)) {
+                try {
+					loadOntology(iri);
+				} catch (OWLOntologyCreationException e) {
+					logger.error("Error loading ontology for embedded term.",e);
+				}
+            }
+        }
+        owlManager.removeIRIMapper(mapper);        
+        setLabelRendering(true);        
     }
     
     public OWLOntology loadOntology(IRI physicalIRI) throws OWLOntologyCreationException {

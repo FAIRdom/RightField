@@ -39,10 +39,10 @@ public class OntologyTermValidationManager {
     }
 
     protected void readValidationFromWorkbook() {
-        OntologyTermValidationWorkbookParser parser = new OntologyTermValidationWorkbookParser(workbookManager);
-        ontologyTermValidations.addAll(parser.readOntologyTermValidations());
+        OntologyTermValidationWorkbookParser parser = new OntologyTermValidationWorkbookParser(workbookManager);        
+        ontologyTermValidations.addAll(parser.readOntologyTermValidations());        
         parser.clearOntologyTermValidations();
-
+        fireValidationsChanged();
     }
 
     protected void writeValidationToWorkbook() {

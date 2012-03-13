@@ -53,7 +53,8 @@ class ClassHierarchyTabComponent extends JPanel {
 		setText();
 		add(new JLabel(" "));
 		setButton();					
-		addOntologyTermValidationListener();
+		addOntologyTermValidationListener();		
+		updateTabClosableStatus();
 	}
 
 	public OWLOntology getOntology() {
