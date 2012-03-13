@@ -1,16 +1,18 @@
 package uk.ac.manchester.cs.owl.semspreadsheets.ui.task;
 
-import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.repository.RepositoryItem;
 
+/**
+ * 
+ * @author Stuart Owen
+ *
+ */
 public class LoadRepositoryItemTask extends AbstractTask<OWLOntology, OWLOntologyCreationException> {
 
-	private RepositoryItem repositoryItem;
-	
-	private static Logger logger = Logger.getLogger(LoadRepositoryItemTask.class);
+	private RepositoryItem repositoryItem;	
 
     public LoadRepositoryItemTask(RepositoryItem repositoryItem) {
         this.repositoryItem = repositoryItem;
@@ -22,9 +24,6 @@ public class LoadRepositoryItemTask extends AbstractTask<OWLOntology, OWLOntolog
 
     public String getTitle() {    	
         return "Fetching '" + repositoryItem.getHumanReadableName() +"' ontology";
-    }
+    }    
 
-    public void cancelTask() {
-    	logger.info("Cancel LoadRepositoryItemTask requested but ignored");
-    }
 }

@@ -3,16 +3,17 @@ package uk.ac.manchester.cs.owl.semspreadsheets.ui.task;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookFrame;
 
 /**
- * Author: Matthew Horridge<br>
- * The University of Manchester<br>
- * Information Management Group<br>
- * Date: 03-Feb-2010
+ * @author Stuart Owen
+ * @author Matthew Horridge
  */
 public abstract class AbstractTask<V, E extends Throwable> implements Task<V, E> {
 
+	private static final Logger logger = Logger.getLogger(AbstractTask.class);
 
     private WorkbookFrame workbookFrame;
 
@@ -27,6 +28,10 @@ public abstract class AbstractTask<V, E extends Throwable> implements Task<V, E>
     public void setup(WorkbookFrame workbookFrame) {
         this.workbookFrame = workbookFrame;
     }
+    
+    public boolean isCancelSupported() {
+    	return false;
+    }
 
     public WorkbookFrame getWorkbookFrame() {
         return workbookFrame;
@@ -35,9 +40,16 @@ public abstract class AbstractTask<V, E extends Throwable> implements Task<V, E>
     public boolean isCancelled() {
         return cancelled;
     }
+    
+    public void cancelTask() {
+    	setCancelled(true);
+    }
 
     public void setCancelled(boolean cancelled) {
         this.cancelled = cancelled;
+        if (!isCancelSupported()) {
+        	logger.error("Cancel selected for a task that does not support it");
+        }
     }
 
     public void addTaskListener(TaskListener listener) {

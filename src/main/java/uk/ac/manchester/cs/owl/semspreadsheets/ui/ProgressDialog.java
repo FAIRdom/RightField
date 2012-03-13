@@ -2,6 +2,7 @@ package uk.ac.manchester.cs.owl.semspreadsheets.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.HeadlessException;
@@ -36,6 +37,10 @@ public class ProgressDialog extends JDialog {
     @SuppressWarnings("rawtypes")
 	private Task task;
 
+	private JButton cancelButton;
+
+	private JPanel buttonPanel;
+
     public ProgressDialog(WorkbookFrame workbookFrame) throws HeadlessException {
         super(workbookFrame != null ? workbookFrame : null, "Task in progress", true);
         getAccessibleContext().setAccessibleName("Task Progress");
@@ -51,14 +56,15 @@ public class ProgressDialog extends JDialog {
         progressPanel.setPreferredSize(new Dimension(500, 80));
         JPanel holderPanel = new JPanel(new BorderLayout());
         holderPanel.add(progressPanel, BorderLayout.NORTH);
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         cancelAction = new AbstractAction("Cancel") {
             public void actionPerformed(ActionEvent e) {
                 setEnabled(false);
                 task.cancelTask();
             }
         };
-        buttonPanel.add(new JButton(cancelAction));
+        cancelButton = new JButton(cancelAction);
+        buttonPanel.add(cancelButton);
         holderPanel.add(buttonPanel, BorderLayout.SOUTH);
         setContentPane(holderPanel);
         progressBar.setIndeterminate(true);
@@ -94,6 +100,14 @@ public class ProgressDialog extends JDialog {
     @SuppressWarnings("rawtypes")
 	public void setTask(Task task) {
         this.task = task;
+        cancelButton.setVisible(task.isCancelSupported());
+        //this is to hide the buttonPanel if it includes no other buttons than the cancel button, and cancel is unsupported.
+        if (buttonPanel.getComponentCount()==1 && buttonPanel.getComponents()[0]==cancelButton) {
+        	buttonPanel.setVisible(task.isCancelSupported());
+        }        
+        else {
+        	buttonPanel.setVisible(true);
+        }
     }
 
     public void setVisible(boolean b) {

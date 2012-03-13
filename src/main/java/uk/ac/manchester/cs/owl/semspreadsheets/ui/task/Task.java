@@ -26,5 +26,7 @@ public interface Task<V, E extends Throwable> {
     void removeTaskListener(TaskListener listener);
 
     void cancelTask();
+    
+    boolean isCancelSupported();
 
 }

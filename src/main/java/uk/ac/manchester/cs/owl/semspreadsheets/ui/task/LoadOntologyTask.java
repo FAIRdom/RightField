@@ -9,12 +9,10 @@ import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.ErrorHandler;
 
 /**
- * Author: Matthew Horridge<br>
- * The University of Manchester<br>
- * Information Management Group<br>
- * Date: 03-Feb-2010
+ * @author Stuart Owen
+ * @author Matthew Horridge
  */
-public class LoadOntologyTask extends AbstractTask<OWLOntology, OWLOntologyCreationException> {
+public class LoadOntologyTask extends AbstractTask<OWLOntology, OWLOntologyCreationException> {	
 
     private File file;
 
@@ -34,9 +32,5 @@ public class LoadOntologyTask extends AbstractTask<OWLOntology, OWLOntologyCreat
 
     public String getTitle() {
         return "Loading ontology";
-    }
-
-    public void cancelTask() {
-    	setCancelled(true);
     }
 }
