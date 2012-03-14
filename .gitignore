@@ -12,3 +12,4 @@ src/main/resources/bioportal_api_key
 target/
 *.tar.gz
 *.swp
+*.orig
