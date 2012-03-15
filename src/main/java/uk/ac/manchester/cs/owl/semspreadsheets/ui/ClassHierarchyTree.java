@@ -98,8 +98,15 @@ public class ClassHierarchyTree extends JTree {
 
     private void updateSelectionFromModel() {
     	logger.debug("In updateSelectionFromModel");
-        if(!transmittingSelectioToModel) {                            
-            setSelectedClass((OWLClass) workbookManager.getEntitySelectionModel().getSelection());                      
+        if(!transmittingSelectioToModel) {
+        	Object selection = workbookManager.getEntitySelectionModel().getSelection();
+        	if ( selection instanceof OWLClass) {
+        		setSelectedClass((OWLClass)selection);
+        	}
+        	else {
+        		clearSelection();
+        	}
+                                  
         }
     }
 
