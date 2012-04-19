@@ -98,8 +98,12 @@ public class ClassHierarchyTabbedPane extends JTabbedPane {
 		return indexOfTab(tabTitle(ontology));
 	}
 	
-	public String tabTitle(OWLOntology ontology) {
-		return ontology.getOntologyID().getOntologyIRI().getFragment();
+	public String tabTitle(OWLOntology ontology) {		
+		String title = ontology.getOntologyID().getOntologyIRI().getFragment();
+		if (title.trim().isEmpty()) {
+			title=ontology.getOntologyID().getVersionIRI().getFragment();
+		}
+		return title;
 	}	
 	
 	private synchronized void updateTabs() {		

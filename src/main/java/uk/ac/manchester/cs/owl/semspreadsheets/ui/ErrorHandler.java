@@ -1,6 +1,8 @@
 package uk.ac.manchester.cs.owl.semspreadsheets.ui;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.UnknownHostException;
 
 import javax.swing.JOptionPane;
@@ -32,11 +34,11 @@ public class ErrorHandler {
     }
 
     public void handleError(Throwable throwable) {
-        if(throwable instanceof OWLOntologyCreationException) {
-        	throwable.printStackTrace();
+    	logger.debug("Error being handled",throwable);
+        if(throwable instanceof OWLOntologyCreationException) {        	
             if(throwable instanceof OWLOntologyCreationIOException) {
                 OWLOntologyCreationIOException e = (OWLOntologyCreationIOException) throwable;
-                JOptionPane.showMessageDialog(null, e.getCause().getMessage(), "Could not load ontology", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "An error occurred trying to open the onology:"+e.getCause().getMessage(), "Could not open ontology", JOptionPane.ERROR_MESSAGE);
             }
             else if(throwable instanceof UnparsableOntologyException) {
                 JOptionPane.showMessageDialog(null, "The ontology document appears to be in an unsupported format or contains syntax errors", "Could not load ontology", JOptionPane.ERROR_MESSAGE);
@@ -47,13 +49,13 @@ public class ErrorHandler {
         }
         else if(throwable instanceof UnknownHostException) {
             JOptionPane.showMessageDialog(null, "You are not connected to the internet.  Please check your network connection.", "Not connected to network", JOptionPane.ERROR_MESSAGE);
-        }
-        else if (throwable instanceof IOException) {
-            JOptionPane.showMessageDialog(null, throwable.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
+        }        
         else if (throwable instanceof BioPortalAccessDeniedException) {
         	JOptionPane.showMessageDialog(null, "Access to the BioPortal API was forbidden. This could be due to an invalid API key.", "Error", JOptionPane.ERROR_MESSAGE);
         }
+        else if (throwable instanceof MalformedURLException || throwable instanceof URISyntaxException) {
+        	JOptionPane.showMessageDialog(null, "The URL provided was invalid", "Error", JOptionPane.ERROR_MESSAGE);
+        }        
         else {
         	JOptionPane.showMessageDialog(null, "An Unexpected "+throwable.getClass().getSimpleName() +" error occurred: " + throwable.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         	logger.error("Unexpected error reported",throwable);

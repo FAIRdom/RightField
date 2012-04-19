@@ -11,6 +11,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.apibinding.OWLManager;
@@ -84,7 +91,7 @@ public class WorkbookManager {
 
     public WorkbookManager() {    	
         this.owlManager = OWLManager.createOWLOntologyManager();
-        ontologyLoaderConfiguration.setSilentMissingImportsHandling(true);
+        ontologyLoaderConfiguration.setSilentMissingImportsHandling(true);        
         shortFormProvider = new BidirectionalShortFormProviderAdapter(new SimpleShortFormProvider());
         entitySelectionModel = new EntitySelectionModel(owlManager.getOWLDataFactory().getOWLThing());
         ontologyTermValidationManager = new OntologyTermValidationManager(this);
@@ -397,6 +404,54 @@ public class WorkbookManager {
         setLabelRendering(true);        
     }
     
+    /**
+     * Uses a Future to allow the opening of the ontology source to timeout (since the owlAPI doesn't always seem to timeout for invalid URI's such
+     * @param source - the OWLOntologyDocumentSource containing the IRI of the ontology to be opened
+     * @param timeout - time in SECONDS
+     * @return the OWLOntology
+     * @throws OWLOntologyCreationException
+     */
+    private OWLOntology processOntologyDocumentSourceWithTimeout(final OWLOntologyDocumentSource source,int timeout) throws OWLOntologyCreationException {
+    	
+		Callable<OWLOntology> callable = new Callable<OWLOntology>() {
+			@Override
+			public OWLOntology call() throws Exception {
+				return owlManager.loadOntologyFromOntologyDocument(source,
+						ontologyLoaderConfiguration);
+			}
+		};
+
+		OWLOntology ontology;
+
+		ExecutorService executor = Executors.newCachedThreadPool();
+		Future<OWLOntology> future = executor.submit(callable);
+		try {
+			ontology = future.get(timeout, TimeUnit.SECONDS);
+		} catch (InterruptedException e) {
+			logger.error("There was an error trying to open the ontology "
+					+ source.getDocumentIRI().toString(), e);
+			throw new OWLOntologyCreationException(
+					"There was an error trying to open the ontology from "
+							+ source.getDocumentIRI().toString() + " - "
+							+ e.getMessage());
+		} catch (ExecutionException e) {
+			if (e.getCause() instanceof OWLOntologyCreationException) {
+				throw (OWLOntologyCreationException) e.getCause();
+			} else {
+				throw new OWLOntologyCreationException(
+						"There was an error trying to open the ontology from "
+								+ source.getDocumentIRI().toString() + " - "
+								+ e.getMessage());
+			}
+		} catch (TimeoutException e) {
+			throw new OWLOntologyCreationException(
+					"There was a timeout whilst fetching the ontology from "
+							+ source.getDocumentIRI().toString());
+		}
+
+		return ontology;  	
+    }
+    
     public OWLOntology loadOntology(IRI physicalIRI) throws OWLOntologyCreationException {
     	
     	OWLOntologyID newID = null;
@@ -407,8 +462,8 @@ public class WorkbookManager {
         unloadOntology(physicalIRI);
                 
         OWLOntologyDocumentSource source = new IRIDocumentSource(BioPortalRepository.handleBioPortalAPIKey(physicalIRI));
-        
-    	OWLOntology ontology = owlManager.loadOntologyFromOntologyDocument(source,ontologyLoaderConfiguration);
+                
+        OWLOntology ontology = processOntologyDocumentSourceWithTimeout(source, 30);
     	
     	logIRI = ontology.getOntologyID().getOntologyIRI();
     	//Create a new ID and use the physical IRI as a version ID        

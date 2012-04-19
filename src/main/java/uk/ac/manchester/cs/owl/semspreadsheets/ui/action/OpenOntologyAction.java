@@ -6,10 +6,7 @@ import java.awt.event.KeyEvent;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookFrame;
 
 /**
- * Author: Matthew Horridge<br>
- * The University of Manchester<br>
- * Information Management Group<br>
- * Date: 08-Nov-2009
+ * @author Matthew Horridge
  */
 @SuppressWarnings("serial")
 public class OpenOntologyAction extends WorkbookFrameAction {

@@ -9,7 +9,10 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -47,6 +50,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.InsertSheetAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.OnlineHelpAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.OpenFromBioPortalAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.OpenOntologyAction;
+import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.OpenOntologyFromURLAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.OpenWorkbookAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.CloseSelectedOntologyAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.RemoveSheetAction;
@@ -58,6 +62,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.SheetCellCopyAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.SheetCellCutAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.SheetCellPasteAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.task.FetchBioportalOntologyListTask;
+import uk.ac.manchester.cs.owl.semspreadsheets.ui.task.LoadOntologyFromURITask;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.task.LoadOntologyTask;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.task.LoadRepositoryItemTask;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.task.TaskManager;
@@ -151,6 +156,7 @@ public class WorkbookFrame extends JFrame {
 		fileMenu.add(new CloseWorkbookAction(this));
 		fileMenu.add(new JSeparator());
 		fileMenu.add(new OpenOntologyAction(this));
+		fileMenu.add(new OpenOntologyFromURLAction(this));
 		fileMenu.add(new OpenFromBioPortalAction(this));
 		removeOntologyMenuItem = new CloseSelectedOntologyMenuItem(new CloseSelectedOntologyAction(this),getWorkbookManager());
 		removeOntologyMenuItem.setSelectedOntology(getSelectedOntology());
@@ -295,6 +301,21 @@ public class WorkbookFrame extends JFrame {
 			return;
 		}
 		taskManager.runTask(new LoadOntologyTask(file));					
+	}
+	
+	public void loadOntologyFromURL() throws OWLOntologyCreationException {
+		String urlStr = JOptionPane.showInputDialog(this,"Enter the URL for the ontology","URL for ontology",JOptionPane.PLAIN_MESSAGE);
+		if (urlStr!=null) {
+			URI uri;
+			try {
+				uri = new URL(urlStr).toURI();
+				taskManager.runTask(new LoadOntologyFromURITask(uri));				
+			} catch (MalformedURLException e) {
+				ErrorHandler.getErrorHandler().handleError(e);
+			} catch (URISyntaxException e) {
+				ErrorHandler.getErrorHandler().handleError(e);
+			}			
+		}		
 	}
 
 	public void loadBioportalOntology() throws Exception {
@@ -502,6 +523,8 @@ public class WorkbookFrame extends JFrame {
 			getWorkbookManager().removeOntology(ontology);			
 		}
 	}
+
+	
 
 	
 
