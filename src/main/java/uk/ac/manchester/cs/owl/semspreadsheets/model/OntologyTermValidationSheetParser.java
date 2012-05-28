@@ -9,14 +9,8 @@ import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.IRI;
 
 /**
- * Author: Matthew Horridge<br>
- * The University of Manchester<br>
- * Information Management Group<br>
- * Date: 07-Nov-2009
- * Extracts ontology term validation information from a sheet that is used to store the information
- * 
- * Author: Stuart Owen
- * Date: 04-Oct-2010
+ * @author Matthew Horridge
+ * @author Stuart Owen
  */
 public class OntologyTermValidationSheetParser {
 
@@ -29,9 +23,6 @@ public class OntologyTermValidationSheetParser {
     private Sheet sheet;
     
     private static final Logger logger = Logger.getLogger(OntologyTermValidationSheetParser.class);
-
-//    private static int counter = 0;
-
 
     public OntologyTermValidationSheetParser(WorkbookManager workbookManager, Sheet sheet) {
         this.workbookManager = workbookManager;

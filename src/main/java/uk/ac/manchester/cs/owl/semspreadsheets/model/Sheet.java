@@ -11,6 +11,8 @@ import java.util.Collection;
 public interface Sheet {
 
     String getName();
+    
+    int getIndex();
 
     void setName(String name);
 

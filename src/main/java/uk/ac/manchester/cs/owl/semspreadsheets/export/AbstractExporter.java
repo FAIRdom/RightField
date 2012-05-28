@@ -3,7 +3,9 @@ package uk.ac.manchester.cs.owl.semspreadsheets.export;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.util.Collection;
 
+import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidation;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Workbook;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 
@@ -33,5 +35,8 @@ public abstract class AbstractExporter {
 	protected Workbook getWorkbook() {
 		return getWorkbookManager().getWorkbook();		
 	}
-
+	
+	protected Collection<OntologyTermValidation> getValidations() {
+		return getWorkbookManager().getOntologyTermValidationManager().getValidations();
+	}
 }

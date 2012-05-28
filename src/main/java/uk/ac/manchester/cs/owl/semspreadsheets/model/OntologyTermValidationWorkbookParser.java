@@ -9,10 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Author: Matthew Horridge<br>
- * The University of Manchester<br>
- * Information Management Group<br>
- * Date: 08-Nov-2009
+ * @author Matthew Horridge
  */
 public class OntologyTermValidationWorkbookParser {
 
