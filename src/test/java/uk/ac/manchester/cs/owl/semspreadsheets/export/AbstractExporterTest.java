@@ -7,11 +7,9 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Test;
@@ -26,7 +24,7 @@ public class AbstractExporterTest {
 	public void testInitWithManager() throws Exception {
 		WorkbookManager manager = new WorkbookManager();
 		manager.loadWorkbook(jermWorkbookURI());
-		AbstractExporter exporter = new AbstractExporterImpl(manager);
+		AbstractExporter exporter = new AbstractExporterTestImpl(manager);
 		assertNotNull(exporter.getWorkbook());
 		assertEquals("Metadata Template",exporter.getWorkbook().getSheet(0).getName());
 		assertNotNull(exporter.getWorkbookManager());
@@ -36,7 +34,7 @@ public class AbstractExporterTest {
 	@Test
 	public void testInitiWithURI() throws Exception {
 		URI uri = jermWorkbookURI();
-		AbstractExporter exporter = new AbstractExporterImpl(uri);
+		AbstractExporter exporter = new AbstractExporterTestImpl(uri);
 		assertNotNull(exporter.getWorkbook());
 		assertEquals("Metadata Template",exporter.getWorkbook().getSheet(0).getName());
 		assertNotNull(exporter.getWorkbookManager());
@@ -46,7 +44,7 @@ public class AbstractExporterTest {
 	@Test
 	public void testInitiWithFile() throws Exception {
 		File file = jermWorkbookFile();
-		AbstractExporter exporter = new AbstractExporterImpl(file);
+		AbstractExporter exporter = new AbstractExporterTestImpl(file);
 		assertNotNull(exporter.getWorkbook());
 		assertEquals("Metadata Template",exporter.getWorkbook().getSheet(0).getName());
 		assertNotNull(exporter.getWorkbookManager());	
@@ -56,7 +54,7 @@ public class AbstractExporterTest {
 	@Test
 	public void testGetValidations() throws Exception {
 		URI uri = jermWorkbookURI();
-		AbstractExporter exporter = new AbstractExporterImpl(uri);
+		AbstractExporter exporter = new AbstractExporterTestImpl(uri);
 		Collection<OntologyTermValidation> vals = exporter.getValidations();
 		assertEquals(9,vals.size());
 		List<OntologyTermValidation> list = new ArrayList<OntologyTermValidation>(vals);
@@ -94,16 +92,16 @@ public class AbstractExporterTest {
 	/**
 	 * A concrete implementation of {@link AbstractExporter} for testing purposes only.
 	 */
-	private class AbstractExporterImpl extends AbstractExporter {
-		public AbstractExporterImpl(WorkbookManager manager) {
+	private class AbstractExporterTestImpl extends AbstractExporter {
+		public AbstractExporterTestImpl(WorkbookManager manager) {
 			super(manager);			
 		}
 
-		public AbstractExporterImpl(File workbookFile) throws IOException {
+		public AbstractExporterTestImpl(File workbookFile) throws IOException {
 			super(workbookFile);			
 		}
 		
-		public AbstractExporterImpl(URI uri) throws IOException {
+		public AbstractExporterTestImpl(URI uri) throws IOException {
 			super(uri);			
 		}				
 	}
