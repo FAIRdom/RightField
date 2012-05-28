@@ -80,5 +80,9 @@
 	    <id>local-artifacts</id>
 	    <url>file://${basedir}/local-artifacts</url>
 	  </repository>
+	  <repository>
+	  	<id>owl-api-sonatype</id>
+	  	<url>http://oss.sonatype.org/content/groups/public/</url>
+	  </repository>
 	</repositories>
 </project>
