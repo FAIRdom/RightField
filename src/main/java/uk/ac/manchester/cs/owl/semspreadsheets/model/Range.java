@@ -1,5 +1,9 @@
 package uk.ac.manchester.cs.owl.semspreadsheets.model;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 
 
 /**
@@ -63,8 +67,19 @@ public class Range implements Comparable<Range> {
         return fromColumn != -1 && toColumn != -1 && fromRow != -1 && toRow != -1;
     }
     
+	/**
+	 * @return Collection of the cells contained in the range
+	 */
+	public Collection<Cell> getCells() {
+		List<Cell> cells = new ArrayList<Cell>();
+		for (int r = fromRow; r <= toRow; r++) {
+			for (int c = fromColumn; c <= toColumn; c++) {
+				cells.add(getSheet().getCellAt(c, r));
+			}
+		}
+		return cells;
+	}
     
-
     public Sheet getSheet() {
         return sheet;
     }
