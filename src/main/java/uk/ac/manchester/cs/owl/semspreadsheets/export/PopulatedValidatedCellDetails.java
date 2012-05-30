@@ -1,11 +1,13 @@
 package uk.ac.manchester.cs.owl.semspreadsheets.export;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import org.semanticweb.owlapi.model.IRI;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Cell;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidation;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Term;
 
 /**
@@ -31,7 +33,11 @@ class PopulatedValidatedCellDetails
 		this.validation = validation;
 		this.cell = cell;
 		this.term = term;
-		this.textValue = textValue;
+		this.textValue = textValue;		
+	}
+	
+	public Sheet getSheet() {
+		return validation.getRange().getSheet();
 	}
 	
 	public OntologyTermValidation getValidation() {
@@ -56,5 +62,13 @@ class PopulatedValidatedCellDetails
 	
 	public Set<IRI> getOntologyIRIs() {
 		return getValidation().getValidationDescriptor().getOntologyIRIs();
+	}
+	
+	public Set<IRI> getPhysicalIRIs() {
+		Set<IRI> iris = new HashSet<IRI>();
+		for (IRI ontologyIRI : getOntologyIRIs()) {
+			iris.add(getValidation().getValidationDescriptor().getPhysicalIRIForOntologyIRI(ontologyIRI));
+		}
+		return iris;
 	}
 }

@@ -21,13 +21,8 @@ import org.apache.poi.hssf.util.HSSFColor;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Cell;
 
 /**
- * Author: Matthew Horridge<br>
- * The University of Manchester<br>
- * Information Management Group<br>
- * Date: 20-Sep-2009
- * 
- * Author: Stuart Owen
- * Date: 1 Oct 2010
+ * @author Stuart Owen
+ * @author Matthew Horridge
  */
 public class CellHSSFImpl implements Cell {
 	

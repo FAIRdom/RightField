@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Cell;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidation;
@@ -68,6 +70,14 @@ public abstract class AbstractExporter implements Exporter {
 				}
 			}			
 		}
+		Collections.sort(result, new Comparator<PopulatedValidatedCellDetails>() {
+
+			@Override
+			public int compare(PopulatedValidatedCellDetails o1,
+					PopulatedValidatedCellDetails o2) {
+				return o1.getTextValue().compareTo(o2.getTextValue());
+			}
+		});
 		return result;
 	}
 	
