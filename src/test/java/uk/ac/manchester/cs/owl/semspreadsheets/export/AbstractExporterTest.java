@@ -5,13 +5,14 @@ import static org.junit.Assert.assertNotNull;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-
 
 import org.junit.Test;
 
@@ -172,6 +173,12 @@ public class AbstractExporterTest {
 		
 	}
 	
+	@Test
+	public void testExportString() throws Exception {
+		Exporter exporter = new AbstractExporterTestImpl(jermWorkbookFile());
+		assertEquals("this is a string",exporter.export());
+	}
+	
 	//test helper methods
 	
 	private URI partiallyPopulatedWorkbookURI() throws Exception {
@@ -201,6 +208,13 @@ public class AbstractExporterTest {
 		
 		public AbstractExporterTestImpl(URI uri) throws IOException {
 			super(uri);			
-		}				
+		}
+
+		@Override
+		public void export(OutputStream stream) {
+			PrintWriter writer = new PrintWriter(stream);
+			writer.write("this is a string");
+			writer.flush();
+		}					
 	}
 }

@@ -1,5 +1,6 @@
 package uk.ac.manchester.cs.owl.semspreadsheets.export;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -22,7 +23,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
  * @author Stuart Owen
  * @see PopulatedValidatedCellDetails
  */
-public abstract class AbstractExporter {
+public abstract class AbstractExporter implements Exporter {
 	
 	private final WorkbookManager manager;
 
@@ -39,6 +40,12 @@ public abstract class AbstractExporter {
 	public AbstractExporter(File workbookFile) throws IOException {
 		this.manager = new WorkbookManager();
 		this.manager.loadWorkbook(workbookFile);
+	}
+	
+	public String export() {
+		ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+		export(outStream);
+		return outStream.toString();
 	}
 	
 	public Collection<PopulatedValidatedCellDetails> getPopulatedValidatedCellDetails() {
