@@ -6,17 +6,18 @@
  ******************************************************************************/
 package uk.ac.manchester.cs.owl.semspreadsheets.model;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+
 
 /**
- * Author: Matthew Horridge<br>
- * Author: Stuart Owen<br>
- * The University of Manchester<br>
- * Information Management Group<br>
- * Date: 20-Sep-2009
- * Date: 30-Sep-2010
+ * @author Stuart Owen
+ * @author Matthew Horridge
  * 
  */
-public class Range {
+public class Range implements Comparable<Range> {
 
     private Sheet sheet;
 
@@ -71,7 +72,20 @@ public class Range {
     public boolean isCellSelection() {
         return fromColumn != -1 && toColumn != -1 && fromRow != -1 && toRow != -1;
     }
-
+    
+	/**
+	 * @return Collection of the cells contained in the range
+	 */
+	public Collection<Cell> getCells() {
+		List<Cell> cells = new ArrayList<Cell>();
+		for (int r = fromRow; r <= toRow; r++) {
+			for (int c = fromColumn; c <= toColumn; c++) {
+				cells.add(getSheet().getCellAt(c, r));
+			}
+		}
+		return cells;
+	}
+    
     public Sheet getSheet() {
         return sheet;
     }
@@ -253,4 +267,24 @@ public class Range {
                 && other.toRow == this.toRow
                 && other.sheet.equals(this.sheet);
     }
+
+	@Override
+	/**
+	 * Compares them based upon the sheet index, the from row, and the from column
+	 */
+	public int compareTo(Range o) {
+		int sheetIndex = getSheet().getIndex();
+		int fromColumn = getFromColumn();
+		int fromRow = getFromRow();
+		if (sheetIndex!=o.getSheet().getIndex()) {
+			return sheetIndex > getSheet().getIndex() ? 1 : -1;
+		}
+		if (fromRow!=o.getFromRow()) {
+			return fromRow > o.getFromRow() ? 1 : -1;
+		}
+		if (fromColumn!=o.getFromColumn()) {
+			return fromColumn > o.getFromColumn() ? 1 : -1;
+		}
+		return 0;
+	}
 }

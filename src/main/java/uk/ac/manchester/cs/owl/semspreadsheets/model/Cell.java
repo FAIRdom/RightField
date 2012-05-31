@@ -21,7 +21,7 @@ public interface Cell {
 
     int getRow();
 
-    int getColumn();
+    int getColumn();      
 
     String getValue();
 

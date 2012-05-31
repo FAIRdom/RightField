@@ -53,6 +53,15 @@ public class SheetHSSFImpl implements Sheet {
     public Workbook getWorkbook() {
         return workbook;
     }
+    
+    public int getIndex() {
+    	for (int index = 0 ; index < getWorkbook().getSheets().size(); index++) {
+    		if (getWorkbook().getSheet(index) == this) {
+    			return index;
+    		}
+    	}
+    	return -1;
+    }
 
     public void setName(String name) {
         String oldName = sheet.getSheetName();
