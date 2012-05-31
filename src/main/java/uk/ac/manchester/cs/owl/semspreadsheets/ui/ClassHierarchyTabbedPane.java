@@ -22,7 +22,10 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.apache.log4j.Logger;
+import org.semanticweb.owlapi.model.OWLAnnotation;
+import org.semanticweb.owlapi.model.OWLAnnotationProperty;
 import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.KnownOntologies;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
@@ -104,13 +107,38 @@ public class ClassHierarchyTabbedPane extends JTabbedPane {
 		return indexOfTab(tabTitle(ontology));
 	}
 	
-	public String tabTitle(OWLOntology ontology) {		
-		String title = ontology.getOntologyID().getOntologyIRI().getFragment();
-		if (title.trim().isEmpty()) {
-			title=ontology.getOntologyID().getVersionIRI().getFragment();
+	public String tabTitle(OWLOntology ontology) {
+		String title = getLabelValue(ontology);
+		if (title==null) {
+			title = ontology.getOntologyID().getOntologyIRI().getFragment();
+			if (title.trim().isEmpty()) {
+				if (ontology.getOntologyID().getVersionIRI()!=null) {
+					title=ontology.getOntologyID().getVersionIRI().getFragment();
+				}
+				else {
+					title=ontology.getOntologyID().toString();
+				}
+				
+			}
 		}
+		
 		return title;
 	}	
+	
+	/**
+	 * 
+	 * @param ontology
+	 * @return looks to see if the ontology has an rdf:label annotation, and returns is, otherwise returns null
+	 */
+	private String getLabelValue(OWLOntology ontology) {
+		OWLAnnotationProperty label = ontology.getOWLOntologyManager().getOWLDataFactory().getOWLAnnotationProperty(OWLRDFVocabulary.RDFS_LABEL.getIRI());
+		for(OWLAnnotation annotation : ontology.getAnnotations()) {
+			if (annotation.getProperty() == label) {
+				return annotation.getValue().toString();
+			}
+		}
+		return null;
+	}
 	
 	private synchronized void updateTabs() {		
 		Set<OWLOntology> loadedOntologies = getLoadedOntologies();
