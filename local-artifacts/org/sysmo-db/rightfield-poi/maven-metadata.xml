@@ -2,11 +2,11 @@
 <metadata>
   <groupId>org.sysmo-db</groupId>
   <artifactId>rightfield-poi</artifactId>
-  <version>3.8-beta5</version>
+  <version>3.8</version>
   <versioning>
     <versions>
-      <version>3.8-beta5</version>
+      <version>3.8</version>
     </versions>
-    <lastUpdated>20120301102753</lastUpdated>
+    <lastUpdated>20120601124306</lastUpdated>
   </versioning>
 </metadata>
