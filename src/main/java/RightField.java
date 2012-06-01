@@ -17,13 +17,6 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookFrame;
 
 /**
- * Author: Matthew Horridge, Stuart Owen<br>
- * The University of Manchester<br>
- * Information Management Group<br>
- * Date: 24-Nov-2009
- */
-
-/**
  * @author Stuart Owen
  * @author Matthew Horridge
  */
