@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <metadata>
   <groupId>net.sourceforge.owlapi</groupId>
-  <artifactId>owl-api</artifactId>
-  <version>3.2.4</version>
+  <artifactId>owlapi-api</artifactId>
+  <version>3.3</version>
   <versioning>
     <versions>
-      <version>3.2.4</version>
+      <version>3.3</version>
     </versions>
-    <lastUpdated>20120202112125</lastUpdated>
+    <lastUpdated>20120601124430</lastUpdated>
   </versioning>
 </metadata>

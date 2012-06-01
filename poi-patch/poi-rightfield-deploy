@@ -1,4 +1,4 @@
 A note of the deploy command used to deploy the patched poi jar to local-artifacts
 This is a note to save looking up the parameters each time, the paths, filenames and versions may differ between versions.
 
-mvn deploy:deploy-file -Dversion=3.8-beta5 -Dfile=build/dist/poi-3.8-beta5-20120109.jar -DartifactId=poi-rightfield -DgroupId=org.sysmo-db -Dpackaging=jar -Durl=file:../rightfield/local-artifacts/
+mvn deploy:deploy-file -Dversion=3.8-beta5 -Dfile=build/dist/poi-3.8-beta5-20120109.jar -DartifactId=rightfield-poi -DgroupId=org.sysmo-db -Dpackaging=jar -Durl=file:../rightfield/local-artifacts/

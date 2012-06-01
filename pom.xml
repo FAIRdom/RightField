@@ -54,13 +54,13 @@
 	<dependencies>		
 		<dependency>
 			<groupId>net.sourceforge.owlapi</groupId>
-			<artifactId>owl-api</artifactId>
-			<version>3.2.4</version>
+			<artifactId>owlapi-api</artifactId>
+			<version>3.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.sysmo-db</groupId>
 			<artifactId>rightfield-poi</artifactId>
-			<version>3.8-beta5</version>			
+			<version>3.8</version>			
 		</dependency>
 		<dependency>
 			<groupId>log4j</groupId>
@@ -79,9 +79,11 @@
 	    <id>local-artifacts</id>
 	    <url>file://${basedir}/local-artifacts</url>
 	  </repository>
+	 <!--
 	  <repository>
 	  	<id>owl-api-sonatype</id>
 	  	<url>http://oss.sonatype.org/content/groups/public/</url>
 	  </repository>
+	-->
 	</repositories>
 </project>

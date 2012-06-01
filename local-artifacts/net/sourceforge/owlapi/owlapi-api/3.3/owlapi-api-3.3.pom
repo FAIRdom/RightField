@@ -3,6 +3,6 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <groupId>net.sourceforge.owlapi</groupId>
-  <artifactId>owl-api</artifactId>
-  <version>3.2.4</version>
+  <artifactId>owlapi-api</artifactId>
+  <version>3.3</version>
 </project>
