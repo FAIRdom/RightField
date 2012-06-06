@@ -97,6 +97,7 @@ public class WorkbookManager {
 
     public WorkbookManager() {    	
         this.owlManager = OWLManager.createOWLOntologyManager();
+        
         ontologyLoaderConfiguration.setSilentMissingImportsHandling(true);        
         shortFormProvider = new BidirectionalShortFormProviderAdapter(new SimpleShortFormProvider());
         entitySelectionModel = new EntitySelectionModel(owlManager.getOWLDataFactory().getOWLThing());

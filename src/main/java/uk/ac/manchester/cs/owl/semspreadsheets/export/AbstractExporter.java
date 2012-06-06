@@ -38,17 +38,17 @@ public abstract class AbstractExporter implements Exporter {
 
 	
 	public AbstractExporter(WorkbookManager manager) {
-		this.manager = manager;
+		this.manager = manager;		
 	}
 	
 	public AbstractExporter(URI workbookURI) throws IOException {
 		this.manager = new WorkbookManager();
-		this.manager.loadWorkbook(workbookURI);
+		this.manager.loadWorkbook(workbookURI);		
 	}
 	
 	public AbstractExporter(File workbookFile) throws IOException {
 		this.manager = new WorkbookManager();
-		this.manager.loadWorkbook(workbookFile);
+		this.manager.loadWorkbook(workbookFile);		
 	}
 	
 	public String export() {

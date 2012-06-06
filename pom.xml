@@ -69,6 +69,11 @@
 			<version>3.8</version>			
 		</dependency>
 		<dependency>
+  <groupId>org.apache.jena</groupId>
+  <artifactId>jena-arq</artifactId>
+  <version>2.9.0-incubating</version>
+</dependency>
+		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
 			<version>1.2.14</version>
@@ -91,5 +96,12 @@
 	  	<url>http://oss.sonatype.org/content/groups/public/</url>
 	  </repository>
 	-->
+	<repository>
+  <id>apache-repo-releases</id>
+  <url>https://repository.apache.org/content/repositories/releases/</url>
+  <releases>
+   <enabled>true</enabled>
+  </releases>
+</repository>
 	</repositories>
 </project>

@@ -13,13 +13,8 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookFrame;
 
 /**
- * Author: Matthew Horridge<br>
- * The University of Manchester<br>
- * Information Management Group<br>
- * Date: 20-Sep-2009
- * 
- * Author: Stuart Owen
- * Date: 04 Oct 2010
+ * @author Stuart Owen
+ * @author Matthew Horridge
  */
 @SuppressWarnings("serial")
 public class InsertSheetAction extends SpreadSheetAction {
