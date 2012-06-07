@@ -14,11 +14,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-/**
- * Author: Matthew Horridge, Stuart Owen<br>
- * The University of Manchester<br>
- * Information Management Group<br>
- * 
+/** 
  * @author Stuart Owen
  * @author Matthew Horridge
  */

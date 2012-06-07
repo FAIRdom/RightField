@@ -78,6 +78,20 @@ public class OntologyTermValidationSheetParser {
             return toIRI(iriString);
         }
     }
+    
+    private OWLPropertyItem parseOWLProperty() {
+    	Cell cell = sheet.getCellAt(3, 0);
+    	Cell cell2 = sheet.getCellAt(3, 1);
+    	if (cell2==null || cell2.getValue()==null || cell2.getValue().trim().isEmpty()) {
+    		return null;
+    	}
+    	if (cell==null || cell.getValue()==null || cell.getValue().trim().isEmpty()) {
+    		return null;
+    	}
+    	IRI iri = toIRI(cell.getValue());
+    	OWLPropertyType type = OWLPropertyType.valueOf(cell2.getValue().trim());
+    	return new OWLPropertyItem(iri,type);    	
+    }
 
     public Map<IRI, String> parseTerms() {
         Map<IRI, String> result = new LinkedHashMap<IRI, String>();
@@ -126,7 +140,7 @@ public class OntologyTermValidationSheetParser {
         if (!isValidationSheet()) {
             return null;
         }
-        return new OntologyTermValidationDescriptor(parseValidationType(), parseEntityIRI(), parseOntologyIRIs(), parseTerms());
+        return new OntologyTermValidationDescriptor(parseValidationType(), parseEntityIRI(), parseOntologyIRIs(), parseTerms(),parseOWLProperty());
     }
 
     private Map<IRI, IRI> parseOntologyIRIs() {
@@ -171,6 +185,24 @@ public class OntologyTermValidationSheetParser {
         setEntityIRI(descriptor);
         setOntologyList(descriptor);
         setTerms(descriptor);
+        setOWLProperty(descriptor);
+    }
+    
+    private void setOWLProperty(OntologyTermValidationDescriptor descriptor) {
+    	if (descriptor.getOWLPropertyItem()!=null) {
+    		Cell propertyCell = sheet.getCellAt(3, 0);
+        	if (propertyCell==null) {
+        		propertyCell = sheet.addCellAt(3, 0);
+        	}
+        	propertyCell.setValue(descriptor.getOWLPropertyItem().getIRI().toQuotedString());
+        	
+        	Cell propertyTypeCell = sheet.getCellAt(3, 1);
+        	if (propertyTypeCell==null) {
+        		propertyTypeCell = sheet.addCellAt(3, 1);
+        	}
+        	propertyTypeCell.setValue(descriptor.getOWLPropertyItem().getPropertyType().toString());
+    	}
+    	
     }
 
     private void setValidationType(OntologyTermValidationDescriptor descriptor) {

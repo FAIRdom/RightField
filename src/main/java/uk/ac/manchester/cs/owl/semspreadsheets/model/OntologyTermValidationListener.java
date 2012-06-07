@@ -9,10 +9,7 @@ package uk.ac.manchester.cs.owl.semspreadsheets.model;
 import java.util.List;
 
 /**
- * Author: Matthew Horridge<br>
- * The University of Manchester<br>
- * Information Management Group<br>
- * Date: 08-Nov-2009
+ * @author Matthew Horridge
  */
 public interface OntologyTermValidationListener {
 

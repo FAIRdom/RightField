@@ -51,7 +51,6 @@ public class ValidationValuesPanel extends JPanel {
         this.workbookManager = manager;
         setLayout(new BorderLayout());
         termList = new JList() {
-
             
             private Font nowValuesSpecifiedFont = new Font("Lucida Grande", Font.BOLD, 14);
 
@@ -66,7 +65,6 @@ public class ValidationValuesPanel extends JPanel {
                         if(!validations.isEmpty()) {
                             msg = EMPTY_VALIDATION;
                         }
-
                     }
                     Color oldColor = g.getColor();
                     g.setColor(Color.LIGHT_GRAY);
@@ -113,8 +111,7 @@ public class ValidationValuesPanel extends JPanel {
                 listData.add(new ValueListItem(term.getFormattedName(), validation.getValidationDescriptor().getType()));
             }
         }
-        termList.setListData(listData.toArray());
-		
+        termList.setListData(listData.toArray());		
 	}
 
 	private void updateFromModel() {

@@ -41,11 +41,14 @@ public class OntologyTermValidationDescriptor implements Serializable {
 
     private List<Term> terms;
     
+    private OWLPropertyItem propertyItem;
+    
     private URI NOTHING_URI = URI.create("http://www.w3.org/2002/07/owl#Nothing");
 
-    public OntologyTermValidationDescriptor(ValidationType type, IRI entityIRI, Map<IRI, IRI> ontologyIRI2PhysicalIRIMap, Map<IRI, String> terms) {
+    public OntologyTermValidationDescriptor(ValidationType type, IRI entityIRI, Map<IRI, IRI> ontologyIRI2PhysicalIRIMap, Map<IRI, String> terms, OWLPropertyItem propertyItem) {
         this.type = type;
         this.entityIRI = entityIRI;
+		this.propertyItem = propertyItem;
         this.ontologyIRI2PhysicalIRIMap = new HashMap<IRI, IRI>(ontologyIRI2PhysicalIRIMap);
         this.terms = new ArrayList<Term>();
         for(IRI iri : terms.keySet()) {
@@ -54,9 +57,10 @@ public class OntologyTermValidationDescriptor implements Serializable {
         Collections.sort(this.terms);
     }
 
-    public OntologyTermValidationDescriptor(ValidationType type, IRI entityIRI, WorkbookManager workbookManager) {
+    public OntologyTermValidationDescriptor(ValidationType type, IRI entityIRI, WorkbookManager workbookManager, OWLPropertyItem propertyItem) {
         this.type = type;
-        this.entityIRI = entityIRI;        
+        this.entityIRI = entityIRI;
+		this.propertyItem = propertyItem;        
         ontologyIRI2PhysicalIRIMap = new HashMap<IRI, IRI>();
         for(OWLOntology ont : workbookManager.getLoadedOntologies()) {    
         	if (ont.containsClassInSignature(entityIRI)) {
@@ -79,6 +83,10 @@ public class OntologyTermValidationDescriptor implements Serializable {
         Collections.sort(terms);
     }
 
+    public OWLPropertyItem getOWLPropertyItem() {
+    	return propertyItem;
+    }
+    
     public Set<IRI> getOntologyIRIs() {
         return ontologyIRI2PhysicalIRIMap.keySet();
     }
