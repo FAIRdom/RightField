@@ -13,6 +13,7 @@ import java.util.Set;
 import org.semanticweb.owlapi.model.IRI;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Cell;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.OWLPropertyItem;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidation;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Term;
@@ -49,6 +50,10 @@ class PopulatedValidatedCellDetails
 	
 	public OntologyTermValidation getValidation() {
 		return validation;
+	}
+	
+	public OWLPropertyItem getOWLPropertyItem() {
+		return getValidation().getValidationDescriptor().getOWLPropertyItem();
 	}
 	
 	public Cell getCell() {

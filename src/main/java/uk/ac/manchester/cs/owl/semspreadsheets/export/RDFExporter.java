@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URI;
 
+import uk.ac.manchester.cs.owl.semspreadsheets.model.OWLPropertyItem;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 
 import com.hp.hpl.jena.rdf.model.Model;
@@ -23,7 +24,7 @@ import com.hp.hpl.jena.vocabulary.RDFS;
 
 public class RDFExporter extends AbstractExporter {
 	
-	private final String rootID;
+	private final String rootID;		
 
 	public RDFExporter(File workbookFile,String rootID) throws IOException {
 		super(workbookFile);
@@ -56,8 +57,8 @@ public class RDFExporter extends AbstractExporter {
 		
 		Resource root = model.createResource(getRootID());
 		
-		root.addProperty(RDFS.label, model.createLiteral("a data file"));
-		root.addProperty(RDFS.comment, model.createLiteral("some comments about this data file"));
+//		root.addProperty(RDFS.label, model.createLiteral("a data file"));
+//		root.addProperty(RDFS.comment, model.createLiteral("some comments about this data file"));
 		
 		for (PopulatedValidatedCellDetails details : getPopulatedValidatedCellDetails()) {
 			addNodes(root,model,details);
@@ -66,8 +67,22 @@ public class RDFExporter extends AbstractExporter {
 		model.write(outStream);
 	}
 	
+	private Property createProperty(Model model,OWLPropertyItem property) {
+		if (property==null) {
+			return getDefaultProperty(model);
+		}
+		else {
+			Property result = model.createProperty(property.getIRI().toString());
+			String start = property.getIRI().getStart(); 
+			if (start.equals("http://www.mygrid.org.uk/ontology/JERMOntology#")) {
+				model.setNsPrefix("jerm", start);
+			}
+			return result;
+		}
+	}
+	
 	private void addNodes(Resource rootResource,Model model,PopulatedValidatedCellDetails cellDetails) {
-		Property property = getDefaultProperty(model);
+		Property property = createProperty(model,cellDetails.getOWLPropertyItem());
 		Resource r = model.createResource(cellDetails.getTerm().getIRI().toString());						
 		Statement s = model.createStatement(rootResource, property, r);
 		model.add(s);
