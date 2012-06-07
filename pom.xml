@@ -50,7 +50,7 @@
               <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
               <addClasspath>true</addClasspath>
               <classpathPrefix>lib/</classpathPrefix>
-              <mainClass>RightField</mainClass>
+              <mainClass>uk.org.rightfield.RightField</mainClass>
             </manifest>
           </archive>
         </configuration>        
@@ -63,6 +63,16 @@
 			<artifactId>owlapi-api</artifactId>
 			<version>3.3</version>
 		</dependency>
+		<dependency>
+               <groupId>net.sourceforge.owlapi</groupId>
+               <artifactId>owlapi-reasoner</artifactId>
+               <version>3.3</version>
+       </dependency>
+       <dependency>
+               <groupId>net.sourceforge.owlapi</groupId>
+               <artifactId>owlapi-apibinding</artifactId>
+               <version>3.3</version>
+       </dependency>
 		<dependency>
 			<groupId>org.sysmo-db</groupId>
 			<artifactId>rightfield-poi</artifactId>
@@ -87,15 +97,13 @@
 	</dependencies>
 	<repositories>
 	  <repository>
-	    <id>local-artifacts</id>
-	    <url>file://${basedir}/local-artifacts</url>
-	  </repository>
-	 <!--
-	  <repository>
 	  	<id>owl-api-sonatype</id>
 	  	<url>http://oss.sonatype.org/content/groups/public/</url>
 	  </repository>
-	-->
+	  <repository>
+	    <id>local-artifacts</id>
+	    <url>file://${basedir}/local-artifacts</url>
+	  </repository>	
 	<repository>
   <id>apache-repo-releases</id>
   <url>https://repository.apache.org/content/repositories/releases/</url>
