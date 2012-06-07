@@ -6,8 +6,8 @@ import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 
+import uk.ac.manchester.cs.owl.semspreadsheets.SpreadsheetTestHelper;
 import uk.ac.manchester.cs.owl.semspreadsheets.impl.SheetHSSFImpl;
-import uk.ac.manchester.cs.owl.semspreadsheets.impl.SpreadsheetTestHelper;
 
 public class OntologyTermValidationWorkbookParserTest {
 

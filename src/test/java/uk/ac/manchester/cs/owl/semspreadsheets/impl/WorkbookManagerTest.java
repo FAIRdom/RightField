@@ -16,7 +16,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.net.URI;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Set;
 
 import org.junit.Before;
@@ -24,6 +23,7 @@ import org.junit.Test;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntology;
 
+import uk.ac.manchester.cs.owl.semspreadsheets.TestDocumentsCatalogue;
 import uk.ac.manchester.cs.owl.semspreadsheets.change.WorkbookChangeListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OWLPropertyItem;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OWLPropertyType;
@@ -62,7 +62,7 @@ public class WorkbookManagerTest {
 		assertSame(book2, manager.getWorkbook());
 		assertNull(manager.getWorkbookURI());
 		
-		URI uri = workbookURI();
+		URI uri = TestDocumentsCatalogue.simpleAnnotatedworkbookURI();
 		manager.loadWorkbook(uri);
 		manager.createNewWorkbook();
 		assertNull(manager.getWorkbookURI());
@@ -70,7 +70,7 @@ public class WorkbookManagerTest {
 	
 	@Test
 	public void testLoadWorkbook() throws Exception {
-		URI uri = workbookURI();
+		URI uri = TestDocumentsCatalogue.simpleAnnotatedworkbookURI();
 		manager.getWorkbookState().changesUnsaved();
 		Workbook book = manager.loadWorkbook(uri);
 		assertNotNull(book);
@@ -120,7 +120,7 @@ public class WorkbookManagerTest {
 	@Test
 	public void testGetOntologyTermValidations() throws Exception {
 		WorkbookManager manager=new WorkbookManager();
-		manager.loadWorkbook(bookWithPropertiesURI());
+		manager.loadWorkbook(TestDocumentsCatalogue.bookWithPropertiesURI());
 		Collection<OntologyTermValidation> ontologyTermValidations = manager.getOntologyTermValidations();
 		assertEquals(2,ontologyTermValidations.size());
 		OntologyTermValidation selectedValidation=null;		
@@ -148,7 +148,7 @@ public class WorkbookManagerTest {
 		assertNotSame(book, newBook);
 		assertTrue(newBook.getAllChangeListeners().contains(l1));
 		assertTrue(newBook.getAllChangeListeners().contains(l2));
-		URI workbookURI = workbookURI();
+		URI workbookURI = TestDocumentsCatalogue.simpleAnnotatedworkbookURI();
 		manager.loadWorkbook(workbookURI);
 		Workbook newBook2 = manager.getWorkbook();
 		assertNotSame(newBook, newBook2);
@@ -158,7 +158,7 @@ public class WorkbookManagerTest {
 	
 	@Test
 	public void testLoadOntology() throws Exception {
-		URI uri = ontologyURI();
+		URI uri = TestDocumentsCatalogue.jermOntologyURI();
 		assertEquals(0,manager.getLoadedOntologies().size());
 		manager.loadOntology(IRI.create(uri));
 		assertTrue(testListener.isOntologiesChanedFired());
@@ -168,7 +168,7 @@ public class WorkbookManagerTest {
 	
 	@Test
 	public void testRemoveOntology() throws Exception {
-		URI uri = ontologyURI();
+		URI uri = TestDocumentsCatalogue.jermOntologyURI();
 		manager.loadOntology(IRI.create(uri));		
 		OWLOntology ont = manager.getLoadedOntologies().iterator().next();
 		testListener.reset();
@@ -178,7 +178,7 @@ public class WorkbookManagerTest {
 	
 	@Test
 	public void testGetDataProperties() throws Exception {
-		URI uri = ontologyURI();
+		URI uri = TestDocumentsCatalogue.jermOntologyURI();
 		manager.loadOntology(IRI.create(uri));
 		Set<OWLPropertyItem> dataProperties = manager.getOWLDataProperties();		
 		assertEquals(19,dataProperties.size());
@@ -199,7 +199,7 @@ public class WorkbookManagerTest {
 	
 	@Test
 	public void testGetObjectProperties() throws Exception {
-		URI uri = ontologyURI();
+		URI uri = TestDocumentsCatalogue.jermOntologyURI();
 		manager.loadOntology(IRI.create(uri));
 		Set<OWLPropertyItem> objectProperties = manager.getOWLObjectProperties();
 		System.out.println(objectProperties);
@@ -221,7 +221,7 @@ public class WorkbookManagerTest {
 	
 	@Test
 	public void getAllOWLProperties() throws Exception {
-		URI uri = ontologyURI();
+		URI uri = TestDocumentsCatalogue.jermOntologyURI();
 		manager.loadOntology(IRI.create(uri));
 		Set<OWLPropertyItem> objectProperties = manager.getAllOWLProperties();
 		assertEquals(37,objectProperties.size());
@@ -240,15 +240,5 @@ public class WorkbookManagerTest {
 		assertTrue("Should have found #External_supplier_ID",found2);
 	}
 	
-	private URI ontologyURI() throws Exception {
-		return WorkbookManagerTest.class.getResource("/JERM.owl").toURI();
-	}
 	
-	private URI workbookURI() throws Exception {
-		return WorkbookManagerTest.class.getResource("/simple_annotated_book.xls").toURI();
-	}
-	
-	private URI bookWithPropertiesURI() throws Exception {
-		return WorkbookManagerTest.class.getResource("/book_with_properties.xls").toURI();
-	}
 }

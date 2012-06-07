@@ -8,6 +8,7 @@ import java.net.URI;
 
 import org.junit.Test;
 
+import uk.ac.manchester.cs.owl.semspreadsheets.TestDocumentsCatalogue;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 
 public class RDFExporterTest {
@@ -17,7 +18,7 @@ public class RDFExporterTest {
 	@Test
 	public void testInitWithManager() throws Exception {
 		WorkbookManager manager = new WorkbookManager();
-		manager.loadWorkbook(jermWorkbookURI());
+		manager.loadWorkbook(TestDocumentsCatalogue.populatedJermWorkbookURI());
 		AbstractExporter exporter = new RDFExporter(manager,rootID);
 		assertNotNull(exporter.getWorkbook());
 		assertEquals("Metadata Template",exporter.getWorkbook().getSheet(0).getName());
@@ -27,7 +28,7 @@ public class RDFExporterTest {
 
 	@Test
 	public void testInitiWithURI() throws Exception {
-		URI uri = jermWorkbookURI();
+		URI uri = TestDocumentsCatalogue.populatedJermWorkbookURI();
 		AbstractExporter exporter = new RDFExporter(uri,rootID);
 		assertNotNull(exporter.getWorkbook());
 		assertEquals("Metadata Template",exporter.getWorkbook().getSheet(0).getName());
@@ -37,7 +38,7 @@ public class RDFExporterTest {
 	
 	@Test
 	public void testInitiWithFile() throws Exception {
-		File file = jermWorkbookFile();
+		File file = TestDocumentsCatalogue.populatedJermWorkbookFile();
 		AbstractExporter exporter = new RDFExporter(file,rootID);
 		assertNotNull(exporter.getWorkbook());
 		assertEquals("Metadata Template",exporter.getWorkbook().getSheet(0).getName());
@@ -47,19 +48,20 @@ public class RDFExporterTest {
 
 	@Test
 	public void testExport() throws Exception {
-		URI uri = jermWorkbookURI();
+		URI uri = TestDocumentsCatalogue.populatedJermWorkbookURI();
 		Exporter exp = new RDFExporter(uri,rootID);
 		String rdf = exp.export();
 		System.out.println(rdf);
 	}
 	
-	private File jermWorkbookFile() throws Exception {
-		String filename = AbstractExporterTest.class.getResource("/populated_JERM_template.xls").getFile();
-		return new File(filename);
+	@Test
+	public void testExportWithProperties() throws Exception {
+		URI uri = TestDocumentsCatalogue.bookWithPropertiesURI();
+		Exporter exp = new RDFExporter(uri,rootID);
+		String rdf = exp.export();
+		System.out.println(rdf);
 	}
 	
-	private URI jermWorkbookURI() throws Exception {
-		return AbstractExporterTest.class.getResource("/populated_JERM_template.xls").toURI();
-	}
+	
 
 }

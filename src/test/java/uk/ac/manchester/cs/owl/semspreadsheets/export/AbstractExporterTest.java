@@ -23,6 +23,7 @@ import java.util.List;
 
 import org.junit.Test;
 
+import uk.ac.manchester.cs.owl.semspreadsheets.TestDocumentsCatalogue;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidation;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.ValidationType;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
@@ -32,7 +33,7 @@ public class AbstractExporterTest {
 	@Test
 	public void testInitWithManager() throws Exception {
 		WorkbookManager manager = new WorkbookManager();
-		manager.loadWorkbook(jermWorkbookURI());
+		manager.loadWorkbook(TestDocumentsCatalogue.populatedJermWorkbookURI());
 		AbstractExporter exporter = new AbstractExporterTestImpl(manager);
 		assertNotNull(exporter.getWorkbook());
 		assertEquals("Metadata Template",exporter.getWorkbook().getSheet(0).getName());
@@ -42,7 +43,7 @@ public class AbstractExporterTest {
 
 	@Test
 	public void testInitiWithURI() throws Exception {
-		URI uri = jermWorkbookURI();
+		URI uri = TestDocumentsCatalogue.populatedJermWorkbookURI();
 		AbstractExporter exporter = new AbstractExporterTestImpl(uri);
 		assertNotNull(exporter.getWorkbook());
 		assertEquals("Metadata Template",exporter.getWorkbook().getSheet(0).getName());
@@ -52,7 +53,7 @@ public class AbstractExporterTest {
 	
 	@Test
 	public void testInitiWithFile() throws Exception {
-		File file = jermWorkbookFile();
+		File file = TestDocumentsCatalogue.populatedJermWorkbookFile();
 		AbstractExporter exporter = new AbstractExporterTestImpl(file);
 		assertNotNull(exporter.getWorkbook());
 		assertEquals("Metadata Template",exporter.getWorkbook().getSheet(0).getName());
@@ -62,7 +63,7 @@ public class AbstractExporterTest {
 	
 	@Test
 	public void getPopulatedValidatedCellDetails() throws Exception {
-		URI uri = partiallyPopulatedWorkbookURI();
+		URI uri = TestDocumentsCatalogue.partiallyPopulatedWorkbookURI();
 		AbstractExporter exporter = new AbstractExporterTestImpl(uri);
 		assertEquals(4,exporter.getPopulatedValidatedCellDetails().size());
 		List<PopulatedValidatedCellDetails> list = new ArrayList<PopulatedValidatedCellDetails>(exporter.getPopulatedValidatedCellDetails());
@@ -142,7 +143,7 @@ public class AbstractExporterTest {
 
 	@Test
 	public void testGetValidations() throws Exception {
-		URI uri = jermWorkbookURI();
+		URI uri = TestDocumentsCatalogue.populatedJermWorkbookURI();
 		AbstractExporter exporter = new AbstractExporterTestImpl(uri);
 		Collection<OntologyTermValidation> vals = exporter.getValidations();
 		assertEquals(9,vals.size());
@@ -168,24 +169,11 @@ public class AbstractExporterTest {
 	
 	@Test
 	public void testExportString() throws Exception {
-		Exporter exporter = new AbstractExporterTestImpl(jermWorkbookFile());
+		Exporter exporter = new AbstractExporterTestImpl(TestDocumentsCatalogue.populatedJermWorkbookFile());
 		assertEquals("this is a string",exporter.export());
-	}
-	
-	//test helper methods
-	
-	private URI partiallyPopulatedWorkbookURI() throws Exception {
-		return AbstractExporterTest.class.getResource("/partially_populated_JERM_template.xls").toURI();		
-	}
-	
-	private File jermWorkbookFile() throws Exception {
-		String filename = AbstractExporterTest.class.getResource("/populated_JERM_template.xls").getFile();
-		return new File(filename);
-	}
-	
-	private URI jermWorkbookURI() throws Exception {
-		return AbstractExporterTest.class.getResource("/populated_JERM_template.xls").toURI();
 	}	
+	
+	
 
 	/**
 	 * A concrete implementation of {@link AbstractExporter} for testing purposes only.

@@ -15,13 +15,15 @@ import java.net.URI;
 import org.junit.Before;
 import org.junit.Test;
 
+import uk.ac.manchester.cs.owl.semspreadsheets.TestDocumentsCatalogue;
+
 public class CSVExporterTest {
 
 	Exporter exporter;
 	
 	@Before
 	public void createExporter() throws Exception {
-		URI uri =  CSVExporterTest.class.getResource("/two_ontologies.xls").toURI();
+		URI uri =  TestDocumentsCatalogue.twoOntologiesWorkbookURI();
 		exporter = new CSVExporter(uri);		
 	}
 	

@@ -7,8 +7,8 @@ import java.util.Collection;
 import org.junit.Before;
 import org.junit.Test;
 
+import uk.ac.manchester.cs.owl.semspreadsheets.SpreadsheetTestHelper;
 import uk.ac.manchester.cs.owl.semspreadsheets.impl.SheetHSSFImpl;
-import uk.ac.manchester.cs.owl.semspreadsheets.impl.SpreadsheetTestHelper;
 
 public class RangeTest {
 	
