@@ -375,10 +375,10 @@ public class WorkbookFrame extends JFrame {
 		return checkForDefaultExtension(file,".xls");
 	}
 
-	private File checkForDefaultExtension(File file,String defaultExtension) {
+	public File checkForDefaultExtension(File file,String defaultExtension) {
 		String filename = file.getName();
-		if (!filename.endsWith(".xls")) {
-			file = new File(file.getPath()+".xls");
+		if (!filename.endsWith(defaultExtension)) {
+			file = new File(file.getPath()+defaultExtension);
 		}
 		return file;
 	}
