@@ -20,6 +20,7 @@ import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Statement;
+import com.hp.hpl.jena.vocabulary.RDFS;
 
 public class RDFExporter extends AbstractExporter {
 	
@@ -54,9 +55,9 @@ public class RDFExporter extends AbstractExporter {
 	public void export(OutputStream outStream) {		
 		Model model = ModelFactory.createDefaultModel();
 		
-		Resource root = model.createResource(getRootID());
+		Resource root = model.createResource(getRootID());		
 		
-//		root.addProperty(RDFS.label, model.createLiteral("a data file"));
+		root.addProperty(RDFS.label, model.createLiteral("a data file"));
 //		root.addProperty(RDFS.comment, model.createLiteral("some comments about this data file"));
 		
 		for (PopulatedValidatedCellDetails details : getPopulatedValidatedCellDetails()) {

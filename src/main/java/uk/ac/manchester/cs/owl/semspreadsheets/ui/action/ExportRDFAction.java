@@ -8,6 +8,10 @@
 package uk.ac.manchester.cs.owl.semspreadsheets.ui.action;
 
 import java.awt.event.ActionEvent;
+import java.net.URI;
+import java.net.URISyntaxException;
+
+import javax.swing.JOptionPane;
 
 import org.apache.log4j.Logger;
 
@@ -28,11 +32,42 @@ public class ExportRDFAction extends WorkbookFrameAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		String id="http://df/data/1";
-		Exporter exporter = new RDFExporter(getWorkbookManager(), id);
-		String rdf = exporter.export();
-		
-		RDFExportResultPanel.showDialog(getWorkbookFrame(), rdf);
-	}	
+		String id=determineRootID();
+		if (id!=null) {
+			Exporter exporter = new RDFExporter(getWorkbookManager(), id);
+			String rdf = exporter.export();
+			
+			RDFExportResultPanel.showDialog(getWorkbookFrame(), rdf);
+		}
+	}
+	
+	/**
+	 * Determines the root ID for the top level RDF, i.e an identifier for the data file.
+	 * Currently just asks the user for it.
+	 * @return the root ID
+	 */
+	private String determineRootID() {
+		String input = JOptionPane.showInputDialog(getWorkbookFrame(), "Please provide an identifier for this spreadsheet. It must be a valid URI");
+		if (input!=null) {
+			if (!validURI(input)) {
+				JOptionPane.showMessageDialog(getWorkbookFrame(), "'" + input + "' is not a valid URI","Invalid URI",JOptionPane.ERROR_MESSAGE);
+				return determineRootID();
+			}
+		}
+		return input;
+	}
+	
+	private boolean validURI(String str) {
+		try {
+			//FIMXE: just a short term check. doesn't seem to be an easy way to test a URI in java (URISyntaxException doesn't seem to be thrown.
+			URI uri = new URI(str);
+			if (uri.getScheme()==null) {
+				return false;
+			}
+		} catch (URISyntaxException e) {
+			return false;
+		}
+		return true;
+	}
 
 }
