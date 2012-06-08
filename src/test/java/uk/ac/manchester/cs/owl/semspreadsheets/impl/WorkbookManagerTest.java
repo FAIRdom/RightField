@@ -23,7 +23,7 @@ import org.junit.Test;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntology;
 
-import uk.ac.manchester.cs.owl.semspreadsheets.TestDocumentsCatalogue;
+import uk.ac.manchester.cs.owl.semspreadsheets.DocumentsCatalogue;
 import uk.ac.manchester.cs.owl.semspreadsheets.change.WorkbookChangeListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OWLPropertyItem;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OWLPropertyType;
@@ -62,7 +62,7 @@ public class WorkbookManagerTest {
 		assertSame(book2, manager.getWorkbook());
 		assertNull(manager.getWorkbookURI());
 		
-		URI uri = TestDocumentsCatalogue.simpleAnnotatedworkbookURI();
+		URI uri = DocumentsCatalogue.simpleAnnotatedworkbookURI();
 		manager.loadWorkbook(uri);
 		manager.createNewWorkbook();
 		assertNull(manager.getWorkbookURI());
@@ -70,7 +70,7 @@ public class WorkbookManagerTest {
 	
 	@Test
 	public void testLoadWorkbook() throws Exception {
-		URI uri = TestDocumentsCatalogue.simpleAnnotatedworkbookURI();
+		URI uri = DocumentsCatalogue.simpleAnnotatedworkbookURI();
 		manager.getWorkbookState().changesUnsaved();
 		Workbook book = manager.loadWorkbook(uri);
 		assertNotNull(book);
@@ -120,7 +120,7 @@ public class WorkbookManagerTest {
 	@Test
 	public void testGetOntologyTermValidations() throws Exception {
 		WorkbookManager manager=new WorkbookManager();
-		manager.loadWorkbook(TestDocumentsCatalogue.bookWithPropertiesURI());
+		manager.loadWorkbook(DocumentsCatalogue.bookWithPropertiesURI());
 		Collection<OntologyTermValidation> ontologyTermValidations = manager.getOntologyTermValidations();
 		assertEquals(2,ontologyTermValidations.size());
 		OntologyTermValidation selectedValidation=null;		
@@ -148,7 +148,7 @@ public class WorkbookManagerTest {
 		assertNotSame(book, newBook);
 		assertTrue(newBook.getAllChangeListeners().contains(l1));
 		assertTrue(newBook.getAllChangeListeners().contains(l2));
-		URI workbookURI = TestDocumentsCatalogue.simpleAnnotatedworkbookURI();
+		URI workbookURI = DocumentsCatalogue.simpleAnnotatedworkbookURI();
 		manager.loadWorkbook(workbookURI);
 		Workbook newBook2 = manager.getWorkbook();
 		assertNotSame(newBook, newBook2);
@@ -158,7 +158,7 @@ public class WorkbookManagerTest {
 	
 	@Test
 	public void testLoadOntology() throws Exception {
-		URI uri = TestDocumentsCatalogue.jermOntologyURI();
+		URI uri = DocumentsCatalogue.jermOntologyURI();
 		assertEquals(0,manager.getLoadedOntologies().size());
 		manager.loadOntology(IRI.create(uri));
 		assertTrue(testListener.isOntologiesChanedFired());
@@ -168,7 +168,7 @@ public class WorkbookManagerTest {
 	
 	@Test
 	public void testRemoveOntology() throws Exception {
-		URI uri = TestDocumentsCatalogue.jermOntologyURI();
+		URI uri = DocumentsCatalogue.jermOntologyURI();
 		manager.loadOntology(IRI.create(uri));		
 		OWLOntology ont = manager.getLoadedOntologies().iterator().next();
 		testListener.reset();
@@ -178,7 +178,7 @@ public class WorkbookManagerTest {
 	
 	@Test
 	public void testGetDataProperties() throws Exception {
-		URI uri = TestDocumentsCatalogue.jermOntologyURI();
+		URI uri = DocumentsCatalogue.jermOntologyURI();
 		manager.loadOntology(IRI.create(uri));
 		Set<OWLPropertyItem> dataProperties = manager.getOWLDataProperties();		
 		assertEquals(19,dataProperties.size());
@@ -199,7 +199,7 @@ public class WorkbookManagerTest {
 	
 	@Test
 	public void testGetObjectProperties() throws Exception {
-		URI uri = TestDocumentsCatalogue.jermOntologyURI();
+		URI uri = DocumentsCatalogue.jermOntologyURI();
 		manager.loadOntology(IRI.create(uri));
 		Set<OWLPropertyItem> objectProperties = manager.getOWLObjectProperties();
 		System.out.println(objectProperties);
@@ -221,7 +221,7 @@ public class WorkbookManagerTest {
 	
 	@Test
 	public void getAllOWLProperties() throws Exception {
-		URI uri = TestDocumentsCatalogue.jermOntologyURI();
+		URI uri = DocumentsCatalogue.jermOntologyURI();
 		manager.loadOntology(IRI.create(uri));
 		Set<OWLPropertyItem> objectProperties = manager.getAllOWLProperties();
 		assertEquals(37,objectProperties.size());

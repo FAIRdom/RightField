@@ -8,7 +8,7 @@ import java.net.URI;
 
 import org.junit.Test;
 
-import uk.ac.manchester.cs.owl.semspreadsheets.TestDocumentsCatalogue;
+import uk.ac.manchester.cs.owl.semspreadsheets.DocumentsCatalogue;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 
 public class RDFExporterTest {
@@ -18,7 +18,7 @@ public class RDFExporterTest {
 	@Test
 	public void testInitWithManager() throws Exception {
 		WorkbookManager manager = new WorkbookManager();
-		manager.loadWorkbook(TestDocumentsCatalogue.populatedJermWorkbookURI());
+		manager.loadWorkbook(DocumentsCatalogue.populatedJermWorkbookURI());
 		AbstractExporter exporter = new RDFExporter(manager,rootID);
 		assertNotNull(exporter.getWorkbook());
 		assertEquals("Metadata Template",exporter.getWorkbook().getSheet(0).getName());
@@ -28,7 +28,7 @@ public class RDFExporterTest {
 
 	@Test
 	public void testInitiWithURI() throws Exception {
-		URI uri = TestDocumentsCatalogue.populatedJermWorkbookURI();
+		URI uri = DocumentsCatalogue.populatedJermWorkbookURI();
 		AbstractExporter exporter = new RDFExporter(uri,rootID);
 		assertNotNull(exporter.getWorkbook());
 		assertEquals("Metadata Template",exporter.getWorkbook().getSheet(0).getName());
@@ -38,7 +38,7 @@ public class RDFExporterTest {
 	
 	@Test
 	public void testInitiWithFile() throws Exception {
-		File file = TestDocumentsCatalogue.populatedJermWorkbookFile();
+		File file = DocumentsCatalogue.populatedJermWorkbookFile();
 		AbstractExporter exporter = new RDFExporter(file,rootID);
 		assertNotNull(exporter.getWorkbook());
 		assertEquals("Metadata Template",exporter.getWorkbook().getSheet(0).getName());
@@ -48,7 +48,7 @@ public class RDFExporterTest {
 
 	@Test
 	public void testExport() throws Exception {
-		URI uri = TestDocumentsCatalogue.populatedJermWorkbookURI();
+		URI uri = DocumentsCatalogue.populatedJermWorkbookURI();
 		Exporter exp = new RDFExporter(uri,rootID);
 		String rdf = exp.export();
 		System.out.println(rdf);
@@ -56,7 +56,7 @@ public class RDFExporterTest {
 	
 	@Test
 	public void testExportWithProperties() throws Exception {
-		URI uri = TestDocumentsCatalogue.bookWithPropertiesURI();
+		URI uri = DocumentsCatalogue.bookWithPropertiesURI();
 		Exporter exp = new RDFExporter(uri,rootID);
 		String rdf = exp.export();
 		System.out.println(rdf);

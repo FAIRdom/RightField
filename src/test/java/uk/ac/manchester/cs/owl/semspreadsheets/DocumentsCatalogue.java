@@ -9,7 +9,7 @@ package uk.ac.manchester.cs.owl.semspreadsheets;
 import java.io.File;
 import java.net.URI;
 
-public class TestDocumentsCatalogue {
+public class DocumentsCatalogue {
 	
 	public static URI jermOntologyURI() throws Exception {
 		return uriForResourceName("JERM.owl");
@@ -40,11 +40,11 @@ public class TestDocumentsCatalogue {
 	}
 	
 	private static URI uriForResourceName(String resource) throws Exception {
-		return TestDocumentsCatalogue.class.getResource("/"+resource).toURI();
+		return DocumentsCatalogue.class.getResource("/"+resource).toURI();
 	}
 	
 	private static File fileForResourceName(String resource) throws Exception {
-		String filename = TestDocumentsCatalogue.class.getResource("/"+resource).getFile();
+		String filename = DocumentsCatalogue.class.getResource("/"+resource).getFile();
 		return new File(filename);
 	}
 

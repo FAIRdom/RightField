@@ -15,7 +15,7 @@ import java.net.URI;
 import org.junit.Before;
 import org.junit.Test;
 
-import uk.ac.manchester.cs.owl.semspreadsheets.TestDocumentsCatalogue;
+import uk.ac.manchester.cs.owl.semspreadsheets.DocumentsCatalogue;
 
 public class CSVExporterTest {
 
@@ -23,7 +23,7 @@ public class CSVExporterTest {
 	
 	@Before
 	public void createExporter() throws Exception {
-		URI uri =  TestDocumentsCatalogue.twoOntologiesWorkbookURI();
+		URI uri =  DocumentsCatalogue.twoOntologiesWorkbookURI();
 		exporter = new CSVExporter(uri);		
 	}
 	
