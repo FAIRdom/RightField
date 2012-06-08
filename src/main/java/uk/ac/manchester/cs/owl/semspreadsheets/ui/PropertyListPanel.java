@@ -11,6 +11,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.Set;
 
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -26,12 +27,30 @@ public class PropertyListPanel extends JPanel {
 	private final WorkbookManager workbookManager;	
 	private static final Logger logger = Logger.getLogger(PropertyListPanel.class);
 	private JComboBox comboBox;
+	private JCheckBox checkBox;
 	
 	public PropertyListPanel(WorkbookManager workbookManager) {
 		this.workbookManager = workbookManager;
 		setLayout(new BorderLayout());			
 		comboBox = new JComboBox();
+		comboBox.setEnabled(false);
 		add(new JLabel("Property"),BorderLayout.NORTH);
+		checkBox = new JCheckBox("Add a property?");
+		checkBox.addItemListener(new ItemListener() {
+			
+			@Override
+			public void itemStateChanged(ItemEvent event) {
+				Object source = event.getItemSelectable();
+				if (source == checkBox) {
+					boolean selected = checkBox.isSelected();
+					logger.debug("Checkbox changed to "+selected);
+					comboBox.setEnabled(selected);
+					updateEntityModel();
+				}								
+			}
+		});
+		
+		add(checkBox,BorderLayout.WEST);
 		add(comboBox,BorderLayout.SOUTH);
 		workbookManager.addListener(new WorkbookManagerListener() {
 			
@@ -61,12 +80,23 @@ public class PropertyListPanel extends JPanel {
 		comboBox.addItemListener(new ItemListener() {
 			
 			@Override
-			public void itemStateChanged(ItemEvent arg0) {
-				OWLPropertyItem item = (OWLPropertyItem)arg0.getItem();
-				logger.debug("Property item selected as: "+item.getIRI().toString());
-				getWorkbookManager().getEntitySelectionModel().setOWLPropertyItem(item);
-			}
+			public void itemStateChanged(ItemEvent arg0) {				
+				updateEntityModel();
+			}			
 		});
+	}
+	
+	private void updateEntityModel() {
+		OWLPropertyItem item = (OWLPropertyItem)comboBox.getSelectedItem();
+		if (item==null || !checkBox.isSelected()) {
+			logger.debug("Property item not selected or wanted");
+			getWorkbookManager().getEntitySelectionModel().setOWLPropertyItem(null);
+		}
+		else {
+			logger.debug("Property item selected as: "+item.getIRI().toString());
+			getWorkbookManager().getEntitySelectionModel().setOWLPropertyItem(item);
+		}
+		
 	}
 	
 	private WorkbookManager getWorkbookManager() {
