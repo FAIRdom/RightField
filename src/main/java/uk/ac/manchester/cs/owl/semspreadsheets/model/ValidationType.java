@@ -46,24 +46,24 @@ public enum ValidationType {
         return entityType;
     }    
 
-    public Set<OWLEntity> getEntities(WorkbookManager workbookManager, IRI iri) {
+    public Set<OWLEntity> getEntities(OntologyManager ontologyManager, IRI iri) {
         if (this.equals(SUBCLASSES)) {
-            OWLClass cls = workbookManager.getDataFactory().getOWLClass(iri);
-            return new HashSet<OWLEntity>(workbookManager.getStructuralReasoner().getSubClasses(cls, false).getFlattened());
+            OWLClass cls = ontologyManager.getDataFactory().getOWLClass(iri);
+            return new HashSet<OWLEntity>(ontologyManager.getStructuralReasoner().getSubClasses(cls, false).getFlattened());
         }
         else if (this.equals(DIRECTSUBCLASSES)) {
-            OWLClass cls = workbookManager.getDataFactory().getOWLClass(iri);
-            return new HashSet<OWLEntity>(workbookManager.getStructuralReasoner().getSubClasses(cls, true).getFlattened());
+            OWLClass cls = ontologyManager.getDataFactory().getOWLClass(iri);
+            return new HashSet<OWLEntity>(ontologyManager.getStructuralReasoner().getSubClasses(cls, true).getFlattened());
 
         }
         else if (this.equals(INDIVIDUALS)) {
-            OWLClass cls = workbookManager.getDataFactory().getOWLClass(iri);
-            return new HashSet<OWLEntity>(workbookManager.getStructuralReasoner().getInstances(cls, false).getFlattened());
+            OWLClass cls = ontologyManager.getDataFactory().getOWLClass(iri);
+            return new HashSet<OWLEntity>(ontologyManager.getStructuralReasoner().getInstances(cls, false).getFlattened());
 
         }
         else if (this.equals(DIRECTINDIVIDUALS)) {
-            OWLClass cls = workbookManager.getDataFactory().getOWLClass(iri);
-            return new HashSet<OWLEntity>(workbookManager.getStructuralReasoner().getInstances(cls, true).getFlattened());
+            OWLClass cls = ontologyManager.getDataFactory().getOWLClass(iri);
+            return new HashSet<OWLEntity>(ontologyManager.getStructuralReasoner().getInstances(cls, true).getFlattened());
         }
         else {
             return Collections.emptySet();
@@ -71,10 +71,10 @@ public enum ValidationType {
     }
 
     @SuppressWarnings("unchecked")
-	public Set<OWLEntity> getEntities(WorkbookManager workbookManager, Collection<Term> terms) {
+	public Set<OWLEntity> getEntities(OntologyManager ontologyManager, Collection<Term> terms) {
         Set<OWLEntity> entities = new HashSet<OWLEntity>();
         for (Term term : terms) {
-            entities.add(workbookManager.getDataFactory().getOWLEntity(getEntityType(), term.getIRI()));
+            entities.add(ontologyManager.getDataFactory().getOWLEntity(getEntityType(), term.getIRI()));
         }
         return entities;
     }

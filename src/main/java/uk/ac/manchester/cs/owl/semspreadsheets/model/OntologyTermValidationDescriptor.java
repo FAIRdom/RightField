@@ -57,24 +57,24 @@ public class OntologyTermValidationDescriptor implements Serializable {
         Collections.sort(this.terms);
     }
 
-    public OntologyTermValidationDescriptor(ValidationType type, IRI entityIRI, WorkbookManager workbookManager, OWLPropertyItem propertyItem) {
+    public OntologyTermValidationDescriptor(ValidationType type, IRI entityIRI, OntologyManager ontologyManager, OWLPropertyItem propertyItem) {
         this.type = type;
         this.entityIRI = entityIRI;
 		this.propertyItem = propertyItem;        
         ontologyIRI2PhysicalIRIMap = new HashMap<IRI, IRI>();
-        for(OWLOntology ont : workbookManager.getLoadedOntologies()) {    
+        for(OWLOntology ont : ontologyManager.getLoadedOntologies()) {    
         	if (ont.containsClassInSignature(entityIRI)) {
-        		IRI documentIRI = workbookManager.getOntologyManager().getOntologyDocumentIRI(ont);
+        		IRI documentIRI = ontologyManager.getOWLOntologyManager().getOntologyDocumentIRI(ont);
                 documentIRI = BioPortalRepository.removeBioPortalAPIKey(documentIRI);
                 ontologyIRI2PhysicalIRIMap.put(ont.getOntologyID().getOntologyIRI(), documentIRI);
         	}            
         }
-        Set<OWLEntity> entities = type.getEntities(workbookManager, entityIRI);
+        Set<OWLEntity> entities = type.getEntities(ontologyManager, entityIRI);
         terms = new ArrayList<Term>();
         for(OWLEntity term : entities) {
         	if (!term.getIRI().toURI().equals(NOTHING_URI)) {
         		logger.debug("Adding term "+term.getIRI()+" to list of OntologyTermValidatorDescriptor terms");        	
-                terms.add(new Term(term.getIRI(), workbookManager.getRendering(term)));
+                terms.add(new Term(term.getIRI(), ontologyManager.getRendering(term)));
         	}        	
         	else {
         		logger.debug("Ignoring the term "+term.getIRI().toString());
@@ -99,8 +99,8 @@ public class OntologyTermValidationDescriptor implements Serializable {
         return type;
     }
 
-    public Set<OWLEntity> getEntities(WorkbookManager workbookManager) {
-        return type.getEntities(workbookManager, terms);
+    public Set<OWLEntity> getEntities(OntologyManager ontologyManager) {
+        return type.getEntities(ontologyManager, terms);
     }
 
     public IRI getEntityIRI() {

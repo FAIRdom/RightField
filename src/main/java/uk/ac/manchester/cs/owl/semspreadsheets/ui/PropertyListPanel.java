@@ -104,7 +104,7 @@ public class PropertyListPanel extends JPanel {
 	}
 	
 	private void updateModel() {		
-		Set<OWLPropertyItem> properties = getWorkbookManager().getAllOWLProperties();
+		Set<OWLPropertyItem> properties = getWorkbookManager().getOntologyManager().getAllOWLProperties();
 		
 		logger.debug("Updating model for properties list with "+properties.size()+" properties");
 		comboBox.removeAllItems();

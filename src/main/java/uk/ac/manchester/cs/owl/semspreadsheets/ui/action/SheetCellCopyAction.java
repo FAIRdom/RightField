@@ -64,9 +64,7 @@ public class SheetCellCopyAction extends SelectedCellsAction {
 
 						Range singleCellRange = new Range(
 								selectedRange.getSheet(), col, row, col, row);
-						Collection<OntologyTermValidation> containingValidations = getWorkbookManager()
-								.getOntologyTermValidationManager()
-								.getContainingValidations(singleCellRange);
+						Collection<OntologyTermValidation> containingValidations = getOntologyManager().getContainingOntologyTermValidations(singleCellRange);								
 						if (containingValidations.size() > 0) {
 							cellContent.validationDescriptor = containingValidations
 									.iterator().next()

@@ -13,6 +13,7 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.KeyStroke;
 
+import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyManager;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookFrame;
 
@@ -56,5 +57,9 @@ public abstract class WorkbookFrameAction extends AbstractAction {
     
     public WorkbookManager getWorkbookManager() {
     	return workbookFrame.getWorkbookManager();
+    }
+    
+    public OntologyManager getOntologyManager() {
+    	return getWorkbookManager().getOntologyManager();
     }
 }

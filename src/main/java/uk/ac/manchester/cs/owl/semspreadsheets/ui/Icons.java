@@ -23,8 +23,6 @@ import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 
-import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
-
 /**
  * @author Stuart Owen
  * @author Matthew Horridge
@@ -41,18 +39,18 @@ public class Icons {
 
     private static Icon DATATYPE_ICON = new OWLDatatypeIcon();
 
-    public static Icon getOWLEntityIcon(WorkbookManager manager, OWLEntity entity) {
+    public static Icon getOWLEntityIcon(OWLEntity entity) {
         if (entity.isOWLClass()) {
-            return getOWLClassIcon(manager, entity.asOWLClass());
+            return getOWLClassIcon(entity.asOWLClass());
         }
         else if (entity.isOWLNamedIndividual()) {
-            return getOWLNamedIndividualIcon(manager, entity.asOWLNamedIndividual());
+            return getOWLNamedIndividualIcon(entity.asOWLNamedIndividual());
         }
         else if (entity.isOWLObjectProperty()) {
-            return getOWLObjectPropertyIcon(manager, entity.asOWLObjectProperty());
+            return getOWLObjectPropertyIcon(entity.asOWLObjectProperty());
         }
         else if (entity.isOWLDataProperty()) {
-            return getOWLDataPropertyIcon(manager, entity.asOWLDataProperty());
+            return getOWLDataPropertyIcon(entity.asOWLDataProperty());
         }
         else if (entity.isOWLAnnotationProperty()) {
             return ANNOTATION_PROPERTY_ICON;
@@ -66,7 +64,7 @@ public class Icons {
     }
 
     @SuppressWarnings("rawtypes")
-	public static Icon getOWLEntityIcon(WorkbookManager manager, EntityType entity) {
+	public static Icon getOWLEntityIcon(EntityType entity) {
         if (entity.equals(EntityType.CLASS)) {
             return OWLCLASS_ICON;
         }
@@ -90,19 +88,19 @@ public class Icons {
         }
     }
 
-    public static Icon getOWLClassIcon(WorkbookManager manager, OWLClass cls) {
+    public static Icon getOWLClassIcon(OWLClass cls) {
         return OWLCLASS_ICON;
     }
 
-    public static Icon getOWLObjectPropertyIcon(WorkbookManager manager, OWLObjectProperty prop) {
+    public static Icon getOWLObjectPropertyIcon(OWLObjectProperty prop) {
         return OWLPROPERTY_ICON;
     }
 
-    public static Icon getOWLDataPropertyIcon(WorkbookManager manager, OWLDataProperty prop) {
+    public static Icon getOWLDataPropertyIcon(OWLDataProperty prop) {
         return OWLPROPERTY_ICON;
     }
 
-    public static Icon getOWLNamedIndividualIcon(WorkbookManager manager, OWLNamedIndividual ind) {
+    public static Icon getOWLNamedIndividualIcon(OWLNamedIndividual ind) {
         return OWLINDIVIDUAL_ICON;
     }
 

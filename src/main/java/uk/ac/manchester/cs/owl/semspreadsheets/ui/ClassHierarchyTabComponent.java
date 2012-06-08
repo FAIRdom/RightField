@@ -28,9 +28,9 @@ import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntology;
 
+import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyManager;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidation;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidationListener;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 
 /**
  * @author Stuart Owen
@@ -93,10 +93,13 @@ class ClassHierarchyTabComponent extends JPanel {
 		closeButton = new TabButton();
 		add(closeButton);
 	}
+	
+	protected OntologyManager getOntologyManager() {
+		return getWorkbookFrame().getWorkbookManager().getOntologyManager();
+	}
 
 	private void updateTabClosableStatus() {		
-		Collection<IRI> ontologyIRIs = getWorkbookManager()
-				.getOntologyTermValidationManager().getOntologyIRIs();
+		Collection<IRI> ontologyIRIs = getOntologyManager().getOntologyIRIs();
 		boolean used = ontologyIRIs.contains(getOntology().getOntologyID()
 				.getOntologyIRI());
 		logger.debug("Checking wether the ontology is used in the workbook = "+used);
@@ -105,14 +108,10 @@ class ClassHierarchyTabComponent extends JPanel {
 
 	private WorkbookFrame getWorkbookFrame() {
 		return workbookFrame;
-	}
-
-	private WorkbookManager getWorkbookManager() {
-		return getWorkbookFrame().getWorkbookManager();
-	}
+	}	
 	
 	private void addOntologyTermValidationListener() {
-		getWorkbookManager().getOntologyTermValidationManager().addListener(new OntologyTermValidationListener() {
+		getOntologyManager().addListener(new OntologyTermValidationListener() {
 			
 			@Override
 			public void validationsChanged() {

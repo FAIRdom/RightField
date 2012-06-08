@@ -132,12 +132,12 @@ public class SheetPanel extends JPanel {
         table.getActionMap().put("cut",new SheetCellCutAction(workbookManager, getToolkit()));
         table.getActionMap().put("delete",new SheetCellClearAction(workbookManager));
 
-        workbookManager.getOntologyTermValidationManager().addListener(ontologyTermValidationListener);
+        workbookManager.getOntologyManager().addListener(ontologyTermValidationListener);
     }
 
     public void dispose() {
         workbookManager.getSelectionModel().removeCellSelectionListener(cellSelectionListener);
-        workbookManager.getOntologyTermValidationManager().removeListener(ontologyTermValidationListener);
+        workbookManager.getOntologyManager().removeListener(ontologyTermValidationListener);
         for(Disposable disposable : disposables) {
             disposable.dispose();
         }

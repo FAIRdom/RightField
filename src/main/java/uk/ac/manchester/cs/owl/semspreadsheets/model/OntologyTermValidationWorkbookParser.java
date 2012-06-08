@@ -16,6 +16,7 @@ import java.util.Set;
 
 /**
  * @author Matthew Horridge
+ * @author Stuart Owen
  */
 public class OntologyTermValidationWorkbookParser {
 

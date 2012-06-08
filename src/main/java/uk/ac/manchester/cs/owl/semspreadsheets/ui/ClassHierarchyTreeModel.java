@@ -28,7 +28,7 @@ import org.semanticweb.owlapi.reasoner.Node;
 import org.semanticweb.owlapi.reasoner.NodeSet;
 import org.semanticweb.owlapi.reasoner.OWLReasoner;
 
-import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyManager;
 
 /**
  * @author Stuart Owen
@@ -38,21 +38,21 @@ public class ClassHierarchyTreeModel implements TreeModel {
 
     private ClassHierarchyNode rootNode;
 
-    private WorkbookManager manager;    
-
 	private Map<OWLEntity, Collection<DefaultMutableTreeNode>> cls2NodeMap = new HashMap<OWLEntity, Collection<DefaultMutableTreeNode>>();
 
     private ClassHierarchyTreeModel.NodeContentComparator nodeContentComparator;
 
     private IndividualNodeContentComparator individualNodeContentComparator = new IndividualNodeContentComparator();
 
-	private final OWLOntology ontology;    
+	private final OWLOntology ontology;
 
-	public ClassHierarchyTreeModel(WorkbookManager manager, OWLOntology ontology) {
-        this.manager = manager;
+	private final OntologyManager ontologyManager;    
+
+	public ClassHierarchyTreeModel(OntologyManager ontologyManager, OWLOntology ontology) {
+        this.ontologyManager = ontologyManager;		
 		this.ontology = ontology;
         nodeContentComparator = new NodeContentComparator();
-        if (manager.getLoadedOntologies().size() > 0) {
+        if (ontologyManager.getLoadedOntologies().size() > 0) {
             rootNode = new ClassHierarchyNode();
             put(rootNode.getOWLClasses().iterator().next(), rootNode);
             buildChildren(rootNode);
@@ -147,14 +147,10 @@ public class ClassHierarchyTreeModel implements TreeModel {
 
     protected OWLOntology getOntology() {
 		return ontology;
-	}
-    
-    protected WorkbookManager getWorkbookManager() {
-		return manager;
-	}
+	}       
     
     private OWLReasoner getReasoner() {
-    	return getWorkbookManager().getStructuralReasoner(getOntology());    	
+    	return getOntologyManager().getStructuralReasoner(getOntology());    	
     }
 
     private class NodeContentComparator implements Comparator<Node<OWLClass>> {
@@ -162,15 +158,19 @@ public class ClassHierarchyTreeModel implements TreeModel {
         public int compare(Node<OWLClass> o1, Node<OWLClass> o2) {
             OWLClass cls1 = o1.iterator().next();
             OWLClass cls2 = o2.iterator().next();
-            String ren1 = manager.getRendering(cls1);
-            String ren2 = manager.getRendering(cls2);
+            String ren1 = getOntologyManager().getRendering(cls1);
+            String ren2 = getOntologyManager().getRendering(cls2);
             return ren1.compareToIgnoreCase(ren2);
         }
     }
 
     private class IndividualNodeContentComparator implements Comparator<OWLNamedIndividual> {
         public int compare(OWLNamedIndividual o1, OWLNamedIndividual o2) {
-            return manager.getRendering(o1).compareToIgnoreCase(manager.getRendering(o2));
+            return getOntologyManager().getRendering(o1).compareToIgnoreCase(getOntologyManager().getRendering(o2));
         }
+    }
+    
+    protected OntologyManager getOntologyManager() {
+    	return ontologyManager;
     }
 }

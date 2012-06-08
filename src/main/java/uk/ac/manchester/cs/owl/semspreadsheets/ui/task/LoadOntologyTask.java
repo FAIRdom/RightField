@@ -28,7 +28,7 @@ public class LoadOntologyTask extends AbstractTask<OWLOntology, OWLOntologyCreat
 
     public OWLOntology runTask() throws OWLOntologyCreationException {
     	try {    		
-    		return getWorkbookFrame().getWorkbookManager().loadOntology(IRI.create(file));
+    		return getOntologyManager().loadOntology(IRI.create(file));
     	}
     	catch(OWLOntologyCreationException e) {    		
     		ErrorHandler.getErrorHandler().handleError(e);

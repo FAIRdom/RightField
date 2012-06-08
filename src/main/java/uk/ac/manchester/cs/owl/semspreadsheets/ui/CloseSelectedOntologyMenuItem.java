@@ -48,7 +48,7 @@ public class CloseSelectedOntologyMenuItem extends JMenuItem {
 			setEnabled(false);
 		}
 		else {
-			Collection<IRI> ontologyIRIs = getWorkbookManager().getOntologyTermValidationManager().getOntologyIRIs();
+			Collection<IRI> ontologyIRIs = getWorkbookManager().getOntologyManager().getOntologyIRIs();
 			setEnabled(!ontologyIRIs.contains(selectedOntology.getOntologyID().getOntologyIRI()));
 		}
 	}
@@ -58,7 +58,7 @@ public class CloseSelectedOntologyMenuItem extends JMenuItem {
 	}
 	
 	private void addListener() {
-		getWorkbookManager().getOntologyTermValidationManager().addListener(new OntologyTermValidationListener() {
+		getWorkbookManager().getOntologyManager().addListener(new OntologyTermValidationListener() {
 			
 			@Override
 			public void validationsChanged() {

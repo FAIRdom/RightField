@@ -17,6 +17,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Cell;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyManager;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidation;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidationDescriptor;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
@@ -92,11 +93,15 @@ public abstract class AbstractExporter implements Exporter {
 		return this.manager;
 	}
 	
+	protected OntologyManager getOntologyManager() {
+		return getWorkbookManager().getOntologyManager();
+	}
+	
 	protected Workbook getWorkbook() {
 		return getWorkbookManager().getWorkbook();		
 	}
 	
 	protected Collection<OntologyTermValidation> getValidations() {
-		return getWorkbookManager().getOntologyTermValidationManager().getValidations();
+		return getOntologyManager().getOntologyTermValidations();
 	}
 }

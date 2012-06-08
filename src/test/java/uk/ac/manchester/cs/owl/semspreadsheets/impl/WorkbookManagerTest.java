@@ -121,7 +121,7 @@ public class WorkbookManagerTest {
 	public void testGetOntologyTermValidations() throws Exception {
 		WorkbookManager manager=new WorkbookManager();
 		manager.loadWorkbook(DocumentsCatalogue.bookWithPropertiesURI());
-		Collection<OntologyTermValidation> ontologyTermValidations = manager.getOntologyTermValidations();
+		Collection<OntologyTermValidation> ontologyTermValidations = manager.getOntologyManager().getOntologyTermValidations();
 		assertEquals(2,ontologyTermValidations.size());
 		OntologyTermValidation selectedValidation=null;		
 		for (OntologyTermValidation validation : ontologyTermValidations) {
@@ -159,28 +159,28 @@ public class WorkbookManagerTest {
 	@Test
 	public void testLoadOntology() throws Exception {
 		URI uri = DocumentsCatalogue.jermOntologyURI();
-		assertEquals(0,manager.getLoadedOntologies().size());
-		manager.loadOntology(IRI.create(uri));
+		assertEquals(0,manager.getOntologyManager().getLoadedOntologies().size());
+		manager.getOntologyManager().loadOntology(IRI.create(uri));
 		assertTrue(testListener.isOntologiesChanedFired());
-		assertEquals(1,manager.getLoadedOntologies().size());
-		assertEquals(manager.getOntologyManager().getOntologies(),manager.getLoadedOntologies());
+		assertEquals(1,manager.getOntologyManager().getLoadedOntologies().size());
+		assertEquals(manager.getOntologyManager().getOWLOntologyManager().getOntologies(),manager.getOntologyManager().getLoadedOntologies());
 	}
 	
 	@Test
 	public void testRemoveOntology() throws Exception {
 		URI uri = DocumentsCatalogue.jermOntologyURI();
-		manager.loadOntology(IRI.create(uri));		
-		OWLOntology ont = manager.getLoadedOntologies().iterator().next();
+		manager.getOntologyManager().loadOntology(IRI.create(uri));		
+		OWLOntology ont = manager.getOntologyManager().getLoadedOntologies().iterator().next();
 		testListener.reset();
-		manager.removeOntology(ont);		
-		assertEquals(0,manager.getLoadedOntologies().size());		
+		manager.getOntologyManager().removeOntology(ont);		
+		assertEquals(0,manager.getOntologyManager().getLoadedOntologies().size());		
 	}
 	
 	@Test
 	public void testGetDataProperties() throws Exception {
 		URI uri = DocumentsCatalogue.jermOntologyURI();
-		manager.loadOntology(IRI.create(uri));
-		Set<OWLPropertyItem> dataProperties = manager.getOWLDataProperties();		
+		manager.getOntologyManager().loadOntology(IRI.create(uri));
+		Set<OWLPropertyItem> dataProperties = manager.getOntologyManager().getOWLDataProperties();		
 		assertEquals(19,dataProperties.size());
 		boolean found=false;
 		boolean shouldNotBeFound=false;
@@ -200,8 +200,8 @@ public class WorkbookManagerTest {
 	@Test
 	public void testGetObjectProperties() throws Exception {
 		URI uri = DocumentsCatalogue.jermOntologyURI();
-		manager.loadOntology(IRI.create(uri));
-		Set<OWLPropertyItem> objectProperties = manager.getOWLObjectProperties();
+		manager.getOntologyManager().loadOntology(IRI.create(uri));
+		Set<OWLPropertyItem> objectProperties = manager.getOntologyManager().getOWLObjectProperties();
 		System.out.println(objectProperties);
 		assertEquals(18,objectProperties.size());
 		boolean found=false;
@@ -222,8 +222,8 @@ public class WorkbookManagerTest {
 	@Test
 	public void getAllOWLProperties() throws Exception {
 		URI uri = DocumentsCatalogue.jermOntologyURI();
-		manager.loadOntology(IRI.create(uri));
-		Set<OWLPropertyItem> objectProperties = manager.getAllOWLProperties();
+		manager.getOntologyManager().loadOntology(IRI.create(uri));
+		Set<OWLPropertyItem> objectProperties = manager.getOntologyManager().getAllOWLProperties();
 		assertEquals(37,objectProperties.size());
 		boolean found=false;
 		boolean found2=false;

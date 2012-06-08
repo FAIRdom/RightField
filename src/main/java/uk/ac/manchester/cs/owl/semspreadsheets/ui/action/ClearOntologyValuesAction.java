@@ -33,7 +33,7 @@ public class ClearOntologyValuesAction extends WorkbookFrameAction {
     public void actionPerformed(ActionEvent e) {
         int ret = JOptionPane.showConfirmDialog(getWorkbookFrame(), "Are you sure you want to clear all ontology term validation?", "Clear validation?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
         if(ret == JOptionPane.YES_OPTION) {
-            getWorkbookFrame().getWorkbookManager().getOntologyTermValidationManager().clearValidations();    
+            getOntologyManager().clearOntologyTermValidations();    
         }
 
     }

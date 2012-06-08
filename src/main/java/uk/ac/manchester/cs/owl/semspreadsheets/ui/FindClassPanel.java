@@ -65,7 +65,7 @@ public class FindClassPanel extends JPanel {
 		resultWindow = new JWindow(frame);
 		resultWindow.getContentPane().setLayout(new BorderLayout());
 		resultWindow.getContentPane().add(new JScrollPane(resultList));
-		resultList.setCellRenderer(new WorkbookManagerCellRenderer(manager));
+		resultList.setCellRenderer(new OntologyCellRenderer(manager.getOntologyManager()));
 		resultList.setRequestFocusEnabled(false);
 		resultWindow.setFocusable(false);
 		resultWindow.setFocusableWindowState(false);
@@ -103,7 +103,7 @@ public class FindClassPanel extends JPanel {
 				}
 			}			
 		});
-	}
+	}		
 
 	private void moveUpList() {
 		int selIndex = resultList.getSelectedIndex();
@@ -145,7 +145,7 @@ public class FindClassPanel extends JPanel {
 
 	private void doFind() {
 		Collection<OWLEntity> entities = manager
-				.getEntitiesForShortForm(findField.getText().trim());
+				.getOntologyManager().getEntitiesForShortForm(findField.getText().trim());
 		ArrayList<OWLEntity> sortedEntities = new ArrayList<OWLEntity>();
 		for (OWLEntity ent : entities) {
 			if (ent.isOWLClass()) {
@@ -161,8 +161,7 @@ public class FindClassPanel extends JPanel {
 			resultWindow.setSize(findField.getWidth(), 150);
 			Point point = new Point(0, 0);
 			SwingUtilities.convertPointToScreen(point, findField);
-			// SwingUtilities.convertPointFromScreen(point,
-			// frame.getContentPane());
+						
 			resultWindow.setLocation(point.x, point.y + findField.getHeight()
 					+ 3);
 			resultWindow.setVisible(true);

@@ -220,11 +220,10 @@ public class WorkbookFrame extends JFrame {
 
 	public void handleNewWorkbook() {
 		updateTitleBar();
-		Collection<IRI> ontologyIRIs = workbookManager
-				.getOntologyTermValidationManager().getOntologyIRIs();		
+		Collection<IRI> ontologyIRIs = getWorkbookManager().getOntologyManager().getOntologyIRIs();		
 				
 		Set<IRI> missingOntologies = new HashSet<IRI>();
-		Set<OWLOntology> openOntologies = workbookManager.getOntologyManager().getOntologies();
+		Set<OWLOntology> openOntologies = getWorkbookManager().getOntologyManager().getLoadedOntologies();
 		
 		for (IRI ontologyIRI : ontologyIRIs) {			
 			boolean present = false;
@@ -529,7 +528,7 @@ public class WorkbookFrame extends JFrame {
 		int res = JOptionPane.showConfirmDialog(this,"Are you sure you wish to remove the '"+ontology.getOntologyID().getOntologyIRI() +"' ontology?","Remove ontology?",JOptionPane.YES_NO_OPTION);
 		if (res == JOptionPane.YES_OPTION) {
 			setSelectedOntology(null);
-			getWorkbookManager().removeOntology(ontology);			
+			getWorkbookManager().getOntologyManager().removeOntology(ontology);			
 		}
 	}
 

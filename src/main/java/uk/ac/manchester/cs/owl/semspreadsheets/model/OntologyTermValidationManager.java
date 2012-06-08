@@ -25,15 +25,17 @@ import org.semanticweb.owlapi.model.IRI;
 public class OntologyTermValidationManager {
 
 	private static Logger logger = Logger.getLogger(OntologyTermValidationManager.class);
-	
-    private WorkbookManager workbookManager;
 
     private Set<OntologyTermValidation> ontologyTermValidations = new HashSet<OntologyTermValidation>();
 
     private Set<OntologyTermValidationListener> listeners = new HashSet<OntologyTermValidationListener>();
 
+	private final WorkbookManager workbookManager;
+
+	
+
     public OntologyTermValidationManager(WorkbookManager workbookManager) {
-        this.workbookManager = workbookManager;
+		this.workbookManager = workbookManager;		        
     }
 
     public void addListener(OntologyTermValidationListener listener) {
@@ -45,14 +47,14 @@ public class OntologyTermValidationManager {
     }
 
     protected void readValidationFromWorkbook() {
-        OntologyTermValidationWorkbookParser parser = new OntologyTermValidationWorkbookParser(workbookManager);        
+        OntologyTermValidationWorkbookParser parser = new OntologyTermValidationWorkbookParser(getWorkbookManager());        
         ontologyTermValidations.addAll(parser.readOntologyTermValidations());        
         parser.clearOntologyTermValidations();
         fireValidationsChanged();
     }
 
     protected void writeValidationToWorkbook() {
-        OntologyTermValidationWorkbookParser parser = new OntologyTermValidationWorkbookParser(workbookManager);
+        OntologyTermValidationWorkbookParser parser = new OntologyTermValidationWorkbookParser(getWorkbookManager());
         parser.writeOntologyTermValidations(ontologyTermValidations);
     }
 
@@ -80,7 +82,7 @@ public class OntologyTermValidationManager {
         Collection<OntologyTermValidation> intersectingValidations = getIntersectingValidations(range);
         if (!type.equals(ValidationType.NOVALIDATION)) {
             // Add new validation
-            OntologyTermValidationDescriptor descriptor = new OntologyTermValidationDescriptor(type, entityIRI, workbookManager,property);
+            OntologyTermValidationDescriptor descriptor = new OntologyTermValidationDescriptor(type, entityIRI, getOntologyManager(),property);
             OntologyTermValidation validation = new OntologyTermValidation(descriptor, range); 
             previewList.add(validation);
         }
@@ -93,7 +95,7 @@ public class OntologyTermValidationManager {
         Collection<OntologyTermValidation> intersectingValidations = getIntersectingValidations(range);
         if (!type.equals(ValidationType.NOVALIDATION)) {
             // Add new validation
-            OntologyTermValidationDescriptor descriptor = new OntologyTermValidationDescriptor(type, entityIRI, workbookManager,property);
+            OntologyTermValidationDescriptor descriptor = new OntologyTermValidationDescriptor(type, entityIRI,  getOntologyManager(),property);
             OntologyTermValidation validation = new OntologyTermValidation(descriptor, range);
             ontologyTermValidations.add(validation);
         }
@@ -205,5 +207,13 @@ public class OntologyTermValidationManager {
             }
         }
         fireValidationsChanged();
+    }
+    
+    protected WorkbookManager getWorkbookManager() {
+    	return workbookManager;
+    }
+    
+    protected OntologyManager getOntologyManager() {
+    	return getWorkbookManager().getOntologyManager();
     }
 }

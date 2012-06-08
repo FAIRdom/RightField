@@ -19,24 +19,22 @@ import javax.swing.tree.TreeCellRenderer;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 
-import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyManager;
 
 /**
- * Author: Matthew Horridge<br>
- * The University of Manchester<br>
- * Information Management Group<br>
- * Date: 08-Nov-2009
+ * @author Stuart Owen
+ * @author Matthew Horridge
  */
-public class WorkbookManagerCellRenderer implements TreeCellRenderer, ListCellRenderer {
+public class OntologyCellRenderer implements TreeCellRenderer, ListCellRenderer {
 
     private DefaultListCellRenderer listCellRendererDelegate = new DefaultListCellRenderer();
 
     private DefaultTreeCellRenderer treeCellRendererDelegate = new DefaultTreeCellRenderer();
 
-    private WorkbookManager workbookManager;
+	private final OntologyManager ontologyManager;
 
-    public WorkbookManagerCellRenderer(WorkbookManager workbookManager) {
-        this.workbookManager = workbookManager;
+    public OntologyCellRenderer(OntologyManager ontologyManager) {
+        this.ontologyManager = ontologyManager;
     }
 
     public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
@@ -60,8 +58,8 @@ public class WorkbookManagerCellRenderer implements TreeCellRenderer, ListCellRe
 
     private void setupRenderer(JLabel label, Object value) {
         if(value instanceof OWLEntity) {
-            label.setIcon(Icons.getOWLEntityIcon(workbookManager, (OWLEntity) value));
-            label.setText(workbookManager.getRendering((OWLEntity) value));
+            label.setIcon(Icons.getOWLEntityIcon((OWLEntity) value));
+            label.setText(ontologyManager.getRendering((OWLEntity) value));
         }
         else {
             label.setIcon(null);

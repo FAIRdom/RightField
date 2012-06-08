@@ -12,53 +12,20 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.apibinding.OWLManager;
-import org.semanticweb.owlapi.io.IRIDocumentSource;
-import org.semanticweb.owlapi.io.OWLOntologyDocumentSource;
 import org.semanticweb.owlapi.model.IRI;
-import org.semanticweb.owlapi.model.OWLAnnotationProperty;
 import org.semanticweb.owlapi.model.OWLClass;
-import org.semanticweb.owlapi.model.OWLDataFactory;
-import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLEntity;
-import org.semanticweb.owlapi.model.OWLObject;
-import org.semanticweb.owlapi.model.OWLObjectProperty;
-import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyCreationException;
-import org.semanticweb.owlapi.model.OWLOntologyID;
-import org.semanticweb.owlapi.model.OWLOntologyIRIMapper;
-import org.semanticweb.owlapi.model.OWLOntologyLoaderConfiguration;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
-import org.semanticweb.owlapi.model.SetOntologyID;
-import org.semanticweb.owlapi.reasoner.BufferingMode;
-import org.semanticweb.owlapi.reasoner.OWLReasoner;
-import org.semanticweb.owlapi.reasoner.SimpleConfiguration;
-import org.semanticweb.owlapi.reasoner.structural.StructuralReasoner;
-import org.semanticweb.owlapi.util.AnnotationValueShortFormProvider;
-import org.semanticweb.owlapi.util.BidirectionalShortFormProviderAdapter;
-import org.semanticweb.owlapi.util.OWLEntitySetProvider;
-import org.semanticweb.owlapi.util.ShortFormProvider;
-import org.semanticweb.owlapi.util.SimpleShortFormProvider;
-import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.change.SetCellValue;
 import uk.ac.manchester.cs.owl.semspreadsheets.change.WorkbookChange;
 import uk.ac.manchester.cs.owl.semspreadsheets.change.WorkbookChangeListener;
-import uk.ac.manchester.cs.owl.semspreadsheets.repository.bioportal.BioPortalRepository;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.CellSelectionListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.CellSelectionModel;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.EntitySelectionModel;
@@ -79,9 +46,8 @@ public class WorkbookManager {
     private URI workbookURI;
     
     private OWLOntologyManager owlManager;
-
-    private OWLReasoner reasoner;
-    public Map<OWLOntologyID,OWLReasoner> ontologyReasoners = new HashMap<OWLOntologyID, OWLReasoner>();
+    
+    private OntologyManager ontologyManager;   
     
     private WorkbookState workbookState = new WorkbookState();
 
@@ -91,19 +57,11 @@ public class WorkbookManager {
 
     private Set<WorkbookManagerListener> workbookManagerListeners = new HashSet<WorkbookManagerListener>();
 
-    private OntologyTermValidationManager ontologyTermValidationManager;
-
-    private BidirectionalShortFormProviderAdapter shortFormProvider;
-    
-    private OWLOntologyLoaderConfiguration ontologyLoaderConfiguration = new OWLOntologyLoaderConfiguration();
-
     public WorkbookManager() {    	
         this.owlManager = OWLManager.createOWLOntologyManager();
-        
-        ontologyLoaderConfiguration.setSilentMissingImportsHandling(true);        
-        shortFormProvider = new BidirectionalShortFormProviderAdapter(new SimpleShortFormProvider());
-        entitySelectionModel = new EntitySelectionModel(owlManager.getOWLDataFactory().getOWLThing());
-        ontologyTermValidationManager = new OntologyTermValidationManager(this);
+        ontologyManager = new OntologyManager(owlManager,this);
+                                
+        entitySelectionModel = new EntitySelectionModel(owlManager.getOWLDataFactory().getOWLThing());        
         workbook = WorkbookFactory.createWorkbook();
         selectionModel = new CellSelectionModel();
         selectionModel.setSelectedRange(new Range(workbook.getSheet(0)));
@@ -126,19 +84,17 @@ public class WorkbookManager {
 
     public void addListener(WorkbookManagerListener listener) {
         workbookManagerListeners.add(listener);
+        getOntologyManager().addListener(listener);
     }
 
     public void removeListener(WorkbookManagerListener listener) {
         workbookManagerListeners.remove(listener);
+        getOntologyManager().removeListener(listener);
     }
-
-    public OntologyTermValidationManager getOntologyTermValidationManager() {
-        return ontologyTermValidationManager;
-    }
-
+    
     public EntitySelectionModel getEntitySelectionModel() {
         return entitySelectionModel;
-    }
+    }    
 
     private List<WorkbookManagerListener> getCopyOfListeners() {
         return new ArrayList<WorkbookManagerListener>(workbookManagerListeners);
@@ -148,8 +104,8 @@ public class WorkbookManager {
         Range range = selectionModel.getSelectedRange();
         OWLEntity selEnt = entitySelectionModel.getSelection();
         if (range.isCellSelection()) {
-            for (OntologyTermValidation validation : ontologyTermValidationManager.getContainingValidations(range)) {
-                OWLClass cls = getDataFactory().getOWLClass(validation.getValidationDescriptor().getEntityIRI());
+            for (OntologyTermValidation validation : getOntologyManager().getContainingOntologyTermValidations(range)) {
+                OWLClass cls = getOntologyManager().getDataFactory().getOWLClass(validation.getValidationDescriptor().getEntityIRI());
                 selEnt = cls;
                 break;
             }
@@ -158,7 +114,7 @@ public class WorkbookManager {
     }
 
     private void fireWorkbookCreated() {
-        WorkbookManagerEvent event = new WorkbookManagerEvent(this);
+        WorkbookManagerEvent event = new WorkbookManagerEvent();
         for (WorkbookManagerListener listener : getCopyOfListeners()) {
             try {
                 listener.workbookCreated(event);
@@ -177,22 +133,10 @@ public class WorkbookManager {
 
 
     private void fireWorkbookLoaded() {
-        WorkbookManagerEvent event = new WorkbookManagerEvent(this);
+        WorkbookManagerEvent event = new WorkbookManagerEvent();
         for (WorkbookManagerListener listener : getCopyOfListeners()) {
             try {
                 listener.workbookLoaded(event);
-            }
-            catch (Throwable e) {
-                ErrorHandler.getErrorHandler().handleError(e);
-            }
-        }
-    }
-
-    private void fireOntologiesChanged() {
-        WorkbookManagerEvent event = new WorkbookManagerEvent(this);
-        for (WorkbookManagerListener listener : getCopyOfListeners()) {
-            try {
-                listener.ontologiesChanged(event);
             }
             catch (Throwable e) {
                 ErrorHandler.getErrorHandler().handleError(e);
@@ -216,7 +160,7 @@ public class WorkbookManager {
         	workbook.addChangeListener(l);
         }
         workbookURI=null;
-        getOntologyTermValidationManager().clearValidations();
+        getOntologyManager().clearOntologyTermValidations();
         fireWorkbookCreated();
         getWorkbookState().changesSaved();
         return workbook;
@@ -235,7 +179,7 @@ public class WorkbookManager {
             workbookURI = uri;
             
             // Extract validation
-            getOntologyTermValidationManager().readValidationFromWorkbook();
+            getOntologyManager().getOntologyTermValidationManager().readValidationFromWorkbook();
             fireWorkbookLoaded();
             getWorkbookState().changesSaved();
             return workbook;
@@ -255,7 +199,7 @@ public class WorkbookManager {
 
     public void saveWorkbook(URI uri) throws IOException {
         // Insert validation
-        ontologyTermValidationManager.writeValidationToWorkbook();
+    	getOntologyManager().getOntologyTermValidationManager().writeValidationToWorkbook();
         workbook.saveAs(uri);        
         OntologyTermValidationWorkbookParser workbookParser = new OntologyTermValidationWorkbookParser(this);
         workbookParser.clearOntologyTermValidations();
@@ -271,7 +215,7 @@ public class WorkbookManager {
     	ValidationType type = entitySelectionModel.getValidationType();
     	OWLPropertyItem owlPropertyItem = entitySelectionModel.getOWLPropertyItem();
     	Range range = new Range(workbook.getSheet(0));
-    	ontologyTermValidationManager.previewValidation(range,type, iri,owlPropertyItem);
+    	getOntologyManager().getOntologyTermValidationManager().previewValidation(range,type, iri,owlPropertyItem);
 	}	
     
     public void applyValidationChange() {
@@ -296,7 +240,7 @@ public class WorkbookManager {
 
     public void setValidationAt(Range range,ValidationType type, IRI entityIRI, OWLPropertyItem property) {
     	Range rangeToApply;
-        Collection<OntologyTermValidation> validations = ontologyTermValidationManager.getContainingValidations(range);
+        Collection<OntologyTermValidation> validations = getOntologyManager().getContainingOntologyTermValidations(range);
         
         if(validations.isEmpty()) {
             rangeToApply=range;
@@ -305,12 +249,12 @@ public class WorkbookManager {
             OntologyTermValidation validation = validations.iterator().next();
             rangeToApply=validation.getRange();            
         }
-        String cellText=getRendering(owlManager.getOWLDataFactory().getOWLAnnotationProperty(entityIRI));
+        String cellText=getOntologyManager().getRendering(owlManager.getOWLDataFactory().getOWLAnnotationProperty(entityIRI));
         if (type == ValidationType.NOVALIDATION) {
         	cellText = "";
         }
         
-        ontologyTermValidationManager.setValidation(rangeToApply, type, entityIRI, property);
+        getOntologyManager().setOntologyTermValidation(rangeToApply, type, entityIRI, property);
         
         for(int col = rangeToApply.getFromColumn(); col < rangeToApply.getToColumn() + 1; col++) {
             for(int row = rangeToApply.getFromRow(); row < rangeToApply.getToRow() + 1; row++) {
@@ -340,7 +284,7 @@ public class WorkbookManager {
     	ValidationType type = entitySelectionModel.getValidationType();
     	IRI iri = entitySelectionModel.getSelection().getIRI();
     	Range selectedRange = getSelectionModel().getSelectedRange();
-    	Collection<OntologyTermValidation> validations = ontologyTermValidationManager.getContainingValidations(selectedRange);
+    	Collection<OntologyTermValidation> validations = getOntologyManager().getContainingOntologyTermValidations(selectedRange);
     	boolean result = false;
     	for (OntologyTermValidation validation : validations) {
     		OntologyTermValidationDescriptor validationDescriptor = validation.getValidationDescriptor();
@@ -358,9 +302,9 @@ public class WorkbookManager {
     
     
     public void removeValidations(Range range) {
-    	if (getOntologyTermValidationManager().getContainingValidations(range).size()>0)
+    	if (getOntologyManager().getContainingOntologyTermValidations(range).size()>0)
     	{
-	    	getOntologyTermValidationManager().removeValidations(range);
+    		getOntologyManager().remoteOntologyTermValidations(range);
 	    	for(int col = range.getFromColumn(); col < range.getToColumn() + 1; col++) {
 	            for(int row = range.getFromRow(); row < range.getToRow() + 1; row++) {
 	                Cell cell = range.getSheet().getCellAt(col, row);
@@ -372,286 +316,14 @@ public class WorkbookManager {
 	    	}
     	}
     }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    ////
-    ////  Creating, loading and saving ontologies
-    ////
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    public OWLOntologyManager getOntologyManager() {
-        return owlManager;
-    }
-
-    public void unloadOntology(IRI physicalIRI) {    	
-    	OWLOntology loaded = null;
-    	
-    	for (OWLOntology ontology : getLoadedOntologies()) {    		
-    		if (physicalIRI.equals(ontology.getOntologyID().getVersionIRI())) {    			
-    			loaded = ontology;
-    			break;
-    		}
-    	}    	
-    	if (loaded != null) owlManager.removeOntology(loaded);
-    }
     
-    public void loadEmbeddedTermOntologies() {
-        ontologyTermValidationManager.getOntologyIRIs();
-        final Map<IRI, IRI> ontologyIRIMap = ontologyTermValidationManager.getOntology2PhysicalIRIMap();
-        OWLOntologyIRIMapper mapper = new OntologyTermValdiationManagerMapper(ontologyTermValidationManager);
-        owlManager.addIRIMapper(mapper);                
-        for(IRI iri : ontologyIRIMap.keySet()) {        	
-            if(!owlManager.contains(iri)) {
-                try {
-					loadOntology(iri);
-				} catch (OWLOntologyCreationException e) {
-					logger.error("Error loading ontology for embedded term.",e);
-				}
-            }
-        }
-        owlManager.removeIRIMapper(mapper);        
-        setLabelRendering(true);        
-    }
-    
-    /**
-     * Uses a Future to allow the opening of the ontology source to timeout (since the owlAPI doesn't always seem to timeout for invalid URI's such
-     * @param source - the OWLOntologyDocumentSource containing the IRI of the ontology to be opened
-     * @param timeout - time in SECONDS
-     * @return the OWLOntology
-     * @throws OWLOntologyCreationException
-     */
-    private OWLOntology processOntologyDocumentSourceWithTimeout(final OWLOntologyDocumentSource source,int timeout) throws OWLOntologyCreationException {
-    	
-		Callable<OWLOntology> callable = new Callable<OWLOntology>() {
-			@Override
-			public OWLOntology call() throws Exception {
-				return owlManager.loadOntologyFromOntologyDocument(source,
-						ontologyLoaderConfiguration);
-			}
-		};
-
-		OWLOntology ontology;
-
-		ExecutorService executor = Executors.newCachedThreadPool();
-		Future<OWLOntology> future = executor.submit(callable);
-		try {
-			ontology = future.get(timeout, TimeUnit.SECONDS);
-		} catch (InterruptedException e) {
-			logger.error("There was an error trying to open the ontology "
-					+ source.getDocumentIRI().toString(), e);
-			throw new OWLOntologyCreationException(
-					"There was an error trying to open the ontology from "
-							+ source.getDocumentIRI().toString() + " - "
-							+ e.getMessage());
-		} catch (ExecutionException e) {
-			if (e.getCause() instanceof OWLOntologyCreationException) {
-				throw (OWLOntologyCreationException) e.getCause();
-			} else {
-				throw new OWLOntologyCreationException(
-						"There was an error trying to open the ontology from "
-								+ source.getDocumentIRI().toString() + " - "
-								+ e.getMessage());
-			}
-		} catch (TimeoutException e) {
-			throw new OWLOntologyCreationException(
-					"There was a timeout whilst fetching the ontology from "
-							+ source.getDocumentIRI().toString());
-		}
-
-		return ontology;  	
-    }
-    
-    public OWLOntology loadOntology(IRI physicalIRI) throws OWLOntologyCreationException {
-    	
-    	OWLOntologyID newID = null;
-    	IRI logIRI = null;
-    	
-        logger.info("Loading: " + physicalIRI);
-        //See if an ontology with such ID had been loaded. If yes, unload it
-        unloadOntology(physicalIRI);
-                
-        OWLOntologyDocumentSource source = new IRIDocumentSource(BioPortalRepository.handleBioPortalAPIKey(physicalIRI));
-                
-        OWLOntology ontology = processOntologyDocumentSourceWithTimeout(source, 30);
-    	
-    	logIRI = ontology.getOntologyID().getOntologyIRI();
-    	//Create a new ID and use the physical IRI as a version ID        
-        newID = new OWLOntologyID(logIRI,physicalIRI);        
-        owlManager.applyChange(new SetOntologyID(ontology, newID));
-        updateStructuralReasoner();
-        updateStructuralReasoner(ontology);
-        setLabelRendering(true);
-        fireOntologiesChanged();        
-        
-        return ontology;
-    }        
-    
-    public void removeOntology(OWLOntology ontology) {
-    	owlManager.removeOntology(ontology);    	
-    	fireOntologiesChanged();
-    }
-
-    public Set<OWLOntology> getLoadedOntologies() {
-    	//FIXME: not sure this, or a lot of other ontology related stuff, really belongs in WorkbookManager. Maybe should be refactored out.
-        return owlManager.getOntologies();
-    }    
-    
-    public Set<OWLPropertyItem> getOWLDataProperties() {
-    	Set<OWLPropertyItem> properties = new HashSet<OWLPropertyItem>();
-    	for (OWLOntology ontology : getLoadedOntologies()) {
-    		for (OWLDataProperty property : ontology.getDataPropertiesInSignature())
-    		{
-    			if (!property.isTopEntity()) {
-    				properties.add(new OWLPropertyItem(property));
-    			}
-    		}    		
-    	}    	
-    	return properties;
-    }
-    
-    public Set<OWLPropertyItem> getOWLObjectProperties() {
-    	Set<OWLPropertyItem> properties = new HashSet<OWLPropertyItem>();
-    	for (OWLOntology ontology : getLoadedOntologies()) {
-    		for (OWLObjectProperty property : ontology.getObjectPropertiesInSignature())
-    		{
-    			if (!property.isTopEntity()) {
-    				properties.add(new OWLPropertyItem(property));
-    			}
-    		}    		
-    	}    	
-    	return properties;
+    public OntologyManager getOntologyManager() {
+    	return ontologyManager;
     }
 
     public CellSelectionModel getSelectionModel() {
         return selectionModel;
-    }
-    
-    public Set<OWLPropertyItem> getAllOWLProperties() {
-    	Set<OWLPropertyItem> properties = getOWLDataProperties();
-    	properties.addAll(getOWLObjectProperties());
-    	return properties;
-    }
-
-    /**
-     * Returns a StructuralReasoner that works over all loaded ontologies
-     * @see #getStructuralReasoner(OWLOntology) for reasoners over individual ontologies
-     * @return
-     */
-    public OWLReasoner getStructuralReasoner() {
-        if (reasoner == null) {
-            updateStructuralReasoner();
-        }        
-        return reasoner;
-    }
-    
-    /**
-     * returns (and setsup if necessary) a StucturalReasoner that works over the given ontology only
-     * @see #getStructuralReasoner()
-     * @param ontology
-     * @return
-     */
-    public OWLReasoner getStructuralReasoner(OWLOntology ontology) {
-    	OWLReasoner reasoner = null;
-    	synchronized (ontologyReasoners) {
-    		reasoner = ontologyReasoners.get(ontology.getOntologyID());
-    		if (reasoner==null) {
-    			reasoner = updateStructuralReasoner(ontology);
-    		}
-		}
-    	return reasoner;
-    }
-
-	private OWLReasoner updateStructuralReasoner(OWLOntology ontology) {
-		OWLReasoner reasoner;
-		reasoner = new StructuralReasoner(ontology, new SimpleConfiguration(), BufferingMode.NON_BUFFERING);
-		reasoner.precomputeInferences();
-		ontologyReasoners.put(ontology.getOntologyID(), reasoner);
-		return reasoner;
-	}
-	
-	private OWLReasoner updateStructuralReasoner() {    	
-        try {        	
-            OWLOntologyManager man = OWLManager.createOWLOntologyManager();            
-            OWLOntology root = man.createOntology(IRI.create("owlapi:reasoner"), getLoadedOntologies());
-            reasoner = new StructuralReasoner(root, new SimpleConfiguration(), BufferingMode.NON_BUFFERING);
-            reasoner.precomputeInferences();
-        }
-        catch (OWLOntologyCreationException e) {
-            ErrorHandler.getErrorHandler().handleError(e);
-        }
-        return reasoner;
-    }
-
-    public Collection<OWLEntity> getEntitiesForShortForm(String shortForm) {
-        Set<OWLEntity> result = new HashSet<OWLEntity>();
-        for(String s : shortFormProvider.getShortForms()) {
-            if(s.toLowerCase().contains(shortForm.toLowerCase())) {
-                result.addAll(shortFormProvider.getEntities(s));
-            }
-        }
-        return result;
-    }
-
-    public String getRendering(OWLObject object) {
-        if (object instanceof OWLEntity) {
-            return shortFormProvider.getShortForm((OWLEntity) object);
-        }
-        else {
-            return object.toString();
-        }
-    }
-
-    public void setLabelRendering(boolean b) {
-        if(b) {
-            IRI iri = OWLRDFVocabulary.RDFS_LABEL.getIRI();
-            OWLAnnotationProperty prop = owlManager.getOWLDataFactory().getOWLAnnotationProperty(iri);
-            List<OWLAnnotationProperty> props = new ArrayList<OWLAnnotationProperty>();
-            props.add(prop);
-            ShortFormProvider provider = new AnnotationValueShortFormProvider(props, new HashMap<OWLAnnotationProperty, List<String>>(), owlManager);
-            shortFormProvider.dispose();
-            shortFormProvider = new BidirectionalShortFormProviderAdapter(owlManager.getOntologies(), provider);
-            final Set<OWLEntity> entities = new HashSet<OWLEntity>();
-            for(OWLOntology ont : owlManager.getOntologies()) {
-                entities.addAll(ont.getSignature());
-            }
-            shortFormProvider.rebuild(new OWLEntitySetProvider<OWLEntity>() {
-                public Set<OWLEntity> getEntities() {
-                    return entities;
-                }
-            });
-        }
-        else {
-            ShortFormProvider provider = new SimpleShortFormProvider();
-            shortFormProvider = new BidirectionalShortFormProviderAdapter(owlManager.getOntologies(), provider);
-        }
-    }
-
-    public OWLDataFactory getDataFactory() {
-        return owlManager.getOWLDataFactory();
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    ////
-    ////  Validations
-    ////
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-    public Collection<OntologyTermValidation> getOntologyTermValidations() {
-        return ontologyTermValidationManager.getValidations();
-    }
-
-    public Collection<OntologyTermValidation> getIntersectingOntologyTermValidations(Range range) {
-        return ontologyTermValidationManager.getIntersectingValidations(range);
-    }
-
-    public Collection<OntologyTermValidation> getContainingOntologyTermValidations(Range range) {
-        return ontologyTermValidationManager.getContainingValidations(range);
-    }
+    }        
 
 	public WorkbookState getWorkbookState() {
 		return workbookState;
@@ -666,7 +338,7 @@ public class WorkbookManager {
 		//cleanup validations linked to this sheet
 		Sheet sheet = getWorkbook().getSheet(name);
 		if (sheet!=null) {
-			getOntologyTermValidationManager().removeValidations(sheet);
+			getOntologyManager().remoteOntologyTermValidations(sheet);
 		}
 		else {
 			logger.warn("Attempt to delete sheet with unrecognised name:"+name);

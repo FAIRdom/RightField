@@ -30,7 +30,7 @@ public class LoadOntologyFromURITask extends AbstractTask<OWLOntology, OWLOntolo
 
     public OWLOntology runTask() throws OWLOntologyCreationException {
     	try {    		
-    		return getWorkbookFrame().getWorkbookManager().loadOntology(IRI.create(uri));
+    		return getOntologyManager().loadOntology(IRI.create(uri));
     	}
     	catch(OWLOntologyCreationException e) {    		
     		ErrorHandler.getErrorHandler().handleError(e);

@@ -15,7 +15,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.ui.task.AbstractTask;
 public class LoadEmbeddedTermsOntologies extends AbstractTask<Object,RuntimeException> {
 
     public Object runTask() throws RuntimeException {
-        getWorkbookFrame().getWorkbookManager().loadEmbeddedTermOntologies();
+        getOntologyManager().loadEmbeddedTermOntologies();
         return null;
     }
 

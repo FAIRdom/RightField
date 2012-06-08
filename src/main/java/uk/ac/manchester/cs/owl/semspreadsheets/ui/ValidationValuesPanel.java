@@ -61,7 +61,7 @@ public class ValidationValuesPanel extends JPanel {
                     String msg = NO_VALIDATION_MESSAGE;
                     Range selRange = workbookManager.getSelectionModel().getSelectedRange();
                     if (selRange.isCellSelection()) {
-                        Collection<OntologyTermValidation> validations = workbookManager.getOntologyTermValidationManager().getContainingValidations(selRange);
+                        Collection<OntologyTermValidation> validations = workbookManager.getOntologyManager().getContainingOntologyTermValidations(selRange);
                         if(!validations.isEmpty()) {
                             msg = EMPTY_VALIDATION;
                         }
@@ -88,7 +88,7 @@ public class ValidationValuesPanel extends JPanel {
             }
         });
         termList.setCellRenderer(new ValueListItemCellRenderer());
-        workbookManager.getOntologyTermValidationManager().addListener(new OntologyTermValidationListener() {
+        workbookManager.getOntologyManager().addListener(new OntologyTermValidationListener() {
             @Override
         	public void validationsChanged() {
                 updateFromModel();
@@ -120,7 +120,7 @@ public class ValidationValuesPanel extends JPanel {
         if(!range.isCellSelection()) {
             return;
         }
-        Collection<OntologyTermValidation> validations = workbookManager.getContainingOntologyTermValidations(range);
+        Collection<OntologyTermValidation> validations = workbookManager.getOntologyManager().getContainingOntologyTermValidations(range);
         TreeSet<ValueListItem> listData = new TreeSet<ValueListItem>();
         for(OntologyTermValidation validation : validations) {
             for(Term term : validation.getValidationDescriptor().getTerms()) {
@@ -137,7 +137,7 @@ public class ValidationValuesPanel extends JPanel {
             JLabel label = (JLabel) super.getListCellRendererComponent(list, ((ValueListItem) value), index, isSelected, cellHasFocus);
             ValueListItem item = (ValueListItem) value;
             EntityType<?> entityType = item.getType().getEntityType();
-            label.setIcon(Icons.getOWLEntityIcon(workbookManager, entityType));
+            label.setIcon(Icons.getOWLEntityIcon(entityType));
             return label;
         }
     }

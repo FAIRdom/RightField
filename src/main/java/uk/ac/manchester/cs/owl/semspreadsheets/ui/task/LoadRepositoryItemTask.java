@@ -25,7 +25,7 @@ public class LoadRepositoryItemTask extends AbstractTask<OWLOntology, OWLOntolog
     }
 
     public OWLOntology runTask() throws OWLOntologyCreationException {
-        return getWorkbookFrame().getWorkbookManager().loadOntology(repositoryItem.getPhysicalIRI());
+        return getOntologyManager().loadOntology(repositoryItem.getPhysicalIRI());
     }
 
     public String getTitle() {    	

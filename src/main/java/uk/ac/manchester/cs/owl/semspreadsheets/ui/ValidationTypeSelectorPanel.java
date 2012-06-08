@@ -100,8 +100,8 @@ public class ValidationTypeSelectorPanel extends JPanel {
             return;
         }
         setRadioButtonsEnabled(range.isCellSelection());
-        Collection<OntologyTermValidation> intersectingValidations = workbookManager.getIntersectingOntologyTermValidations(range);
-        Collection<OntologyTermValidation> containingValidations = workbookManager.getContainingOntologyTermValidations(range);
+        Collection<OntologyTermValidation> intersectingValidations = workbookManager.getOntologyManager().getIntersectingOntologyTermValidations(range);
+        Collection<OntologyTermValidation> containingValidations = workbookManager.getOntologyManager().getContainingOntologyTermValidations(range);
         setRadioButtonsEnabled(containingValidations.size() <= 1 && intersectingValidations.size() == containingValidations.size());
         if(containingValidations.isEmpty()) {
             values.keySet().iterator().next().setSelected(true);
@@ -110,7 +110,7 @@ public class ValidationTypeSelectorPanel extends JPanel {
             OntologyTermValidation validation = containingValidations.iterator().next();
             setSelected(validation);
         }
-        if (workbookManager.getLoadedOntologies().isEmpty()) {
+        if (workbookManager.getOntologyManager().getLoadedOntologies().isEmpty()) {
             setNonEmptyRadioButtonsEnabled(false);
         }
     }

@@ -11,6 +11,8 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyManager;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookFrame;
 
 /**
@@ -105,6 +107,14 @@ public abstract class AbstractTask<V, E extends Throwable> implements Task<V, E>
         for(TaskListener lsnr : listeners) {
             lsnr.messageChanged(this);
         }
+    }
+    
+    protected OntologyManager getOntologyManager() {
+    	return getWorkbookManager().getOntologyManager();
+    }
+    
+    protected WorkbookManager getWorkbookManager() {
+    	return getWorkbookFrame().getWorkbookManager();
     }
 
 

@@ -13,6 +13,7 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.KeyStroke;
 
+import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyManager;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 
 @SuppressWarnings("serial")
@@ -45,7 +46,11 @@ public abstract class WorkbookAction extends AbstractAction {
         putValue(Action.ACCELERATOR_KEY, ks);
     }
 
-    public WorkbookManager getWorkbookManager() {
+    protected WorkbookManager getWorkbookManager() {
         return workbookManager;
+    }
+    
+    protected OntologyManager getOntologyManager() {
+    	return getWorkbookManager().getOntologyManager();
     }
 }

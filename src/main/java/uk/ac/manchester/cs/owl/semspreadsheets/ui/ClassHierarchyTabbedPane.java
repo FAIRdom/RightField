@@ -190,7 +190,7 @@ public class ClassHierarchyTabbedPane extends JTabbedPane {
 	}
 	
 	private Set<OWLOntology> getLoadedOntologies() {
-		return getWorkbookManager().getLoadedOntologies();
+		return getWorkbookManager().getOntologyManager().getLoadedOntologies();
 	}				
 	
 	@Override
