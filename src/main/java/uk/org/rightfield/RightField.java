@@ -1,3 +1,4 @@
+package uk.org.rightfield;
 /*******************************************************************************
  * Copyright (c) 2009-2012, University of Manchester
  * 
@@ -7,12 +8,16 @@
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.util.prefs.Preferences;
 
 import javax.swing.JFrame;
 
 import org.apache.log4j.Logger;
 
+import uk.ac.manchester.cs.owl.semspreadsheets.export.CSVExporter;
+import uk.ac.manchester.cs.owl.semspreadsheets.export.Exporter;
+import uk.ac.manchester.cs.owl.semspreadsheets.export.RDFExporter;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookFrame;
 
@@ -33,7 +38,52 @@ public class RightField {
     private static final String WINDOW_HEIGHT_KEY = "orch.window.height";
 
     public static void main(String[] args) {
-    	logger.debug("Starting Up");
+    	new RightField(args);
+    }
+    
+    public RightField(String [] args) {
+    	logger.debug("Intialised");
+    	boolean cont=handleArguments(args);
+    	
+    	if (cont) {
+    		startUp();
+    	}
+    }
+    
+    private boolean handleArguments(String [] args) {
+    	RightFieldOptions options = new RightFieldOptions(args);
+    	boolean cont=true;
+    	if (options.isExport()) {
+    		try {
+    			export(options);
+    			cont=false;
+    		}
+    		catch(Exception e) {
+    			logger.error("Error attempting export",e);    			
+    		}    		
+    	}
+    	return cont;
+    }
+    
+    private void export(RightFieldOptions options) throws Exception {
+    	logger.debug("Exporting "+options.getFilename());
+    	File file = new File(options.getFilename());
+    	Exporter exporter;
+    	if (options.getExportFormat().equals("rdf")) {
+    		exporter=new RDFExporter(file,options.getId());
+    	}
+    	else if (options.getExportFormat().equals("csv")) {
+    		exporter=new CSVExporter(file);
+    	}
+    	else {
+    		throw new Exception("Unrecognised export format");
+    	}
+    	exporter.export(System.out);
+    	
+    }
+    
+    private void startUp() {
+    	logger.debug("Starting Up UI");
     	WorkbookManager manager = new WorkbookManager();    	
         final WorkbookFrame frame = new WorkbookFrame(manager);
         Preferences preferences = Preferences.userNodeForPackage(RightField.class);
@@ -51,11 +101,8 @@ public class RightField {
         		System.exit(0);
         	}
             @Override
-            public void windowClosing(WindowEvent e) {
-            	
-            	boolean close = frame.checkSavedState("Exit RightField");
-            	
-            	
+            public void windowClosing(WindowEvent e) {            	
+            	boolean close = frame.checkSavedState("Exit RightField");            	            	
 				if (close) {
 					Preferences preferences = Preferences.userNodeForPackage(RightField.class);
 	                preferences.putInt(WINDOW_X_KEY, frame.getX());
@@ -65,6 +112,6 @@ public class RightField {
 					frame.dispose();
 				}                
             }
-        });        
+        });
     }
 }

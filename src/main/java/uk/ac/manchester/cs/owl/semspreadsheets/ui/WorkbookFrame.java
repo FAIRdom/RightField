@@ -52,6 +52,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.AboutBoxAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.ClearOntologyValuesAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.CloseWorkbookAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.ExitAction;
+import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.ExportRDFAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.InsertSheetAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.OnlineHelpAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.OpenFromBioPortalAction;
@@ -170,6 +171,8 @@ public class WorkbookFrame extends JFrame {
 		fileMenu.addSeparator();
 		fileMenu.add(new SaveAction(this));
 		fileMenu.add(new SaveAsAction(this));
+		fileMenu.add(new JSeparator());
+		fileMenu.add(new ExportRDFAction(this));
 		fileMenu.add(new JSeparator());
 		fileMenu.add(new ExitAction(this));
 		
@@ -372,10 +375,10 @@ public class WorkbookFrame extends JFrame {
 		return checkForDefaultExtension(file,".xls");
 	}
 
-	private File checkForDefaultExtension(File file,String defaultExtension) {
+	public File checkForDefaultExtension(File file,String defaultExtension) {
 		String filename = file.getName();
-		if (!filename.endsWith(".xls")) {
-			file = new File(file.getPath()+".xls");
+		if (!filename.endsWith(defaultExtension)) {
+			file = new File(file.getPath()+defaultExtension);
 		}
 		return file;
 	}

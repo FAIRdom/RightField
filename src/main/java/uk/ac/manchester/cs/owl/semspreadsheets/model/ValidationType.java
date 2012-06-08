@@ -44,7 +44,7 @@ public enum ValidationType {
     @SuppressWarnings("rawtypes")
 	public EntityType getEntityType() {
         return entityType;
-    }
+    }    
 
     public Set<OWLEntity> getEntities(WorkbookManager workbookManager, IRI iri) {
         if (this.equals(SUBCLASSES)) {
@@ -64,7 +64,6 @@ public enum ValidationType {
         else if (this.equals(DIRECTINDIVIDUALS)) {
             OWLClass cls = workbookManager.getDataFactory().getOWLClass(iri);
             return new HashSet<OWLEntity>(workbookManager.getStructuralReasoner().getInstances(cls, true).getFlattened());
-
         }
         else {
             return Collections.emptySet();

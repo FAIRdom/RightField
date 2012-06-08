@@ -4,4 +4,3 @@ if errorlevel = 1 goto Error
 Exit
 :Error
 pause
-Exit

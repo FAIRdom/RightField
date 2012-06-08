@@ -33,8 +33,10 @@ import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAnnotationProperty;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLObject;
+import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyID;
@@ -97,6 +99,7 @@ public class WorkbookManager {
 
     public WorkbookManager() {    	
         this.owlManager = OWLManager.createOWLOntologyManager();
+        
         ontologyLoaderConfiguration.setSilentMissingImportsHandling(true);        
         shortFormProvider = new BidirectionalShortFormProviderAdapter(new SimpleShortFormProvider());
         entitySelectionModel = new EntitySelectionModel(owlManager.getOWLDataFactory().getOWLThing());
@@ -266,20 +269,22 @@ public class WorkbookManager {
     public void previewValidation() {
     	IRI iri = entitySelectionModel.getSelection().getIRI();
     	ValidationType type = entitySelectionModel.getValidationType();
+    	OWLPropertyItem owlPropertyItem = entitySelectionModel.getOWLPropertyItem();
     	Range range = new Range(workbook.getSheet(0));
-    	ontologyTermValidationManager.previewValidation(range,type, iri);
+    	ontologyTermValidationManager.previewValidation(range,type, iri,owlPropertyItem);
 	}	
     
     public void applyValidationChange() {
     	ValidationType type = entitySelectionModel.getValidationType();
     	IRI iri = entitySelectionModel.getSelection().getIRI();
+    	OWLPropertyItem propertyItem = entitySelectionModel.getOWLPropertyItem();
     	logger.debug("Setting validation for IRI "+iri.toString()+", type "+type.toString());    			        
         
         Range selectedRange = getSelectionModel().getSelectedRange();
         if(!selectedRange.isCellSelection()) {
             return;
         }
-        setValidationAt(selectedRange, type, iri);
+        setValidationAt(selectedRange, type, iri,propertyItem);
         fireValidationAppliedOrCancelled();
     }      
     
@@ -289,7 +294,7 @@ public class WorkbookManager {
     	fireValidationAppliedOrCancelled();
     }
 
-    public void setValidationAt(Range range,ValidationType type, IRI entityIRI) {
+    public void setValidationAt(Range range,ValidationType type, IRI entityIRI, OWLPropertyItem property) {
     	Range rangeToApply;
         Collection<OntologyTermValidation> validations = ontologyTermValidationManager.getContainingValidations(range);
         
@@ -305,7 +310,7 @@ public class WorkbookManager {
         	cellText = "";
         }
         
-        ontologyTermValidationManager.setValidation(rangeToApply, type, entityIRI);
+        ontologyTermValidationManager.setValidation(rangeToApply, type, entityIRI, property);
         
         for(int col = rangeToApply.getFromColumn(); col < rangeToApply.getToColumn() + 1; col++) {
             for(int row = rangeToApply.getFromRow(); row < rangeToApply.getToRow() + 1; row++) {
@@ -489,11 +494,44 @@ public class WorkbookManager {
     }
 
     public Set<OWLOntology> getLoadedOntologies() {
+    	//FIXME: not sure this, or a lot of other ontology related stuff, really belongs in WorkbookManager. Maybe should be refactored out.
         return owlManager.getOntologies();
+    }    
+    
+    public Set<OWLPropertyItem> getOWLDataProperties() {
+    	Set<OWLPropertyItem> properties = new HashSet<OWLPropertyItem>();
+    	for (OWLOntology ontology : getLoadedOntologies()) {
+    		for (OWLDataProperty property : ontology.getDataPropertiesInSignature())
+    		{
+    			if (!property.isTopEntity()) {
+    				properties.add(new OWLPropertyItem(property));
+    			}
+    		}    		
+    	}    	
+    	return properties;
+    }
+    
+    public Set<OWLPropertyItem> getOWLObjectProperties() {
+    	Set<OWLPropertyItem> properties = new HashSet<OWLPropertyItem>();
+    	for (OWLOntology ontology : getLoadedOntologies()) {
+    		for (OWLObjectProperty property : ontology.getObjectPropertiesInSignature())
+    		{
+    			if (!property.isTopEntity()) {
+    				properties.add(new OWLPropertyItem(property));
+    			}
+    		}    		
+    	}    	
+    	return properties;
     }
 
     public CellSelectionModel getSelectionModel() {
         return selectionModel;
+    }
+    
+    public Set<OWLPropertyItem> getAllOWLProperties() {
+    	Set<OWLPropertyItem> properties = getOWLDataProperties();
+    	properties.addAll(getOWLObjectProperties());
+    	return properties;
     }
 
     /**
@@ -504,7 +542,7 @@ public class WorkbookManager {
     public OWLReasoner getStructuralReasoner() {
         if (reasoner == null) {
             updateStructuralReasoner();
-        }
+        }        
         return reasoner;
     }
     

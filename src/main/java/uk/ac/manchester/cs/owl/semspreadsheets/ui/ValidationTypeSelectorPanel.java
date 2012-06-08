@@ -48,14 +48,15 @@ public class ValidationTypeSelectorPanel extends JPanel {
         setLayout(new BorderLayout());
         Box box = new Box(BoxLayout.Y_AXIS);
         add(box, BorderLayout.NORTH);                
-        buttonGroup = new ButtonGroup();        
+        buttonGroup = new ButtonGroup();      
+        add(new PropertyListPanel(workbookManager),BorderLayout.SOUTH);
         
         ItemListener checkboxActionListener = new ItemListener() {
 			
 			@Override
 			public void itemStateChanged(ItemEvent e) {
 				workbookManager.getEntitySelectionModel().setValidationType(values.get(e.getSource()));
-				previewSelectionInList();
+				previewSelectionInList();				
 			}
 		};	
 

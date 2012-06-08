@@ -11,6 +11,7 @@ import java.util.List;
 
 import org.semanticweb.owlapi.model.OWLEntity;
 
+import uk.ac.manchester.cs.owl.semspreadsheets.model.OWLPropertyItem;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.ValidationType;
 
 /**
@@ -25,7 +26,9 @@ public class EntitySelectionModel {
 
     private OWLEntity selectedEntity;
     
-    private ValidationType validationType = ValidationType.NOVALIDATION;    
+    private ValidationType validationType = ValidationType.NOVALIDATION; 
+    
+    private OWLPropertyItem owlPropertyItem;
 
 	private List<EntitySelectionModelListener> listeners = new ArrayList<EntitySelectionModelListener>();
 
@@ -82,5 +85,13 @@ public class EntitySelectionModel {
 
 	public void setValidationType(ValidationType validationType) {
 		this.validationType = validationType;
+	}
+
+	public OWLPropertyItem getOWLPropertyItem() {
+		return owlPropertyItem;
+	}
+
+	public void setOWLPropertyItem(OWLPropertyItem owlPropertyItem) {
+		this.owlPropertyItem = owlPropertyItem;
 	}
 }

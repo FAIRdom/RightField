@@ -108,7 +108,7 @@ public class SheetCellPasteAction extends SelectedCellsAction {
 			OntologyTermValidationDescriptor descriptor) {
 		getWorkbookManager().removeValidations(range);
 		if (descriptor!=null) {			
-			getWorkbookManager().setValidationAt(range,descriptor.getType(), descriptor.getEntityIRI());
+			getWorkbookManager().setValidationAt(range,descriptor.getType(), descriptor.getEntityIRI(), descriptor.getOWLPropertyItem());
 		}
 	}
 	

@@ -44,19 +44,13 @@ public class RepositoryPanel extends JPanel {
 	
 	Logger logger = Logger.getLogger(RepositoryPanel.class);
 
-	// private WorkbookFrame frame;
-	//
-	// private Repository repository;
-
 	private JList list;
 
 	public final JTextField filterTextField;
 
 	private FilteredRepositoryItemListModel filteredListModel;
 
-	public RepositoryPanel(WorkbookFrame frame, Repository repository) {
-		// this.repository = repository;
-		// this.frame = frame;
+	public RepositoryPanel(Repository repository) {
 		setLayout(new BorderLayout());
 		setBorder(BorderFactory.createEmptyBorder(7, 7, 7, 7));
 
@@ -67,7 +61,7 @@ public class RepositoryPanel extends JPanel {
 		filteredListModel = new FilteredRepositoryItemListModel(items);
 		list.setModel(filteredListModel);
 		list.setVisibleRowCount(15);
-		// list.setListData(items.toArray());
+
 		list.setCellRenderer(new RepositoryItemCellRenderer());
 		add(new JScrollPane(list), BorderLayout.CENTER);
 
@@ -119,8 +113,7 @@ public class RepositoryPanel extends JPanel {
 		
 		final Logger logger = Logger.getLogger(RepositoryItem.class);
 		
-		final RepositoryPanel panel = new RepositoryPanel(frame,
-				repositoryAccessor.getRepository());
+		final RepositoryPanel panel = new RepositoryPanel(repositoryAccessor.getRepository());
 		JOptionPane op = new JOptionPane(panel, JOptionPane.PLAIN_MESSAGE,
 				JOptionPane.OK_CANCEL_OPTION);
 		JDialog dlg = op.createDialog(frame, "Open from BioPortal repository");

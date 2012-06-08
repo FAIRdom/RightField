@@ -73,14 +73,14 @@ public class OntologyTermValidationManager {
         }
     }    
     
-    public void previewValidation(Range range, ValidationType type, IRI entityIRI) {
+    public void previewValidation(Range range, ValidationType type, IRI entityIRI, OWLPropertyItem property) {
     	logger.debug("Previewing validation for iri "+entityIRI.toString()+", type "+type.toString());
     	List<OntologyTermValidation> previewList = new ArrayList<OntologyTermValidation>();
     	
         Collection<OntologyTermValidation> intersectingValidations = getIntersectingValidations(range);
         if (!type.equals(ValidationType.NOVALIDATION)) {
             // Add new validation
-            OntologyTermValidationDescriptor descriptor = new OntologyTermValidationDescriptor(type, entityIRI, workbookManager);
+            OntologyTermValidationDescriptor descriptor = new OntologyTermValidationDescriptor(type, entityIRI, workbookManager,property);
             OntologyTermValidation validation = new OntologyTermValidation(descriptor, range); 
             previewList.add(validation);
         }
@@ -88,11 +88,12 @@ public class OntologyTermValidationManager {
         fireOntologyTermSelected(previewList);
     }
 
-    public void setValidation(Range range, ValidationType type, IRI entityIRI) {
+    public void setValidation(Range range, ValidationType type, IRI entityIRI, OWLPropertyItem property) {
+    	logger.debug("Setting validation at "+range.toFixedAddress()+" type:"+type.toString()+", IRI:"+entityIRI.toString()+", property:"+property);
         Collection<OntologyTermValidation> intersectingValidations = getIntersectingValidations(range);
         if (!type.equals(ValidationType.NOVALIDATION)) {
             // Add new validation
-            OntologyTermValidationDescriptor descriptor = new OntologyTermValidationDescriptor(type, entityIRI, workbookManager);
+            OntologyTermValidationDescriptor descriptor = new OntologyTermValidationDescriptor(type, entityIRI, workbookManager,property);
             OntologyTermValidation validation = new OntologyTermValidation(descriptor, range);
             ontologyTermValidations.add(validation);
         }
