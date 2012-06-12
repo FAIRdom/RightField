@@ -76,23 +76,27 @@ public class OntologyTermValidationManager {
     }    
     
     public void previewValidation(Range range, ValidationType type, IRI entityIRI, OWLPropertyItem property) {
-    	logger.debug("Previewing validation for iri "+entityIRI.toString()+", type "+type.toString());
+    	logger.debug("Previewing validation for iri "+entityIRI.toString()+", type "+type.toString()+", property = "+property);
     	List<OntologyTermValidation> previewList = new ArrayList<OntologyTermValidation>();
     	
         Collection<OntologyTermValidation> intersectingValidations = getIntersectingValidations(range);
+        previewList.removeAll(intersectingValidations);
+        
         if (!type.equals(ValidationType.NOVALIDATION)) {
             // Add new validation
             OntologyTermValidationDescriptor descriptor = new OntologyTermValidationDescriptor(type, entityIRI, getOntologyManager(),property);
             OntologyTermValidation validation = new OntologyTermValidation(descriptor, range); 
             previewList.add(validation);
-        }
-        previewList.removeAll(intersectingValidations);
+        }        
         fireOntologyTermSelected(previewList);
     }
 
     public void setValidation(Range range, ValidationType type, IRI entityIRI, OWLPropertyItem property) {
     	logger.debug("Setting validation at "+range.toFixedAddress()+" type:"+type.toString()+", IRI:"+entityIRI.toString()+", property:"+property);
+    	
         Collection<OntologyTermValidation> intersectingValidations = getIntersectingValidations(range);
+        ontologyTermValidations.removeAll(intersectingValidations);
+        
         if (!type.equals(ValidationType.NOVALIDATION)) {
             // Add new validation
             OntologyTermValidationDescriptor descriptor = new OntologyTermValidationDescriptor(type, entityIRI,  getOntologyManager(),property);
@@ -100,7 +104,7 @@ public class OntologyTermValidationManager {
             ontologyTermValidations.add(validation);
         }
         // Remove validation at intersecting ranges
-        ontologyTermValidations.removeAll(intersectingValidations);
+        
         fireValidationsChanged();
     }
 

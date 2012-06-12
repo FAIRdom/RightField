@@ -114,7 +114,7 @@ public class ValidationValuesPanel extends JPanel {
         termList.setListData(listData.toArray());		
 	}
 
-	private void updateFromModel() {
+	private void updateFromModel() {		
         termList.setListData(new Object [0]);
         Range range = workbookManager.getSelectionModel().getSelectedRange();
         if(!range.isCellSelection()) {
