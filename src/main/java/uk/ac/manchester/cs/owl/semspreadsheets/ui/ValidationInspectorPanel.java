@@ -10,8 +10,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -28,6 +28,9 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.ApplyValidationAction;
 
 /**
+ * Container panel for selecting or showing the validation and properties that are going to be applied to the cells. 
+ * The container includes available class hierarchies for each ontology loaded, the list of validation types, properties and terms.
+ * 
  * @author Stuart Owen
  * @author Matthew Horridge
  * 
@@ -67,7 +70,7 @@ public class ValidationInspectorPanel extends JPanel {
         
         ValidationTypeSelectorPanel typeSelectorPanel = new ValidationTypeSelectorPanel(frame.getWorkbookManager());
         
-        typeSelectorPanel.setBorder(createTitledBorder("TYPE OF ALLOWED VALUES"));
+        typeSelectorPanel.setBorder(createTitledBorder("VALUE TYPE AND PROPERTY"));
         
         JPanel buttonPanel = setupButtonPanel(typeSelectorPanel);                      
         
@@ -100,11 +103,11 @@ public class ValidationInspectorPanel extends JPanel {
 			}
 		});
 		
-		typeSelectorPanel.addRadioButtonActionListener(new ActionListener() {			
+        typeSelectorPanel.addListItemListener(new ItemListener() {			
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				logger.debug("Radio Button ActionEvent fired");
-				updateApplyButtonState();				
+			public void itemStateChanged(ItemEvent e) {
+				logger.debug("Validation type selected");
+				updateApplyButtonState();
 			}
 		});
 

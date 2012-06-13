@@ -33,6 +33,8 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.ValidationType;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 
 /**
+ * UI Pane that shows the available terms for the selected Type.
+ * 
  * @author Stuart Owen
  * @author Matthew Horridge
  */

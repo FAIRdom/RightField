@@ -14,7 +14,6 @@ import java.util.Set;
 
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
@@ -24,6 +23,12 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidation;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 
+/**
+ * UI Element that show the lists of properties that can be applied along with the Validation type.
+ * 
+ * @author Stuart Owen
+ *
+ */
 @SuppressWarnings("serial")
 public class PropertyListPanel extends JPanel {
 	private final WorkbookManager workbookManager;
@@ -37,14 +42,13 @@ public class PropertyListPanel extends JPanel {
 		this.workbookManager = workbookManager;
 		setLayout(new BorderLayout());
 		comboBox = new JComboBox();
-
-		add(new JLabel("Property"), BorderLayout.NORTH);
-		checkBox = new JCheckBox("Add a property?");
+		
+		checkBox = new JCheckBox("Include a property");
 
 		setSelectedStatus(false);
 
-		add(checkBox, BorderLayout.WEST);
-		add(comboBox, BorderLayout.SOUTH);
+		add(checkBox, BorderLayout.NORTH);
+		add(comboBox, BorderLayout.CENTER);
 		setupListeners();
 		setEnabledStatus(false);
 	}
