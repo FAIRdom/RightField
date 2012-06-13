@@ -9,7 +9,9 @@ package uk.ac.manchester.cs.owl.semspreadsheets.ui;
 import java.awt.BorderLayout;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Set;
 
 import javax.swing.JCheckBox;
@@ -162,15 +164,24 @@ public class PropertyListPanel extends JPanel {
 	private WorkbookManager getWorkbookManager() {
 		return this.workbookManager;
 	}
+	
+	private Set<OWLPropertyItem> getPropertyItems() {
+		return getWorkbookManager().getOntologyManager().getAllOWLProperties();		
+	}
 
 	private void updateModel() {
-		Set<OWLPropertyItem> properties = getWorkbookManager()
-				.getOntologyManager().getAllOWLProperties();
-
+				
+		OWLPropertyItem[] sortedProperties = getPropertyItems().toArray(new OWLPropertyItem[]{});
+		Arrays.sort(sortedProperties, new Comparator<OWLPropertyItem>() {
+			@Override
+			public int compare(OWLPropertyItem o1, OWLPropertyItem o2) {
+				return o1.toString().toLowerCase().compareTo(o2.toString().toLowerCase());
+			}
+		});
 		logger.debug("Updating model for properties list with "
-				+ properties.size() + " properties");
+				+ sortedProperties.length+ " properties");
 		comboBox.removeAllItems();
-		for (OWLPropertyItem property : properties) {
+		for (OWLPropertyItem property : sortedProperties) {
 			comboBox.addItem(property);
 		}
 	}
