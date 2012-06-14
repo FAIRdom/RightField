@@ -16,6 +16,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 
+import org.apache.log4j.Logger;
+
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Cell;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyManager;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidation;
@@ -34,6 +36,9 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
  * @see PopulatedValidatedCellDetails
  */
 public abstract class AbstractExporter implements Exporter {
+	
+	@SuppressWarnings("unused")
+	private static final Logger logger = Logger.getLogger(AbstractExporter.class);
 	
 	private final WorkbookManager manager;
 
@@ -54,7 +59,9 @@ public abstract class AbstractExporter implements Exporter {
 	
 	public String export() {
 		ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+		
 		export(outStream);
+		
 		return outStream.toString();
 	}
 	

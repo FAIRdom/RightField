@@ -15,10 +15,8 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.OWLPropertyItem;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.ValidationType;
 
 /**
- * Author: Matthew Horridge<br>
- * The University of Manchester<br>
- * Information Management Group<br>
- * Date: 08-Nov-2009
+ * @author Matthew Horridge
+ * @author Stuart Owen
  */
 public class EntitySelectionModel {
 
@@ -85,6 +83,7 @@ public class EntitySelectionModel {
 
 	public void setValidationType(ValidationType validationType) {
 		this.validationType = validationType;
+		fireSelectionChange();
 	}
 
 	public OWLPropertyItem getOWLPropertyItem() {
@@ -93,5 +92,6 @@ public class EntitySelectionModel {
 
 	public void setOWLPropertyItem(OWLPropertyItem owlPropertyItem) {
 		this.owlPropertyItem = owlPropertyItem;
+		fireSelectionChange();
 	}
 }

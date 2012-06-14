@@ -14,10 +14,7 @@ import java.util.Properties;
 import org.apache.log4j.Logger;
 
 /**
- * Author: Matthew Horridge<br>
- * The University of Manchester<br>
- * Information Management Group<br>
- * Date: 03-Feb-2010
+ * @author Matthew Horridge
  */
 public class UILabels {
 	

@@ -7,20 +7,14 @@
 package uk.ac.manchester.cs.owl.semspreadsheets.ui;
 
 import java.awt.BorderLayout;
-import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.Collection;
-import java.util.Enumeration;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
-import javax.swing.AbstractButton;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
+import javax.swing.JComboBox;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
+
+import org.apache.log4j.Logger;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidation;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
@@ -28,66 +22,82 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.ValidationType;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 
 /**
+ * UI Panel for selection of the Validation Type - i.e Free Text, Subclasses, Instances etc.
+ * 
  * @author Mathew Horridge
  * @author Stuart Owen
  */
 @SuppressWarnings("serial")
 public class ValidationTypeSelectorPanel extends JPanel {
-
-
-    private Map<JRadioButton, ValidationType> values = new LinkedHashMap<JRadioButton, ValidationType>();    
+       
+	private static final Logger logger = Logger.getLogger(ValidationTypeSelectorPanel.class);
 
     private final WorkbookManager workbookManager;    
 
     private CellSelectionListener cellSelectionListener;
-    
-    ButtonGroup buttonGroup;
+        
+    JComboBox comboxBox;
 
     public ValidationTypeSelectorPanel(final WorkbookManager workbookManager) {
         this.workbookManager = workbookManager;		
         setLayout(new BorderLayout());
-        Box box = new Box(BoxLayout.Y_AXIS);
-        add(box, BorderLayout.NORTH);                
-        buttonGroup = new ButtonGroup();      
-        add(new PropertyListPanel(workbookManager),BorderLayout.SOUTH);
-        
-        ItemListener checkboxActionListener = new ItemListener() {
+                     
+        comboxBox = new JComboBox();
+        add(comboxBox,BorderLayout.NORTH);
+              
+        add(new PropertyListPanel(workbookManager),BorderLayout.SOUTH);                
+		
+		comboxBox.addItemListener(new ItemListener() {
 			
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				workbookManager.getEntitySelectionModel().setValidationType(values.get(e.getSource()));
-				previewSelectionInList();				
+				if (comboxBox==e.getSource() && comboxBox.getSelectedItem()!=null) {					
+					workbookManager.getEntitySelectionModel().setValidationType((ValidationType) comboxBox.getSelectedItem());
+					previewSelectionInList();
+				}				
 			}
-		};	
-
-        for(final ValidationType type : ValidationType.values()) {
-            JRadioButton button = new JRadioButton(type.toString());            
-            box.add(button);
-            button.putClientProperty("JRadioButton.size", "small");
-            box.add(Box.createVerticalStrut(1));
-            if(values.isEmpty()) {
-                button.setSelected(true);
-            }
-            values.put(button, type);
-            buttonGroup.add(button);                       
-            button.addItemListener(checkboxActionListener);            
-        }
+		});            
 
         cellSelectionListener = new CellSelectionListener() {
             public void selectionChanged(Range range) {
                 updateSelectionFromModel();
             }
         };
+        workbookManager.getOntologyManager().addListener(new WorkbookManagerListener() {
+			
+			@Override
+			public void workbookLoaded(WorkbookManagerEvent event) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void workbookCreated(WorkbookManagerEvent event) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void validationAppliedOrCancelled() {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void ontologiesChanged(WorkbookManagerEvent event) {
+				refreshTypeList(workbookManager.getOntologyManager().getLoadedOntologies().size()>0);				
+			}
+		});
+        
         workbookManager.getSelectionModel().addCellSelectionListener(cellSelectionListener);
-        updateSelectionFromModel();
+        refreshTypeList(false);
+        setComboBoxEnabled(false);
+        //updateSelectionFromModel();
     }
     
-    public void addRadioButtonActionListener(ActionListener listener) {
-    	Enumeration<AbstractButton> buttons = buttonGroup.getElements();
-    	while(buttons.hasMoreElements()) {
-    		buttons.nextElement().addActionListener(listener);     		    
-    	}    	
-    }
+    public void addListItemListener(ItemListener listener) {
+    	comboxBox.addItemListener(listener);
+    }       
     
     private void previewSelectionInList() {    	    	
     	workbookManager.previewValidation();		
@@ -96,58 +106,55 @@ public class ValidationTypeSelectorPanel extends JPanel {
     private void updateSelectionFromModel() {
         Range range = workbookManager.getSelectionModel().getSelectedRange();
         if(range == null) {
-            setRadioButtonsEnabled(false);
+        	setComboBoxEnabled(false);            
             return;
-        }
-        setRadioButtonsEnabled(range.isCellSelection());
+        }        
+        setComboBoxEnabled(range.isCellSelection());
+        
         Collection<OntologyTermValidation> intersectingValidations = workbookManager.getOntologyManager().getIntersectingOntologyTermValidations(range);
         Collection<OntologyTermValidation> containingValidations = workbookManager.getOntologyManager().getContainingOntologyTermValidations(range);
-        setRadioButtonsEnabled(containingValidations.size() <= 1 && intersectingValidations.size() == containingValidations.size());
-        if(containingValidations.isEmpty()) {
-            values.keySet().iterator().next().setSelected(true);
+        setComboBoxEnabled(containingValidations.size() <= 1 && intersectingValidations.size() == containingValidations.size());                       
+        
+        if(containingValidations.isEmpty()) {            
+            comboxBox.setSelectedIndex(0);
         }
         else if(containingValidations.size() == 1) {
             OntologyTermValidation validation = containingValidations.iterator().next();
-            setSelected(validation);
-        }
-        if (workbookManager.getOntologyManager().getLoadedOntologies().isEmpty()) {
-            setNonEmptyRadioButtonsEnabled(false);
-        }
+            setSelectedType(validation);            
+        }                       
     }
 
-    private void setSelected(OntologyTermValidation validation) {
+    private void setSelectedType(OntologyTermValidation validation) {    	
         ValidationType type = validation.getValidationDescriptor().getType();
-        for(JRadioButton button : values.keySet()) {
-            ValidationType buttonType = values.get(button);
-            if(type.equals(buttonType)) {
-                button.setSelected(true);
-            }
-        }
+        logger.debug("Setting selected type to "+type);
+        comboxBox.setSelectedItem(type);        		
     }
 
     public ValidationType getSelectedType() {
-        for(JRadioButton radioButton : values.keySet()) {
-            if(radioButton.isSelected()) {
-                return values.get(radioButton);
-            }
-        }
-        return ValidationType.NOVALIDATION;
+        return (ValidationType)comboxBox.getSelectedItem();
     }
 
-    private void setNonEmptyRadioButtonsEnabled(boolean b) {
-        for(JRadioButton button : values.keySet()) {
-            ValidationType type = values.get(button);
-            if(!type.equals(ValidationType.NOVALIDATION)) {
-                button.setEnabled(b);
-            }
-        }
+    /**
+     * Updates the types list in the dropbox box
+     * @param allItems - whether all items should be shown. If false, just NOVALIDATION type is included
+     */
+    private void refreshTypeList(boolean allItems) { 
+    	logger.debug("Refereshing validation type list - include all items:"+allItems);
+    	if (allItems) {
+    		if (comboxBox.getItemCount()<=1) {
+    			comboxBox.removeAllItems();
+        		for(ValidationType type : ValidationType.values()) {                
+        			comboxBox.addItem(type);
+                }
+    		}    		
+    	}
+    	else if (comboxBox.getItemCount()!=1) {
+    		comboxBox.removeAllItems();
+    		comboxBox.addItem(ValidationType.NOVALIDATION);
+    	}    	    	
     }
-
-    private void setRadioButtonsEnabled(boolean b) {
-        for(JRadioButton button : values.keySet()) {
-            if (b != button.isEnabled()) {
-            	button.setEnabled(b);
-            }
-        }
-    }
+    
+    private void setComboBoxEnabled(boolean enabled) {
+    	comboxBox.setEnabled(enabled);
+    }    
 }

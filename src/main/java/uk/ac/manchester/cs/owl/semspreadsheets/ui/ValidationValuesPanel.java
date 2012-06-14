@@ -33,6 +33,8 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.ValidationType;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 
 /**
+ * UI Pane that shows the available terms for the selected Type.
+ * 
  * @author Stuart Owen
  * @author Matthew Horridge
  */
@@ -114,7 +116,7 @@ public class ValidationValuesPanel extends JPanel {
         termList.setListData(listData.toArray());		
 	}
 
-	private void updateFromModel() {
+	private void updateFromModel() {		
         termList.setListData(new Object [0]);
         Range range = workbookManager.getSelectionModel().getSelectedRange();
         if(!range.isCellSelection()) {

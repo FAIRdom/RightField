@@ -131,7 +131,6 @@ public class WorkbookManager {
         }
     }
 
-
     private void fireWorkbookLoaded() {
         WorkbookManagerEvent event = new WorkbookManagerEvent();
         for (WorkbookManagerListener listener : getCopyOfListeners()) {
@@ -222,7 +221,7 @@ public class WorkbookManager {
     	ValidationType type = entitySelectionModel.getValidationType();
     	IRI iri = entitySelectionModel.getSelection().getIRI();
     	OWLPropertyItem propertyItem = entitySelectionModel.getOWLPropertyItem();
-    	logger.debug("Setting validation for IRI "+iri.toString()+", type "+type.toString());    			        
+    	logger.debug("Setting validation for IRI "+iri.toString()+", type "+type.toString()+", property "+propertyItem);    			        
         
         Range selectedRange = getSelectionModel().getSelectedRange();
         if(!selectedRange.isCellSelection()) {
@@ -283,12 +282,24 @@ public class WorkbookManager {
     public boolean determineApplyButtonState() {
     	ValidationType type = entitySelectionModel.getValidationType();
     	IRI iri = entitySelectionModel.getSelection().getIRI();
+    	OWLPropertyItem property = entitySelectionModel.getOWLPropertyItem();
     	Range selectedRange = getSelectionModel().getSelectedRange();
     	Collection<OntologyTermValidation> validations = getOntologyManager().getContainingOntologyTermValidations(selectedRange);
     	boolean result = false;
     	for (OntologyTermValidation validation : validations) {
     		OntologyTermValidationDescriptor validationDescriptor = validation.getValidationDescriptor();
-    		if (!validationDescriptor.getEntityIRI().equals(iri) || !validationDescriptor.getType().equals(type)) {
+    		boolean propertyChanged=false;
+    		
+    		//FIXME: shouldn't rely on OWLProperty being NULL - should have a NullPropertyItem type
+    		if (validationDescriptor.getOWLPropertyItem()==null) {
+    			propertyChanged = property!=null;
+    		}
+    		else {
+    			propertyChanged = !validationDescriptor.getOWLPropertyItem().equals(property);
+    		}
+    		if (!validationDescriptor.getEntityIRI().equals(iri) || 
+    				!validationDescriptor.getType().equals(type) ||
+    				propertyChanged) {
     			result=true;
     			break;
     		}
@@ -296,7 +307,7 @@ public class WorkbookManager {
     	if (validations.isEmpty()) {
     		result = type!=ValidationType.NOVALIDATION;
     	}
-    	logger.debug("Apply button state deterimned as "+result+" for type "+type.toString()+" and IRI "+iri.toString());
+    	logger.debug("Apply button state deterimned as "+result+" for type "+type.toString()+" and IRI "+iri.toString()+" and Property "+property);
     	return result;
     }
     

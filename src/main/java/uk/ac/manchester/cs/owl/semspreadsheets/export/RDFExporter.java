@@ -10,7 +10,11 @@ package uk.ac.manchester.cs.owl.semspreadsheets.export;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
+
+import org.apache.log4j.Logger;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OWLPropertyItem;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
@@ -23,6 +27,8 @@ import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.vocabulary.RDFS;
 
 public class RDFExporter extends AbstractExporter {
+	
+	private static final Logger logger = Logger.getLogger(RDFExporter.class);
 	
 	private final String rootID;		
 
@@ -64,7 +70,11 @@ public class RDFExporter extends AbstractExporter {
 			addNodes(root,model,details);
 		}
 		
-		model.write(outStream);
+		try {
+			model.write(new OutputStreamWriter(outStream,"UTF-8"));
+		} catch (UnsupportedEncodingException e) {
+			logger.error("Error writing to stream with UTF-8 encoding",e);
+		}
 	}
 	
 	private Property createProperty(Model model,OWLPropertyItem property) {
