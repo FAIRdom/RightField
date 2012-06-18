@@ -48,7 +48,6 @@ public class RightField {
     	if (cont) {
     		startUp();
     	}
-    	System.exit(0);
     }
     
     private boolean handleArguments(String [] args) {
