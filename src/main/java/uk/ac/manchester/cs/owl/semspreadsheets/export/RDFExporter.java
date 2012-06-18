@@ -24,7 +24,6 @@ import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Statement;
-import com.hp.hpl.jena.vocabulary.RDFS;
 
 public class RDFExporter extends AbstractExporter {
 	
@@ -51,10 +50,10 @@ public class RDFExporter extends AbstractExporter {
 		return rootID;
 	}
 	
-	private Property getDefaultProperty(Model model) {
+	private Property getDefaultProperty(Model model) {		
 		Property property = model.createProperty("http://rightfield.org.uk/RightFieldOntology#contains");
 		model.setNsPrefix("rightfield", "http://rightfield.org.uk/RightFieldOntology#");
-		return property;
+		return property;		
 	}
 
 	@Override
@@ -63,7 +62,7 @@ public class RDFExporter extends AbstractExporter {
 		
 		Resource root = model.createResource(getRootID());		
 		
-		root.addProperty(RDFS.label, model.createLiteral("a data file"));
+//		root.addProperty(RDFS.label, model.createLiteral("a data file"));
 //		root.addProperty(RDFS.comment, model.createLiteral("some comments about this data file"));
 		
 		for (PopulatedValidatedCellDetails details : getPopulatedValidatedCellDetails()) {
