@@ -37,7 +37,7 @@ public class ClassHierarchyTree extends JTree {
 
     private WorkbookManager workbookManager;
 
-    private boolean transmittingSelectioToModel;    
+    private boolean transmittingSelectionToModel;    
     
     private OWLOntology ontology;
 
@@ -73,46 +73,49 @@ public class ClassHierarchyTree extends JTree {
         return (ClassHierarchyTreeModel) super.getModel();
     }
 
-    private void previewSelectedClass() {
-    	logger.debug("In previewSelectedEntity");    	
-        
-            transmittingSelectioToModel = true;            
-            try {
-                TreePath [] selectedPaths = getSelectionPaths();
-                if(selectedPaths == null) {
-                    return;
-                }
-                Set<OWLEntity> selectedEntities = new HashSet<OWLEntity>();
-                //should only be 
-                for(TreePath path : selectedPaths) {
-                    DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
-                    if(node instanceof ClassHierarchyNode) {
-                        selectedEntities.addAll(((ClassHierarchyNode) node).getOWLClasses());
-                    }
-                    else {
-                        selectedEntities.add((OWLNamedIndividual) ((ClassHierarchyIndividualNode) node).getUserObject());
-                    }
-                }
-                workbookManager.getEntitySelectionModel().setSelection(selectedEntities.iterator().next());                
-                workbookManager.previewValidation();                
-            }
-            finally {
-                transmittingSelectioToModel = false;
-            }
-        
-    }
+	private void previewSelectedClass() {
+		logger.debug("In previewSelectedClass");
+		transmittingSelectionToModel = true;
+		try {
+			TreePath[] selectedPaths = getSelectionPaths();
+			if (selectedPaths == null) {
+				return;
+			}
+			Set<OWLEntity> selectedEntities = new HashSet<OWLEntity>();
+			
+			for (TreePath path : selectedPaths) {
+				DefaultMutableTreeNode node = (DefaultMutableTreeNode) path
+						.getLastPathComponent();
+				if (node instanceof ClassHierarchyNode) {
+					selectedEntities.addAll(((ClassHierarchyNode) node)
+							.getOWLClasses());
+				} else {
+					selectedEntities
+							.add((OWLNamedIndividual) ((ClassHierarchyIndividualNode) node)
+									.getUserObject());
+				}
+			}
+			OWLEntity selectedEntity = selectedEntities.iterator().next();
+			if (!workbookManager.getEntitySelectionModel().getSelection().equals(selectedEntity)) {
+				workbookManager.getEntitySelectionModel().setSelection(selectedEntity);
+			}			
+			workbookManager.previewValidation();
+		} finally {
+			transmittingSelectionToModel = false;
+		}
+
+	}
 
     private void updateSelectionFromModel() {
     	logger.debug("In updateSelectionFromModel");
-        if(!transmittingSelectioToModel) {
-        	Object selection = workbookManager.getEntitySelectionModel().getSelection();
+        if(!transmittingSelectionToModel) {        	
+        	Object selection = workbookManager.getEntitySelectionModel().getSelection();        
         	if ( selection instanceof OWLClass) {
         		setSelectedClass((OWLClass)selection);
         	}
         	else {
         		clearSelection();
-        	}
-                                  
+        	}        	                                 
         }
     }
 
