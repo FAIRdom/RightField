@@ -48,18 +48,20 @@ public class RightField {
     	if (cont) {
     		startUp();
     	}
+    	System.exit(0);
     }
     
     private boolean handleArguments(String [] args) {
     	RightFieldOptions options = new RightFieldOptions(args);
     	boolean cont=true;
     	if (options.isExport()) {
+    		cont=false;
     		try {
-    			export(options);
-    			cont=false;
+    			export(options);    			
     		}
     		catch(Exception e) {
-    			logger.error("Error attempting export",e);    			
+    			logger.error("Error attempting export",e);
+    			System.exit(-1);
     		}    		
     	}
     	return cont;
@@ -78,8 +80,7 @@ public class RightField {
     	else {
     		throw new Exception("Unrecognised export format");
     	}
-    	exporter.export(System.out);
-    	
+    	exporter.export(System.out);    	
     }
     
     private void startUp() {
