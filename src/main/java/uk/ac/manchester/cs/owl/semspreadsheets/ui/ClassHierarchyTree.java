@@ -127,6 +127,8 @@ public class ClassHierarchyTree extends JTree {
             scrollPathToVisible(path);
         }
         if (!treePaths.isEmpty()) {
+        	//FIXME: if more than one ontology, and therefore ClassHierarchyTree, contains the class, then each tab is selected in turn
+        	//usually resulting in a switch to an unexpected tab - even if the current tab contains the class.
         	int index = pane.tabIndexForOntology(ontology);
         	if (index!=-1) {
         		pane.setSelectedIndex(index);
