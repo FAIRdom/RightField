@@ -15,6 +15,14 @@ public class DocumentsCatalogue {
 		return uriForResourceName("JERM.owl");
 	}
 	
+	public static URI mgedOntologyURI() throws Exception {
+		return uriForResourceName("MGEDOntology.owl");
+	}
+	
+	public static URI aminoAcidOntologyURI() throws Exception {
+		return uriForResourceName("amino-acid.owl");
+	}
+	
 	public static URI simpleAnnotatedworkbookURI() throws Exception {
 		return uriForResourceName("simple_annotated_book.xls");
 	}

@@ -24,7 +24,7 @@ public class EntitySelectionModel {
 
     private OWLEntity selectedEntity;
     
-    private ValidationType validationType = ValidationType.NOVALIDATION; 
+    private ValidationType validationType = ValidationType.FREETEXT; 
     
     private OWLPropertyItem owlPropertyItem;
 

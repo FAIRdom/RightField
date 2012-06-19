@@ -15,6 +15,10 @@ import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.IRI;
 
 /**
+ * Creates and parses a validation sheet, which is a 'very' hidden sheet that contains the data for the named range that forms the
+ * dropdown list for the cell, or range of cells, and also contains additional information about the ontology, where it came from, the validation type
+ * and the base entity IRI.
+ * 
  * @author Matthew Horridge
  * @author Stuart Owen
  */
@@ -60,7 +64,7 @@ public class OntologyTermValidationSheetParser {
         ValidationType type;
         Cell cell = sheet.getCellAt(0, 0);
         if (cell == null) {
-            type = ValidationType.NOVALIDATION;
+            type = ValidationType.FREETEXT;
         }
         else {
             type = ValidationType.valueOf(cell.getValue());
@@ -140,7 +144,7 @@ public class OntologyTermValidationSheetParser {
         if (!isValidationSheet()) {
             return null;
         }
-        return new OntologyTermValidationDescriptor(parseValidationType(), parseEntityIRI(), parseOntologyIRIs(), parseTerms(),parseOWLProperty());
+        return new OntologyTermValidationDescriptor(parseValidationType(), parseEntityIRI(), parseOWLProperty(),parseOntologyIRIs(), parseTerms());
     }
 
     private Map<IRI, IRI> parseOntologyIRIs() {

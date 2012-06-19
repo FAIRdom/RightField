@@ -150,7 +150,7 @@ public class ValidationTypeSelectorPanel extends JPanel {
     	}
     	else if (comboxBox.getItemCount()!=1) {
     		comboxBox.removeAllItems();
-    		comboxBox.addItem(ValidationType.NOVALIDATION);
+    		comboxBox.addItem(ValidationType.FREETEXT);
     	}    	    	
     }
     

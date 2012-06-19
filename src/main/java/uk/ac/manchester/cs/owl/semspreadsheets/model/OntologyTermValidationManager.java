@@ -82,9 +82,9 @@ public class OntologyTermValidationManager {
         Collection<OntologyTermValidation> intersectingValidations = getIntersectingValidations(range);
         previewList.removeAll(intersectingValidations);
         
-        if (!type.equals(ValidationType.NOVALIDATION)) {
+        if (!type.equals(ValidationType.FREETEXT)) {
             // Add new validation
-            OntologyTermValidationDescriptor descriptor = new OntologyTermValidationDescriptor(type, entityIRI, getOntologyManager(),property);
+            OntologyTermValidationDescriptor descriptor = new OntologyTermValidationDescriptor(type, entityIRI,property, getOntologyManager());
             OntologyTermValidation validation = new OntologyTermValidation(descriptor, range); 
             previewList.add(validation);
         }        
@@ -97,9 +97,13 @@ public class OntologyTermValidationManager {
         Collection<OntologyTermValidation> intersectingValidations = getIntersectingValidations(range);
         ontologyTermValidations.removeAll(intersectingValidations);
         
-        if (!type.equals(ValidationType.NOVALIDATION)) {
-            // Add new validation
-            OntologyTermValidationDescriptor descriptor = new OntologyTermValidationDescriptor(type, entityIRI,  getOntologyManager(),property);
+        if (!type.equals(ValidationType.FREETEXT)) {            
+            OntologyTermValidationDescriptor descriptor = new OntologyTermValidationDescriptor(type, entityIRI,property,  getOntologyManager());
+            OntologyTermValidation validation = new OntologyTermValidation(descriptor, range);
+            ontologyTermValidations.add(validation);
+        }
+        else if (property!=null) {
+        	OntologyTermValidationDescriptor descriptor = new OntologyTermValidationDescriptor(property,getOntologyManager());
             OntologyTermValidation validation = new OntologyTermValidation(descriptor, range);
             ontologyTermValidations.add(validation);
         }

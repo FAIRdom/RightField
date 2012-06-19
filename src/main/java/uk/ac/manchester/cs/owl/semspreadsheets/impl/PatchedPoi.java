@@ -76,7 +76,8 @@ public class PatchedPoi {
 						dataValidation.add(validation);
 					} else if (validationType == DVConstraint.ValidationType.INTEGER
 							|| validationType == DVConstraint.ValidationType.DECIMAL
-							|| validationType == DVConstraint.ValidationType.TEXT_LENGTH) {
+							|| validationType == DVConstraint.ValidationType.TEXT_LENGTH
+							) {
 						Formula f1 = dvRecord.getFormula1();
 						Formula f2 = dvRecord.getFormula2();
 						String formula1 = getStringFromPtgTokens(
@@ -90,7 +91,20 @@ public class PatchedPoi {
 						HSSFDataValidation validation = new HSSFDataValidation(
 								cellRangeAddressList, dvConstraint);
 						dataValidation.add(validation);
+					} else if (validationType == DVConstraint.ValidationType.FORMULA) {
+						Formula f1 = dvRecord.getFormula1();
+						
+						String formula1 = getStringFromPtgTokens(
+								f1.getTokens(), workbook);
+						//doesn't contain the full formula, including cell and comparison - but should contain all the information needed. If not, getStringFromPtgTokens
+						//needs updating to handle the extra token types
+						DVConstraint dvConstraint = DVConstraint.createCustomFormulaConstraint(formula1);
+								
+						HSSFDataValidation validation = new HSSFDataValidation(
+								cellRangeAddressList, dvConstraint);
+						dataValidation.add(validation);
 					}
+					
 				}
 			}
 		});

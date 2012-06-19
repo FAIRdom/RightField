@@ -7,7 +7,6 @@
 package uk.ac.manchester.cs.owl.semspreadsheets.model;
 
 import java.io.Serializable;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -39,40 +38,54 @@ public class OntologyTermValidationDescriptor implements Serializable {
 
     private Map<IRI, IRI> ontologyIRI2PhysicalIRIMap = new HashMap<IRI, IRI>();
 
-    private List<Term> terms;
+    private List<Term> terms = new ArrayList<Term>();
     
     private OWLPropertyItem propertyItem;
     
-    private URI NOTHING_URI = URI.create("http://www.w3.org/2002/07/owl#Nothing");
+    private static final IRI NOTHING_IRI = IRI.create("http://www.w3.org/2002/07/owl#Nothing");
+    
+    /**
+     * A FREETEXT type, but with a property
+     * @param ontologyManager
+     * @param propertyItem
+     */
+    public OntologyTermValidationDescriptor(OWLPropertyItem propertyItem,OntologyManager ontologyManager) { 
+    	this(ValidationType.FREETEXT,NOTHING_IRI,propertyItem,ontologyManager);    	
+    }
 
-    public OntologyTermValidationDescriptor(ValidationType type, IRI entityIRI, Map<IRI, IRI> ontologyIRI2PhysicalIRIMap, Map<IRI, String> terms, OWLPropertyItem propertyItem) {
+    public OntologyTermValidationDescriptor(ValidationType type, IRI entityIRI, OWLPropertyItem propertyItem, Map<IRI, IRI> ontologyIRI2PhysicalIRIMap, Map<IRI, String> terms) {
         this.type = type;
         this.entityIRI = entityIRI;
-		this.propertyItem = propertyItem;
-        this.ontologyIRI2PhysicalIRIMap = new HashMap<IRI, IRI>(ontologyIRI2PhysicalIRIMap);
-        this.terms = new ArrayList<Term>();
+		this.propertyItem = propertyItem;		
+        this.ontologyIRI2PhysicalIRIMap = new HashMap<IRI, IRI>(ontologyIRI2PhysicalIRIMap);        
         for(IRI iri : terms.keySet()) {
             this.terms.add(new Term(iri, terms.get(iri)));
         }
         Collections.sort(this.terms);
     }
-
-    public OntologyTermValidationDescriptor(ValidationType type, IRI entityIRI, OntologyManager ontologyManager, OWLPropertyItem propertyItem) {
+    
+    
+    public OntologyTermValidationDescriptor(ValidationType type, IRI entityIRI, OWLPropertyItem propertyItem, OntologyManager ontologyManager) {
         this.type = type;
         this.entityIRI = entityIRI;
 		this.propertyItem = propertyItem;        
         ontologyIRI2PhysicalIRIMap = new HashMap<IRI, IRI>();
-        for(OWLOntology ont : ontologyManager.getLoadedOntologies()) {    
-        	if (ont.containsClassInSignature(entityIRI)) {
-        		IRI documentIRI = ontologyManager.getOWLOntologyManager().getOntologyDocumentIRI(ont);
-                documentIRI = BioPortalRepository.removeBioPortalAPIKey(documentIRI);
-                ontologyIRI2PhysicalIRIMap.put(ont.getOntologyID().getOntologyIRI(), documentIRI);
-        	}            
-        }
-        Set<OWLEntity> entities = type.getEntities(ontologyManager, entityIRI);
-        terms = new ArrayList<Term>();
+		for (OWLOntology ont : ontologyManager.getLoadedOntologies()) {
+			if (ont.containsEntityInSignature(entityIRI)
+					|| (propertyItem != null && ont
+							.containsEntityInSignature(propertyItem.getIRI()))) {
+				IRI documentIRI = ontologyManager.getOWLOntologyManager()
+						.getOntologyDocumentIRI(ont);
+				documentIRI = BioPortalRepository
+						.removeBioPortalAPIKey(documentIRI);
+				ontologyIRI2PhysicalIRIMap.put(ont.getOntologyID()
+						.getOntologyIRI(), documentIRI);
+			}
+
+		}
+        Set<OWLEntity> entities = type.getEntities(ontologyManager, entityIRI);        
         for(OWLEntity term : entities) {
-        	if (!term.getIRI().toURI().equals(NOTHING_URI)) {
+        	if (!term.getIRI().equals(NOTHING_IRI)) {
         		logger.debug("Adding term "+term.getIRI()+" to list of OntologyTermValidatorDescriptor terms");        	
                 terms.add(new Term(term.getIRI(), ontologyManager.getRendering(term)));
         	}        	
@@ -81,6 +94,10 @@ public class OntologyTermValidationDescriptor implements Serializable {
         	}
         }
         Collections.sort(terms);
+    }
+    
+    public boolean isDefinesLiteral() {
+    	return (getOWLPropertyItem()!=null && getEntityIRI().equals(NOTHING_IRI) && getType().equals(ValidationType.FREETEXT));
     }
 
     public OWLPropertyItem getOWLPropertyItem() {
@@ -108,7 +125,10 @@ public class OntologyTermValidationDescriptor implements Serializable {
     }
 
     public int hashCode() {
-        return type.hashCode() + entityIRI.hashCode() + ontologyIRI2PhysicalIRIMap.hashCode();
+    	int entityHash=entityIRI==null ? "null".hashCode() : entityIRI.hashCode();
+    	int propertyHash=propertyItem==null ? "null".hashCode() : propertyItem.hashCode();
+    	
+    	return propertyHash+ type.hashCode() + entityHash + ontologyIRI2PhysicalIRIMap.hashCode();    	        
     }
 
     public boolean equals(Object obj) {

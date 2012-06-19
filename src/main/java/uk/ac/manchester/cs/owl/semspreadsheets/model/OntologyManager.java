@@ -6,6 +6,7 @@
  ******************************************************************************/
 package uk.ac.manchester.cs.owl.semspreadsheets.model;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -241,6 +242,10 @@ public class OntologyManager {
         }
         owlManager.removeIRIMapper(mapper);        
         setLabelRendering(true);        
+    }
+    
+    public OWLOntology loadOntology(URI physicalURI) throws OWLOntologyCreationException {
+    	return loadOntology(IRI.create(physicalURI));
     }
     
     public OWLOntology loadOntology(IRI physicalIRI) throws OWLOntologyCreationException {

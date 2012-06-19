@@ -9,10 +9,8 @@ package uk.ac.manchester.cs.owl.semspreadsheets.model;
 import java.util.Collection;
 
 /**
- * Author: Matthew Horridge<br>
- * The University of Manchester<br>
- * Information Management Group<br>
- * Date: 18-Sep-2009
+ * @author Matthew Horridge
+ * @author Stuart Owen
  */
 public interface Sheet {
 
@@ -46,7 +44,27 @@ public interface Sheet {
 
     void clearCellAt(int col, int row);
 
-    void addValidation(String namedRange, int firstCol, int firstRow, int lastCol, int lastRow);    
+    /**
+     * Creates a validation with a named range, to created a restricted drop down list
+     * @param namedRange
+     * @param firstCol
+     * @param firstRow
+     * @param lastCol
+     * @param lastRow
+     */
+    void addValidation(String namedRange, int firstCol, int firstRow, int lastCol, int lastRow); 
+    
+    /**
+     * Create a custom validation embedding property that allows free text. Only affects the RDF generated, there are no restrictions for the spreadsheet user.
+     * 
+     * @param hiddenSheetName
+     * @param propertyItem
+     * @param firstCol
+     * @param firstRow
+     * @param lastCol
+     * @param lastRow
+     */
+    void addValidation(String hiddenSheetName, OWLPropertyItem propertyItem, int firstCol, int firstRow, int lastCol, int lastRow); 
 
     Collection<Validation> getValidations();
 

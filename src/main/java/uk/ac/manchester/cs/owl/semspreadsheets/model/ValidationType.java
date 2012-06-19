@@ -24,7 +24,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.ui.UILabels;
  */
 public enum ValidationType {
 
-    NOVALIDATION(UILabels.getInstance().getFreeTextLabel(), null),
+    FREETEXT(UILabels.getInstance().getFreeTextLabel(), null),
     DIRECTSUBCLASSES(UILabels.getInstance().getDirectSubClassesLabel(), EntityType.CLASS),
     SUBCLASSES(UILabels.getInstance().getSubClassesLabel(), EntityType.CLASS),
     INDIVIDUALS(UILabels.getInstance().getInstancesLabel(), EntityType.NAMED_INDIVIDUAL),

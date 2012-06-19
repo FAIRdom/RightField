@@ -249,7 +249,7 @@ public class WorkbookManager {
             rangeToApply=validation.getRange();            
         }
         String cellText=getOntologyManager().getRendering(owlManager.getOWLDataFactory().getOWLAnnotationProperty(entityIRI));
-        if (type == ValidationType.NOVALIDATION) {
+        if (type == ValidationType.FREETEXT) {
         	cellText = "";
         }
         
@@ -305,7 +305,7 @@ public class WorkbookManager {
     		}
     	}
     	if (validations.isEmpty()) {
-    		result = type!=ValidationType.NOVALIDATION;
+    		result = (type!=ValidationType.FREETEXT || property!=null);
     	}
     	logger.debug("Apply button state deterimned as "+result+" for type "+type.toString()+" and IRI "+iri.toString()+" and Property "+property);
     	return result;

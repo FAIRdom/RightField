@@ -22,6 +22,7 @@ import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellRangeAddressList;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Cell;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.OWLPropertyItem;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Validation;
@@ -182,10 +183,33 @@ public class SheetHSSFImpl implements Sheet {
         return containingValidations;
     }
 
+    /**
+     * Creates a Formula List constraint validation, with creates a dropdown list based on values defined by namedRange(the name of the hidden sheet).
+     */
     public void addValidation(String namedRange, int firstCol, int firstRow, int lastCol, int lastRow) {
-        CellRangeAddressList addressList = new CellRangeAddressList(firstRow, lastRow, firstCol, lastCol);
-        HSSFDataValidation dataValidation = new HSSFDataValidation(addressList, DVConstraint.createFormulaListConstraint(namedRange));
-        sheet.addValidationData(dataValidation);
+    	DVConstraint constraint = DVConstraint.createFormulaListConstraint(namedRange);
+    	addConstraint(constraint, firstCol, firstRow, lastCol, lastRow);
+    }
+    
+    /**
+     * Creates a custom validation that embeds the hidden sheet name (that contains the ontology details) and the property IRI
+     * e.g
+     * =AND(A1<>"wksowlv0:http://mygrid/JERMOnology#hasType")
+     * this embeds the information, without restricting the use of the field (except the highly unlikely case of wanting to type the encoded string).
+     */
+    public void addValidation(String hiddenSheetName, OWLPropertyItem propertyItem, int firstCol, int firstRow, int lastCol, int lastRow) {
+    	String key = hiddenSheetName+":"+propertyItem.getIRI().toQuotedString();
+    	
+    	//the cell title A1 is irrelevant, when the sheet is saved it gets turned into the current cell.
+    	String formula="AND(A1<>\""+key+"\")";
+    	DVConstraint constraint = DVConstraint.createCustomFormulaConstraint(formula);
+    	addConstraint(constraint, firstCol, firstRow, lastCol, lastRow);
+    }
+    
+    protected void addConstraint(DVConstraint constraint, int firstCol, int firstRow, int lastCol, int lastRow) {
+    	CellRangeAddressList addressList = new CellRangeAddressList(firstRow, lastRow, firstCol, lastCol);    	
+    	HSSFDataValidation dataValidation = new HSSFDataValidation(addressList, constraint);
+    	sheet.addValidationData(dataValidation);
     }
 
     public Collection<Validation> getValidations() {
