@@ -18,11 +18,15 @@ import java.util.List;
 import org.apache.poi.hssf.usermodel.HSSFDataValidation;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.junit.Test;
+import org.semanticweb.owlapi.model.IRI;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.SpreadsheetTestHelper;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.OWLPropertyItem;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.OWLPropertyType;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Validation;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.Workbook;
 
 public class SheetHSSFImplTest {
 	
@@ -41,7 +45,7 @@ public class SheetHSSFImplTest {
 		List<Validation> list = new ArrayList<Validation>(validations);
 		assertEquals(1,list.size());
 		Validation val = list.get(0);
-		assertEquals("wksowlv0",val.getListName());
+		assertEquals("wksowlv0",val.getFormula());
 		assertEquals(4,val.getFirstColumn());
 		assertEquals(4,val.getLastColumn());
 		assertEquals(11,val.getFirstRow());
@@ -85,7 +89,7 @@ public class SheetHSSFImplTest {
 		
 		assertEquals(1,list.size());
 		Validation val = list.get(0);
-		assertEquals("wksowlv0",val.getListName());
+		assertEquals("wksowlv0",val.getFormula());
 		assertEquals(sheet,val.getSheet());
 		assertEquals("Sheet0!E12:E12",val.getRange().toString());		
 		
@@ -105,7 +109,7 @@ public class SheetHSSFImplTest {
 		List<Validation> list = new ArrayList<Validation>(validations);
 		assertEquals(1,list.size());
 		Validation val = list.get(0);
-		assertEquals("wksowlv0",val.getListName());
+		assertEquals("wksowlv0",val.getFormula());
 		assertEquals(sheet,val.getSheet());
 		assertEquals("Sheet0!E12:E12",val.getRange().toString());
 		
@@ -114,6 +118,19 @@ public class SheetHSSFImplTest {
 		list = new ArrayList<Validation>(validations);
 		
 		assertEquals(0,list.size());	
+	}
+	
+	@Test
+	public void testAddPropertyValidation() throws Exception {
+		OWLPropertyItem property = new OWLPropertyItem(IRI.create("http://mygrid.org/JERMOntology#hasType"),OWLPropertyType.OBJECT_PROPERTY);
+		Sheet sheet = getTestWorkbook().addSheet();
+		assertEquals(0,sheet.getValidations().size());
+		sheet.addValidation("wksowlv0", property, 2, 3,3, 4);
+		assertEquals(1,sheet.getValidations().size());
+		Validation validation = sheet.getValidations().iterator().next();
+		assertFalse(validation.isDataValidation());
+		assertEquals("property^wksowlv0^<http://mygrid.org/JERMOntology#hasType>^OBJECT_PROPERTY",validation.getFormula());
+		assertEquals(new Range(sheet,2,3,3,4),validation.getRange());
 	}
 	
 	@Test
@@ -128,7 +145,7 @@ public class SheetHSSFImplTest {
 		list = new ArrayList<Validation>(validations);		
 		assertEquals(1,list.size());
 		Validation val = list.get(0);
-		assertEquals("wksowlv0",val.getListName());
+		assertEquals("wksowlv0",val.getFormula());
 		assertEquals("Sheet1!B2:C3",val.getRange().toString());
 	}
 	
@@ -184,7 +201,16 @@ public class SheetHSSFImplTest {
 		assertEquals("Sheet0",sheet.getName());
 		assertFalse(sheet.isHidden());
 		assertFalse(sheet.isVeryHidden());		
-	}	
+	}
+	
+	@Test
+	public void testIndex() throws Exception {
+		Workbook wb = SpreadsheetTestHelper.getBlankWorkbook();
+		Sheet sheet = wb.getSheet(0);
+		assertEquals(0,sheet.getIndex());
+		sheet = wb.addSheet();
+		assertEquals(1,sheet.getIndex());
+	}
 	
 	//opens the workbook src/test/resources/simple_annotated_book.xls
 	private WorkbookHSSFImpl getTestWorkbook() throws Exception {

@@ -31,22 +31,41 @@ public class OntologyTermValidationWorkbookParser {
     public Collection<OntologyTermValidation> readOntologyTermValidations() {
         Set<OntologyTermValidation> validations = new HashSet<OntologyTermValidation>();
         Workbook workbook = getWorkbookManager().getWorkbook();
+        validations.addAll(readPropertyOnlyValidations(workbook));
         for (Sheet sheet : workbook.getSheets()) {
             OntologyTermValidationSheetParser parser = new OntologyTermValidationSheetParser(getWorkbookManager(), sheet);
             if (parser.isValidationSheet()) {
                 OntologyTermValidationDescriptor descriptor = parser.parseValidationDescriptor();
                 NamedRange namedRange = parser.parseNamedRange();
-
-                for (Sheet sheet2 : workbook.getSheets()) {
-                    for (Validation validation : sheet2.getValidations()) {
-                        if (validation.getListName().equals(namedRange.getName())) {
-                            validations.add(new OntologyTermValidation(descriptor, validation.getRange()));
+                if (namedRange!=null) {
+                	for (Sheet sheet2 : workbook.getVisibleSheets()) {
+                        for (Validation validation : sheet2.getValidations()) {
+                            if (validation.getFormula().equals(namedRange.getName())) {
+                                validations.add(new OntologyTermValidation(descriptor, validation.getRange()));
+                            }
                         }
                     }
-                }
+                }                
             }
         }
         return validations;
+    }
+    
+    private Collection<OntologyTermValidation> readPropertyOnlyValidations(Workbook workbook) {
+    	Set<OntologyTermValidation> validations = new HashSet<OntologyTermValidation>();
+    	
+    	for (Sheet sheet : workbook.getSheets()) {    		
+    		for (Validation validation : sheet.getValidations()) {
+    			if (!validation.isDataValidation()) {    				    				
+    				OntologyTermValidation termValidation = PropertyFormulaEncoder.constructFromValidation(validation,getWorkbookManager().getOntologyManager());
+    				if (termValidation!=null) {
+    					validations.add(termValidation);
+    				}        			    				    			
+    			}
+    		}
+    	}
+    	
+    	return validations;
     }
 
     public void clearOntologyTermValidations() {

@@ -30,24 +30,11 @@ public class OntologyTermValidationWorkbookParserTest {
 	
 	@Test
 	public void testWritingFreeTextProperty() throws Exception {
-		Sheet sheet = manager.getWorkbook().getSheet(0);
-		assertNotNull(sheet);
-		assertEquals("Sheet0",sheet.getName());
-		OWLPropertyItem property = new OWLPropertyItem(IRI.create("http://www.mygrid.org.uk/ontology/JERMOntology#hasCharacteristics"),OWLPropertyType.OBJECT_PROPERTY);		
-		assertNotNull(property);
-		
-		Cell cell = sheet.addCellAt(1, 1);
-		assertNotNull(cell);
-		Range range = new Range(sheet, cell);
-		
-		OntologyTermValidationDescriptor descriptor = new OntologyTermValidationDescriptor(property, ontManager);
-		OntologyTermValidation validation = new OntologyTermValidation(descriptor, range);
-		
-		
 		assertEquals(1,manager.getWorkbook().getSheets().size());
 		assertEquals(1,manager.getWorkbook().getVisibleSheets().size());
-		ArrayList<OntologyTermValidation> validations = new ArrayList<OntologyTermValidation>();
-		validations.add(validation);
+		
+		Collection<OntologyTermValidation> validations = createFreeTextValidations();				
+		
 		Collection<Validation> sheetValidations = manager.getWorkbook().getSheet(0).getValidations();
 		assertEquals(0,sheetValidations.size());
 		
@@ -69,36 +56,41 @@ public class OntologyTermValidationWorkbookParserTest {
 		sheetValidations = manager.getWorkbook().getSheet(0).getValidations();
 		assertEquals(1,sheetValidations.size());
 		Validation v = sheetValidations.iterator().next();
+		Sheet sheet = manager.getWorkbook().getSheet(0);
+		Cell cell = sheet.getCellAt(2, 1);
 		assertEquals(sheet,v.getSheet());
 		assertEquals(new Range(sheet,cell),v.getRange());
-		assertEquals("wksowlv0:<http://www.mygrid.org.uk/ontology/JERMOntology#hasCharacteristics>",v.getListName());
-		
+		assertEquals("property^wksowlv0^<http://www.mygrid.org.uk/ontology/JERMOntology#hasCharacteristics>^OBJECT_PROPERTY",v.getFormula());		
 	}
 	
-	@Test
-	public void testWritingDataValidation() throws Exception {
+	private Collection<OntologyTermValidation> createFreeTextValidations() {
 		Sheet sheet = manager.getWorkbook().getSheet(0);
 		assertNotNull(sheet);
 		assertEquals("Sheet0",sheet.getName());
-		OWLPropertyItem property = ontManager.getOWLObjectProperties().iterator().next();
+		OWLPropertyItem property = new OWLPropertyItem(IRI.create("http://www.mygrid.org.uk/ontology/JERMOntology#hasCharacteristics"),OWLPropertyType.OBJECT_PROPERTY);		
 		assertNotNull(property);
 		
-		Cell cell = sheet.addCellAt(0, 0);
+		Cell cell = sheet.addCellAt(2, 1);
 		assertNotNull(cell);
-		Range range = new Range(sheet, cell);		
+		Range range = new Range(sheet, cell);
 		
-		OntologyTermValidationDescriptor descriptor = new OntologyTermValidationDescriptor(ValidationType.INDIVIDUALS,IRI.create("http://www.mygrid.org.uk/ontology/JERMOntology#Project"),null,ontManager);
+		OntologyTermValidationDescriptor descriptor = new OntologyTermValidationDescriptor(property, ontManager);
 		OntologyTermValidation validation = new OntologyTermValidation(descriptor, range);
-		
-		
-		assertEquals(1,manager.getWorkbook().getSheets().size());
-		assertEquals(1,manager.getWorkbook().getVisibleSheets().size());
 		ArrayList<OntologyTermValidation> validations = new ArrayList<OntologyTermValidation>();
 		validations.add(validation);
+		return validations;
+	}
+	
+	@Test
+	public void testWritingDataSelectionValidation() throws Exception {
+						
+		assertEquals(1,manager.getWorkbook().getSheets().size());
+		assertEquals(1,manager.getWorkbook().getVisibleSheets().size());
+		
 		
 		Collection<Validation> sheetValidations = manager.getWorkbook().getSheet(0).getValidations();
 		assertEquals(0,sheetValidations.size());
-		
+		Collection<OntologyTermValidation> validations = createDataSelectionValidation();
 		parser.writeOntologyTermValidations(validations);
 		
 		assertEquals(2,manager.getWorkbook().getSheets().size());
@@ -118,9 +110,75 @@ public class OntologyTermValidationWorkbookParserTest {
 		
 		Validation v = sheetValidations.iterator().next();
 		assertEquals(1,sheetValidations.size());
+		Sheet sheet = manager.getWorkbook().getSheet(0);
+		Cell cell = sheet.getCellAt(2, 1);
 		assertEquals(sheet,v.getSheet());
 		assertEquals(new Range(sheet,cell),v.getRange());
-		assertEquals("wksowlv0",v.getListName());
+		assertEquals("wksowlv0",v.getFormula());
 	}
-
+	
+	private Collection<OntologyTermValidation> createDataSelectionValidation() throws Exception {
+		Sheet sheet = manager.getWorkbook().getSheet(0);
+		assertNotNull(sheet);
+		assertEquals("Sheet0",sheet.getName());
+		OWLPropertyItem property = new OWLPropertyItem(IRI.create("http://www.mygrid.org.uk/ontology/JERMOntology#hasCharacteristics"),OWLPropertyType.OBJECT_PROPERTY);
+		assertNotNull(property);
+		
+		Cell cell = sheet.addCellAt(2, 1);
+		assertNotNull(cell);
+		Range range = new Range(sheet, cell);		
+		
+		OntologyTermValidationDescriptor descriptor = new OntologyTermValidationDescriptor(ValidationType.INDIVIDUALS,IRI.create("http://www.mygrid.org.uk/ontology/JERMOntology#Project"),property,ontManager);
+		OntologyTermValidation validation = new OntologyTermValidation(descriptor, range);
+		ArrayList<OntologyTermValidation> validations = new ArrayList<OntologyTermValidation>();
+		validations.add(validation);
+		return validations;
+	}
+	
+	@Test
+	public void testParseDataSelectionValidation() throws Exception {
+		Collection<OntologyTermValidation> validations = createDataSelectionValidation();
+		parser.writeOntologyTermValidations(validations);
+		validations = parser.readOntologyTermValidations();
+		assertEquals(1,validations.size());
+		OntologyTermValidation v = validations.iterator().next();
+		assertEquals(new Range(manager.getWorkbook().getSheet(0),2,1,2,1),v.getRange());
+		assertEquals("http://www.mygrid.org.uk/ontology/JERMOntology#Project",v.getValidationDescriptor().getEntityIRI().toString());
+		assertEquals(ValidationType.INDIVIDUALS,v.getValidationDescriptor().getType());
+		assertNotNull(v.getValidationDescriptor().getOWLPropertyItem());
+		assertEquals(IRI.create("http://www.mygrid.org.uk/ontology/JERMOntology#hasCharacteristics"),v.getValidationDescriptor().getOWLPropertyItem().getIRI());
+		assertEquals(OWLPropertyType.OBJECT_PROPERTY,v.getValidationDescriptor().getOWLPropertyItem().getPropertyType());
+	}
+	
+	@Test
+	public void testParseFreeTextProperty() throws Exception {		
+		Collection<OntologyTermValidation> validations = createFreeTextValidations();
+		parser.writeOntologyTermValidations(validations);
+		validations = parser.readOntologyTermValidations();
+		assertEquals(1,validations.size());
+		OntologyTermValidation v = validations.iterator().next();		
+		assertEquals(new Range(manager.getWorkbook().getSheet(0),2,1,2,1),v.getRange());
+		assertEquals("http://www.w3.org/2002/07/owl#Nothing",v.getValidationDescriptor().getEntityIRI().toString());
+		assertEquals(ValidationType.FREETEXT,v.getValidationDescriptor().getType());
+		assertEquals(IRI.create("http://www.mygrid.org.uk/ontology/JERMOntology#hasCharacteristics"),v.getValidationDescriptor().getOWLPropertyItem().getIRI());
+		assertEquals(OWLPropertyType.OBJECT_PROPERTY,v.getValidationDescriptor().getOWLPropertyItem().getPropertyType());
+	}
+	
+	@Test
+	public void testParseFreeTextPropertyValidationFromFile() throws Exception {
+		WorkbookManager manager = new WorkbookManager();
+		//parser is invoked during load, and then the validations are stripped out of the workbook, but stored by the ontologyTermManager
+		manager.loadWorkbook(DocumentsCatalogue.simpleWorkbookWithLiteralsOverRangeURI());		
+		Collection<OntologyTermValidation> validations = manager.getOntologyManager().getOntologyTermValidations();
+		
+		assertEquals(1,validations.size());
+		OntologyTermValidation v = validations.iterator().next();		
+		assertEquals(new Range(manager.getWorkbook().getSheet(0),1,1,3,4),v.getRange());
+		assertEquals("http://www.w3.org/2002/07/owl#Nothing",v.getValidationDescriptor().getEntityIRI().toString());
+		assertEquals(ValidationType.FREETEXT,v.getValidationDescriptor().getType());
+		assertEquals(IRI.create("http://www.mygrid.org.uk/ontology/JERMOntology#ECNumber"),v.getValidationDescriptor().getOWLPropertyItem().getIRI());
+		assertEquals(OWLPropertyType.DATA_PROPERTY,v.getValidationDescriptor().getOWLPropertyItem().getPropertyType());
+		
+	}
+	
 }

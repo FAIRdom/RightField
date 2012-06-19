@@ -13,7 +13,7 @@ package uk.ac.manchester.cs.owl.semspreadsheets.model;
  */
 public interface Validation {
 
-    String getListName();
+    String getFormula();
 
     Sheet getSheet();
 
@@ -24,6 +24,8 @@ public interface Validation {
     int getFirstRow();
 
     int getLastRow();
+    
+    boolean isDataValidation();
 
     Range getRange();
 

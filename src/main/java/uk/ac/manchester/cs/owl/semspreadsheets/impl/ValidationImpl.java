@@ -6,6 +6,8 @@
  ******************************************************************************/
 package uk.ac.manchester.cs.owl.semspreadsheets.impl;
 
+import org.apache.log4j.Logger;
+
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Validation;
@@ -15,8 +17,10 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.Validation;
  * @author Matthew Horridge
  */
 public class ValidationImpl implements Validation {
+	
+	private static final Logger logger = Logger.getLogger(ValidationImpl.class);
 
-    private String list;
+    private String formula;
 
     private Sheet sheet;
 
@@ -28,13 +32,18 @@ public class ValidationImpl implements Validation {
 
     private int toRow;
 
-    public ValidationImpl(String list, Sheet sheet, int fromColumn, int toColumn, int fromRow, int toRow) {
-        this.list = list;
+    public ValidationImpl(String formula, Sheet sheet, int fromColumn, int toColumn, int fromRow, int toRow) {
+    	logger.debug("Creating ValidationImpl with formula:'"+formula+"' for sheet: "+sheet.getIndex());
+        this.formula = formula;
         this.sheet = sheet;
         this.fromColumn = fromColumn;
         this.toColumn = toColumn;
         this.fromRow = fromRow;
         this.toRow = toRow;
+    }
+    
+    public boolean isDataValidation() {
+    	return (formula!=null && !formula.startsWith("property") && !formula.contains(":<"));
     }
 
     public Range getRange() {
@@ -45,8 +54,8 @@ public class ValidationImpl implements Validation {
         return sheet;
     }
 
-    public String getListName() {
-        return list;
+    public String getFormula() {
+        return formula;
     }
 
     public int getFirstColumn() {
@@ -64,10 +73,6 @@ public class ValidationImpl implements Validation {
     public int getLastRow() {
         return toRow;
     }
-
-
-
-
 
     public boolean contains(int col, int row) {
         return fromColumn >= col && row <= toColumn && row >= fromRow && row <= toRow;

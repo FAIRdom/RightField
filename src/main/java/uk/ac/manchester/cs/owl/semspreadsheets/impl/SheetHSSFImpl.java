@@ -23,6 +23,7 @@ import org.apache.poi.ss.util.CellRangeAddressList;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Cell;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OWLPropertyItem;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.PropertyFormulaEncoder;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Validation;
@@ -57,7 +58,7 @@ public class SheetHSSFImpl implements Sheet {
     
     public int getIndex() {
     	for (int index = 0 ; index < getWorkbook().getSheets().size(); index++) {
-    		if (getWorkbook().getSheet(index) == this) {
+    		if (getWorkbook().getSheet(index).equals(this)) {
     			return index;
     		}
     	}
@@ -192,16 +193,16 @@ public class SheetHSSFImpl implements Sheet {
     }
     
     /**
-     * Creates a custom validation that embeds the hidden sheet name (that contains the ontology details) and the property IRI
+     * Creates a custom validation that embeds the hidden sheet name (that contains the ontology details) and the property IRI and property type.
      * e.g
-     * =AND(A1<>"wksowlv0:http://mygrid/JERMOnology#hasType")
+     * =AND(A1<>"property:wksowlv0:http://mygrid/JERMOnology#hasType:OBJECT_PROPERTY")
      * this embeds the information, without restricting the use of the field (except the highly unlikely case of wanting to type the encoded string).
      */
     public void addValidation(String hiddenSheetName, OWLPropertyItem propertyItem, int firstCol, int firstRow, int lastCol, int lastRow) {
-    	String key = hiddenSheetName+":"+propertyItem.getIRI().toQuotedString();
+    	String encoded = PropertyFormulaEncoder.encode(hiddenSheetName,propertyItem);
     	
     	//the cell title A1 is irrelevant, when the sheet is saved it gets turned into the current cell.
-    	String formula="AND(A1<>\""+key+"\")";
+    	String formula="AND(A1<>\""+encoded+"\")";
     	DVConstraint constraint = DVConstraint.createCustomFormulaConstraint(formula);
     	addConstraint(constraint, firstCol, firstRow, lastCol, lastRow);
     }
