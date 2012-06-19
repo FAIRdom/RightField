@@ -17,6 +17,7 @@ import java.util.Set;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 
 import org.apache.log4j.Logger;
 
@@ -38,6 +39,7 @@ public class PropertyListPanel extends JPanel {
 			.getLogger(PropertyListPanel.class);
 	private JComboBox comboBox;
 	private JCheckBox checkBox;
+	private JTextArea fullPropertyName;
 
 	public PropertyListPanel(WorkbookManager workbookManager) {
 
@@ -45,13 +47,23 @@ public class PropertyListPanel extends JPanel {
 		setLayout(new BorderLayout());
 		comboBox = new JComboBox();
 		
-		checkBox = new JCheckBox("Include a property");
-
-		setSelectedStatus(false);
+		checkBox = new JCheckBox("Include a property");		
 
 		add(checkBox, BorderLayout.NORTH);
 		add(comboBox, BorderLayout.CENTER);
+		
+		fullPropertyName=new JTextArea();
+		fullPropertyName.setOpaque(false);
+		fullPropertyName.setEditable(false);
+		fullPropertyName.setFocusable(false);
+		fullPropertyName.setRows(2);
+		fullPropertyName.setLineWrap(true);
+		fullPropertyName.setWrapStyleWord(false);
+		
+			
+		add(fullPropertyName,BorderLayout.SOUTH);
 		setupListeners();
+		setSelectedStatus(false);
 		setEnabledStatus(false);
 	}
 
@@ -95,7 +107,8 @@ public class PropertyListPanel extends JPanel {
 
 			@Override
 			public void itemStateChanged(ItemEvent event) {								
-				updateEntityModel();				
+				updateEntityModel();	
+				updatePropertyDetails();
 			}
 		});
 
@@ -107,11 +120,19 @@ public class PropertyListPanel extends JPanel {
 				if (source == checkBox) {
 					boolean selected = checkBox.isSelected();
 					logger.debug("Checkbox changed to " + selected);
-					comboBox.setEnabled(selected);					
+					comboBox.setEnabled(selected);	
+					fullPropertyName.setEnabled(selected);
 					updateEntityModel();					
 				}
 			}
 		});
+	}
+	
+	private void updatePropertyDetails() {
+		OWLPropertyItem item = (OWLPropertyItem)comboBox.getSelectedItem();
+		//String txt = item.getIRI().toQuotedString().replaceAll("#", "\n\t#");
+		String txt = item.getIRI().toString();
+		fullPropertyName.setText(txt);
 	}
 
 	private void updatePropertySelectionFromModel(Range range) {
@@ -189,10 +210,12 @@ public class PropertyListPanel extends JPanel {
 	private void setEnabledStatus(boolean selected) {
 		checkBox.setEnabled(selected);
 		comboBox.setEnabled(selected);
+		fullPropertyName.setEditable(selected);
 	}
 
 	private void setSelectedStatus(boolean selected) {
 		comboBox.setEnabled(selected);
+		fullPropertyName.setEnabled(selected);
 		checkBox.setSelected(selected);
 	}	
 
