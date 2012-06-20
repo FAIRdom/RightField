@@ -239,9 +239,10 @@ public class OntologyManager {
 					logger.error("Error loading ontology for embedded term.",e);
 				}
             }
-        }
+        }        
         owlManager.removeIRIMapper(mapper);        
-        setLabelRendering(true);        
+        setLabelRendering(true);
+        fireOntologiesChanged();
     }
     
     public OWLOntology loadOntology(URI physicalURI) throws OWLOntologyCreationException {
