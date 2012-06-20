@@ -36,23 +36,23 @@ public class ValidationTypeSelectorPanel extends JPanel {
 
     private CellSelectionListener cellSelectionListener;
         
-    JComboBox comboxBox;
+    JComboBox comboBox;
 
     public ValidationTypeSelectorPanel(final WorkbookManager workbookManager) {
         this.workbookManager = workbookManager;		
         setLayout(new BorderLayout());
                      
-        comboxBox = new JComboBox();
-        add(comboxBox,BorderLayout.NORTH);
+        comboBox = new JComboBox();
+        add(comboBox,BorderLayout.NORTH);
               
         add(new PropertyListPanel(workbookManager),BorderLayout.SOUTH);                
 		
-		comboxBox.addItemListener(new ItemListener() {
+		comboBox.addItemListener(new ItemListener() {
 			
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				if (comboxBox==e.getSource() && comboxBox.getSelectedItem()!=null) {					
-					workbookManager.getEntitySelectionModel().setValidationType((ValidationType) comboxBox.getSelectedItem());
+				if (e.getStateChange()==ItemEvent.SELECTED && comboBox==e.getSource() && comboBox.getSelectedItem()!=null) {					
+					workbookManager.getEntitySelectionModel().setValidationType((ValidationType) comboBox.getSelectedItem());
 					previewSelectionInList();
 				}				
 			}
@@ -96,7 +96,7 @@ public class ValidationTypeSelectorPanel extends JPanel {
     }
     
     public void addListItemListener(ItemListener listener) {
-    	comboxBox.addItemListener(listener);
+    	comboBox.addItemListener(listener);
     }       
     
     private void previewSelectionInList() {    	    	
@@ -116,7 +116,7 @@ public class ValidationTypeSelectorPanel extends JPanel {
         setComboBoxEnabled(containingValidations.size() <= 1 && intersectingValidations.size() == containingValidations.size());                       
         
         if(containingValidations.isEmpty()) {            
-            comboxBox.setSelectedIndex(0);
+            comboBox.setSelectedIndex(0);
         }
         else if(containingValidations.size() == 1) {
             OntologyTermValidation validation = containingValidations.iterator().next();
@@ -127,11 +127,11 @@ public class ValidationTypeSelectorPanel extends JPanel {
     private void setSelectedType(OntologyTermValidation validation) {    	
         ValidationType type = validation.getValidationDescriptor().getType();
         logger.debug("Setting selected type to "+type);
-        comboxBox.setSelectedItem(type);        		
+        comboBox.setSelectedItem(type);        		
     }
 
     public ValidationType getSelectedType() {
-        return (ValidationType)comboxBox.getSelectedItem();
+        return (ValidationType)comboBox.getSelectedItem();
     }
 
     /**
@@ -141,20 +141,20 @@ public class ValidationTypeSelectorPanel extends JPanel {
     private void refreshTypeList(boolean allItems) { 
     	logger.debug("Refereshing validation type list - include all items:"+allItems);
     	if (allItems) {
-    		if (comboxBox.getItemCount()<=1) {
-    			comboxBox.removeAllItems();
+    		if (comboBox.getItemCount()<=1) {
+    			comboBox.removeAllItems();
         		for(ValidationType type : ValidationType.values()) {                
-        			comboxBox.addItem(type);
+        			comboBox.addItem(type);
                 }
     		}    		
     	}
-    	else if (comboxBox.getItemCount()!=1) {
-    		comboxBox.removeAllItems();
-    		comboxBox.addItem(ValidationType.FREETEXT);
+    	else if (comboBox.getItemCount()!=1) {
+    		comboBox.removeAllItems();
+    		comboBox.addItem(ValidationType.FREETEXT);
     	}    	    	
     }
     
     private void setComboBoxEnabled(boolean enabled) {
-    	comboxBox.setEnabled(enabled);
+    	comboBox.setEnabled(enabled);
     }    
 }

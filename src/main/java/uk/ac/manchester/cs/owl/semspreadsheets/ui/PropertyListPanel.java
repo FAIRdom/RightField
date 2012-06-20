@@ -106,9 +106,11 @@ public class PropertyListPanel extends JPanel {
 		comboBox.addItemListener(new ItemListener() {
 
 			@Override
-			public void itemStateChanged(ItemEvent event) {								
-				updateEntityModel();	
-				updatePropertyDetails();
+			public void itemStateChanged(ItemEvent event) {				
+				if (event.getStateChange()==ItemEvent.SELECTED) {
+					updateEntityModel();	
+					updatePropertyDetails();
+				}				
 			}
 		});
 
@@ -130,7 +132,6 @@ public class PropertyListPanel extends JPanel {
 	
 	private void updatePropertyDetails() {
 		OWLPropertyItem item = (OWLPropertyItem)comboBox.getSelectedItem();
-		//String txt = item.getIRI().toQuotedString().replaceAll("#", "\n\t#");
 		String txt = item.getIRI().toString();
 		fullPropertyName.setText(txt);
 	}
