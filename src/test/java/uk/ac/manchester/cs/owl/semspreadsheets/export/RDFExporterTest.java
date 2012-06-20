@@ -59,6 +59,18 @@ public class RDFExporterTest {
 		URI uri = DocumentsCatalogue.bookWithPropertiesURI();
 		Exporter exp = new RDFExporter(uri,rootID);
 		String rdf = exp.export();
+		
+		//FIXME: need to test RDF output
+		System.out.println(rdf);
+	}
+	
+	@Test
+	public void testExportWithFreeTextBasedProperties() throws Exception {
+		URI uri = DocumentsCatalogue.simpleWorkbookWithLiteralsOverRangeURI();
+		Exporter exp = new RDFExporter(uri,rootID);
+		String rdf = exp.export();
+		
+		//FIXME: need to test RDF output
 		System.out.println(rdf);
 	}
 	

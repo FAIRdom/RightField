@@ -7,6 +7,7 @@
 
 package uk.ac.manchester.cs.owl.semspreadsheets.export;
 
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -22,8 +23,11 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.junit.Test;
+import org.semanticweb.owlapi.model.IRI;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.DocumentsCatalogue;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.OWLPropertyItem;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.OWLPropertyType;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidation;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.ValidationType;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
@@ -72,6 +76,7 @@ public class AbstractExporterTest {
 		int x=0;
 		for (PopulatedValidatedCellDetails pop : list) {
 			assertEquals(textValues[x],pop.getTextValue());
+			assertFalse(pop.isDefinesLiteral());
 			x++;
 		}
 		assertEquals("http://www.mygrid.org.uk/ontology/JERMOntology#Bacillus_subtilis",list.get(0).getTerm().getIRI().toString());
@@ -82,6 +87,24 @@ public class AbstractExporterTest {
 		assertEquals("http://www.mygrid.org.uk/ontology/JERMOntology#FactorsStudied",list.get(3).getEntityIRI().toString());
 		assertEquals(1,list.get(2).getOntologyIRIs().size());
 	}	
+	
+	@Test
+	public void testPopulatedValidatedCellsForFreeTextProperties() throws Exception {
+		URI uri = DocumentsCatalogue.simpleWorkbookWithLiteralsOverRangeURI();
+		AbstractExporter exporter = new AbstractExporterTestImpl(uri);
+		Collection<PopulatedValidatedCellDetails> cellDetails = exporter.getPopulatedValidatedCellDetails();
+		assertEquals(2,cellDetails.size());
+		String [] textValues = new String [] {"hello", "world"};
+		int x=0;
+		for (PopulatedValidatedCellDetails pop : cellDetails) {
+			assertTrue(pop.isDefinesLiteral());
+			assertEquals(textValues[x],pop.getTextValue());
+			assertEquals(IRI.create("http://www.mygrid.org.uk/ontology/JERMOntology#ECNumber"),pop.getOWLPropertyItem().getIRI());
+			assertEquals(OWLPropertyType.DATA_PROPERTY,pop.getOWLPropertyItem().getPropertyType());
+			x++;
+		}
+		
+	}
 	
 	/**
 	 * Uses a spreadsheet created with the latest RightField that does some formatting of terms (i.e. removing underscores and switching with spaces)
@@ -99,6 +122,7 @@ public class AbstractExporterTest {
 		int x=0;
 		for (PopulatedValidatedCellDetails pop : list) {
 			assertEquals(textValues[x],pop.getTextValue());
+			assertFalse(pop.isDefinesLiteral());
 			x++;
 		}
 		assertEquals(ValidationType.SUBCLASSES,list.get(0).getValidation().getValidationDescriptor().getType());

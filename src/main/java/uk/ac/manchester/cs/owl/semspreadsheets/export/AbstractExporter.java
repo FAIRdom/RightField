@@ -19,6 +19,7 @@ import java.util.Comparator;
 import org.apache.log4j.Logger;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Cell;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.OWLPropertyItem;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyManager;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidation;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidationDescriptor;
@@ -68,22 +69,32 @@ public abstract class AbstractExporter implements Exporter {
 	public Collection<PopulatedValidatedCellDetails> getPopulatedValidatedCellDetails() {
 		ArrayList<PopulatedValidatedCellDetails> result = new ArrayList<PopulatedValidatedCellDetails>();
 		for (OntologyTermValidation validation : getValidations()) {
-			Range range = validation.getRange();
-			OntologyTermValidationDescriptor validationDescriptor = validation.getValidationDescriptor();
-			for (Cell cell : range.getCells()) {
-				String value = cell.getValue();
-				Term matchedTerm = null;
-				for (Term term : validationDescriptor.getTerms()) {
-					if (term.getFormattedName().equalsIgnoreCase(value) || term.getName().equalsIgnoreCase(value)) {
-						matchedTerm = term;
-						break;
+			
+				Range range = validation.getRange();
+				OntologyTermValidationDescriptor validationDescriptor = validation.getValidationDescriptor();
+				for (Cell cell : range.getCells()) {
+					String value = cell.getValue();
+					if (validationDescriptor.isDefinesLiteral()) {
+						if (value!=null && !value.trim().isEmpty()) {
+							PopulatedValidatedCellDetails pop = new PopulatedValidatedCellDetails(validation,cell,value);					
+							result.add(pop);
+						}
 					}
-				}
-				if (matchedTerm!=null) {
-					PopulatedValidatedCellDetails pop = new PopulatedValidatedCellDetails(validation,cell,matchedTerm,value);					
-					result.add(pop);
-				}
-			}			
+					else {
+						Term matchedTerm = null;
+						for (Term term : validationDescriptor.getTerms()) {
+							if (term.getFormattedName().equalsIgnoreCase(value) || term.getName().equalsIgnoreCase(value)) {
+								matchedTerm = term;
+								break;
+							}
+						}
+						if (matchedTerm!=null) {
+							PopulatedValidatedCellDetails pop = new PopulatedValidatedCellDetails(validation,cell,matchedTerm,value);					
+							result.add(pop);
+						}
+					}
+					
+				}								
 		}
 		Collections.sort(result, new Comparator<PopulatedValidatedCellDetails>() {
 

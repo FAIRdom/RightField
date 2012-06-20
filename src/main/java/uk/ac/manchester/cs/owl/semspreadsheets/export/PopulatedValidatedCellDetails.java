@@ -44,6 +44,14 @@ class PopulatedValidatedCellDetails
 		this.textValue = textValue;		
 	}
 	
+	public PopulatedValidatedCellDetails(OntologyTermValidation validation, Cell cell, String textValue) {
+		this(validation,cell,null,textValue);
+	}
+	
+	public boolean isDefinesLiteral() {
+		return this.term==null && getValidation().getValidationDescriptor().isDefinesLiteral();
+	}
+	
 	public Sheet getSheet() {
 		return validation.getRange().getSheet();
 	}

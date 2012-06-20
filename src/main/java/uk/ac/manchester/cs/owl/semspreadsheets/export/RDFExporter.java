@@ -66,7 +66,7 @@ public class RDFExporter extends AbstractExporter {
 //		root.addProperty(RDFS.comment, model.createLiteral("some comments about this data file"));
 		
 		for (PopulatedValidatedCellDetails details : getPopulatedValidatedCellDetails()) {
-			addNodes(root,model,details);
+			addNode(root,model,details);
 		}
 		
 		try {
@@ -90,7 +90,21 @@ public class RDFExporter extends AbstractExporter {
 		}
 	}
 	
-	private void addNodes(Resource rootResource,Model model,PopulatedValidatedCellDetails cellDetails) {
+	private void addNode(Resource rootResource,Model model,PopulatedValidatedCellDetails cellDetails) {
+		if (cellDetails.isDefinesLiteral()) {
+			addLiteralNode(rootResource,model,cellDetails);
+		}
+		else {
+			addStatementNode(rootResource, model, cellDetails);
+		}
+	}
+	
+	private void addLiteralNode(Resource rootResource,Model model,PopulatedValidatedCellDetails cellDetails) {
+		Property property = createProperty(model,cellDetails.getOWLPropertyItem());
+		rootResource.addProperty(property, model.createLiteral(cellDetails.getTextValue()));
+	}
+	
+	private void addStatementNode(Resource rootResource,Model model,PopulatedValidatedCellDetails cellDetails) {
 		Property property = createProperty(model,cellDetails.getOWLPropertyItem());
 		Resource r = model.createResource(cellDetails.getTerm().getIRI().toString());						
 		Statement s = model.createStatement(rootResource, property, r);
