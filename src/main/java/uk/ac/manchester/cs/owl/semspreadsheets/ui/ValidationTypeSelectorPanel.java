@@ -60,7 +60,7 @@ public class ValidationTypeSelectorPanel extends JPanel {
 
         cellSelectionListener = new CellSelectionListener() {
             public void selectionChanged(Range range) {
-                updateSelectionFromModel();
+                updateSelectionFromModel(range);
             }
         };
         workbookManager.getOntologyManager().addListener(new WorkbookManagerListener() {
@@ -103,8 +103,7 @@ public class ValidationTypeSelectorPanel extends JPanel {
     	workbookManager.previewValidation();		
 	}        
 
-    private void updateSelectionFromModel() {
-        Range range = workbookManager.getSelectionModel().getSelectedRange();
+    private void updateSelectionFromModel(Range range) {        
         if(range == null) {
         	setComboBoxEnabled(false);            
             return;

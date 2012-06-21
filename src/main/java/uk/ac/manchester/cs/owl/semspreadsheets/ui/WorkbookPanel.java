@@ -94,7 +94,7 @@ public class WorkbookPanel extends JPanel {
 		workbookManager.getSelectionModel().addCellSelectionListener(
 				new CellSelectionListener() {
 					public void selectionChanged(Range range) {
-						updateSelectionFromModel();
+						updateSelectionFromModel(range);
 					}
 				});
 		workbookManager.addListener(new WorkbookManagerListener() {
@@ -136,13 +136,12 @@ public class WorkbookPanel extends JPanel {
 		rebuildingTabs = false;
 	}
 
-	private void updateSelectionFromModel() {
+	private void updateSelectionFromModel(Range range) {
 		if (rebuildingTabs || transmittingSelectionToModel) {
 			return;
 		}
 		try {
-			updatingSelectionFromModel = true;
-			Range range = manager.getSelectionModel().getSelectedRange();
+			updatingSelectionFromModel = true;			
 			setSelectedSheet(range.getSheet());
 		} finally {
 			updatingSelectionFromModel = false;

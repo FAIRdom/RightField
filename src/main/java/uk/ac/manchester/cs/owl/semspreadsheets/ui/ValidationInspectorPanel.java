@@ -76,7 +76,7 @@ public class ValidationInspectorPanel extends JPanel {
         
         frame.getWorkbookManager().getSelectionModel().addCellSelectionListener(new CellSelectionListener() {
             public void selectionChanged(Range range) {
-                updateSelectionLabel();
+                updateSelectionLabel(range);
             }
         });     
                 
@@ -90,7 +90,7 @@ public class ValidationInspectorPanel extends JPanel {
         add(selectedCellAddressLabel, BorderLayout.NORTH);
         add(outerPanel,BorderLayout.CENTER);
         
-        updateSelectionLabel();
+        updateSelectionLabel(workbookManager.getSelectionModel().getSelectedRange());
     }
 
 	private JPanel setupButtonPanel(ValidationTypeSelectorPanel typeSelectorPanel) {
@@ -157,10 +157,9 @@ public class ValidationInspectorPanel extends JPanel {
 		cancelButton.setEnabled(state);
 	}
 
-    private void updateSelectionLabel() {
-        Range selectedRange = workbookManager.getSelectionModel().getSelectedRange();
-        if (selectedRange.isCellSelection()) {        	
-            selectedCellAddressLabel.setText("Selected cells: " + selectedRange.getColumnRowAddress());
+    private void updateSelectionLabel(Range range) {        
+        if (range.isCellSelection()) {        	
+            selectedCellAddressLabel.setText("Selected cells: " + range.getColumnRowAddress());
         }
         else {
             selectedCellAddressLabel.setText("No cells are currently selected");

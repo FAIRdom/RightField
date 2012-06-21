@@ -86,14 +86,14 @@ public class ValidationValuesPanel extends JPanel {
         sp.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
         workbookManager.getSelectionModel().addCellSelectionListener(new CellSelectionListener() {
             public void selectionChanged(Range range) {
-                updateFromModel();
+                updateFromModel(range);
             }
         });
         termList.setCellRenderer(new ValueListItemCellRenderer());
         workbookManager.getOntologyManager().addListener(new OntologyTermValidationListener() {
             @Override
         	public void validationsChanged() {
-                updateFromModel();
+                updateFromModel(workbookManager.getSelectionModel().getSelectedRange());
             }			
 
 			@Override
@@ -116,9 +116,9 @@ public class ValidationValuesPanel extends JPanel {
         termList.setListData(listData.toArray());		
 	}
 
-	private void updateFromModel() {		
+	private void updateFromModel(Range range) {		
         termList.setListData(new Object [0]);
-        Range range = workbookManager.getSelectionModel().getSelectedRange();
+        
         if(!range.isCellSelection()) {
             return;
         }

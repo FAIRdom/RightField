@@ -67,7 +67,7 @@ public class WorkbookManager {
         selectionModel.setSelectedRange(new Range(workbook.getSheet(0)));
         selectionModel.addCellSelectionListener(new CellSelectionListener() {
             public void selectionChanged(Range range) {
-                handleCellSelectionChanged();
+                handleCellSelectionChanged(range);
             }
         });
     }     
@@ -100,9 +100,8 @@ public class WorkbookManager {
         return new ArrayList<WorkbookManagerListener>(workbookManagerListeners);
     }
 
-    private void handleCellSelectionChanged() {
-        Range range = selectionModel.getSelectedRange();
-        OWLEntity selEnt = entitySelectionModel.getSelection();
+    private void handleCellSelectionChanged(Range range) {        
+        OWLEntity selEnt = getEntitySelectionModel().getSelection();
         if (range.isCellSelection()) {
             for (OntologyTermValidation validation : getOntologyManager().getContainingOntologyTermValidations(range)) {
                 OWLClass cls = getOntologyManager().getDataFactory().getOWLClass(validation.getValidationDescriptor().getEntityIRI());
@@ -110,7 +109,7 @@ public class WorkbookManager {
                 break;
             }
         }
-        entitySelectionModel.setSelection(selEnt);
+        getEntitySelectionModel().setSelection(selEnt);
     }
 
     private void fireWorkbookCreated() {
