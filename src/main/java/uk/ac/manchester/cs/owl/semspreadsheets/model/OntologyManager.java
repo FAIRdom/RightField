@@ -27,6 +27,7 @@ import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.io.IRIDocumentSource;
 import org.semanticweb.owlapi.io.OWLOntologyDocumentSource;
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.MissingImportHandlingStrategy;
 import org.semanticweb.owlapi.model.OWLAnnotationProperty;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLDataProperty;
@@ -77,7 +78,7 @@ public class OntologyManager {
 
 	public OntologyManager(OWLOntologyManager owlManager, WorkbookManager workbookManager) {
 		this.owlManager = owlManager;	
-		ontologyLoaderConfiguration.setSilentMissingImportsHandling(true);
+		ontologyLoaderConfiguration = ontologyLoaderConfiguration.setMissingImportHandlingStrategy(MissingImportHandlingStrategy.SILENT);		
 		shortFormProvider = new BidirectionalShortFormProviderAdapter(new SimpleShortFormProvider());
 		ontologyTermValidationManager = new OntologyTermValidationManager(workbookManager);
 	}
