@@ -15,6 +15,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 
 import org.apache.log4j.Logger;
+import org.semanticweb.owlapi.model.IRI;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OWLPropertyItem;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
@@ -29,7 +30,9 @@ public class RDFExporter extends AbstractExporter {
 	
 	private static final Logger logger = Logger.getLogger(RDFExporter.class);
 	
-	private final String rootID;		
+	private final String rootID;
+	
+	public static final String DEFAULT_PROPERTY_URI = "http://rightfield.org.uk/RightFieldOntology#contains";
 
 	public RDFExporter(File workbookFile,String rootID) throws IOException {
 		super(workbookFile);
@@ -51,8 +54,8 @@ public class RDFExporter extends AbstractExporter {
 	}
 	
 	private Property getDefaultProperty(Model model) {		
-		Property property = model.createProperty("http://rightfield.org.uk/RightFieldOntology#contains");
-		model.setNsPrefix("rightfield", "http://rightfield.org.uk/RightFieldOntology#");
+		Property property = model.createProperty(DEFAULT_PROPERTY_URI);
+		model.setNsPrefix("rightfield", IRI.create(DEFAULT_PROPERTY_URI).getStart());
 		return property;		
 	}
 
