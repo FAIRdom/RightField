@@ -32,7 +32,7 @@ public class OntologyTermValidationDescriptorTest {
 		assertTrue(descriptor.getTerms().isEmpty());
 		assertEquals(IRI.create("http://www.w3.org/2002/07/owl#Nothing"),descriptor.getEntityIRI());		
 		assertNotNull(descriptor.hashCode());
-		assertTrue(descriptor.isDefinesLiteral());
+		assertTrue(descriptor.definesLiteral());
 		assertEquals(1,descriptor.getOntologyIRIs().size());
 		assertEquals("http://www.mygrid.org.uk/ontology/JERMOntology",descriptor.getOntologyIRIs().iterator().next().toString());
 	}
@@ -49,7 +49,7 @@ public class OntologyTermValidationDescriptorTest {
 		assertEquals(13,descriptor.getTerms().size());
 		assertEquals(IRI.create("http://www.mygrid.org.uk/ontology/JERMOntology#Project"),descriptor.getEntityIRI());		
 		assertNotNull(descriptor.hashCode());
-		assertFalse(descriptor.isDefinesLiteral());
+		assertFalse(descriptor.definesLiteral());
 		assertEquals(1,descriptor.getOntologyIRIs().size());
 		assertEquals("http://www.mygrid.org.uk/ontology/JERMOntology",descriptor.getOntologyIRIs().iterator().next().toString());
 	}
@@ -68,7 +68,7 @@ public class OntologyTermValidationDescriptorTest {
 		
 		assertEquals(IRI.create("http://www.mygrid.org.uk/ontology/JERMOntology#AssayType"),descriptor.getEntityIRI());		
 		assertNotNull(descriptor.hashCode());
-		assertFalse(descriptor.isDefinesLiteral());
+		assertFalse(descriptor.definesLiteral());
 		assertEquals(1,descriptor.getOntologyIRIs().size());
 		assertEquals("http://www.mygrid.org.uk/ontology/JERMOntology",descriptor.getOntologyIRIs().iterator().next().toString());
 	}

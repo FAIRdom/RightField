@@ -23,7 +23,7 @@ import org.apache.poi.ss.util.CellRangeAddressList;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Cell;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OWLPropertyItem;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.PropertyFormulaEncoder;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.PropertyValidationForumlaDefinition;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Validation;
@@ -199,7 +199,7 @@ public class SheetHSSFImpl implements Sheet {
      * this embeds the information, without restricting the use of the field (except the highly unlikely case of wanting to type the encoded string).
      */
     public void addValidation(String hiddenSheetName, OWLPropertyItem propertyItem, int firstCol, int firstRow, int lastCol, int lastRow) {
-    	String encoded = PropertyFormulaEncoder.encode(hiddenSheetName,propertyItem);
+    	String encoded = PropertyValidationForumlaDefinition.encode(hiddenSheetName,propertyItem);
     	
     	//the cell title A1 is irrelevant, when the sheet is saved it gets turned into the current cell.
     	String formula="AND(A1<>\""+encoded+"\")";

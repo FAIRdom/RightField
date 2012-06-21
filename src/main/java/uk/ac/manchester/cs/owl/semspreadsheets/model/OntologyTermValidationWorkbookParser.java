@@ -57,7 +57,7 @@ public class OntologyTermValidationWorkbookParser {
     	for (Sheet sheet : workbook.getSheets()) {    		
     		for (Validation validation : sheet.getValidations()) {
     			if (!validation.isDataValidation()) {    				    				
-    				OntologyTermValidation termValidation = PropertyFormulaEncoder.constructFromValidation(validation,getWorkbookManager().getOntologyManager());
+    				OntologyTermValidation termValidation = PropertyValidationForumlaDefinition.constructFromValidation(validation,getWorkbookManager().getOntologyManager());
     				if (termValidation!=null) {
     					validations.add(termValidation);
     				}        			    				    			
@@ -92,7 +92,7 @@ public class OntologyTermValidationWorkbookParser {
     public void writeOntologyTermValidations(Collection<OntologyTermValidation> ranges) {
         clearOntologyTermValidations();        
         for (OntologyTermValidation ontologyTermValidation : ranges) {            	 
-            if (ontologyTermValidation.getValidationDescriptor().isDefinesLiteral()) {
+            if (ontologyTermValidation.getValidationDescriptor().definesLiteral()) {
             	writeFreeTextDataValidation(ontologyTermValidation);
             }
             else {

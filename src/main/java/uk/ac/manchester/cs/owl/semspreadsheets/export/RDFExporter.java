@@ -91,7 +91,7 @@ public class RDFExporter extends AbstractExporter {
 	}
 	
 	private void addNode(Resource rootResource,Model model,PopulatedValidatedCellDetails cellDetails) {
-		if (cellDetails.isDefinesLiteral()) {
+		if (cellDetails.definesLiteral()) {
 			addLiteralNode(rootResource,model,cellDetails);
 		}
 		else {

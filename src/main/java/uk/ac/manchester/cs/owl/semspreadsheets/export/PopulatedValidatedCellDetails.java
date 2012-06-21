@@ -15,6 +15,7 @@ import org.semanticweb.owlapi.model.IRI;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Cell;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OWLPropertyItem;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidation;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidationDescriptor;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Term;
 
@@ -48,8 +49,13 @@ class PopulatedValidatedCellDetails
 		this(validation,cell,null,textValue);
 	}
 	
-	public boolean isDefinesLiteral() {
-		return this.term==null && getValidation().getValidationDescriptor().isDefinesLiteral();
+	 /**
+     * @return whether this validation defines a literal, i.e has a property but is FREETEXT
+     * 
+     * @see OntologyTermValidationDescriptor#definesLiteral()
+     */
+	public boolean definesLiteral() {
+		return this.term==null && getValidation().getValidationDescriptor().definesLiteral();
 	}
 	
 	public Sheet getSheet() {

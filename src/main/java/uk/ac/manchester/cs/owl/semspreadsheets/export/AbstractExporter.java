@@ -73,7 +73,7 @@ public abstract class AbstractExporter implements Exporter {
 				OntologyTermValidationDescriptor validationDescriptor = validation.getValidationDescriptor();
 				for (Cell cell : range.getCells()) {
 					String value = cell.getValue();
-					if (validationDescriptor.isDefinesLiteral()) {
+					if (validationDescriptor.definesLiteral()) {
 						if (value!=null && !value.trim().isEmpty()) {
 							PopulatedValidatedCellDetails pop = new PopulatedValidatedCellDetails(validation,cell,value);					
 							result.add(pop);

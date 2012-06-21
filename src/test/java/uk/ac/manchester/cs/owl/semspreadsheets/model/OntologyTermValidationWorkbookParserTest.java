@@ -181,4 +181,14 @@ public class OntologyTermValidationWorkbookParserTest {
 		
 	}
 	
+	@Test
+	public void testClearOntologyTermValidations() throws Exception {
+		Collection<OntologyTermValidation> validations = createFreeTextValidations();
+		validations.addAll(createDataSelectionValidation());
+		parser.writeOntologyTermValidations(validations);
+		assertEquals(2,parser.readOntologyTermValidations().size());
+		parser.clearOntologyTermValidations();
+		assertEquals(0,parser.readOntologyTermValidations().size());
+	}
+	
 }

@@ -19,9 +19,9 @@ import org.semanticweb.owlapi.model.IRI;
  * @author Stuart Owen
  *
  */
-public class PropertyFormulaEncoder {
+public class PropertyValidationForumlaDefinition {
 	
-	private static final Logger logger = Logger.getLogger(PropertyFormulaEncoder.class);
+	private static final Logger logger = Logger.getLogger(PropertyValidationForumlaDefinition.class);
 	
 	/**
 	 * Defines the seperator used in the encoding, currently ^ is chosen since it is not a valid IRI character, so makes splitting the string easier.
@@ -34,7 +34,7 @@ public class PropertyFormulaEncoder {
 
 	public static OWLPropertyItem decode(String formula) {
 		OWLPropertyItem item = null;
-		String [] bits = formula.split("\\"+PropertyFormulaEncoder.SEPERATOR);
+		String [] bits = formula.split("\\"+PropertyValidationForumlaDefinition.SEPERATOR);
 		if (bits.length==4) {
 			String iri = bits[2];
 			String type = bits[3];
@@ -51,7 +51,7 @@ public class PropertyFormulaEncoder {
 	}
 	
 	public static OntologyTermValidation constructFromValidation(Validation validation,OntologyManager ontologyManager) {
-		OWLPropertyItem item = PropertyFormulaEncoder.decode(validation.getFormula());
+		OWLPropertyItem item = PropertyValidationForumlaDefinition.decode(validation.getFormula());
 		OntologyTermValidation termValidation = null;
 		//FIXME: should raise exception rather than just return null
 		if (item!=null) {

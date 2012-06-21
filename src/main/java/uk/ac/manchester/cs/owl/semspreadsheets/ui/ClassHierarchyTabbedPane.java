@@ -127,7 +127,7 @@ public class ClassHierarchyTabbedPane extends JTabbedPane {
 				else {
 					OntologyTermValidation validation = validations.iterator().next();
 					OWLClass cls = getWorkbookManager().getOntologyManager().getDataFactory().getOWLClass(validation.getValidationDescriptor().getEntityIRI());
-					if (validation.getValidationDescriptor().isDefinesLiteral()) {
+					if (validation.getValidationDescriptor().definesLiteral()) {
 						clearSelection();
 					}
 					else {

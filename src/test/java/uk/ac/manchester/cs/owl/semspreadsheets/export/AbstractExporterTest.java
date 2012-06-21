@@ -76,7 +76,7 @@ public class AbstractExporterTest {
 		int x=0;
 		for (PopulatedValidatedCellDetails pop : list) {
 			assertEquals(textValues[x],pop.getTextValue());
-			assertFalse(pop.isDefinesLiteral());
+			assertFalse(pop.definesLiteral());
 			x++;
 		}
 		assertEquals("http://www.mygrid.org.uk/ontology/JERMOntology#Bacillus_subtilis",list.get(0).getTerm().getIRI().toString());
@@ -97,7 +97,7 @@ public class AbstractExporterTest {
 		String [] textValues = new String [] {"hello", "world"};
 		int x=0;
 		for (PopulatedValidatedCellDetails pop : cellDetails) {
-			assertTrue(pop.isDefinesLiteral());
+			assertTrue(pop.definesLiteral());
 			assertEquals(textValues[x],pop.getTextValue());
 			assertEquals(IRI.create("http://www.mygrid.org.uk/ontology/JERMOntology#ECNumber"),pop.getOWLPropertyItem().getIRI());
 			assertEquals(OWLPropertyType.DATA_PROPERTY,pop.getOWLPropertyItem().getPropertyType());
@@ -122,7 +122,7 @@ public class AbstractExporterTest {
 		int x=0;
 		for (PopulatedValidatedCellDetails pop : list) {
 			assertEquals(textValues[x],pop.getTextValue());
-			assertFalse(pop.isDefinesLiteral());
+			assertFalse(pop.definesLiteral());
 			x++;
 		}
 		assertEquals(ValidationType.SUBCLASSES,list.get(0).getValidation().getValidationDescriptor().getType());

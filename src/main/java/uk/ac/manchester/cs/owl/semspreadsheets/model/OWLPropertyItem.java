@@ -20,7 +20,8 @@ import uk.ac.manchester.cs.owl.owlapi.OWLObjectPropertyImpl;
  * @author Stuart Owen
  *
  */
-public class OWLPropertyItem {
+public class OWLPropertyItem {	
+
 	private OWLDataProperty dataProperty;
 	private OWLObjectProperty objectProperty;
 	
@@ -73,6 +74,21 @@ public class OWLPropertyItem {
 		return getIRI().getFragment().toString();
 	}
 	
+	@Override
+	public int hashCode() {
+		return getIRI().hashCode()+getPropertyType().hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof OWLPropertyItem) {
+			OWLPropertyItem item = (OWLPropertyItem)obj;
+			return item.getIRI().equals(getIRI()) && item.getPropertyType().equals(getPropertyType());
+		}
+		else {
+			return false;
+		}
+	}
 	
 	
 

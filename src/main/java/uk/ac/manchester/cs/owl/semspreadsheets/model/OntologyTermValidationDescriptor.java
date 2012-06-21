@@ -96,9 +96,12 @@ public class OntologyTermValidationDescriptor implements Serializable {
         Collections.sort(terms);
     }
     
-    public boolean isDefinesLiteral() {
+    /**
+     * @return whether this validation defines a literal, i.e has a property but is FREETEXT
+     */
+    public boolean definesLiteral() {
     	return (getOWLPropertyItem()!=null && getEntityIRI().equals(NOTHING_IRI) && getType().equals(ValidationType.FREETEXT));
-    }
+    }        
 
     public OWLPropertyItem getOWLPropertyItem() {
     	return propertyItem;
