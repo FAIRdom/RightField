@@ -7,12 +7,16 @@
 package uk.ac.manchester.cs.owl.semspreadsheets.ui;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.swing.BorderFactory;
@@ -24,10 +28,14 @@ import javax.swing.event.ChangeListener;
 import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.OWLAnnotation;
 import org.semanticweb.owlapi.model.OWLAnnotationProperty;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.KnownOntologies;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidation;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 
 /**
@@ -45,13 +53,20 @@ public class ClassHierarchyTabbedPane extends JTabbedPane {
 	
 	private List<OWLOntology> knownOntologies = new ArrayList<OWLOntology>();
 
-	private final WorkbookFrame workbookFrame;		
+	private final WorkbookFrame workbookFrame;
+	
+	private Map<JScrollPane,ClassHierarchyTree> tabToTreeMap = new HashMap<JScrollPane,ClassHierarchyTree>();
 	
 
 	public ClassHierarchyTabbedPane(WorkbookFrame workbookFrame) {
 		super();
 		this.workbookFrame = workbookFrame;		
 		
+		setupListeners();
+				
+	}
+
+	private void setupListeners() {
 		getWorkbookManager().addListener(new WorkbookManagerListener() {
 			
 			@Override
@@ -100,8 +115,84 @@ public class ClassHierarchyTabbedPane extends JTabbedPane {
 				}
 			}
 		});
+		
+		getWorkbookManager().getSelectionModel().addCellSelectionListener(new CellSelectionListener() {
+			
+			@Override
+			public void selectionChanged(Range range) {
+				Collection<OntologyTermValidation> validations = getWorkbookManager().getOntologyManager().getContainingOntologyTermValidations(range);
+				if (validations.isEmpty()) {
+					clearSelection();
+				}
+				else {
+					OntologyTermValidation validation = validations.iterator().next();
+					OWLClass cls = getWorkbookManager().getOntologyManager().getDataFactory().getOWLClass(validation.getValidationDescriptor().getEntityIRI());
+					if (validation.getValidationDescriptor().isDefinesLiteral()) {
+						clearSelection();
+					}
+					else {
+						updateSelectedTabAndClass(cls);
+					}					
+				}
 				
+			}
+		});
 	}
+	
+	private void clearSelection() {
+		ClassHierarchyTree tree = getSelectedHierarchyTree();
+		if (tree!=null) {
+			tree.clearSelection();
+		}
+	}
+	
+	private void updateSelectedTabAndClass(OWLEntity selection) {		
+		if (selection instanceof OWLClass) {
+			OWLClass cls = (OWLClass) selection;
+			//get selected tree first
+			ClassHierarchyTree tree = getSelectedHierarchyTree();
+						
+			//if it contains class select it
+			if (tree!=null && tree.containsClass(cls)) {
+				tree.setSelectedClass(cls);				
+			}
+			else {
+				//loop and select first tab to contain cls
+				int i=0;
+				for (ClassHierarchyTree t : getHierachyTrees()) {
+					if (t.containsClass(cls)) {
+						t.setSelectedClass(cls);
+						setSelectedIndex(i);
+						break;
+					}
+					i++;
+				}
+			}			
+		}
+		else {			
+			ClassHierarchyTree tree = getSelectedHierarchyTree();
+			if (tree!=null) {
+				tree.clearSelection();
+			}
+		}
+	}
+	
+	private List<ClassHierarchyTree> getHierachyTrees() {
+		List<ClassHierarchyTree> trees = new ArrayList<ClassHierarchyTree>();
+		for (int i=0;i<getComponentCount();i++) {
+			Component comp = getComponent(i);
+			if (comp instanceof JScrollPane) {
+				ClassHierarchyTree tree = tabToTreeMap.get(comp);
+				trees.add(tree);
+			}
+		}
+		return trees;
+	}
+	
+	private ClassHierarchyTree getSelectedHierarchyTree() {
+		JScrollPane scrollPane = (JScrollPane)getSelectedComponent();
+		return tabToTreeMap.get(scrollPane);
+	}		
 	
 	public int tabIndexForOntology(OWLOntology ontology) {
 		return indexOfTab(tabTitle(ontology));
@@ -164,9 +255,10 @@ public class ClassHierarchyTabbedPane extends JTabbedPane {
 	}
 
 	private void createTab(OWLOntology ontology) {
-		ClassHierarchyTree tree = new ClassHierarchyTree(getWorkbookManager(),ontology,this);
+		ClassHierarchyTree tree = new ClassHierarchyTree(getWorkbookManager(),ontology);
 		tree.updateModel();
 		JScrollPane sp = new JScrollPane(tree);
+		tabToTreeMap.put(sp, tree);
 		sp.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
 		if (tabIndexForOntology(ontology)==-1) {
 			String title = tabTitle(ontology);
@@ -174,9 +266,6 @@ public class ClassHierarchyTabbedPane extends JTabbedPane {
 			int index = tabIndexForOntology(ontology);
 			setTabComponentAt(index, new ClassHierarchyTabComponent(this,getWorkbookFrame(),ontology));			
 			setSelectedIndex(index);
-			//FIXME: needs to fire again to get round a problem that when the tab is created and selected, the ClassHierarchyTabComponent
-			//that holds the ontology has not yet been set.
-			fireStateChanged();
 		}
 		else {
 			logger.warn("Attempting to create duplicate tab for ontology: "+ontology.getOntologyID().toString());
@@ -186,6 +275,8 @@ public class ClassHierarchyTabbedPane extends JTabbedPane {
 	private void removeTab(OWLOntology ontology) {
 		int i = tabIndexForOntology(ontology);
 		knownOntologies.remove(ontology);
+		Component pane = getComponent(i);
+		tabToTreeMap.remove(pane);
 		removeTabAt(i);
 	}
 	

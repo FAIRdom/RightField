@@ -35,18 +35,13 @@ public class ClassHierarchyTree extends JTree {
 	
 	private static Logger logger = Logger.getLogger(ClassHierarchyTree.class);
 
-    private WorkbookManager workbookManager;
-
-    private boolean transmittingSelectionToModel;    
+    private WorkbookManager workbookManager;    
     
-    private OWLOntology ontology;
+    private OWLOntology ontology;	
 
-	private final ClassHierarchyTabbedPane pane;
-
-    public ClassHierarchyTree(final WorkbookManager manager, OWLOntology ontology, final ClassHierarchyTabbedPane pane) {
+    public ClassHierarchyTree(final WorkbookManager manager, OWLOntology ontology) {
         super(new ClassHierarchyTreeModel(manager.getOntologyManager(),ontology));
 		this.ontology = ontology;
-		this.pane = pane;
         getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);        
         this.workbookManager = manager;
         
@@ -56,12 +51,8 @@ public class ClassHierarchyTree extends JTree {
                 previewSelectedClass();
             }
         });
-        manager.getEntitySelectionModel().addListener(new EntitySelectionModelListener() {
-            @Override
-			public void selectionChanged() {
-                updateSelectionFromModel();
-            }
-        });
+        
+        
         setCellRenderer(new OntologyCellRenderer(workbookManager.getOntologyManager()));
     }
 
@@ -71,68 +62,47 @@ public class ClassHierarchyTree extends JTree {
     
     public ClassHierarchyTreeModel getClassHierarchyTreeModel() {
         return (ClassHierarchyTreeModel) super.getModel();
-    }
+    }        
 
 	private void previewSelectedClass() {
 		logger.debug("In previewSelectedClass");
-		transmittingSelectionToModel = true;
-		try {
-			TreePath[] selectedPaths = getSelectionPaths();
-			if (selectedPaths == null) {
-				return;
-			}
-			Set<OWLEntity> selectedEntities = new HashSet<OWLEntity>();
-			
-			for (TreePath path : selectedPaths) {
-				DefaultMutableTreeNode node = (DefaultMutableTreeNode) path
-						.getLastPathComponent();
-				if (node instanceof ClassHierarchyNode) {
-					selectedEntities.addAll(((ClassHierarchyNode) node)
-							.getOWLClasses());
-				} else {
-					selectedEntities
-							.add((OWLNamedIndividual) ((ClassHierarchyIndividualNode) node)
-									.getUserObject());
-				}
-			}
-			OWLEntity selectedEntity = selectedEntities.iterator().next();
-			if (!workbookManager.getEntitySelectionModel().getSelection().equals(selectedEntity)) {
-				workbookManager.getEntitySelectionModel().setSelection(selectedEntity);
-			}			
-			workbookManager.previewValidation();
-		} finally {
-			transmittingSelectionToModel = false;
+				
+		TreePath[] selectedPaths = getSelectionPaths();
+		if (selectedPaths == null) {
+			return;
 		}
+		Set<OWLEntity> selectedEntities = new HashSet<OWLEntity>();
+		
+		for (TreePath path : selectedPaths) {
+			DefaultMutableTreeNode node = (DefaultMutableTreeNode) path
+					.getLastPathComponent();
+			if (node instanceof ClassHierarchyNode) {
+				selectedEntities.addAll(((ClassHierarchyNode) node)
+						.getOWLClasses());
+			} else {
+				selectedEntities
+						.add((OWLNamedIndividual) ((ClassHierarchyIndividualNode) node)
+								.getUserObject());
+			}
+		}
+		OWLEntity selectedEntity = selectedEntities.iterator().next();
+		if (!workbookManager.getEntitySelectionModel().getSelection().equals(selectedEntity)) {
+			workbookManager.getEntitySelectionModel().setSelection(selectedEntity);
+		}			
+		workbookManager.previewValidation();		
+	}    
 
-	}
-
-    private void updateSelectionFromModel() {
-    	logger.debug("In updateSelectionFromModel");
-        if(!transmittingSelectionToModel) {        	
-        	Object selection = workbookManager.getEntitySelectionModel().getSelection();        
-        	if ( selection instanceof OWLClass) {
-        		setSelectedClass((OWLClass)selection);
-        	}
-        	else {
-        		clearSelection();
-        	}        	                                 
-        }
+    public boolean containsClass(OWLClass cls) {
+    	return !getClassHierarchyTreeModel().getTreePathsForEntity(cls).isEmpty();
     }
-
+    
     public void setSelectedClass(OWLClass cls) {
         Collection<TreePath> treePaths = getClassHierarchyTreeModel().getTreePathsForEntity(cls);        
         clearSelection();
-        for(TreePath path : treePaths) {
-            addSelectionPath(path);
-            scrollPathToVisible(path);
-        }
         if (!treePaths.isEmpty()) {
-        	//FIXME: if more than one ontology, and therefore ClassHierarchyTree, contains the class, then each tab is selected in turn
-        	//usually resulting in a switch to an unexpected tab - even if the current tab contains the class.
-        	int index = pane.tabIndexForOntology(ontology);
-        	if (index!=-1) {
-        		pane.setSelectedIndex(index);
-        	}
-        }
+        	TreePath path = treePaths.iterator().next();
+        	addSelectionPath(path);
+            scrollPathToVisible(path);        	
+        }              
     }         
 }

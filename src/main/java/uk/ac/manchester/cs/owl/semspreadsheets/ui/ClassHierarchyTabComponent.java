@@ -54,15 +54,15 @@ class ClassHierarchyTabComponent extends JPanel {
 		super(new FlowLayout(FlowLayout.LEFT, 0, 0));		
 		this.pane = pane;
 		this.workbookFrame = workbookFrame;
-		this.ontology = ontology;
+		this.ontology = ontology;		
 		setOpaque(false);		
 		setText();
 		add(new JLabel(" "));
 		setButton();					
 		addOntologyTermValidationListener();		
 		updateTabClosableStatus();
-	}
-
+	}	
+	
 	public OWLOntology getOntology() {
 		return ontology;
 	}
