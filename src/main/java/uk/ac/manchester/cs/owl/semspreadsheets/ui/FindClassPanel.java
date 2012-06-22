@@ -26,6 +26,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.OWLEntity;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
@@ -36,6 +37,8 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
  */
 @SuppressWarnings("serial")
 public class FindClassPanel extends JPanel {
+	
+	private static Logger logger = Logger.getLogger(FindClassPanel.class);
 
 	private WorkbookManager manager;
 
@@ -137,6 +140,7 @@ public class FindClassPanel extends JPanel {
 
 	private void navigate() {
 		Object o = resultList.getSelectedValue();
+		logger.debug("Navigating to "+o);
 		if (o != null) {
 			manager.getEntitySelectionModel().setSelection((OWLEntity) o);
 		}

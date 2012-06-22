@@ -136,6 +136,16 @@ public class ClassHierarchyTabbedPane extends JTabbedPane {
 				
 			}
 		});
+		
+		//as far as I can tell, this is only needed for the FindClassPanel searching. Other selections are made through
+		//the CellSelectionListener
+		getWorkbookManager().getEntitySelectionModel().addListener(new EntitySelectionModelListener() {			
+			@Override
+			public void selectionChanged() {
+				OWLEntity entity = getWorkbookManager().getEntitySelectionModel().getSelection();
+				updateSelectedTabAndClass(entity);
+			}
+		});
 	}
 	
 	private void clearSelection() {
