@@ -6,6 +6,8 @@
  ******************************************************************************/
 package uk.ac.manchester.cs.owl.semspreadsheets.model;
 
+import org.semanticweb.owlapi.model.IRI;
+
 /**
  * Place for holding IRI's for known ontologies
  * 
@@ -16,4 +18,5 @@ public class KnownOntologies {
 	
 	//the protege ontology appears when some ontologies are loaded, and we want to ignore it
 	public static String PROTEGE_ONTOLOGY = "http://protege.stanford.edu/plugins/owl/protege";
+	public static IRI PROTEGE_ONTOLOGY_IRI = IRI.create(PROTEGE_ONTOLOGY);
 }

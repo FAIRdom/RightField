@@ -33,7 +33,6 @@ import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
-import uk.ac.manchester.cs.owl.semspreadsheets.model.KnownOntologies;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidation;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
@@ -233,13 +232,11 @@ public class ClassHierarchyTabbedPane extends JTabbedPane {
 	
 	private synchronized void updateTabs() {		
 		Set<OWLOntology> loadedOntologies = getLoadedOntologies();
-		for (OWLOntology ontology : loadedOntologies) {
-			if (!ontology.getOntologyID().getOntologyIRI().toString().equals(KnownOntologies.PROTEGE_ONTOLOGY)) {
+		for (OWLOntology ontology : loadedOntologies) {			
 				if (!knownOntologies.contains(ontology)) {				
 					createTab(ontology);
 					knownOntologies.add(ontology);
-				}	
-			}					
+				}								
 		}
 		//remove tabs that are no longer required
 		Set<OWLOntology> forRemoval = new HashSet<OWLOntology>();

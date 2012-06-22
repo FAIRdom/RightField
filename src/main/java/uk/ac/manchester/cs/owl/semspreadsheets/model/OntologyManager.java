@@ -73,8 +73,7 @@ public class OntologyManager {
 	private OWLOntologyLoaderConfiguration ontologyLoaderConfiguration = new OWLOntologyLoaderConfiguration();
 	private BidirectionalShortFormProviderAdapter shortFormProvider;
 	private OntologyTermValidationManager ontologyTermValidationManager;
-	private Set<WorkbookManagerListener> workbookManagerListeners = new HashSet<WorkbookManagerListener>();
-		
+	private Set<WorkbookManagerListener> workbookManagerListeners = new HashSet<WorkbookManagerListener>();			
 
 	public OntologyManager(OWLOntologyManager owlManager, WorkbookManager workbookManager) {
 		this.owlManager = owlManager;	
@@ -144,7 +143,7 @@ public class OntologyManager {
     }
 	
 	 public Set<OWLOntology> getLoadedOntologies() {
-        return getOWLOntologyManager().getOntologies();
+        return getOWLOntologyManager().getOntologies();		
     }
     
     public Collection<IRI> getOntologyIRIs() {
@@ -261,12 +260,29 @@ public class OntologyManager {
                 
         OWLOntologyDocumentSource source = new IRIDocumentSource(BioPortalRepository.handleBioPortalAPIKey(physicalIRI));
                 
-        OWLOntology ontology = processOntologyDocumentSourceWithTimeout(source, 30);
+        OWLOntology ontology = processOntologyDocumentSourceWithTimeout(source, 30);        
     	
     	logIRI = ontology.getOntologyID().getOntologyIRI();
     	//Create a new ID and use the physical IRI as a version ID        
         newID = new OWLOntologyID(logIRI,physicalIRI);        
         owlManager.applyChange(new SetOntologyID(ontology, newID));
+        
+        //remove ontologies with nil IRI's as they cause numerous problems. Also remove protege ontology.
+        //removed now, as soon as possible, rather than relying on filtering out later
+        //FIXME: this will be revisited, as an improvement and fix to this is to prevent imported ontologies being
+        //split across tabs, but instead have only one tab per explicity open ontology
+        Set<OWLOntology> forRemoval = new HashSet<OWLOntology>();
+        for (OWLOntology o : owlManager.getOntologies()) {
+        	if (o.getOntologyID()==null || 
+        			o.getOntologyID().getOntologyIRI()==null ||
+        			o.getOntologyID().getOntologyIRI().equals(KnownOntologies.PROTEGE_ONTOLOGY_IRI)) {
+        		forRemoval.add(o);
+        	}
+        }
+        for (OWLOntology o : forRemoval) {
+        	owlManager.removeOntology(o);
+        }
+        
         updateStructuralReasoner();
         updateStructuralReasoner(ontology);
         setLabelRendering(true);
@@ -340,7 +356,7 @@ public class OntologyManager {
 	}
     
     public void removeOntology(OWLOntology ontology) {
-    	getOWLOntologyManager().removeOntology(ontology);    	
+    	getOWLOntologyManager().removeOntology(ontology);      	
     	fireOntologiesChanged();
     }
     
