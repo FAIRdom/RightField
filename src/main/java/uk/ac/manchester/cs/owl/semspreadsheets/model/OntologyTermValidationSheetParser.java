@@ -34,6 +34,9 @@ public class OntologyTermValidationSheetParser {
     
     private static final Logger logger = Logger.getLogger(OntologyTermValidationSheetParser.class);
 
+    public OntologyTermValidationSheetParser(WorkbookManager workbookManager,String sheetName) {
+    	this(workbookManager,workbookManager.getWorkbook().getSheet(sheetName));
+    }
     public OntologyTermValidationSheetParser(WorkbookManager workbookManager, Sheet sheet) {
         this.workbookManager = workbookManager;
         this.sheet = sheet;
@@ -160,12 +163,14 @@ public class OntologyTermValidationSheetParser {
             Cell ontologyIRICell = sheet.getCellAt(1, row);
             if (ontologyIRICell != null) {
                 IRI ontologyIRI = toIRI(ontologyIRICell.getValue());
-                // TODO: Add space for version IRI
-                Cell physicalIRICell = sheet.getCellAt(2, row);
-                if (physicalIRICell != null) {
-                    IRI physicalIRI = toIRI(physicalIRICell.getValue());
-                    result.put(ontologyIRI, physicalIRI);
-                }
+                //avoids protege ontology being pulled in from old workbooks
+                if (!ontologyIRI.equals(KnownOntologies.PROTEGE_ONTOLOGY_IRI)) {
+                	Cell physicalIRICell = sheet.getCellAt(2, row);
+                    if (physicalIRICell != null) {
+                        IRI physicalIRI = toIRI(physicalIRICell.getValue());
+                        result.put(ontologyIRI, physicalIRI);
+                    }                	
+                }                
             }
         }
         return result;

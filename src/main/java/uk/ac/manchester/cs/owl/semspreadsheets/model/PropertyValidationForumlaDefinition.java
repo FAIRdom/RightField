@@ -8,13 +8,12 @@
 package uk.ac.manchester.cs.owl.semspreadsheets.model;
 
 import org.apache.log4j.Logger;
-import org.semanticweb.owlapi.model.IRI;
 
 /**
- * Encodes and decodes the string that defines a property as a formula to allow it to be emedded as a custom validation in a cell (when used with free text).
+ * Encodes and decodes the string that defines that a free text property hidden sheet name that gets embedded in the validation, along with the hidden sheet name
  * 
- * e.g Property ObjectType, with IRI http://www.mygrid.org.uk/JERMOntology#hasType, with associated hidden sheet defining the ontology details becomes:
- * property^hidden_sheet^<http://www.mygrid.org.uk/JERMOntology#hasType>^OBJECT_TYPE
+ * e.g if hidden sheet name is 'sheetxxx' then the encoding is:
+ * propliteral^sheetxxx
  * 
  * @author Stuart Owen
  *
@@ -28,36 +27,35 @@ public class PropertyValidationForumlaDefinition {
 	 */
 	public static final String SEPERATOR = "^";
 	
-	public static String encode(String hiddenSheetName,OWLPropertyItem propertyItem) {
-		return "property^"+hiddenSheetName+"^"+propertyItem.getIRI().toQuotedString()+"^"+propertyItem.getPropertyType().name();
+	public static String encode(String hiddenSheetName) {
+		return "propliteral"+SEPERATOR+hiddenSheetName;
 	}
 
-	public static OWLPropertyItem decode(String formula) {
-		OWLPropertyItem item = null;
+	public static String decode(String formula) {
+		String name = null;
 		String [] bits = formula.split("\\"+PropertyValidationForumlaDefinition.SEPERATOR);
-		if (bits.length==4) {
-			String iri = bits[2];
-			String type = bits[3];
-			iri = iri.substring(1, iri.length()-1);
-			
-			item = new OWLPropertyItem(IRI.create(iri), OWLPropertyType.valueOf(type));			
+		if (bits.length==2) {
+			name = bits[1].trim();															
 		}
 		else {
 			//FIXME: should raise exception rather than just return null
 			logger.warn("Unexpected number of elements in encoded property "+formula);
 		}    
 
-		return item;
+		return name;
 	}
 	
-	public static OntologyTermValidation constructFromValidation(Validation validation,OntologyManager ontologyManager) {
-		OWLPropertyItem item = PropertyValidationForumlaDefinition.decode(validation.getFormula());
-		OntologyTermValidation termValidation = null;
-		//FIXME: should raise exception rather than just return null
-		if (item!=null) {
-			OntologyTermValidationDescriptor descriptor = new OntologyTermValidationDescriptor(item, ontologyManager);
-			termValidation = new OntologyTermValidation(descriptor, validation.getRange());
+	public static boolean valid(String formula) {
+		boolean valid=false;
+		String [] bits = formula.split("\\"+PropertyValidationForumlaDefinition.SEPERATOR);
+		if (bits.length==2) {
+			if (bits[0].equals("propliteral")) {
+				if (!bits[1].trim().isEmpty()) {
+					valid=true;
+				}
+			}
 		}
-		return termValidation;
+		return valid;
 	}
+	
 }

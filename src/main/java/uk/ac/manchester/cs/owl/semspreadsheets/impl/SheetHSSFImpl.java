@@ -22,7 +22,6 @@ import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellRangeAddressList;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Cell;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.OWLPropertyItem;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.PropertyValidationForumlaDefinition;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
@@ -193,13 +192,13 @@ public class SheetHSSFImpl implements Sheet {
     }
     
     /**
-     * Creates a custom validation that embeds the hidden sheet name (that contains the ontology details) and the property IRI and property type.
+     * Creates a custom validation that embeds the hidden sheet name (that contains the ontology details) .
      * e.g
-     * =AND(A1<>"property:wksowlv0:http://mygrid/JERMOnology#hasType:OBJECT_PROPERTY")
+     * =AND(A1<>"propliteral^wksowlv0")
      * this embeds the information, without restricting the use of the field (except the highly unlikely case of wanting to type the encoded string).
      */
-    public void addValidation(String hiddenSheetName, OWLPropertyItem propertyItem, int firstCol, int firstRow, int lastCol, int lastRow) {
-    	String encoded = PropertyValidationForumlaDefinition.encode(hiddenSheetName,propertyItem);
+    public void addLiteralValidation(String hiddenSheetName, int firstCol, int firstRow, int lastCol, int lastRow) {
+    	String encoded = PropertyValidationForumlaDefinition.encode(hiddenSheetName);
     	
     	//the cell title A1 is irrelevant, when the sheet is saved it gets turned into the current cell.
     	String formula="AND(A1<>\""+encoded+"\")";

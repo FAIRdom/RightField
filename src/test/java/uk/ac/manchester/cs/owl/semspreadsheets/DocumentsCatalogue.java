@@ -36,6 +36,10 @@ public class DocumentsCatalogue {
 		return uriForResourceName("simple_annotated_book.xls");
 	}
 	
+	public static URI simpleWorkbookURI() throws Exception {
+		return uriForResourceName("simple_book.xls");
+	}
+	
 	public static URI bookWithPropertiesURI() throws Exception {
 		return uriForResourceName("book_with_properties.xls");
 	}

@@ -26,8 +26,18 @@ public class ValidationImplTest {
 		assertTrue(v.isDataValidation());
 		
 		
-		v = new ValidationImpl("property:wksowlv0:<http://www.mygrid.org.uk/ontology/JERMOntology#hasCharacteristics>:DATA_OBJECT",sheet,1,1,1,1);
+		v = new ValidationImpl("propliteral^wksowlv0",sheet,1,1,1,1);
 		assertFalse(v.isDataValidation());
+	}
+	
+	@Test
+	public void testIsLiteralValidation() {
+		Validation v = new ValidationImpl("wksowlv0",sheet,1,1,1,1);
+		assertFalse(v.isLiteralValidation());
+		
+		
+		v = new ValidationImpl("propliteral^wksowlv0",sheet,1,1,1,1);
+		assertTrue(v.isLiteralValidation());
 	}
 
 }

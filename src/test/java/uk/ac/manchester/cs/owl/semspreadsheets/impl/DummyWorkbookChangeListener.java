@@ -44,19 +44,19 @@ public class DummyWorkbookChangeListener implements WorkbookChangeListener {
 		isSheetRenamedFired=true;
 	}
 	
-	protected boolean isWorkbookChangedFired() {
+	public boolean isWorkbookChangedFired() {
 		return isWorkbookChangedFired;
 	}
 
-	protected boolean isSheetAddedFired() {
+	public boolean isSheetAddedFired() {
 		return isSheetAddedFired;
 	}
 
-	protected boolean isSheetRemovedFired() {
+	public boolean isSheetRemovedFired() {
 		return isSheetRemovedFired;
 	}
 
-	protected boolean isSheetRenamedFired() {
+	public boolean isSheetRenamedFired() {
 		return isSheetRenamedFired;
 	}
 

@@ -7,6 +7,7 @@ import java.util.Collection;
 import org.junit.Before;
 import org.junit.Test;
 
+import uk.ac.manchester.cs.owl.semspreadsheets.DocumentsCatalogue;
 import uk.ac.manchester.cs.owl.semspreadsheets.SpreadsheetTestHelper;
 import uk.ac.manchester.cs.owl.semspreadsheets.impl.SheetHSSFImpl;
 
@@ -16,7 +17,7 @@ public class RangeTest {
 
 	@Before
 	public void setup() throws Exception {
-		sheet = SpreadsheetTestHelper.getWorkbookSheet("simple_book.xls",0);
+		sheet = SpreadsheetTestHelper.getWorkbookSheet(DocumentsCatalogue.simpleWorkbookURI(),0);
 	}
 
 	@Test

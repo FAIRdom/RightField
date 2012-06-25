@@ -25,7 +25,11 @@ public interface Validation {
 
     int getLastRow();
     
+    //defines a data validation dropdown
     boolean isDataValidation();
+    
+    //defines a literal validation, that allows free text to be associated with a property
+    boolean isLiteralValidation();
 
     Range getRange();
 

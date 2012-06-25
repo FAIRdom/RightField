@@ -70,6 +70,22 @@ public class OntologyTermValidationDescriptor implements Serializable {
         this.entityIRI = entityIRI;
 		this.propertyItem = propertyItem;        
         ontologyIRI2PhysicalIRIMap = new HashMap<IRI, IRI>();
+		resolveOntologyIRIMap(entityIRI, propertyItem, ontologyManager);
+        Set<OWLEntity> entities = type.getEntities(ontologyManager, entityIRI);        
+        for(OWLEntity term : entities) {
+        	if (!term.getIRI().equals(NOTHING_IRI)) {
+        		logger.debug("Adding term "+term.getIRI()+" to list of OntologyTermValidatorDescriptor terms");        	
+                terms.add(new Term(term.getIRI(), ontologyManager.getRendering(term)));
+        	}        	
+        	else {
+        		logger.debug("Ignoring the term "+term.getIRI().toString());
+        	}
+        }
+        Collections.sort(terms);
+    }
+
+	private void resolveOntologyIRIMap(IRI entityIRI,
+			OWLPropertyItem propertyItem, OntologyManager ontologyManager) {
 		for (OWLOntology ont : ontologyManager.getAllOntologies()) {
 			if (ont.containsEntityInSignature(entityIRI)
 					|| (propertyItem != null && ont
@@ -83,18 +99,7 @@ public class OntologyTermValidationDescriptor implements Serializable {
 			}
 
 		}
-        Set<OWLEntity> entities = type.getEntities(ontologyManager, entityIRI);        
-        for(OWLEntity term : entities) {
-        	if (!term.getIRI().equals(NOTHING_IRI)) {
-        		logger.debug("Adding term "+term.getIRI()+" to list of OntologyTermValidatorDescriptor terms");        	
-                terms.add(new Term(term.getIRI(), ontologyManager.getRendering(term)));
-        	}        	
-        	else {
-        		logger.debug("Ignoring the term "+term.getIRI().toString());
-        	}
-        }
-        Collections.sort(terms);
-    }
+	}
     
     /**
      * @return whether this validation defines a literal, i.e has a property but is FREETEXT

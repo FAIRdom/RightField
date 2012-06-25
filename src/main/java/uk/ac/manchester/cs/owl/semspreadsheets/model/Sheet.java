@@ -58,13 +58,12 @@ public interface Sheet {
      * Create a custom validation embedding property that allows free text. Only affects the RDF generated, there are no restrictions for the spreadsheet user.
      * 
      * @param hiddenSheetName
-     * @param propertyItem
      * @param firstCol
      * @param firstRow
      * @param lastCol
      * @param lastRow
      */
-    void addValidation(String hiddenSheetName, OWLPropertyItem propertyItem, int firstCol, int firstRow, int lastCol, int lastRow); 
+    void addLiteralValidation(String hiddenSheetName, int firstCol, int firstRow, int lastCol, int lastRow); 
 
     Collection<Validation> getValidations();
 

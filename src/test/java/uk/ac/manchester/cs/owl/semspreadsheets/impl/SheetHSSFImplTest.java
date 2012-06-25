@@ -18,11 +18,9 @@ import java.util.List;
 import org.apache.poi.hssf.usermodel.HSSFDataValidation;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.junit.Test;
-import org.semanticweb.owlapi.model.IRI;
 
+import uk.ac.manchester.cs.owl.semspreadsheets.DocumentsCatalogue;
 import uk.ac.manchester.cs.owl.semspreadsheets.SpreadsheetTestHelper;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.OWLPropertyItem;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.OWLPropertyType;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Validation;
@@ -121,15 +119,15 @@ public class SheetHSSFImplTest {
 	}
 	
 	@Test
-	public void testAddPropertyValidation() throws Exception {
-		OWLPropertyItem property = new OWLPropertyItem(IRI.create("http://mygrid.org/JERMOntology#hasType"),OWLPropertyType.OBJECT_PROPERTY);
+	public void testAddPropertyValidation() throws Exception {		
 		Sheet sheet = getTestWorkbook().addSheet();
 		assertEquals(0,sheet.getValidations().size());
-		sheet.addValidation("wksowlv0", property, 2, 3,3, 4);
+		sheet.addLiteralValidation("wksowlv0", 2, 3,3, 4);
 		assertEquals(1,sheet.getValidations().size());
 		Validation validation = sheet.getValidations().iterator().next();
+		assertTrue(validation.isLiteralValidation());
 		assertFalse(validation.isDataValidation());
-		assertEquals("property^wksowlv0^<http://mygrid.org/JERMOntology#hasType>^OBJECT_PROPERTY",validation.getFormula());
+		assertEquals("propliteral^wksowlv0",validation.getFormula());
 		assertEquals(new Range(sheet,2,3,3,4),validation.getRange());
 	}
 	
@@ -214,12 +212,12 @@ public class SheetHSSFImplTest {
 	
 	//opens the workbook src/test/resources/simple_annotated_book.xls
 	private WorkbookHSSFImpl getTestWorkbook() throws Exception {
-		return SpreadsheetTestHelper.openWorkbookHSSF("simple_annotated_book.xls");
+		return SpreadsheetTestHelper.openWorkbookHSSF(DocumentsCatalogue.simpleAnnotatedworkbookURI());
 	}
 	
 	//opens the first sheet from test workbook src/test/resources/simple_annotated_sheet.xls used for most of these tests
 	private SheetHSSFImpl getTestSheet() throws Exception {
-		return SpreadsheetTestHelper.getWorkbookSheet("simple_annotated_book.xls",0);
+		return SpreadsheetTestHelper.getWorkbookSheet(DocumentsCatalogue.simpleAnnotatedworkbookURI(),0);
 	}
 	
 }

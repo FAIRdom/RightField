@@ -1,6 +1,7 @@
 package uk.ac.manchester.cs.owl.semspreadsheets.model;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -60,7 +61,9 @@ public class OntologyTermValidationWorkbookParserTest {
 		Cell cell = sheet.getCellAt(2, 1);
 		assertEquals(sheet,v.getSheet());
 		assertEquals(new Range(sheet,cell),v.getRange());
-		assertEquals("property^wksowlv0^<http://www.mygrid.org.uk/ontology/JERMOntology#hasCharacteristics>^OBJECT_PROPERTY",v.getFormula());		
+		assertEquals("propliteral^wksowlv0",v.getFormula());
+		assertTrue(v.isLiteralValidation());
+		assertFalse(v.isDataValidation());
 	}
 	
 	private Collection<OntologyTermValidation> createFreeTextValidations() {
@@ -115,6 +118,8 @@ public class OntologyTermValidationWorkbookParserTest {
 		assertEquals(sheet,v.getSheet());
 		assertEquals(new Range(sheet,cell),v.getRange());
 		assertEquals("wksowlv0",v.getFormula());
+		assertTrue(v.isDataValidation());
+		assertFalse(v.isLiteralValidation());
 	}
 	
 	private Collection<OntologyTermValidation> createDataSelectionValidation() throws Exception {
@@ -148,6 +153,8 @@ public class OntologyTermValidationWorkbookParserTest {
 		assertNotNull(v.getValidationDescriptor().getOWLPropertyItem());
 		assertEquals(IRI.create("http://www.mygrid.org.uk/ontology/JERMOntology#hasCharacteristics"),v.getValidationDescriptor().getOWLPropertyItem().getIRI());
 		assertEquals(OWLPropertyType.OBJECT_PROPERTY,v.getValidationDescriptor().getOWLPropertyItem().getPropertyType());
+		assertEquals(1,v.getValidationDescriptor().getOntologyIRIs().size());
+		assertTrue(v.getValidationDescriptor().getOntologyIRIs().contains(IRI.create("http://www.mygrid.org.uk/ontology/JERMOntology")));
 	}
 	
 	@Test
@@ -162,6 +169,8 @@ public class OntologyTermValidationWorkbookParserTest {
 		assertEquals(ValidationType.FREETEXT,v.getValidationDescriptor().getType());
 		assertEquals(IRI.create("http://www.mygrid.org.uk/ontology/JERMOntology#hasCharacteristics"),v.getValidationDescriptor().getOWLPropertyItem().getIRI());
 		assertEquals(OWLPropertyType.OBJECT_PROPERTY,v.getValidationDescriptor().getOWLPropertyItem().getPropertyType());
+		assertEquals(1,v.getValidationDescriptor().getOntologyIRIs().size());
+		assertTrue(v.getValidationDescriptor().getOntologyIRIs().contains(IRI.create("http://www.mygrid.org.uk/ontology/JERMOntology")));
 	}
 	
 	@Test
@@ -178,6 +187,8 @@ public class OntologyTermValidationWorkbookParserTest {
 		assertEquals(ValidationType.FREETEXT,v.getValidationDescriptor().getType());
 		assertEquals(IRI.create("http://www.mygrid.org.uk/ontology/JERMOntology#ECNumber"),v.getValidationDescriptor().getOWLPropertyItem().getIRI());
 		assertEquals(OWLPropertyType.DATA_PROPERTY,v.getValidationDescriptor().getOWLPropertyItem().getPropertyType());
+		assertEquals(1,v.getValidationDescriptor().getOntologyIRIs().size());
+		assertTrue(v.getValidationDescriptor().getOntologyIRIs().contains(IRI.create("http://www.mygrid.org.uk/ontology/JERMOntology")));
 		
 	}
 	

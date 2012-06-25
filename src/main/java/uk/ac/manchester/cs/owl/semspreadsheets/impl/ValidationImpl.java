@@ -8,6 +8,8 @@ package uk.ac.manchester.cs.owl.semspreadsheets.impl;
 
 import org.apache.log4j.Logger;
 
+import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidationSheetParser;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.PropertyValidationForumlaDefinition;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Validation;
@@ -43,7 +45,11 @@ public class ValidationImpl implements Validation {
     }
     
     public boolean isDataValidation() {
-    	return (formula!=null && !formula.startsWith("property") && !formula.contains(":<"));
+    	return (formula!=null && formula.startsWith(OntologyTermValidationSheetParser.VALIDATION_SHEET_PREFIX));
+    }
+    
+    public boolean isLiteralValidation() {
+    	return (formula!=null && PropertyValidationForumlaDefinition.valid(formula));
     }
 
     public Range getRange() {

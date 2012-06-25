@@ -12,6 +12,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+import uk.ac.manchester.cs.owl.semspreadsheets.DocumentsCatalogue;
 import uk.ac.manchester.cs.owl.semspreadsheets.SpreadsheetTestHelper;
 import uk.ac.manchester.cs.owl.semspreadsheets.change.WorkbookChangeListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
@@ -142,7 +143,7 @@ public class WorkbookHSSFImplTest {
 	
 	//opens the workbook src/test/resources/simple_annotated_book.xls
 	private WorkbookHSSFImpl getTestWorkbook() throws Exception {
-		return SpreadsheetTestHelper.openWorkbookHSSF("simple_annotated_book.xls");
+		return SpreadsheetTestHelper.openWorkbookHSSF(DocumentsCatalogue.simpleAnnotatedworkbookURI());
 	}
 	
 	

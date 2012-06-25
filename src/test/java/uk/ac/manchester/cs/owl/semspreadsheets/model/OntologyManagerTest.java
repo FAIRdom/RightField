@@ -113,7 +113,7 @@ public class OntologyManagerTest {
 		
 		assertTrue(ontologyManager.getLoadedOntologies().contains(ontology));
 		assertEquals(1,ontologyManager.getLoadedOntologies().size());
-		assertTrue(ontologyManager.getAllOntologies().contains(ontology));
+		assertTrue(ontologyManager.getAllOntologies().contains(ontology));		
 		
 		assertTrue(testListener.isOntologiesChanedFired());				
 	}
@@ -276,6 +276,31 @@ public class OntologyManagerTest {
 		
 		ontologyManager.remoteOntologyTermValidations(range);
 		assertTrue(ontologyManager.getOntologyIRIs().isEmpty());
+		
+	}
+	
+	@Test
+	public void testLoadEmbeddedOntologies() throws Exception {
+		workbookManager.loadWorkbook(DocumentsCatalogue.twoOntologiesWorkbookURI());
+		assertEquals(0, ontologyManager.getLoadedOntologies().size());
+		assertEquals(0, ontologyManager.getAllOntologies().size());
+		assertEquals(2,ontologyManager.getOntologyIRIs().size());
+		assertTrue(ontologyManager.getOntologyIRIs().contains(IRI.create("http://www.mygrid.org.uk/ontology/JERMOntology")));
+		assertTrue(ontologyManager.getOntologyIRIs().contains(IRI.create("http://mged.sourceforge.net/ontologies/MGEDOntology.owl")));
+		ontologyManager.loadEmbeddedTermOntologies();
+		assertEquals(2, ontologyManager.getLoadedOntologies().size());
+		assertEquals(4, ontologyManager.getAllOntologies().size());
+		
+		//now with just properties over free text		
+		WorkbookManager manager = new WorkbookManager();
+		manager.loadWorkbook(DocumentsCatalogue.simpleWorkbookWithLiteralsOverRangeURI());
+		assertEquals(0, manager.getOntologyManager().getLoadedOntologies().size());
+		assertEquals(0, manager.getOntologyManager().getAllOntologies().size());
+		assertEquals(1,manager.getOntologyManager().getOntologyIRIs().size());
+		manager.getOntologyManager().loadEmbeddedTermOntologies();
+		assertEquals(1, manager.getOntologyManager().getLoadedOntologies().size());
+		assertEquals(1, manager.getOntologyManager().getAllOntologies().size());
+		
 		
 	}
 

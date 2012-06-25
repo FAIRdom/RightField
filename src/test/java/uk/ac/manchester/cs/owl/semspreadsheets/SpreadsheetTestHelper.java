@@ -16,24 +16,18 @@ import uk.ac.manchester.cs.owl.semspreadsheets.impl.WorkbookHSSFImpl;
  * @author Stuart Owen 
  */
 public class SpreadsheetTestHelper {
-
-	public static WorkbookHSSFImpl openWorkbookHSSF(String resourceName) throws Exception 
-	{
-		URI uri = SpreadsheetTestHelper.class.getResource("/"+resourceName).toURI();
-		return openWorkbookHSSF(uri);
-	}
-	
+		
 	public static WorkbookHSSFImpl getBlankWorkbook() throws Exception 
 	{
 		return new WorkbookHSSFImpl();
 	}
 	
-	public static SheetHSSFImpl getWorkbookSheet(String resourceName, int index) throws Exception {
-		WorkbookHSSFImpl book = openWorkbookHSSF(resourceName);
+	public static SheetHSSFImpl getWorkbookSheet(URI resourceURI, int index) throws Exception {
+		WorkbookHSSFImpl book = openWorkbookHSSF(resourceURI);
 		return (SheetHSSFImpl)book.getSheet(index);
 	}
 	
-	private static WorkbookHSSFImpl openWorkbookHSSF(URI uri) throws Exception 
+	public static WorkbookHSSFImpl openWorkbookHSSF(URI uri) throws Exception 
 	{
 		return new WorkbookHSSFImpl(uri);
 	}

@@ -265,14 +265,13 @@ public class OntologyManager {
     }       
     
     public void loadEmbeddedTermOntologies() {
-        ontologyTermValidationManager.getOntologyIRIs();
-        final Map<IRI, IRI> ontologyIRIMap = ontologyTermValidationManager.getOntology2PhysicalIRIMap();
+        
         OWLOntologyIRIMapper mapper = new OntologyTermValdiationManagerMapper(ontologyTermValidationManager);
         owlManager.addIRIMapper(mapper);                
-        for(IRI iri : ontologyIRIMap.keySet()) {        	
+        for(IRI iri : getOntologyTermValidationManager().getOntologyIRIs()) {        	
             if(!owlManager.contains(iri)) {
                 try {
-                	getOWLOntologyManager().loadOntology(iri);
+                	loadOntology(iri);
 				} catch (OWLOntologyCreationException e) {
 					logger.error("Error loading ontology for embedded term.",e);
 				}
@@ -304,6 +303,7 @@ public class OntologyManager {
     	//Create a new ID and use the physical IRI as a version ID        
         newID = new OWLOntologyID(logIRI,physicalIRI);        
         owlManager.applyChange(new SetOntologyID(ontology, newID));      
+        
         
         updateStructuralReasoner();
         updateStructuralReasoner(ontology);

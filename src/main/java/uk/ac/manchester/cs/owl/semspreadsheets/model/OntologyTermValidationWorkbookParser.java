@@ -9,7 +9,9 @@ package uk.ac.manchester.cs.owl.semspreadsheets.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -31,36 +33,39 @@ public class OntologyTermValidationWorkbookParser {
     public Collection<OntologyTermValidation> readOntologyTermValidations() {
         Set<OntologyTermValidation> validations = new HashSet<OntologyTermValidation>();
         Workbook workbook = getWorkbookManager().getWorkbook();
-        validations.addAll(readPropertyOnlyValidations(workbook));
+        Map<String,Validation> literalValidations = collectLiteralValidations(workbook);
         for (Sheet sheet : workbook.getSheets()) {
             OntologyTermValidationSheetParser parser = new OntologyTermValidationSheetParser(getWorkbookManager(), sheet);
             if (parser.isValidationSheet()) {
-                OntologyTermValidationDescriptor descriptor = parser.parseValidationDescriptor();
-                NamedRange namedRange = parser.parseNamedRange();
-                if (namedRange!=null) {
-                	for (Sheet sheet2 : workbook.getVisibleSheets()) {
-                        for (Validation validation : sheet2.getValidations()) {
-                            if (validation.getFormula().equals(namedRange.getName())) {
-                                validations.add(new OntologyTermValidation(descriptor, validation.getRange()));
+            	OntologyTermValidationDescriptor descriptor = parser.parseValidationDescriptor();
+            	if (literalValidations.containsKey(sheet.getName())) {
+            		Validation validation = literalValidations.get(sheet.getName());
+            		validations.add(new OntologyTermValidation(descriptor, validation.getRange()));
+            	}
+            	else {
+            		NamedRange namedRange = parser.parseNamedRange();
+                    if (namedRange!=null) {
+                    	for (Sheet sheet2 : workbook.getVisibleSheets()) {
+                            for (Validation validation : sheet2.getValidations()) {
+                                if (validation.getFormula().equals(namedRange.getName())) {
+                                    validations.add(new OntologyTermValidation(descriptor, validation.getRange()));
+                                }
                             }
                         }
                     }
-                }                
+            	}                                                               
             }
         }
         return validations;
     }
     
-    private Collection<OntologyTermValidation> readPropertyOnlyValidations(Workbook workbook) {
-    	Set<OntologyTermValidation> validations = new HashSet<OntologyTermValidation>();
+    private Map<String,Validation> collectLiteralValidations(Workbook workbook) {
+    	Map<String,Validation> validations = new HashMap<String,Validation>();
     	
     	for (Sheet sheet : workbook.getSheets()) {    		
     		for (Validation validation : sheet.getValidations()) {
-    			if (!validation.isDataValidation()) {    				    				
-    				OntologyTermValidation termValidation = PropertyValidationForumlaDefinition.constructFromValidation(validation,getWorkbookManager().getOntologyManager());
-    				if (termValidation!=null) {
-    					validations.add(termValidation);
-    				}        			    				    			
+    			if (validation.isLiteralValidation()) {    				    				
+    				validations.put(PropertyValidationForumlaDefinition.decode(validation.getFormula()),validation);
     			}
     		}
     	}
@@ -146,7 +151,7 @@ public class OntologyTermValidationWorkbookParser {
 				getWorkbookManager(), sheet);
 		parser.createValidationSheet(descriptor);
 		Range rng = ontologyTermValidation.getRange();
-		rng.getSheet().addValidation(sheet.getName(),ontologyTermValidation.getValidationDescriptor().getOWLPropertyItem(), rng.getFromColumn(),
+		rng.getSheet().addLiteralValidation(sheet.getName(), rng.getFromColumn(),
 				rng.getFromRow(), rng.getToColumn(), rng.getToRow());
 		
 	}
