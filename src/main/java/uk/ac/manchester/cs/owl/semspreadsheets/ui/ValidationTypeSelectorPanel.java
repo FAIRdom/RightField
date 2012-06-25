@@ -85,14 +85,13 @@ public class ValidationTypeSelectorPanel extends JPanel {
 			
 			@Override
 			public void ontologiesChanged(WorkbookManagerEvent event) {
-				refreshTypeList(workbookManager.getOntologyManager().getLoadedOntologies().size()>0);				
+				refreshTypeList();				
 			}
 		});
         
         workbookManager.getSelectionModel().addCellSelectionListener(cellSelectionListener);
-        refreshTypeList(false);
+        refreshTypeList();
         setComboBoxEnabled(false);
-        //updateSelectionFromModel();
     }
     
     public void addListItemListener(ItemListener listener) {
@@ -135,11 +134,10 @@ public class ValidationTypeSelectorPanel extends JPanel {
 
     /**
      * Updates the types list in the dropbox box
-     * @param allItems - whether all items should be shown. If false, just NOVALIDATION type is included
      */
-    private void refreshTypeList(boolean allItems) { 
-    	logger.debug("Refereshing validation type list - include all items:"+allItems);
-    	if (allItems) {
+    private void refreshTypeList() { 
+    	logger.debug("Refereshing validation type list");
+    	if (workbookManager.getOntologyManager().getLoadedOntologies().size()>0) {
     		if (comboBox.getItemCount()<=1) {
     			comboBox.removeAllItems();
         		for(ValidationType type : ValidationType.values()) {                

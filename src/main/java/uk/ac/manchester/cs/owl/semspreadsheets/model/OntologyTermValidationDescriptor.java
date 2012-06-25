@@ -70,7 +70,7 @@ public class OntologyTermValidationDescriptor implements Serializable {
         this.entityIRI = entityIRI;
 		this.propertyItem = propertyItem;        
         ontologyIRI2PhysicalIRIMap = new HashMap<IRI, IRI>();
-		for (OWLOntology ont : ontologyManager.getLoadedOntologies()) {
+		for (OWLOntology ont : ontologyManager.getAllOntologies()) {
 			if (ont.containsEntityInSignature(entityIRI)
 					|| (propertyItem != null && ont
 							.containsEntityInSignature(propertyItem.getIRI()))) {

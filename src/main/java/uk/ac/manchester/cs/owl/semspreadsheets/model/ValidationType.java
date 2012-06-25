@@ -54,12 +54,10 @@ public enum ValidationType {
         else if (this.equals(DIRECTSUBCLASSES)) {
             OWLClass cls = ontologyManager.getDataFactory().getOWLClass(iri);
             return new HashSet<OWLEntity>(ontologyManager.getStructuralReasoner().getSubClasses(cls, true).getFlattened());
-
         }
         else if (this.equals(INDIVIDUALS)) {
             OWLClass cls = ontologyManager.getDataFactory().getOWLClass(iri);
             return new HashSet<OWLEntity>(ontologyManager.getStructuralReasoner().getInstances(cls, false).getFlattened());
-
         }
         else if (this.equals(DIRECTINDIVIDUALS)) {
             OWLClass cls = ontologyManager.getDataFactory().getOWLClass(iri);

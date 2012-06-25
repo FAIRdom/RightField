@@ -16,16 +16,12 @@ import static org.junit.Assert.assertTrue;
 
 import java.net.URI;
 import java.util.Collection;
-import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.semanticweb.owlapi.model.IRI;
-import org.semanticweb.owlapi.model.OWLOntology;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.DocumentsCatalogue;
 import uk.ac.manchester.cs.owl.semspreadsheets.change.WorkbookChangeListener;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.OWLPropertyItem;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OWLPropertyType;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidation;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidationDescriptor;
@@ -156,89 +152,7 @@ public class WorkbookManagerTest {
 		assertTrue(newBook2.getAllChangeListeners().contains(l2));
 	}
 	
-	@Test
-	public void testLoadOntology() throws Exception {
-		URI uri = DocumentsCatalogue.jermOntologyURI();
-		assertEquals(0,manager.getOntologyManager().getLoadedOntologies().size());
-		manager.getOntologyManager().loadOntology(IRI.create(uri));
-		assertTrue(testListener.isOntologiesChanedFired());
-		assertEquals(1,manager.getOntologyManager().getLoadedOntologies().size());
-		assertEquals(manager.getOntologyManager().getOWLOntologyManager().getOntologies(),manager.getOntologyManager().getLoadedOntologies());
-	}
 	
-	@Test
-	public void testRemoveOntology() throws Exception {
-		URI uri = DocumentsCatalogue.jermOntologyURI();
-		manager.getOntologyManager().loadOntology(IRI.create(uri));		
-		OWLOntology ont = manager.getOntologyManager().getLoadedOntologies().iterator().next();
-		testListener.reset();
-		manager.getOntologyManager().removeOntology(ont);		
-		assertEquals(0,manager.getOntologyManager().getLoadedOntologies().size());		
-	}
-	
-	@Test
-	public void testGetDataProperties() throws Exception {
-		URI uri = DocumentsCatalogue.jermOntologyURI();
-		manager.getOntologyManager().loadOntology(IRI.create(uri));
-		Set<OWLPropertyItem> dataProperties = manager.getOntologyManager().getOWLDataProperties();		
-		assertEquals(19,dataProperties.size());
-		boolean found=false;
-		boolean shouldNotBeFound=false;
-		for (OWLPropertyItem property : dataProperties) {
-			assertEquals(OWLPropertyType.DATA_PROPERTY,property.getPropertyType());
-			if (property.getIRI().toString().equals("http://www.mygrid.org.uk/ontology/JERMOntology#External_supplier_ID")) {
-				found=true;
-			}
-			if (property.getIRI().toString().equals("http://www.mygrid.org.uk/ontology/JERMOntology#technologyUsedIn")) {
-				shouldNotBeFound=true;
-			}
-		}
-		assertTrue("Should have found #External_supplier_ID",found);
-		assertFalse("Should not have found the #technologyUsedIn as this is an object property",shouldNotBeFound);
-	}
-	
-	@Test
-	public void testGetObjectProperties() throws Exception {
-		URI uri = DocumentsCatalogue.jermOntologyURI();
-		manager.getOntologyManager().loadOntology(IRI.create(uri));
-		Set<OWLPropertyItem> objectProperties = manager.getOntologyManager().getOWLObjectProperties();
-		System.out.println(objectProperties);
-		assertEquals(18,objectProperties.size());
-		boolean found=false;
-		boolean shouldNotBeFound=false;
-		for (OWLPropertyItem property : objectProperties) {	
-			assertEquals(OWLPropertyType.OBJECT_PROPERTY,property.getPropertyType());
-			if (property.getIRI().toString().equals("http://www.mygrid.org.uk/ontology/JERMOntology#technologyUsedIn")) {
-				found=true;
-			}
-			if (property.getIRI().toString().equals("http://www.mygrid.org.uk/ontology/JERMOntology#External_supplier_ID")) {
-				shouldNotBeFound=true;
-			}
-		}
-		assertTrue("Should have found #technologyUsedIn",found);
-		assertFalse("Should not have found #External_supplier_ID  as this is a data property",shouldNotBeFound);
-	}
-	
-	@Test
-	public void getAllOWLProperties() throws Exception {
-		URI uri = DocumentsCatalogue.jermOntologyURI();
-		manager.getOntologyManager().loadOntology(IRI.create(uri));
-		Set<OWLPropertyItem> objectProperties = manager.getOntologyManager().getAllOWLProperties();
-		assertEquals(37,objectProperties.size());
-		boolean found=false;
-		boolean found2=false;
-		for (OWLPropertyItem property : objectProperties) {	
-			assertTrue(property.getPropertyType().equals(OWLPropertyType.DATA_PROPERTY) || property.getPropertyType().equals(OWLPropertyType.OBJECT_PROPERTY));
-			if (property.getIRI().toString().equals("http://www.mygrid.org.uk/ontology/JERMOntology#technologyUsedIn")) {
-				found=true;
-			}
-			if (property.getIRI().toString().equals("http://www.mygrid.org.uk/ontology/JERMOntology#External_supplier_ID")) {
-				found2=true;
-			}
-		}
-		assertTrue("Should have found #technologyUsedIn",found);
-		assertTrue("Should have found #External_supplier_ID",found2);
-	}
 	
 	
 }

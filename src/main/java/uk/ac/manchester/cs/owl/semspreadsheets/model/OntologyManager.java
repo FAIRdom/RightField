@@ -73,7 +73,9 @@ public class OntologyManager {
 	private OWLOntologyLoaderConfiguration ontologyLoaderConfiguration = new OWLOntologyLoaderConfiguration();
 	private BidirectionalShortFormProviderAdapter shortFormProvider;
 	private OntologyTermValidationManager ontologyTermValidationManager;
-	private Set<WorkbookManagerListener> workbookManagerListeners = new HashSet<WorkbookManagerListener>();			
+	private Set<WorkbookManagerListener> workbookManagerListeners = new HashSet<WorkbookManagerListener>();
+	
+	private Set<OWLOntology> loadedOntologies = new HashSet<OWLOntology>();
 
 	public OntologyManager(OWLOntologyManager owlManager, WorkbookManager workbookManager) {
 		this.owlManager = owlManager;	
@@ -142,12 +144,48 @@ public class OntologyManager {
         return getOntologyTermValidationManager().getIntersectingValidations(range);
     }
 	
-	 public Set<OWLOntology> getLoadedOntologies() {
-        return getOWLOntologyManager().getOntologies();		
-    }
+	/**
+	 * 
+	 * @return a Set containing only the ontologies that have been specifically opened, and doesn't include the imported ontologies
+	 */
+	public Set<OWLOntology> getLoadedOntologies() {        
+		return new HashSet<OWLOntology>(loadedOntologies);		
+	}
+	 
+	/**
+	 * 
+	 * @return a Set of all ontologies that have been opened, included the imported ontologies
+	 */
+	public Set<OWLOntology> getAllOntologies() {
+		return getOWLOntologyManager().getOntologies(); 
+	}
     
     public Collection<IRI> getOntologyIRIs() {
     	return getOntologyTermValidationManager().getOntologyIRIs();
+    }
+    
+    /**
+     * Determines whether the ontology is used in the spreadsheet (i.e. stored as an OntologyTermValidation). Either directly, or through one of its imports.
+     * @param ontology
+     * @return whether the ontology is used.
+     */
+    public boolean isOntologyInUse(OWLOntology ontology) {
+    	Set<IRI> ontologyIRIs = new HashSet<IRI>();
+    	
+    	ontologyIRIs.add(ontology.getOntologyID().getOntologyIRI());
+    	for (OWLOntology o : getOWLOntologyManager().getImports(ontology)) {
+    		ontologyIRIs.add(o.getOntologyID().getOntologyIRI());
+    	}
+    	
+    	boolean used = false;
+    	for (IRI iri : getOntologyIRIs()) {
+    		if (ontologyIRIs.contains(iri)) {
+    			used=true;
+    			break;
+    		}
+    	}
+    	    	
+		return used;			
     }
     
     public OntologyTermValidationManager getOntologyTermValidationManager() {
@@ -160,7 +198,7 @@ public class OntologyManager {
     
     public Set<OWLPropertyItem> getOWLDataProperties() {
     	Set<OWLPropertyItem> properties = new HashSet<OWLPropertyItem>();
-    	for (OWLOntology ontology : getLoadedOntologies()) {
+    	for (OWLOntology ontology : getAllOntologies()) {
     		for (OWLDataProperty property : ontology.getDataPropertiesInSignature())
     		{
     			if (!property.isTopEntity()) {
@@ -173,7 +211,7 @@ public class OntologyManager {
     
     public Set<OWLPropertyItem> getOWLObjectProperties() {
     	Set<OWLPropertyItem> properties = new HashSet<OWLPropertyItem>();
-    	for (OWLOntology ontology : getLoadedOntologies()) {
+    	for (OWLOntology ontology : getAllOntologies()) {
     		for (OWLObjectProperty property : ontology.getObjectPropertiesInSignature())
     		{
     			if (!property.isTopEntity()) {
@@ -265,26 +303,13 @@ public class OntologyManager {
     	logIRI = ontology.getOntologyID().getOntologyIRI();
     	//Create a new ID and use the physical IRI as a version ID        
         newID = new OWLOntologyID(logIRI,physicalIRI);        
-        owlManager.applyChange(new SetOntologyID(ontology, newID));
-        
-        //remove ontologies with nil IRI's as they cause numerous problems. Also remove protege ontology.
-        //removed now, as soon as possible, rather than relying on filtering out later
-        //FIXME: this will be revisited, as an improvement and fix to this is to prevent imported ontologies being
-        //split across tabs, but instead have only one tab per explicity open ontology
-        Set<OWLOntology> forRemoval = new HashSet<OWLOntology>();
-        for (OWLOntology o : owlManager.getOntologies()) {
-        	if (o.getOntologyID()==null || 
-        			o.getOntologyID().getOntologyIRI()==null ||
-        			o.getOntologyID().getOntologyIRI().equals(KnownOntologies.PROTEGE_ONTOLOGY_IRI)) {
-        		forRemoval.add(o);
-        	}
-        }
-        for (OWLOntology o : forRemoval) {
-        	owlManager.removeOntology(o);
-        }
+        owlManager.applyChange(new SetOntologyID(ontology, newID));      
         
         updateStructuralReasoner();
         updateStructuralReasoner(ontology);
+        
+        loadedOntologies.add(getOWLOntologyManager().getOntology(ontology.getOntologyID()));
+        
         setLabelRendering(true);
         fireOntologiesChanged();        
         
@@ -356,7 +381,8 @@ public class OntologyManager {
 	}
     
     public void removeOntology(OWLOntology ontology) {
-    	getOWLOntologyManager().removeOntology(ontology);      	
+    	getOWLOntologyManager().removeOntology(ontology);
+    	loadedOntologies.remove(ontology);
     	fireOntologiesChanged();
     }
     
@@ -393,7 +419,7 @@ public class OntologyManager {
     public void unloadOntology(IRI physicalIRI) {    	
     	OWLOntology loaded = null;
     	
-    	for (OWLOntology ontology : getLoadedOntologies()) {    		
+    	for (OWLOntology ontology : getAllOntologies()) {    		
     		if (physicalIRI.equals(ontology.getOntologyID().getVersionIRI())) {    			
     			loaded = ontology;
     			break;
@@ -405,7 +431,7 @@ public class OntologyManager {
     private OWLReasoner updateStructuralReasoner() {    	
         try {        	
             OWLOntologyManager man = OWLManager.createOWLOntologyManager();            
-            OWLOntology root = man.createOntology(IRI.create("owlapi:reasoner"), getLoadedOntologies());
+            OWLOntology root = man.createOntology(IRI.create("owlapi:reasoner"), getAllOntologies());
             reasoner = new StructuralReasoner(root, new SimpleConfiguration(), BufferingMode.NON_BUFFERING);
             reasoner.precomputeInferences();
         }

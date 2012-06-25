@@ -35,6 +35,9 @@ public class OntologyTermValidationDescriptorTest {
 		assertTrue(descriptor.definesLiteral());
 		assertEquals(1,descriptor.getOntologyIRIs().size());
 		assertEquals("http://www.mygrid.org.uk/ontology/JERMOntology",descriptor.getOntologyIRIs().iterator().next().toString());
+		
+		assertEquals(1,descriptor.getOntologyIRIs().size());
+		assertTrue(descriptor.getOntologyIRIs().contains(IRI.create("http://www.mygrid.org.uk/ontology/JERMOntology")));
 	}
 	
 	@Test
@@ -52,6 +55,9 @@ public class OntologyTermValidationDescriptorTest {
 		assertFalse(descriptor.definesLiteral());
 		assertEquals(1,descriptor.getOntologyIRIs().size());
 		assertEquals("http://www.mygrid.org.uk/ontology/JERMOntology",descriptor.getOntologyIRIs().iterator().next().toString());
+		
+		assertEquals(1,descriptor.getOntologyIRIs().size());
+		assertTrue(descriptor.getOntologyIRIs().contains(IRI.create("http://www.mygrid.org.uk/ontology/JERMOntology")));
 	}
 	
 	@Test
@@ -71,6 +77,9 @@ public class OntologyTermValidationDescriptorTest {
 		assertFalse(descriptor.definesLiteral());
 		assertEquals(1,descriptor.getOntologyIRIs().size());
 		assertEquals("http://www.mygrid.org.uk/ontology/JERMOntology",descriptor.getOntologyIRIs().iterator().next().toString());
-	}
+		
+		assertEquals(1,descriptor.getOntologyIRIs().size());
+		assertTrue(descriptor.getOntologyIRIs().contains(IRI.create("http://www.mygrid.org.uk/ontology/JERMOntology")));
+	}		
 
 }

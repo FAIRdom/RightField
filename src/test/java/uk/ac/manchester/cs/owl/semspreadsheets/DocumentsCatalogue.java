@@ -23,6 +23,10 @@ public class DocumentsCatalogue {
 		return uriForResourceName("amino-acid.owl");
 	}
 	
+	public static URI scoroOntologyURI() throws Exception {
+		return uriForResourceName("scoro.owl");
+	}
+	
 	//A workbook with the cells B2:D5 applied with FreeText and property http://www.mygrid.org.uk/ontology/JERMOntology#ECNumber
 	public static URI simpleWorkbookWithLiteralsOverRangeURI() throws Exception {
 		return uriForResourceName("literals_only_over_range.xls");

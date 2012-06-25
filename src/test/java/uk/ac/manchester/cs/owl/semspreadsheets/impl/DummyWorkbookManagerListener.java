@@ -14,7 +14,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookManagerListener;
  * @author Stuart Owen
  *
  */
-class DummyWorkbookManagerListener implements
+public class DummyWorkbookManagerListener implements
 		WorkbookManagerListener {
 	public boolean workbookLoadedFired = false;
 	public boolean workbookChangedFired = false;

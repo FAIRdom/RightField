@@ -14,7 +14,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.Collection;
 import java.util.List;
 
 import javax.swing.AbstractButton;
@@ -25,7 +24,6 @@ import javax.swing.JPanel;
 import javax.swing.plaf.basic.BasicButtonUI;
 
 import org.apache.log4j.Logger;
-import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntology;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyManager;
@@ -98,10 +96,9 @@ class ClassHierarchyTabComponent extends JPanel {
 		return getWorkbookFrame().getWorkbookManager().getOntologyManager();
 	}
 
-	private void updateTabClosableStatus() {		
-		Collection<IRI> ontologyIRIs = getOntologyManager().getOntologyIRIs();
-		boolean used = ontologyIRIs.contains(getOntology().getOntologyID()
-				.getOntologyIRI());
+	private void updateTabClosableStatus() {
+		boolean used = getOntologyManager().isOntologyInUse(getOntology());
+		
 		logger.debug("Checking wether the ontology is used in the workbook = "+used);
 		closeButton.setEnabled(!used);
 	}

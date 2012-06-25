@@ -92,7 +92,7 @@ public class OntologyTermValidationManager {
     }
 
     public void setValidation(Range range, ValidationType type, IRI entityIRI, OWLPropertyItem property) {
-    	logger.debug("Setting validation at "+range.toFixedAddress()+" type:"+type.toString()+", IRI:"+entityIRI.toString()+", property:"+property);
+    	logger.debug("Setting validation at "+range.toFixedAddress()+" type:"+type.toString()+", IRI:"+entityIRI+", property:"+property);
     	
         Collection<OntologyTermValidation> intersectingValidations = getIntersectingValidations(range);
         ontologyTermValidations.removeAll(intersectingValidations);
@@ -106,8 +106,7 @@ public class OntologyTermValidationManager {
         	OntologyTermValidationDescriptor descriptor = new OntologyTermValidationDescriptor(property,getOntologyManager());
             OntologyTermValidation validation = new OntologyTermValidation(descriptor, range);
             ontologyTermValidations.add(validation);
-        }
-        // Remove validation at intersecting ranges
+        }        
         
         fireValidationsChanged();
     }
