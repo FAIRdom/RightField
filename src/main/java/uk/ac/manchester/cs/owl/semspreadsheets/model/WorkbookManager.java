@@ -6,7 +6,6 @@
  ******************************************************************************/
 package uk.ac.manchester.cs.owl.semspreadsheets.model;
 
-import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -153,12 +152,13 @@ public class WorkbookManager {
     public Workbook createNewWorkbook() {
     	List<WorkbookChangeListener> existingListeners = workbook.getAllChangeListeners();
     	workbook.clearChangeListeners();
+    	getOntologyManager().clearOntologyTermValidations();
         workbook = WorkbookFactory.createWorkbook();  
         for (WorkbookChangeListener l : existingListeners) {
         	workbook.addChangeListener(l);
         }
         workbookURI=null;
-        getOntologyManager().clearOntologyTermValidations();
+        
         fireWorkbookCreated();
         getWorkbookState().changesSaved();
         return workbook;
@@ -252,7 +252,7 @@ public class WorkbookManager {
         	cellText = "";
         }
         
-        getOntologyManager().setOntologyTermValidation(rangeToApply, type, entityIRI, property);
+        getOntologyManager().setOntologyTermValidation(rangeToApply, type, entityIRI, property);        
         
         for(int col = rangeToApply.getFromColumn(); col < rangeToApply.getToColumn() + 1; col++) {
             for(int row = rangeToApply.getFromRow(); row < rangeToApply.getToRow() + 1; row++) {
@@ -266,9 +266,7 @@ public class WorkbookManager {
                 	SetCellValue scv=new SetCellValue(rangeToApply.getSheet(),col,row,"",cellText);
                 	applyChange(scv);
                 	cell = rangeToApply.getSheet().getCellAt(col, row);
-                }
-                logger.debug("Current cell colour is:"+cell.getBackgroundFill().toString());
-                cell.setBackgroundFill(new Color(16777164)); //pale yellow                
+                }                              
             }
         }
     }
@@ -314,16 +312,7 @@ public class WorkbookManager {
     public void removeValidations(Range range) {
     	if (getOntologyManager().getContainingOntologyTermValidations(range).size()>0)
     	{
-    		getOntologyManager().remoteOntologyTermValidations(range);
-	    	for(int col = range.getFromColumn(); col < range.getToColumn() + 1; col++) {
-	            for(int row = range.getFromRow(); row < range.getToRow() + 1; row++) {
-	                Cell cell = range.getSheet().getCellAt(col, row);
-	                if (cell!=null) {
-	                	//FIXME: the default colour may not white
-	                	cell.setBackgroundFill(Color.WHITE);
-	                }
-	            }
-	    	}
+    		getOntologyManager().remoteOntologyTermValidations(range);	    	
     	}
     }
     

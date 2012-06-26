@@ -291,6 +291,22 @@ public class CellHSSFImpl implements Cell {
         return false;
     }
 
+	@Override
+	public int hashCode() {
+		return theCell.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof CellHSSFImpl) {
+			CellHSSFImpl cell = (CellHSSFImpl)obj;
+			return cell.theCell.equals(this.theCell);			
+		}
+		else {
+			return false;
+		}
+	}
+
 	
 
 	

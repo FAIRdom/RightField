@@ -7,6 +7,7 @@
 package uk.ac.manchester.cs.owl.semspreadsheets.model;
 
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -25,6 +26,8 @@ public class OntologyTermValidationWorkbookParser {
 	private static final Logger logger = Logger.getLogger(OntologyTermValidationWorkbookParser.class);
 
     private final WorkbookManager workbookManager;
+    
+    private static Map<Cell,Color> originalColours = new HashMap<Cell, Color>();
 
     public OntologyTermValidationWorkbookParser(WorkbookManager workbookManager) {
         this.workbookManager = workbookManager;
@@ -76,6 +79,7 @@ public class OntologyTermValidationWorkbookParser {
     public void clearOntologyTermValidations() {
         Workbook workbook = getWorkbookManager().getWorkbook();
         Collection<Sheet> validationSheets = new ArrayList<Sheet>();
+        restoreCellBackgroundColours();
         for (Sheet sheet : workbook.getSheets()) {
             OntologyTermValidationSheetParser parser = new OntologyTermValidationSheetParser(getWorkbookManager(), sheet);
             if (parser.isValidationSheet()) {
@@ -94,9 +98,10 @@ public class OntologyTermValidationWorkbookParser {
         }
     }
 
-    public void writeOntologyTermValidations(Collection<OntologyTermValidation> ranges) {
+    public void writeOntologyTermValidations(Collection<OntologyTermValidation> ontologyTermValidations) {
         clearOntologyTermValidations();        
-        for (OntologyTermValidation ontologyTermValidation : ranges) {            	 
+        highlightCells(ontologyTermValidations);
+        for (OntologyTermValidation ontologyTermValidation : ontologyTermValidations) {            	 
             if (ontologyTermValidation.getValidationDescriptor().definesLiteral()) {
             	writeFreeTextDataValidation(ontologyTermValidation);
             }
@@ -104,6 +109,27 @@ public class OntologyTermValidationWorkbookParser {
             	writeDropdownDataValidation(ontologyTermValidation);
             }            
         }
+    }
+    
+    private void highlightCells(Collection<OntologyTermValidation> ontologyTermValidations) {
+    	Set<Cell> cells = new HashSet<Cell>();
+    	for (OntologyTermValidation v : ontologyTermValidations) {
+    		cells.addAll(v.getRange().getCells());
+    	}
+    	for (Cell cell : cells) {
+    		logger.debug("Highlighting cell - Current cell colour is:"+cell.getBackgroundFill().toString());
+    		if (!originalColours.containsKey(cell)) {
+    			originalColours.put(cell, cell.getBackgroundFill());
+    		}    		
+            cell.setBackgroundFill(new Color(16777164)); //pale yellow 
+    	}
+    }
+    
+    private void restoreCellBackgroundColours() {
+    	for (Cell cell : originalColours.keySet()) {
+    		cell.setBackgroundFill(originalColours.get(cell));
+    	}
+    	originalColours.clear();
     }
     
     private WorkbookManager getWorkbookManager() {
