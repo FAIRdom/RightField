@@ -87,6 +87,11 @@ public class ClassHierarchyTabbedPane extends JTabbedPane {
 			public void ontologiesChanged(WorkbookManagerEvent event) {
 				updateTabs();							
 			}
+
+			@Override
+			public void workbookSaved(WorkbookManagerEvent event) {
+				
+			}
 			
 		});			
 		

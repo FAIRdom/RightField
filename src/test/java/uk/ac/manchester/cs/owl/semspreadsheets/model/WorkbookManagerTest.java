@@ -14,6 +14,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
 import java.net.URI;
 import java.util.Collection;
 
@@ -65,6 +66,17 @@ public class WorkbookManagerTest {
 		manager.loadWorkbook(uri);
 		manager.createNewWorkbook();
 		assertNull(manager.getWorkbookURI());
+	}
+	
+	@Test
+	public void testWorkbookSaved() throws Exception {		
+		assertNull(manager.getWorkbookURI());
+		File tmpfile = File.createTempFile("rf-test-", ".xls");
+		URI uri = tmpfile.toURI();
+		manager.saveWorkbook(uri);
+		assertEquals(uri,manager.getWorkbookURI());
+		assertTrue(tmpfile.exists());
+		assertTrue(testListener.isWorkbookSavedFired());
 	}
 	
 	@Test

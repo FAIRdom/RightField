@@ -118,14 +118,17 @@ public class WorkbookFrame extends JFrame {
 		setupMenuItems();
 		updateTitleBar();
 		workbookManager.addListener(new WorkbookManagerListener() {
+			@Override
 			public void workbookCreated(WorkbookManagerEvent event) {
 				handleNewWorkbook();
 			}
-
+			
+			@Override
 			public void workbookLoaded(WorkbookManagerEvent event) {
 				handleNewWorkbook();
 			}
-
+			
+			@Override
 			public void ontologiesChanged(WorkbookManagerEvent event) {
 				updateTitleBar();
 				workbookManager.getWorkbookState().changesUnsaved();				
@@ -134,6 +137,11 @@ public class WorkbookFrame extends JFrame {
 			@Override
 			public void validationAppliedOrCancelled() {				
 				
+			}
+			
+			@Override
+			public void workbookSaved(WorkbookManagerEvent event) {
+				updateTitleBar();
 			}
 		});
 		addWindowListener(new WindowAdapter() {

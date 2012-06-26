@@ -17,6 +17,8 @@ public interface WorkbookManagerListener {
      void workbookCreated(WorkbookManagerEvent event);
 
     void workbookLoaded(WorkbookManagerEvent event);
+    
+    void workbookSaved(WorkbookManagerEvent event);
 
     void ontologiesChanged(WorkbookManagerEvent event);      
     

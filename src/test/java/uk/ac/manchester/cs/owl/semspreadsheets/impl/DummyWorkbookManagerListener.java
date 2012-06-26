@@ -20,6 +20,7 @@ public class DummyWorkbookManagerListener implements
 	public boolean workbookChangedFired = false;
 	public boolean validationAppliedFired = false;
 	public boolean ontologiesChanedFired = false;
+	public boolean workbookSavedFired = false;
 	
 	public DummyWorkbookManagerListener() {
 		reset();
@@ -48,6 +49,10 @@ public class DummyWorkbookManagerListener implements
 	public boolean isOntologiesChanedFired() {
 		return ontologiesChanedFired;
 	}
+	
+	public boolean isWorkbookSavedFired() {
+		return workbookSavedFired;
+	}
 
 	@Override
 	public void workbookLoaded(WorkbookManagerEvent event) {
@@ -67,6 +72,11 @@ public class DummyWorkbookManagerListener implements
 	@Override
 	public void ontologiesChanged(WorkbookManagerEvent event) {
 		ontologiesChanedFired=true;
+	}
+
+	@Override
+	public void workbookSaved(WorkbookManagerEvent event) {
+		workbookSavedFired=true;		
 	}
 	
 }

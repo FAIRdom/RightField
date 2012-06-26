@@ -146,6 +146,11 @@ public class ValidationInspectorPanel extends JPanel {
 			public void ontologiesChanged(WorkbookManagerEvent event) {				
 				
 			}
+			
+			@Override
+			public void workbookSaved(WorkbookManagerEvent event) {
+				
+			}
 		});
         
         return buttonPanel;

@@ -92,6 +92,11 @@ public class PropertyListPanel extends JPanel {
 			public void ontologiesChanged(WorkbookManagerEvent event) {
 				updateModel();
 			}
+			
+			@Override
+			public void workbookSaved(WorkbookManagerEvent event) {
+				
+			}
 		});
 
 		getWorkbookManager().getSelectionModel().addCellSelectionListener(

@@ -115,6 +115,11 @@ public class WorkbookPanel extends JPanel {
 			public void validationAppliedOrCancelled() {
 
 			}
+
+			@Override
+			public void workbookSaved(WorkbookManagerEvent event) {				
+				
+			}
 		});
 	}
 

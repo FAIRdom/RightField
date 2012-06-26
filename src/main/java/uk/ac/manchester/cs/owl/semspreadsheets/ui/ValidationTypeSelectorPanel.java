@@ -87,6 +87,11 @@ public class ValidationTypeSelectorPanel extends JPanel {
 			public void ontologiesChanged(WorkbookManagerEvent event) {
 				refreshTypeList();				
 			}
+			
+			@Override
+			public void workbookSaved(WorkbookManagerEvent event) {
+				
+			}
 		});
         
         workbookManager.getSelectionModel().addCellSelectionListener(cellSelectionListener);
