@@ -46,7 +46,7 @@ public class CellHSSFImpl implements Cell {
 
     public CellHSSFImpl(HSSFWorkbook workbook, HSSFCell theCell) {
         this.workbook = workbook;
-        this.theCell = theCell;
+        this.theCell = theCell;        
     }
 
     public Font getDefaultFont() {

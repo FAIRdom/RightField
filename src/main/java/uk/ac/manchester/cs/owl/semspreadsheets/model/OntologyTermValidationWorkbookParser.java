@@ -27,6 +27,8 @@ public class OntologyTermValidationWorkbookParser {
 
     private final WorkbookManager workbookManager;
     
+    private static final Color highlightColour = new Color(16777164); //pale yellow
+    
     private static Map<Cell,Color> originalColours = new HashMap<Cell, Color>();
 
     public OntologyTermValidationWorkbookParser(WorkbookManager workbookManager) {
@@ -121,7 +123,7 @@ public class OntologyTermValidationWorkbookParser {
     		if (!originalColours.containsKey(cell)) {
     			originalColours.put(cell, cell.getBackgroundFill());
     		}    		
-            cell.setBackgroundFill(new Color(16777164)); //pale yellow 
+            cell.setBackgroundFill(highlightColour);  
     	}
     }
     
