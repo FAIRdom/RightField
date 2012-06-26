@@ -20,6 +20,7 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidation;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidationDescriptor;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
@@ -76,9 +77,9 @@ public class SheetTable extends JTable {
 
     private AlphaComposite alphaComposite2 = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.70f);
 
-    private Color color = new Color(50, 150, 60);
+    private Color validationAppliedColour = new Color(50, 150, 60);
 
-    private Color emptyValidationColor = Color.DARK_GRAY;
+    private Color emptyValidationColour = Color.DARK_GRAY;
 
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -89,11 +90,12 @@ public class SheetTable extends JTable {
         for (OntologyTermValidation ontologyTermValidation : workbookManager.getOntologyManager().getOntologyTermValidations()) {
             if (ontologyTermValidation.getRange().getSheet().equals(sheet)) {
                 Range validation = ontologyTermValidation.getRange();
-                if(ontologyTermValidation.getValidationDescriptor().getTerms().isEmpty()) {
-                    g.setColor(emptyValidationColor);
+                OntologyTermValidationDescriptor validationDescriptor = ontologyTermValidation.getValidationDescriptor();
+                if(!validationDescriptor.definesLiteral() && validationDescriptor.getTerms().isEmpty()) {
+                    g.setColor(emptyValidationColour);
                 }
                 else {
-                    g.setColor(color);
+                    g.setColor(validationAppliedColour);
                 }
                 Rectangle startRect = getCellRect(validation.getFromRow(), validation.getFromColumn(), false);
                 Rectangle endRect = getCellRect(validation.getToRow(), validation.getToColumn(), false);
