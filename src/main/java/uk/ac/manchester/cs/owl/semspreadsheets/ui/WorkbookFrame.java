@@ -173,7 +173,7 @@ public class WorkbookFrame extends JFrame {
 		fileMenu.add(new OpenOntologyAction(this));
 		fileMenu.add(new OpenOntologyFromURLAction(this));
 		fileMenu.add(new OpenFromBioPortalAction(this));
-		removeOntologyMenuItem = new CloseSelectedOntologyMenuItem(new CloseSelectedOntologyAction(this),getWorkbookManager());
+		removeOntologyMenuItem = new CloseSelectedOntologyMenuItem(new CloseSelectedOntologyAction(this),getWorkbookManager().getOntologyManager());
 		removeOntologyMenuItem.setSelectedOntology(getSelectedOntology());
 		fileMenu.add(removeOntologyMenuItem);		
 		fileMenu.addSeparator();

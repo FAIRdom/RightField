@@ -55,6 +55,10 @@ public class ClassHierarchyTree extends JTree {
         
         setCellRenderer(new OntologyCellRenderer(workbookManager.getOntologyManager()));
     }
+    
+    public OWLOntology getOntology() {
+    	return ontology;
+    }
 
     public void updateModel() {
     	setModel(new ClassHierarchyTreeModel(workbookManager.getOntologyManager(),ontology));

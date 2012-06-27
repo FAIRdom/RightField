@@ -302,13 +302,13 @@ public class OntologyManager {
     	logIRI = ontology.getOntologyID().getOntologyIRI();
     	//Create a new ID and use the physical IRI as a version ID        
         newID = new OWLOntologyID(logIRI,physicalIRI);        
-        owlManager.applyChange(new SetOntologyID(ontology, newID));      
+        getOWLOntologyManager().applyChange(new SetOntologyID(ontology, newID));              
         
         
         updateStructuralReasoner();
         updateStructuralReasoner(ontology);
         
-        loadedOntologies.add(getOWLOntologyManager().getOntology(ontology.getOntologyID()));
+        loadedOntologies.add(ontology);
         
         setLabelRendering(true);
         fireOntologiesChanged();        

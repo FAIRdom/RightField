@@ -47,6 +47,8 @@ class ClassHierarchyTabComponent extends JPanel {
 	JButton closeButton;
 	private final WorkbookFrame workbookFrame;
 	
+	private OntologyTermValidationListener ontologyValidationListener;
+	
 	public ClassHierarchyTabComponent(final ClassHierarchyTabbedPane pane,
 			WorkbookFrame workbookFrame, OWLOntology ontology) {
 		super(new FlowLayout(FlowLayout.LEFT, 0, 0));		
@@ -68,6 +70,7 @@ class ClassHierarchyTabComponent extends JPanel {
 	protected void removeOntology() {
 		logger.debug("About to remove ontology:" + ontology.toString());
 		getWorkbookFrame().removeOntology(ontology);
+		getOntologyManager().removeListener(ontologyValidationListener);		
 	}
 
 	private String getTitle() {
@@ -108,7 +111,7 @@ class ClassHierarchyTabComponent extends JPanel {
 	}	
 	
 	private void addOntologyTermValidationListener() {
-		getOntologyManager().addListener(new OntologyTermValidationListener() {
+		ontologyValidationListener = new OntologyTermValidationListener() {
 			
 			@Override
 			public void validationsChanged() {
@@ -119,7 +122,8 @@ class ClassHierarchyTabComponent extends JPanel {
 			public void ontologyTermSelected(List<OntologyTermValidation> previewList) {
 				
 			}
-		});		
+		};
+		getOntologyManager().addListener(ontologyValidationListener);		
 	}
 
 	private class TabButton extends JButton implements ActionListener {
@@ -170,5 +174,5 @@ class ClassHierarchyTabComponent extends JPanel {
 				button.setBorderPainted(false);
 			}
 		}
-	};
+	};	
 }

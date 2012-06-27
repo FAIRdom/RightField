@@ -95,28 +95,24 @@ public class ClassHierarchyTabbedPane extends JTabbedPane {
 			
 		});			
 		
-		addChangeListener(new ChangeListener() {
-			
+		addChangeListener(new ChangeListener() {			
 			@Override
 			public void stateChanged(ChangeEvent e) {
-				int index = getSelectedIndex();
-				logger.debug("Selected tab index: "+index);
-				OWLOntology ontology = null;
-				if (index!=-1) {
-					ClassHierarchyTabComponent comp = ((ClassHierarchyTabComponent)getTabComponentAt(index));
-					if (comp!=null) {
-						ontology = comp.getOntology();
-					}					
-					else {
-						logger.debug("Selected tab component was NULL");
+				if (e.getSource() instanceof ClassHierarchyTabbedPane) {
+					ClassHierarchyTree selectedHierarchyTree = ((ClassHierarchyTabbedPane)e.getSource()).getSelectedHierarchyTree();
+					if (selectedHierarchyTree!=null) {
+						OWLOntology ontology = selectedHierarchyTree.getOntology();
+						if (ontology!=null) {
+							getWorkbookFrame().setSelectedOntology(ontology);
+						}								
+						else {
+							logger.debug("Selected ontology was NULL");
+						}
 					}
-				}
-				if (ontology!=null) {
-					getWorkbookFrame().setSelectedOntology(ontology);
+					else {
+						logger.debug("Selected hierarchy tree is NULL when stateChanged");
+					}									
 				}								
-				else {
-					logger.debug("Selected ontology was NULL");
-				}
 			}
 		});
 		
@@ -277,7 +273,7 @@ public class ClassHierarchyTabbedPane extends JTabbedPane {
 			addTab(title,sp);
 			int index = tabIndexForOntology(ontology);
 			setTabComponentAt(index, new ClassHierarchyTabComponent(this,getWorkbookFrame(),ontology));			
-			setSelectedIndex(index);
+			setSelectedIndex(index);			
 		}
 		else {
 			logger.warn("Attempting to create duplicate tab for ontology: "+ontology.getOntologyID().toString());

@@ -6,18 +6,16 @@
  ******************************************************************************/
 package uk.ac.manchester.cs.owl.semspreadsheets.ui;
 
-import java.util.Collection;
 import java.util.List;
 
 import javax.swing.Action;
 import javax.swing.JMenuItem;
 
-import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntology;
 
+import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyManager;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidation;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidationListener;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 
 /**
  * A menu item that listens to OntologyValidation changes in the sheet, and tracks the selected ontology, to enable it to determine
@@ -29,12 +27,12 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 @SuppressWarnings("serial")
 public class CloseSelectedOntologyMenuItem extends JMenuItem {
 
-	private final WorkbookManager workbookManager;
 	private OWLOntology selectedOntology;
+	private final OntologyManager ontologyManager;
 
-	public CloseSelectedOntologyMenuItem(Action action, WorkbookManager workbookManager) {
+	public CloseSelectedOntologyMenuItem(Action action, OntologyManager ontologyManager) {
 		super(action);
-		this.workbookManager = workbookManager;		
+		this.ontologyManager = ontologyManager;		
 		addListener();
 	}
 	
@@ -47,18 +45,18 @@ public class CloseSelectedOntologyMenuItem extends JMenuItem {
 		if (selectedOntology==null) {
 			setEnabled(false);
 		}
-		else {
-			Collection<IRI> ontologyIRIs = getWorkbookManager().getOntologyManager().getOntologyIRIs();
-			setEnabled(!ontologyIRIs.contains(selectedOntology.getOntologyID().getOntologyIRI()));
+		else {			
+			setEnabled(!getOntologyManager().isOntologyInUse(selectedOntology));
 		}
+	}	
+	
+	protected OntologyManager getOntologyManager() {
+		return ontologyManager;
 	}
-
-	protected WorkbookManager getWorkbookManager() {
-		return workbookManager;
-	}
+			
 	
 	private void addListener() {
-		getWorkbookManager().getOntologyManager().addListener(new OntologyTermValidationListener() {
+		getOntologyManager().addListener(new OntologyTermValidationListener() {
 			
 			@Override
 			public void validationsChanged() {
@@ -70,7 +68,7 @@ public class CloseSelectedOntologyMenuItem extends JMenuItem {
 			public void ontologyTermSelected(List<OntologyTermValidation> previewList) {
 				
 			}
-		});
+		});				
 	}
 
 }
