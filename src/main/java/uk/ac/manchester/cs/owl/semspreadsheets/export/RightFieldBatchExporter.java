@@ -66,8 +66,7 @@ public class RightFieldBatchExporter {
 							logger.error("Unable to process "+file.getAbsolutePath(),e);
 						} catch (URISyntaxException e) {
 							logger.error("Error creating the root URI for "+file.getAbsolutePath(),e);
-						}
-						
+						}						
 					}
 				}
 			}

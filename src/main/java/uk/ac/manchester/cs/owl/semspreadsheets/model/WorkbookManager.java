@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
-import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLEntity;
@@ -42,9 +41,7 @@ public class WorkbookManager {
 	private static final Logger logger = Logger.getLogger(WorkbookManager.class);
     private Workbook workbook;      
 
-    private URI workbookURI;
-    
-    private OWLOntologyManager owlManager;
+    private URI workbookURI;  
     
     private OntologyManager ontologyManager;   
     
@@ -57,10 +54,10 @@ public class WorkbookManager {
     private Set<WorkbookManagerListener> workbookManagerListeners = new HashSet<WorkbookManagerListener>();
 
     public WorkbookManager() {    	
-        this.owlManager = OWLManager.createOWLOntologyManager();
-        ontologyManager = new OntologyManager(owlManager,this);
+        
+        ontologyManager = new OntologyManager(this);
                                 
-        entitySelectionModel = new EntitySelectionModel(owlManager.getOWLDataFactory().getOWLThing());        
+        entitySelectionModel = new EntitySelectionModel(ontologyManager.getOWLOntologyManager().getOWLDataFactory().getOWLThing());        
         workbook = WorkbookFactory.createWorkbook();
         selectionModel = new CellSelectionModel();
         selectionModel.setSelectedRange(new Range(workbook.getSheet(0)));
@@ -259,6 +256,7 @@ public class WorkbookManager {
             OntologyTermValidation validation = validations.iterator().next();
             rangeToApply=validation.getRange();            
         }
+        OWLOntologyManager owlManager = getOntologyManager().getOWLOntologyManager();
         String cellText=getOntologyManager().getRendering(owlManager.getOWLDataFactory().getOWLAnnotationProperty(entityIRI));
         if (type == ValidationType.FREETEXT) {
         	cellText = "";
