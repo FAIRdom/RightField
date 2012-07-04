@@ -63,10 +63,7 @@ public class RDFExporter extends AbstractExporter {
 	public void export(OutputStream outStream) {		
 		Model model = ModelFactory.createDefaultModel();
 		
-		Resource root = model.createResource(getRootID());		
-		
-//		root.addProperty(RDFS.label, model.createLiteral("a data file"));
-//		root.addProperty(RDFS.comment, model.createLiteral("some comments about this data file"));
+		Resource root = model.createResource(getRootID());			
 		
 		for (PopulatedValidatedCellDetails details : getPopulatedValidatedCellDetails()) {
 			addNode(root,model,details);

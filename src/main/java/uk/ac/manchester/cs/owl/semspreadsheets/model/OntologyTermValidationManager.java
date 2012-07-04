@@ -32,8 +32,6 @@ public class OntologyTermValidationManager {
 
 	private final WorkbookManager workbookManager;
 
-	
-
     public OntologyTermValidationManager(WorkbookManager workbookManager) {
 		this.workbookManager = workbookManager;		        
     }

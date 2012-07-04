@@ -77,8 +77,8 @@ public class OntologyManager {
 	
 	private Set<OWLOntology> loadedOntologies = new HashSet<OWLOntology>();
 
-	public OntologyManager(OWLOntologyManager owlManager, WorkbookManager workbookManager) {
-		this.owlManager = owlManager;	
+	public OntologyManager(WorkbookManager workbookManager) {
+		this.owlManager = OWLManager.createOWLOntologyManager();;	
 		ontologyLoaderConfiguration = ontologyLoaderConfiguration.setMissingImportHandlingStrategy(MissingImportHandlingStrategy.SILENT);		
 		shortFormProvider = new BidirectionalShortFormProviderAdapter(new SimpleShortFormProvider());
 		ontologyTermValidationManager = new OntologyTermValidationManager(workbookManager);
