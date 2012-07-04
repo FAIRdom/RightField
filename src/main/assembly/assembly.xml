@@ -23,7 +23,7 @@
 			<outputDirectory>/</outputDirectory>
 			<includes>
 				<include>rightfield.sh</include>
-				<include>rightfield.bat</include>
+				<include>*.bat</include>
 			</includes>
 		</fileSet>
 	</fileSets>
