@@ -29,10 +29,8 @@ import uk.ac.manchester.cs.owl.semspreadsheets.repository.RepositoryItem;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.ErrorHandler;
 
 /**
- * Author: Matthew Horridge<br>
- * The University of Manchester<br>
- * Information Management Group<br>
- * Date: 11-Nov-2009
+ * @author Matthew Horridge
+ * @author Stuart Owen
  */
 public class BioPortalRepositoryAccessor implements RepositoryAccessor {
 

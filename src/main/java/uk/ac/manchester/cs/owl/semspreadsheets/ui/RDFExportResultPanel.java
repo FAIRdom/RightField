@@ -7,6 +7,7 @@
 package uk.ac.manchester.cs.owl.semspreadsheets.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FileDialog;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -18,7 +19,9 @@ import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.text.DefaultCaret;
 
 import org.apache.log4j.Logger;
 
@@ -37,10 +40,17 @@ public class RDFExportResultPanel extends JPanel {
 		super();
 		this.parent = parent;
 		this.workbookFrame = workbookFrame;
-		rdfTextArea = new JTextArea(rdf);
+		setPreferredSize(new Dimension(700,400));
+		
+		rdfTextArea = new JTextArea();
 		rdfTextArea.setEditable(false);
-		setLayout(new BorderLayout());
-		add(rdfTextArea,BorderLayout.NORTH);
+		rdfTextArea.setText(rdf);						
+		rdfTextArea.setCaretPosition(0);		
+		JScrollPane scrollPane = new JScrollPane(rdfTextArea);
+		
+		setLayout(new BorderLayout());		
+		add(scrollPane,BorderLayout.CENTER);		
+		
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		JButton cancelButton = new JButton(new AbstractAction() {			
@@ -93,8 +103,7 @@ public class RDFExportResultPanel extends JPanel {
 		logger.debug(rdf);
 		JDialog dialog = new JDialog(frame,"Generated RDF");
 		
-		RDFExportResultPanel panel = new RDFExportResultPanel(dialog,frame,rdf);
-		
+		RDFExportResultPanel panel = new RDFExportResultPanel(dialog,frame,rdf);		
 		dialog.add(panel);
 		dialog.pack();
 		dialog.setVisible(true);
