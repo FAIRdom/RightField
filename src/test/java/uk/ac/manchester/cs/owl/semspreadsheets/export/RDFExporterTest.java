@@ -10,6 +10,7 @@ import java.net.URI;
 import java.util.List;
 
 import org.junit.Test;
+import org.semanticweb.owlapi.model.IRI;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.DocumentsCatalogue;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
@@ -21,7 +22,7 @@ import com.hp.hpl.jena.rdf.model.Statement;
 
 public class RDFExporterTest {
 	
-	private static String rootID="http://files/data/1";	
+	private static IRI rootID=IRI.create("http://files/data/1");	
 	
 	@Test
 	public void testInitWithManager() throws Exception {
@@ -64,19 +65,19 @@ public class RDFExporterTest {
 		StringReader reader = new StringReader(rdf);
 		
 		model.read(reader, "");		
-		Resource r = model.getResource(rootID);
+		Resource r = model.getResource(rootID.toString());
 		assertNotNull(r);
-		assertEquals(rootID,r.getURI());
+		assertEquals(rootID.toString(),r.getURI());
 		List<Statement> statements = r.listProperties().toList();
 		assertEquals(2,statements.size());
 		
-		assertEquals(rootID,statements.get(0).getSubject().getURI());
+		assertEquals(rootID.toString(),statements.get(0).getSubject().getURI());
 		assertEquals("http://www.mygrid.org.uk/ontology/JERMOntology#hasType",statements.get(0).getPredicate().getURI());
 		assertTrue(statements.get(0).getObject().isResource());
 		assertEquals("http://www.mygrid.org.uk/ontology/JERMOntology#13C_radiolabelling",statements.get(0).getObject().asResource().getURI());
 		
 		
-		assertEquals(rootID,statements.get(1).getSubject().getURI());
+		assertEquals(rootID.toString(),statements.get(1).getSubject().getURI());
 		assertEquals("http://www.mygrid.org.uk/ontology/JERMOntology#isAssociatedWith",statements.get(1).getPredicate().getURI());
 		assertTrue(statements.get(1).getObject().isResource());
 		assertEquals("http://www.mygrid.org.uk/ontology/JERMOntology#COSMIC",statements.get(1).getObject().asResource().getURI());						
@@ -91,13 +92,13 @@ public class RDFExporterTest {
 		StringReader reader = new StringReader(rdf);
 		
 		model.read(reader, "");		
-		Resource r = model.getResource(rootID);
+		Resource r = model.getResource(rootID.toString());
 		assertNotNull(r);
-		assertEquals(rootID,r.getURI());
+		assertEquals(rootID.toString(),r.getURI());
 		List<Statement> statements = r.listProperties().toList();
 		assertEquals(6,statements.size());
 		
-		assertEquals(rootID,statements.get(0).getSubject().getURI());
+		assertEquals(rootID.toString(),statements.get(0).getSubject().getURI());
 		assertEquals(RDFExporter.DEFAULT_PROPERTY_URI,statements.get(0).getPredicate().getURI());
 		assertTrue(statements.get(0).getObject().isResource());
 		assertEquals("http://www.mygrid.org.uk/ontology/JERMOntology#Enterococcus_faecalis",statements.get(0).getObject().asResource().getURI());
@@ -113,19 +114,19 @@ public class RDFExporterTest {
 		StringReader reader = new StringReader(rdf);
 		
 		model.read(reader, "");		
-		Resource r = model.getResource(rootID);
+		Resource r = model.getResource(rootID.toString());
 		assertNotNull(r);
-		assertEquals(rootID,r.getURI());
+		assertEquals(rootID.toString(),r.getURI());
 		List<Statement> statements = r.listProperties().toList();
 		assertEquals(2,statements.size());
 		
-		assertEquals(rootID,statements.get(0).getSubject().getURI());
+		assertEquals(rootID.toString(),statements.get(0).getSubject().getURI());
 		assertEquals("http://www.mygrid.org.uk/ontology/JERMOntology#ECNumber",statements.get(0).getPredicate().getURI());
 		assertTrue(statements.get(0).getObject().isLiteral());
 		assertEquals("hello",statements.get(0).getObject().asLiteral().getValue());
 		
 		
-		assertEquals(rootID,statements.get(1).getSubject().getURI());
+		assertEquals(rootID.toString(),statements.get(1).getSubject().getURI());
 		assertEquals("http://www.mygrid.org.uk/ontology/JERMOntology#ECNumber",statements.get(1).getPredicate().getURI());
 		assertTrue(statements.get(1).getObject().isLiteral());
 		assertEquals("world",statements.get(1).getObject().asLiteral().getValue());

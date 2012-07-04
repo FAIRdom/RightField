@@ -14,6 +14,7 @@ import java.util.prefs.Preferences;
 import javax.swing.JFrame;
 
 import org.apache.log4j.Logger;
+import org.semanticweb.owlapi.model.IRI;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.export.CSVExporter;
 import uk.ac.manchester.cs.owl.semspreadsheets.export.Exporter;
@@ -71,7 +72,7 @@ public class RightField {
     	File file = new File(options.getFilename());
     	Exporter exporter;
     	if (options.getExportFormat().equals("rdf")) {
-    		exporter=new RDFExporter(file,options.getId());
+    		exporter=new RDFExporter(file,IRI.create(options.getId()));
     	}
     	else if (options.getExportFormat().equals("csv")) {
     		exporter=new CSVExporter(file);
