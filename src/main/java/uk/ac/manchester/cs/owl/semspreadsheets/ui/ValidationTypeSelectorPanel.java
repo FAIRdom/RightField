@@ -133,10 +133,6 @@ public class ValidationTypeSelectorPanel extends JPanel {
         comboBox.setSelectedItem(type);        		
     }
 
-    public ValidationType getSelectedType() {
-        return (ValidationType)comboBox.getSelectedItem();
-    }
-
     /**
      * Updates the types list in the dropbox box
      */

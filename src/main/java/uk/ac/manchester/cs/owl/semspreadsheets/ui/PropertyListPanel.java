@@ -60,11 +60,11 @@ public class PropertyListPanel extends JPanel {
 		fullPropertyName.setLineWrap(true);
 		fullPropertyName.setWrapStyleWord(false);
 		
-			
+		
 		add(fullPropertyName,BorderLayout.SOUTH);
 		setupListeners();
 		setSelectedStatus(false);
-		setEnabledStatus(false);
+		setEnabledStatus(false);		
 	}
 
 	private void setupListeners() {
@@ -141,8 +141,7 @@ public class PropertyListPanel extends JPanel {
 		fullPropertyName.setText(txt);
 	}
 
-	private void updatePropertySelectionFromModel(Range range) {
-		
+	private void updatePropertySelectionFromModel(Range range) {		
 		if(range == null) {
 			setEnabledStatus(false);
             return;
@@ -216,7 +215,7 @@ public class PropertyListPanel extends JPanel {
 	private void setEnabledStatus(boolean selected) {
 		checkBox.setEnabled(selected);
 		comboBox.setEnabled(selected);
-		fullPropertyName.setEditable(selected);
+		fullPropertyName.setEnabled(selected);
 	}
 
 	private void setSelectedStatus(boolean selected) {

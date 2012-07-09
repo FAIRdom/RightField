@@ -41,9 +41,12 @@ public class ClassHierarchyTree extends JTree {
 
     public ClassHierarchyTree(final WorkbookManager manager, OWLOntology ontology) {
         super(new ClassHierarchyTreeModel(manager.getOntologyManager(),ontology));
-		this.ontology = ontology;
-        getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);        
+        
+		this.ontology = ontology;               
         this.workbookManager = manager;
+        
+        setModel(new ClassHierarchyTreeModel(workbookManager.getOntologyManager(),ontology));
+        getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
         
         addTreeSelectionListener(new TreeSelectionListener() {
             @Override
@@ -51,18 +54,13 @@ public class ClassHierarchyTree extends JTree {
                 previewSelectedClass();
             }
         });
-        
-        
-        setCellRenderer(new OntologyCellRenderer(workbookManager.getOntologyManager()));
+                
+        setCellRenderer(new OntologyCellRenderer(workbookManager.getOntologyManager()));        
     }
     
     public OWLOntology getOntology() {
     	return ontology;
-    }
-
-    public void updateModel() {
-    	setModel(new ClassHierarchyTreeModel(workbookManager.getOntologyManager(),ontology));
-    }
+    }    
     
     public ClassHierarchyTreeModel getClassHierarchyTreeModel() {
         return (ClassHierarchyTreeModel) super.getModel();

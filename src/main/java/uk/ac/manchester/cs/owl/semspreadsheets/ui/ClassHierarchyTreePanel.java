@@ -26,7 +26,6 @@ public class ClassHierarchyTreePanel extends JPanel {
         add(new FindClassPanel(frame), BorderLayout.NORTH);
         tabbedPane = new ClassHierarchyTabbedPane(frame);               
         setPreferredSize(new Dimension(100,400));
-        add(tabbedPane);
-        
+        add(tabbedPane);        
     }         
 }

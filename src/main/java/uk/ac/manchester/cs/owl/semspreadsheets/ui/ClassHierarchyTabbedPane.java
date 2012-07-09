@@ -131,8 +131,7 @@ public class ClassHierarchyTabbedPane extends JTabbedPane {
 					else {
 						updateSelectedTabAndClass(cls);
 					}					
-				}
-				
+				}				
 			}
 		});
 		
@@ -202,11 +201,11 @@ public class ClassHierarchyTabbedPane extends JTabbedPane {
 		return tabToTreeMap.get(scrollPane);
 	}		
 	
-	public int tabIndexForOntology(OWLOntology ontology) {
+	private int tabIndexForOntology(OWLOntology ontology) {
 		return indexOfTab(tabTitle(ontology));
 	}
 	
-	public String tabTitle(OWLOntology ontology) {
+	private String tabTitle(OWLOntology ontology) {
 		String title = getLabelValue(ontology);
 		if (title==null) {
 			title = ontology.getOntologyID().getOntologyIRI().getFragment();
@@ -262,7 +261,6 @@ public class ClassHierarchyTabbedPane extends JTabbedPane {
 
 	private void createTab(OWLOntology ontology) {
 		ClassHierarchyTree tree = new ClassHierarchyTree(getWorkbookManager(),ontology);
-		tree.updateModel();
 		JScrollPane sp = new JScrollPane(tree);
 		tabToTreeMap.put(sp, tree);
 		sp.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
@@ -307,11 +305,11 @@ public class ClassHierarchyTabbedPane extends JTabbedPane {
         }
     }
 
-	public WorkbookManager getWorkbookManager() {
+	private WorkbookManager getWorkbookManager() {
 		return getWorkbookFrame().getWorkbookManager();
 	}
 
-	public WorkbookFrame getWorkbookFrame() {
+	private WorkbookFrame getWorkbookFrame() {
 		return workbookFrame;
 	}
 }

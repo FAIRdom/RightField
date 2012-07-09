@@ -65,6 +65,7 @@ public class ValidationInspectorPanel extends JPanel {
         
         //validation selection
         addValidationSelectionPanel(frame);
+                        
         
         updateSelectionLabel(workbookManager.getSelectionModel().getSelectedRange());
                 
