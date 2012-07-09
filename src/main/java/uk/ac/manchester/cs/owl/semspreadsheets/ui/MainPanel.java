@@ -31,7 +31,7 @@ public class MainPanel extends JPanel {
         JSplitPane sp = new JSplitPane();
         sp.setLeftComponent(workbookPanel);
         sp.setRightComponent(new ValidationInspectorPanel(frame));
-        sp.setResizeWeight(0.8);
+        sp.setResizeWeight(0.9);
         add(sp);
     }     
 }

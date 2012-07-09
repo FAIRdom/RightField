@@ -59,10 +59,8 @@ public class ClassHierarchyTabbedPane extends JTabbedPane {
 
 	public ClassHierarchyTabbedPane(WorkbookFrame workbookFrame) {
 		super();
-		this.workbookFrame = workbookFrame;		
-		
-		setupListeners();
-				
+		this.workbookFrame = workbookFrame;				
+		setupListeners();				
 	}
 
 	private void setupListeners() {

@@ -7,6 +7,7 @@
 package uk.ac.manchester.cs.owl.semspreadsheets.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 
 import javax.swing.JPanel;
 
@@ -24,7 +25,7 @@ public class ClassHierarchyTreePanel extends JPanel {
         setLayout(new BorderLayout(5, 5));
         add(new FindClassPanel(frame), BorderLayout.NORTH);
         tabbedPane = new ClassHierarchyTabbedPane(frame);               
-        
+        setPreferredSize(new Dimension(100,400));
         add(tabbedPane);
         
     }         
