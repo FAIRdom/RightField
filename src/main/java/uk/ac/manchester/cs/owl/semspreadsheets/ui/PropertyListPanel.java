@@ -20,6 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 import org.apache.log4j.Logger;
+import org.semanticweb.owlapi.model.OWLOntology;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OWLPropertyItem;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidation;
@@ -39,7 +40,7 @@ public class PropertyListPanel extends JPanel {
 			.getLogger(PropertyListPanel.class);
 	private JComboBox comboBox;
 	private JCheckBox checkBox;
-	private JTextArea fullPropertyName;
+	private JTextArea fullPropertyName;	
 
 	public PropertyListPanel(WorkbookManager workbookManager) {
 
@@ -58,47 +59,18 @@ public class PropertyListPanel extends JPanel {
 		fullPropertyName.setFocusable(false);
 		fullPropertyName.setRows(2);
 		fullPropertyName.setLineWrap(true);
-		fullPropertyName.setWrapStyleWord(false);
-		
+		fullPropertyName.setWrapStyleWord(false);		
 		
 		add(fullPropertyName,BorderLayout.SOUTH);
 		setupListeners();
-		setSelectedStatus(false);
-		setEnabledStatus(false);		
+		setSelectedStatus(false);		
+	}
+	
+	public void ontologySelected(OWLOntology ontology) {		
+		updateModel(ontology);
 	}
 
-	private void setupListeners() {
-		getWorkbookManager().addListener(new WorkbookManagerListener() {
-
-			@Override
-			public void workbookLoaded(WorkbookManagerEvent event) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void workbookCreated(WorkbookManagerEvent event) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void validationAppliedOrCancelled() {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void ontologiesChanged(WorkbookManagerEvent event) {
-				updateModel();
-			}
-			
-			@Override
-			public void workbookSaved(WorkbookManagerEvent event) {
-				
-			}
-		});
-
+	private void setupListeners() {		
 		getWorkbookManager().getSelectionModel().addCellSelectionListener(
 				new CellSelectionListener() {
 
@@ -143,16 +115,14 @@ public class PropertyListPanel extends JPanel {
 
 	private void updatePropertySelectionFromModel(Range range) {		
 		if(range == null) {
-			setEnabledStatus(false);
+			setEnabledStatusAccordingToSelectedRange(range);
             return;
-        }
-		setEnabledStatus(range.isCellSelection());
+        }		
 		
 		Collection<OntologyTermValidation> containingValidations = getWorkbookManager()
 				.getOntologyManager().getContainingOntologyTermValidations(
 						range);
-		Collection<OntologyTermValidation> intersectingValidations = workbookManager.getOntologyManager().getIntersectingOntologyTermValidations(range);
-		setEnabledStatus(containingValidations.size() <= 1 && intersectingValidations.size() == containingValidations.size());
+				
 		
 		if (containingValidations.size() == 1) {
 			OntologyTermValidation validation = containingValidations.iterator().next();
@@ -166,11 +136,8 @@ public class PropertyListPanel extends JPanel {
 			}
 		} else {
 			setSelectedStatus(false);
-		}
-		
-		if (getWorkbookManager().getOntologyManager().getAllOWLProperties().isEmpty()) {
-			setEnabledStatus(false);
-		}
+		}				
+		setEnabledStatusAccordingToSelectedRange(range);
 	}
 
 	private void updateEntityModel() {
@@ -191,37 +158,72 @@ public class PropertyListPanel extends JPanel {
 		return this.workbookManager;
 	}
 	
-	private Set<OWLPropertyItem> getPropertyItems() {
-		return getWorkbookManager().getOntologyManager().getAllOWLProperties();		
+	private Set<OWLPropertyItem> getPropertyItems(OWLOntology ontology) {		
+		return getWorkbookManager().getOntologyManager().getAllOWLProperties(ontology);		
 	}
 
-	private void updateModel() {
-				
-		OWLPropertyItem[] sortedProperties = getPropertyItems().toArray(new OWLPropertyItem[]{});
+	private void updateModel(OWLOntology ontology) {
+		
+		OWLPropertyItem[] sortedProperties = getPropertyItems(ontology).toArray(new OWLPropertyItem[]{});
 		Arrays.sort(sortedProperties, new Comparator<OWLPropertyItem>() {
 			@Override
 			public int compare(OWLPropertyItem o1, OWLPropertyItem o2) {
 				return o1.toString().toLowerCase().compareTo(o2.toString().toLowerCase());
 			}
 		});
+		
 		logger.debug("Updating model for properties list with "
 				+ sortedProperties.length+ " properties");
+		
 		comboBox.removeAllItems();
 		for (OWLPropertyItem property : sortedProperties) {
 			comboBox.addItem(property);
 		}
+		setEnabledStatus();
 	}
 	
-	private void setEnabledStatus(boolean selected) {
-		checkBox.setEnabled(selected);
-		comboBox.setEnabled(selected);
-		fullPropertyName.setEnabled(selected);
+	private void setEnabledStatusAccordingToSelectedRange(Range range) {
+		if (range==null) {
+			checkBox.setEnabled(false);
+			comboBox.setEnabled(checkBox.isSelected());
+		}
+		else {
+			if (!range.isCellSelection() || !isPropertiesAvailable()) {
+				checkBox.setEnabled(false);
+				comboBox.setEnabled(checkBox.isSelected());
+			}
+			else {
+				Collection<OntologyTermValidation> intersectingValidations = getWorkbookManager().getOntologyManager().getIntersectingOntologyTermValidations(range);
+				Collection<OntologyTermValidation> containingValidations = getWorkbookManager().getOntologyManager().getContainingOntologyTermValidations(
+						range);
+				boolean enabledStatus = containingValidations.size() <= 1 && intersectingValidations.size() == containingValidations.size();
+				checkBox.setEnabled(enabledStatus);
+				comboBox.setEnabled(checkBox.isSelected());
+			}
+		}
+	}
+	private void setEnabledStatus() {		
+		if (!isPropertiesAvailable()) {
+			comboBox.setEnabled(false);
+			checkBox.setEnabled(false);			
+		}
+		else {
+			checkBox.setEnabled(true);
+			comboBox.setEnabled(checkBox.isSelected());
+		}
+			
+	}
+	
+	private boolean isPropertiesAvailable() {
+		return getPropertyCount()>0;
+	}
+	private int getPropertyCount() {
+		return comboBox.getItemCount();
 	}
 
-	private void setSelectedStatus(boolean selected) {
-		comboBox.setEnabled(selected);
-		fullPropertyName.setEnabled(selected);
+	private void setSelectedStatus(boolean selected) {		
 		checkBox.setSelected(selected);
+		setEnabledStatus();
 	}	
 
 }

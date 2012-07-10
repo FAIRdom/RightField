@@ -22,6 +22,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Workbook;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManagerListener;
 
 /**
  * @author Stuart Owen
@@ -98,18 +99,18 @@ public class WorkbookPanel extends JPanel {
 					}
 				});
 		workbookManager.addListener(new WorkbookManagerListener() {
-			public void workbookCreated(WorkbookManagerEvent event) {
+			
+			@Override
+			public void workbookCreated() {
 				rebuildTabs();
 				transmitSelectionToModel();
 			}
-
-			public void workbookLoaded(WorkbookManagerEvent event) {
+			
+			@Override
+			public void workbookLoaded() {
 				rebuildTabs();
 				transmitSelectionToModel();
-			}
-
-			public void ontologiesChanged(WorkbookManagerEvent event) {
-			}
+			}			
 
 			@Override
 			public void validationAppliedOrCancelled() {
@@ -117,7 +118,7 @@ public class WorkbookPanel extends JPanel {
 			}
 
 			@Override
-			public void workbookSaved(WorkbookManagerEvent event) {				
+			public void workbookSaved() {				
 				
 			}
 		});

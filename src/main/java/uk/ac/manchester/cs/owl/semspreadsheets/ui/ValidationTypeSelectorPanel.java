@@ -15,7 +15,9 @@ import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
+import org.semanticweb.owlapi.model.OWLOntology;
 
+import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyManagerListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidation;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.ValidationType;
@@ -38,21 +40,34 @@ public class ValidationTypeSelectorPanel extends JPanel {
         
     JComboBox comboBox;
 
+	private PropertyListPanel propertyListPanel;
+
     public ValidationTypeSelectorPanel(final WorkbookManager workbookManager) {
         this.workbookManager = workbookManager;		
         setLayout(new BorderLayout());
                      
         comboBox = new JComboBox();
         add(comboBox,BorderLayout.NORTH);
-              
-        add(new PropertyListPanel(workbookManager),BorderLayout.SOUTH);                
+        propertyListPanel = new PropertyListPanel(workbookManager);      
+        add(propertyListPanel,BorderLayout.SOUTH);                
 		
+		setupListeners();
+        
+        workbookManager.getSelectionModel().addCellSelectionListener(cellSelectionListener);
+        refreshTypeList();
+    }
+    
+    public void ontologySelected(OWLOntology ontology) {
+    	propertyListPanel.ontologySelected(ontology);
+    }
+
+	private void setupListeners() {
 		comboBox.addItemListener(new ItemListener() {
 			
 			@Override
 			public void itemStateChanged(ItemEvent e) {
 				if (e.getStateChange()==ItemEvent.SELECTED && comboBox==e.getSource() && comboBox.getSelectedItem()!=null) {					
-					workbookManager.getEntitySelectionModel().setValidationType((ValidationType) comboBox.getSelectedItem());
+					getWorkbookManager().getEntitySelectionModel().setValidationType((ValidationType) comboBox.getSelectedItem());
 					previewSelectionInList();
 				}				
 			}
@@ -63,48 +78,31 @@ public class ValidationTypeSelectorPanel extends JPanel {
                 updateSelectionFromModel(range);
             }
         };
-        workbookManager.getOntologyManager().addListener(new WorkbookManagerListener() {
+        getWorkbookManager().getOntologyManager().addListener(new OntologyManagerListener() {						
 			
 			@Override
-			public void workbookLoaded(WorkbookManagerEvent event) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void workbookCreated(WorkbookManagerEvent event) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void validationAppliedOrCancelled() {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void ontologiesChanged(WorkbookManagerEvent event) {
+			public void ontologiesChanged() {
 				refreshTypeList();				
 			}
-			
+
 			@Override
-			public void workbookSaved(WorkbookManagerEvent event) {
+			public void ontologySelected(OWLOntology ontology) {
+				// TODO Auto-generated method stub
 				
-			}
+			}			
 		});
-        
-        workbookManager.getSelectionModel().addCellSelectionListener(cellSelectionListener);
-        refreshTypeList();
-        setComboBoxEnabled(false);
-    }
+	}
     
     public void addListItemListener(ItemListener listener) {
     	comboBox.addItemListener(listener);
-    }       
+    } 
+    
+    private WorkbookManager getWorkbookManager() {
+    	return this.workbookManager;
+    }
     
     private void previewSelectionInList() {    	    	
-    	workbookManager.previewValidation();		
+    	getWorkbookManager().previewValidation();		
 	}        
 
     private void updateSelectionFromModel(Range range) {        
@@ -114,8 +112,8 @@ public class ValidationTypeSelectorPanel extends JPanel {
         }        
         setComboBoxEnabled(range.isCellSelection());
         
-        Collection<OntologyTermValidation> intersectingValidations = workbookManager.getOntologyManager().getIntersectingOntologyTermValidations(range);
-        Collection<OntologyTermValidation> containingValidations = workbookManager.getOntologyManager().getContainingOntologyTermValidations(range);
+        Collection<OntologyTermValidation> intersectingValidations = getWorkbookManager().getOntologyManager().getIntersectingOntologyTermValidations(range);
+        Collection<OntologyTermValidation> containingValidations = getWorkbookManager().getOntologyManager().getContainingOntologyTermValidations(range);
         setComboBoxEnabled(containingValidations.size() <= 1 && intersectingValidations.size() == containingValidations.size());                       
         
         if(containingValidations.isEmpty()) {            
@@ -138,7 +136,7 @@ public class ValidationTypeSelectorPanel extends JPanel {
      */
     private void refreshTypeList() { 
     	logger.debug("Refereshing validation type list");
-    	if (workbookManager.getOntologyManager().getLoadedOntologies().size()>0) {
+    	if (getWorkbookManager().getOntologyManager().getLoadedOntologies().size()>0) {
     		if (comboBox.getItemCount()<=1) {
     			comboBox.removeAllItems();
         		for(ValidationType type : ValidationType.values()) {                

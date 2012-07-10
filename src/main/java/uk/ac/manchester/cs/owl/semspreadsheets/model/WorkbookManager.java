@@ -26,10 +26,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.change.WorkbookChange;
 import uk.ac.manchester.cs.owl.semspreadsheets.change.WorkbookChangeListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.CellSelectionListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.CellSelectionModel;
-import uk.ac.manchester.cs.owl.semspreadsheets.ui.EntitySelectionModel;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.ErrorHandler;
-import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookManagerEvent;
-import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookManagerListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookState;
 
 /** 
@@ -79,13 +76,11 @@ public class WorkbookManager {
     }
 
     public void addListener(WorkbookManagerListener listener) {
-        workbookManagerListeners.add(listener);
-        getOntologyManager().addListener(listener);
+        workbookManagerListeners.add(listener);        
     }
 
     public void removeListener(WorkbookManagerListener listener) {
-        workbookManagerListeners.remove(listener);
-        getOntologyManager().removeListener(listener);
+        workbookManagerListeners.remove(listener);        
     }
     
     public EntitySelectionModel getEntitySelectionModel() {
@@ -108,11 +103,10 @@ public class WorkbookManager {
         getEntitySelectionModel().setSelection(selEnt);
     }
 
-    private void fireWorkbookCreated() {
-        WorkbookManagerEvent event = new WorkbookManagerEvent();
+    private void fireWorkbookCreated() {       
         for (WorkbookManagerListener listener : getCopyOfListeners()) {
             try {
-                listener.workbookCreated(event);
+                listener.workbookCreated();
             }
             catch (Throwable e) {
                 ErrorHandler.getErrorHandler().handleError(e);
@@ -120,11 +114,10 @@ public class WorkbookManager {
         }
     }
     
-    private void fireWorkbookSaved() {
-    	WorkbookManagerEvent event = new WorkbookManagerEvent();
+    private void fireWorkbookSaved() {    	
         for (WorkbookManagerListener listener : getCopyOfListeners()) {
             try {
-                listener.workbookSaved(event);
+                listener.workbookSaved();
             }
             catch (Throwable e) {
                 ErrorHandler.getErrorHandler().handleError(e);
@@ -138,11 +131,10 @@ public class WorkbookManager {
         }
     }
 
-    private void fireWorkbookLoaded() {
-        WorkbookManagerEvent event = new WorkbookManagerEvent();
+    private void fireWorkbookLoaded() {        
         for (WorkbookManagerListener listener : getCopyOfListeners()) {
             try {
-                listener.workbookLoaded(event);
+                listener.workbookLoaded();
             }
             catch (Throwable e) {
                 ErrorHandler.getErrorHandler().handleError(e);

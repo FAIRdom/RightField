@@ -33,6 +33,8 @@ import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
+import uk.ac.manchester.cs.owl.semspreadsheets.model.EntitySelectionModelListener;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyManagerListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidation;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
@@ -55,7 +57,7 @@ public class ClassHierarchyTabbedPane extends JTabbedPane {
 	private final WorkbookFrame workbookFrame;
 	
 	private Map<JScrollPane,ClassHierarchyTree> tabToTreeMap = new HashMap<JScrollPane,ClassHierarchyTree>();
-	
+		
 
 	public ClassHierarchyTabbedPane(WorkbookFrame workbookFrame) {
 		super();
@@ -64,48 +66,28 @@ public class ClassHierarchyTabbedPane extends JTabbedPane {
 	}
 
 	private void setupListeners() {
-		getWorkbookManager().addListener(new WorkbookManagerListener() {
-			
+		getWorkbookManager().getOntologyManager().addListener(new OntologyManagerListener() {
+									
 			@Override
-			public void workbookLoaded(WorkbookManagerEvent event) {
-								
-			}
-			
-			@Override
-			public void workbookCreated(WorkbookManagerEvent event) {
-								
-			}
-			
-			@Override
-			public void validationAppliedOrCancelled() {
-								
-			}
-			
-			@Override
-			public void ontologiesChanged(WorkbookManagerEvent event) {
+			public void ontologiesChanged() {
 				updateTabs();							
 			}
 
 			@Override
-			public void workbookSaved(WorkbookManagerEvent event) {
+			public void ontologySelected(OWLOntology ontology) {				
 				
-			}
-			
+			}						
 		});			
 		
 		addChangeListener(new ChangeListener() {			
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				if (e.getSource() instanceof ClassHierarchyTabbedPane) {
+					getWorkbookManager().getEntitySelectionModel().clear();					
 					ClassHierarchyTree selectedHierarchyTree = ((ClassHierarchyTabbedPane)e.getSource()).getSelectedHierarchyTree();
 					if (selectedHierarchyTree!=null) {
 						OWLOntology ontology = selectedHierarchyTree.getOntology();
-						if (ontology!=null) {
-							getWorkbookFrame().setSelectedOntology(ontology);
-						}								
-						else {
-							logger.debug("Selected ontology was NULL");
-						}
+						fireOntologySelected(ontology);						
 					}
 					else {
 						logger.debug("Selected hierarchy tree is NULL when stateChanged");
@@ -146,6 +128,11 @@ public class ClassHierarchyTabbedPane extends JTabbedPane {
 		});
 	}
 	
+	private void fireOntologySelected(OWLOntology ontology) {
+		logger.debug("Ontology selected "+ontology);
+		getWorkbookManager().getOntologyManager().ontologySelected(ontology);
+	}
+	
 	private void clearSelection() {
 		ClassHierarchyTree tree = getSelectedHierarchyTree();
 		if (tree!=null) {
@@ -153,9 +140,10 @@ public class ClassHierarchyTabbedPane extends JTabbedPane {
 		}
 	}
 	
-	private void updateSelectedTabAndClass(OWLEntity selection) {		
-		if (selection instanceof OWLClass) {
-			OWLClass cls = (OWLClass) selection;
+	private void updateSelectedTabAndClass(OWLEntity selectedEntity) {
+		logger.debug("Updating ontology tab for selected entity - "+selectedEntity);
+		if (selectedEntity instanceof OWLClass) {
+			OWLClass cls = (OWLClass) selectedEntity;
 			//get selected tree first
 			ClassHierarchyTree tree = getSelectedHierarchyTree();
 						
@@ -166,13 +154,15 @@ public class ClassHierarchyTabbedPane extends JTabbedPane {
 			else {
 				//loop and select first tab to contain cls
 				int i=0;
-				for (ClassHierarchyTree t : getHierachyTrees()) {
-					if (t.containsClass(cls)) {
-						t.setSelectedClass(cls);
-						setSelectedIndex(i);
-						break;
+				if (getTabCount()>0) {
+					for (ClassHierarchyTree t : getHierachyTrees()) {
+						if (t.containsClass(cls)) {
+							t.setSelectedClass(cls);
+							setSelectedIndex(i);
+							break;
+						}
+						i++;
 					}
-					i++;
 				}
 			}			
 		}
@@ -190,7 +180,9 @@ public class ClassHierarchyTabbedPane extends JTabbedPane {
 			Component comp = getComponent(i);
 			if (comp instanceof JScrollPane) {
 				ClassHierarchyTree tree = tabToTreeMap.get(comp);
-				trees.add(tree);
+				if (tree!=null) {
+					trees.add(tree);
+				}				
 			}
 		}
 		return trees;

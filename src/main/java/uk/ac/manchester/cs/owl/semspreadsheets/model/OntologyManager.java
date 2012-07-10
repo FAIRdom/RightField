@@ -54,8 +54,6 @@ import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.repository.bioportal.BioPortalRepository;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.ErrorHandler;
-import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookManagerEvent;
-import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookManagerListener;
 
 /**
  * Encapsulates everything to do with Ontologies, and wraps the {@link OWLOntologyManager} and {@link OntologyTermValidationManager}
@@ -73,7 +71,7 @@ public class OntologyManager {
 	private OWLOntologyLoaderConfiguration ontologyLoaderConfiguration = new OWLOntologyLoaderConfiguration();
 	private BidirectionalShortFormProviderAdapter shortFormProvider;
 	private OntologyTermValidationManager ontologyTermValidationManager;
-	private Set<WorkbookManagerListener> workbookManagerListeners = new HashSet<WorkbookManagerListener>();
+	private Set<OntologyManagerListener> ontologyManagerListeners = new HashSet<OntologyManagerListener>();
 	
 	private Set<OWLOntology> loadedOntologies = new HashSet<OWLOntology>();
 
@@ -88,8 +86,8 @@ public class OntologyManager {
 		getOntologyTermValidationManager().addListener(listener);
 	}
 	
-	public void addListener(WorkbookManagerListener listener) {
-		workbookManagerListeners.add(listener);
+	public void addListener(OntologyManagerListener listener) {
+		ontologyManagerListeners.add(listener);
 	}
 	
 	public void clearOntologyTermValidation(Range range) {
@@ -101,29 +99,23 @@ public class OntologyManager {
     }
 	
 	private void fireOntologiesChanged() {
-        WorkbookManagerEvent event = new WorkbookManagerEvent();
-        for (WorkbookManagerListener listener : getCopyOfListeners()) {
-            try {
-                listener.ontologiesChanged(event);
-            }
-            catch (Throwable e) {
-                ErrorHandler.getErrorHandler().handleError(e);
-            }
-        }
-    }
-	
-	public Set<OWLPropertyItem> getAllOWLProperties() {
-    	Set<OWLPropertyItem> properties = getOWLDataProperties();
-    	properties.addAll(getOWLObjectProperties());
-    	return properties;
-    }
+		for (OntologyManagerListener listener : getCopyOfListeners()) {
+			listener.ontologiesChanged();
+		}
+	}
+
+	private void fireOntologySelected(OWLOntology ontology) {
+		for (OntologyManagerListener listener : getCopyOfListeners()) {
+			listener.ontologySelected(ontology);
+		}
+	}
 	
 	public Collection<OntologyTermValidation> getContainingOntologyTermValidations(Range range) {
         return getOntologyTermValidationManager().getContainingValidations(range);
     }   
 	
-	private List<WorkbookManagerListener> getCopyOfListeners() {
-        return new ArrayList<WorkbookManagerListener>(workbookManagerListeners);
+	private List<OntologyManagerListener> getCopyOfListeners() {
+        return new ArrayList<OntologyManagerListener>(ontologyManagerListeners);
     }
 	
 	public OWLDataFactory getDataFactory() {
@@ -196,28 +188,77 @@ public class OntologyManager {
         return getOntologyTermValidationManager().getValidations();
     }
     
+    
+    /**
+     * 
+     * @param ontology
+     * @return all the Object and Data property items for the given ontology
+     */
+    public Set<OWLPropertyItem> getAllOWLProperties(OWLOntology ontology) {
+    	Set<OWLPropertyItem> properties = getOWLDataProperties(ontology);
+    	properties.addAll(getOWLObjectProperties(ontology));
+    	return properties;
+    }
+    
+    /**
+     * @param ontology
+     * @return Data property items defined in the given ontology
+     */
+    public Set<OWLPropertyItem> getOWLDataProperties(OWLOntology ontology) {
+    	Set<OWLPropertyItem> properties = new HashSet<OWLPropertyItem>();
+    	
+		for (OWLDataProperty property : ontology.getDataPropertiesInSignature())
+		{
+			if (!property.isTopEntity()) {
+				properties.add(new OWLPropertyItem(property));
+			}
+		}    		
+    	    	
+    	return properties;
+    }
+    
+    /**
+     * @param ontology
+     * @return Object property items defined in the given ontology
+     */
+    public Set<OWLPropertyItem> getOWLObjectProperties(OWLOntology ontology) {
+    	Set<OWLPropertyItem> properties = new HashSet<OWLPropertyItem>();    	
+		for (OWLObjectProperty property : ontology.getObjectPropertiesInSignature())
+		{
+			if (!property.isTopEntity()) {
+				properties.add(new OWLPropertyItem(property));
+			}
+		}    		    	    
+    	return properties;
+    }
+    
+    /**
+     * @return all Object and Data properties defined within all loaded ontologies
+     */
+    public Set<OWLPropertyItem> getAllOWLProperties() {
+    	Set<OWLPropertyItem> properties = getOWLDataProperties();
+    	properties.addAll(getOWLObjectProperties());
+    	return properties;
+    }
+    
+    /**     
+     * @return Data properties defined within all loaded ontologies
+     */
     public Set<OWLPropertyItem> getOWLDataProperties() {
     	Set<OWLPropertyItem> properties = new HashSet<OWLPropertyItem>();
     	for (OWLOntology ontology : getAllOntologies()) {
-    		for (OWLDataProperty property : ontology.getDataPropertiesInSignature())
-    		{
-    			if (!property.isTopEntity()) {
-    				properties.add(new OWLPropertyItem(property));
-    			}
-    		}    		
+    		properties.addAll(getOWLDataProperties(ontology)); 		
     	}    	
     	return properties;
     }
     
+    /**
+     * @return Object properties defined within all loaded ontologies
+     */
     public Set<OWLPropertyItem> getOWLObjectProperties() {
     	Set<OWLPropertyItem> properties = new HashSet<OWLPropertyItem>();
     	for (OWLOntology ontology : getAllOntologies()) {
-    		for (OWLObjectProperty property : ontology.getObjectPropertiesInSignature())
-    		{
-    			if (!property.isTopEntity()) {
-    				properties.add(new OWLPropertyItem(property));
-    			}
-    		}    		
+    		properties.addAll(getOWLObjectProperties(ontology));    		
     	}    	
     	return properties;
     }
@@ -376,8 +417,8 @@ public class OntologyManager {
 		getOntologyTermValidationManager().removeListener(listener);
 	}
 
-    public void removeListener(WorkbookManagerListener listener) {
-		workbookManagerListeners.remove(listener);
+    public void removeListener(OntologyManagerListener listener) {
+		ontologyManagerListeners.remove(listener);
 	}
     
     public void removeOntology(OWLOntology ontology) {
@@ -447,6 +488,10 @@ public class OntologyManager {
 		reasoner.precomputeInferences();
 		ontologyReasoners.put(ontology.getOntologyID(), reasoner);
 		return reasoner;
+	}
+
+	public void ontologySelected(OWLOntology ontology) {		
+		fireOntologySelected(ontology);
 	}
 	
 }

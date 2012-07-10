@@ -3,6 +3,8 @@ package uk.ac.manchester.cs.owl.semspreadsheets.model;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.net.URI;
@@ -17,20 +19,20 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.reasoner.NodeSet;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.DocumentsCatalogue;
-import uk.ac.manchester.cs.owl.semspreadsheets.impl.DummyWorkbookManagerListener;
+import uk.ac.manchester.cs.owl.semspreadsheets.impl.DummyOntologyManagerListener;
 
 public class OntologyManagerTest {
 	
 	private OntologyManager ontologyManager;
-	private DummyWorkbookManagerListener testListener;
+	private DummyOntologyManagerListener testListener;
 	private WorkbookManager workbookManager;
 
 	@Before
 	public void createOntologyManager() {
 		workbookManager = new WorkbookManager();
 		ontologyManager = workbookManager.getOntologyManager();		
-		testListener=new DummyWorkbookManagerListener();		
-		workbookManager.addListener(testListener);
+		testListener=new DummyOntologyManagerListener();		
+		ontologyManager.addListener(testListener);
 	}
 
 	@Test
@@ -75,6 +77,14 @@ public class OntologyManagerTest {
 			assertNotNull(o.getOntologyID());
 			assertNotNull(o.getOntologyID().getOntologyIRI());
 		}
+	}
+	
+	@Test
+	public void testOntologySelectedFired() throws Exception {
+		OWLOntology o = ontologyManager.loadOntology(DocumentsCatalogue.jermOntologyURI());
+		assertNull(testListener.getOntologySelected());
+		ontologyManager.ontologySelected(o);
+		assertSame(o,testListener.getOntologySelected());
 	}
 	
 	@Test
@@ -137,10 +147,32 @@ public class OntologyManagerTest {
 	}
 	
 	@Test
-	public void testGetDataProperties() throws Exception {
-		URI uri = DocumentsCatalogue.jermOntologyURI();
-		ontologyManager.loadOntology(IRI.create(uri));
+	public void testGetDataProperties() throws Exception {		
+		ontologyManager.loadOntology(IRI.create(DocumentsCatalogue.jermOntologyURI()));
+		ontologyManager.loadOntology(IRI.create(DocumentsCatalogue.aminoAcidOntologyURI()));
 		Set<OWLPropertyItem> dataProperties = ontologyManager.getOWLDataProperties();		
+		assertEquals(20,dataProperties.size());
+		boolean found=false;
+		boolean shouldNotBeFound=false;
+		for (OWLPropertyItem property : dataProperties) {
+			assertEquals(OWLPropertyType.DATA_PROPERTY,property.getPropertyType());
+			if (property.getIRI().toString().equals("http://www.mygrid.org.uk/ontology/JERMOntology#External_supplier_ID")) {
+				found=true;
+			}
+			if (property.getIRI().toString().equals("http://www.mygrid.org.uk/ontology/JERMOntology#technologyUsedIn")) {
+				shouldNotBeFound=true;
+			}
+		}
+		assertTrue("Should have found #External_supplier_ID",found);
+		assertFalse("Should not have found the #technologyUsedIn as this is an object property",shouldNotBeFound);
+	}
+	
+	@Test
+	public void testGetDataPropertiesForASingleOntology() throws Exception {
+		OWLOntology jermOntology = ontologyManager.loadOntology(IRI.create(DocumentsCatalogue.jermOntologyURI()));
+		ontologyManager.loadOntology(IRI.create(DocumentsCatalogue.aminoAcidOntologyURI()));
+		
+		Set<OWLPropertyItem> dataProperties = ontologyManager.getOWLDataProperties(jermOntology);		
 		assertEquals(19,dataProperties.size());
 		boolean found=false;
 		boolean shouldNotBeFound=false;
@@ -159,11 +191,11 @@ public class OntologyManagerTest {
 	
 	@Test
 	public void testGetObjectProperties() throws Exception {
-		URI uri = DocumentsCatalogue.jermOntologyURI();
-		ontologyManager.loadOntology(IRI.create(uri));
+		ontologyManager.loadOntology(IRI.create(DocumentsCatalogue.jermOntologyURI()));
+		ontologyManager.loadOntology(IRI.create(DocumentsCatalogue.aminoAcidOntologyURI()));
 		Set<OWLPropertyItem> objectProperties = ontologyManager.getOWLObjectProperties();
 		
-		assertEquals(18,objectProperties.size());
+		assertEquals(32,objectProperties.size());
 		boolean found=false;
 		boolean shouldNotBeFound=false;
 		for (OWLPropertyItem property : objectProperties) {	
@@ -180,13 +212,36 @@ public class OntologyManagerTest {
 	}
 	
 	@Test
+	public void testGetObjectPropertiesForASingleOntology() throws Exception {
+		ontologyManager.loadOntology(IRI.create(DocumentsCatalogue.jermOntologyURI()));
+		OWLOntology aminoAcidOntology = ontologyManager.loadOntology(IRI.create(DocumentsCatalogue.aminoAcidOntologyURI()));
+		Set<OWLPropertyItem> objectProperties = ontologyManager.getOWLObjectProperties(aminoAcidOntology);
+		
+		assertEquals(5,objectProperties.size());
+		boolean found=false;
+		boolean shouldNotBeFound=false;
+		for (OWLPropertyItem property : objectProperties) {	
+			assertEquals(OWLPropertyType.OBJECT_PROPERTY,property.getPropertyType());
+			if (property.getIRI().toString().equals("http://www.co-ode.org/ontologies/amino-acid/2005/10/11/amino-acid.owl#hasSideChainStructure")) {
+				found=true;
+			}
+			if (property.getIRI().toString().equals("http://www.mygrid.org.uk/ontology/JERMOntology#technologyUsedIn")) {
+				shouldNotBeFound=true;
+			}
+		}
+		assertTrue("Should have found #hasSideChainStructure",found);
+		assertFalse("Should not have found #JERMOntology#technologyUsedIn  as this is a data property",shouldNotBeFound);
+	}
+	
+	@Test
 	public void getAllOWLProperties() throws Exception {
-		URI uri = DocumentsCatalogue.jermOntologyURI();
-		ontologyManager.loadOntology(IRI.create(uri));
+		ontologyManager.loadOntology(IRI.create(DocumentsCatalogue.jermOntologyURI()));
+		ontologyManager.loadOntology(IRI.create(DocumentsCatalogue.aminoAcidOntologyURI()));
 		Set<OWLPropertyItem> properties = ontologyManager.getAllOWLProperties();
-		assertEquals(37,properties.size());
+		assertEquals(52,properties.size());
 		boolean found=false;
 		boolean found2=false;
+		boolean found3=false;
 		for (OWLPropertyItem property : properties) {	
 			assertTrue(property.getPropertyType().equals(OWLPropertyType.DATA_PROPERTY) || property.getPropertyType().equals(OWLPropertyType.OBJECT_PROPERTY));
 			if (property.getIRI().toString().equals("http://www.mygrid.org.uk/ontology/JERMOntology#technologyUsedIn")) {
@@ -195,9 +250,39 @@ public class OntologyManagerTest {
 			if (property.getIRI().toString().equals("http://www.mygrid.org.uk/ontology/JERMOntology#External_supplier_ID")) {
 				found2=true;
 			}
+			if (property.getIRI().toString().equals("http://www.co-ode.org/ontologies/amino-acid/2005/10/11/amino-acid.owl#hasSideChainStructure")) {
+				found3=true;
+			}
 		}
-		assertTrue("Should have found #technologyUsedIn",found);
-		assertTrue("Should have found #External_supplier_ID",found2);
+		assertTrue("Should have found JERMOntology#technologyUsedIn",found);
+		assertTrue("Should have found JERMOntology#External_supplier_ID",found2);
+		assertTrue("Should have found amino-acid.owl#hasSideChainStructure",found3);
+	}
+	
+	@Test
+	public void getAllOWLPropertiesForASingleOntology() throws Exception {
+		OWLOntology jermOntology = ontologyManager.loadOntology(IRI.create(DocumentsCatalogue.jermOntologyURI()));
+		ontologyManager.loadOntology(IRI.create(DocumentsCatalogue.aminoAcidOntologyURI()));
+		Set<OWLPropertyItem> properties = ontologyManager.getAllOWLProperties(jermOntology);
+		assertEquals(37,properties.size());
+		boolean found=false;
+		boolean found2=false;
+		boolean shoudNotBeFound=false;
+		for (OWLPropertyItem property : properties) {	
+			assertTrue(property.getPropertyType().equals(OWLPropertyType.DATA_PROPERTY) || property.getPropertyType().equals(OWLPropertyType.OBJECT_PROPERTY));
+			if (property.getIRI().toString().equals("http://www.mygrid.org.uk/ontology/JERMOntology#technologyUsedIn")) {
+				found=true;
+			}
+			if (property.getIRI().toString().equals("http://www.mygrid.org.uk/ontology/JERMOntology#External_supplier_ID")) {
+				found2=true;
+			}
+			if (property.getIRI().toString().equals("http://www.co-ode.org/ontologies/amino-acid/2005/10/11/amino-acid.owl#hasSideChainStructure")) {
+				shoudNotBeFound=true;
+			}
+		}
+		assertTrue("Should have found JERMOntology#technologyUsedIn",found);
+		assertTrue("Should have found JERMOntology#External_supplier_ID",found2);
+		assertFalse("The property amino-acid.owl#hasSideChainStructure should not have been found",shoudNotBeFound);
 	}
 	
 	@Test
