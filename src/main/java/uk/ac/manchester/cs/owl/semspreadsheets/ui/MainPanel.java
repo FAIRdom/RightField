@@ -22,7 +22,7 @@ public class MainPanel extends JPanel {
 
     private WorkbookManager workbookManager;
 
-    private WorkbookPanel workbookPanel;
+    private WorkbookPanel workbookPanel;	
 
     public MainPanel(WorkbookFrame frame) {
         this.workbookManager = frame.getWorkbookManager();
@@ -30,8 +30,9 @@ public class MainPanel extends JPanel {
         setLayout(new BorderLayout());
         JSplitPane sp = new JSplitPane();
         sp.setLeftComponent(workbookPanel);
-        sp.setRightComponent(new ValidationInspectorPanel(frame));
-        sp.setResizeWeight(0.8);
+        ValidationInspectorPanel validationInspectorPanel = new ValidationInspectorPanel(frame);
+        sp.setRightComponent(validationInspectorPanel);
+        sp.setResizeWeight(0.9);
         add(sp);
-    }     
+    }            
 }

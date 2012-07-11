@@ -43,9 +43,11 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.KnownOntologies;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyManagerListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManagerListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.repository.RepositoryItem;
 import uk.ac.manchester.cs.owl.semspreadsheets.repository.RepositoryManager;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.AboutBoxAction;
@@ -101,38 +103,47 @@ public class WorkbookFrame extends JFrame {
 	public WorkbookFrame(WorkbookManager manager) {
 		this.workbookManager = manager;
 		setTitle("RightField");
-		List<Image> iconImages = new ArrayList<Image>();
-		for (String logoFilename : APPLICATION_LOGO_FILENAMES) {
-			if (WorkbookFrame.class.getResource(logoFilename) != null) {
-				iconImages.add(new ImageIcon(WorkbookFrame.class
-						.getResource(logoFilename)).getImage());
-			} else {
-				logger.warn("Unable to find the "+logoFilename+" for the icon");
-			}
-		}
+		List<Image> iconImages = createIconImages();
 		setIconImages(iconImages);		
 		
-		getContentPane().setLayout(new BorderLayout());
-		getContentPane().add(new MainPanel(this));		
+		addMainPanel();		
 		
 		setupMenuItems();
-		updateTitleBar();
+		
+		updateTitleBar();			
+		
+		workbookManager.getOntologyManager().addListener(new OntologyManagerListener() {
+			
+			@Override
+			public void ontologiesChanged() {
+				updateTitleBar();
+				workbookManager.getWorkbookState().changesUnsaved();
+			}
+			@Override
+			public void ontologySelected(OWLOntology ontology) {
+				if (ontology==null) {
+					logger.debug("Selected ontology set to be NULL");
+				}
+				else {
+					logger.debug("Selected ontology updated to be: "+ontology.getOntologyID().toString());
+				}
+				
+				selectedOntology = ontology;
+				removeOntologyMenuItem.setSelectedOntology(ontology);
+				
+			}
+		});
+		
 		workbookManager.addListener(new WorkbookManagerListener() {
 			@Override
-			public void workbookCreated(WorkbookManagerEvent event) {
+			public void workbookCreated() {
 				handleNewWorkbook();
 			}
 			
 			@Override
-			public void workbookLoaded(WorkbookManagerEvent event) {
+			public void workbookLoaded() {
 				handleNewWorkbook();
-			}
-			
-			@Override
-			public void ontologiesChanged(WorkbookManagerEvent event) {
-				updateTitleBar();
-				workbookManager.getWorkbookState().changesUnsaved();				
-			}
+			}						
 
 			@Override
 			public void validationAppliedOrCancelled() {				
@@ -140,7 +151,7 @@ public class WorkbookFrame extends JFrame {
 			}
 			
 			@Override
-			public void workbookSaved(WorkbookManagerEvent event) {
+			public void workbookSaved() {
 				updateTitleBar();
 			}
 		});
@@ -151,6 +162,25 @@ public class WorkbookFrame extends JFrame {
 				suggestOpeningWorkbook();
 			}			
 		});
+	}
+
+	private List<Image> createIconImages() {
+		List<Image> iconImages = new ArrayList<Image>();
+		for (String logoFilename : APPLICATION_LOGO_FILENAMES) {
+			if (WorkbookFrame.class.getResource(logoFilename) != null) {
+				iconImages.add(new ImageIcon(WorkbookFrame.class
+						.getResource(logoFilename)).getImage());
+			} else {
+				logger.warn("Unable to find the "+logoFilename+" for the icon");
+			}
+		}
+		return iconImages;
+	}
+
+	private void addMainPanel() {
+		MainPanel mainPanel = new MainPanel(this);				
+		getContentPane().setLayout(new BorderLayout());
+		getContentPane().add(mainPanel);
 	}	
 
 	private void suggestOpeningWorkbook() {
@@ -513,20 +543,7 @@ public class WorkbookFrame extends JFrame {
 		else {
 			logger.debug("Selected ontology found to be NULL when attempting to remove it");
 		}
-	}
-	
-	public void setSelectedOntology(OWLOntology ontology) {
-		if (ontology==null) {
-			logger.debug("Selected ontology set to be NULL");
-		}
-		else {
-			logger.debug("Selected ontology updated to be: "+ontology.getOntologyID().toString());
-		}
-		
-		selectedOntology = ontology;
-		removeOntologyMenuItem.setSelectedOntology(ontology);
-	}
-		
+	}	
 
 	private OWLOntology getSelectedOntology() {
 		return selectedOntology;
@@ -534,14 +551,9 @@ public class WorkbookFrame extends JFrame {
 
 	public void removeOntology(OWLOntology ontology) {
 		int res = JOptionPane.showConfirmDialog(this,"Are you sure you wish to remove the '"+ontology.getOntologyID().getOntologyIRI() +"' ontology?","Remove ontology?",JOptionPane.YES_NO_OPTION);
-		if (res == JOptionPane.YES_OPTION) {
-			setSelectedOntology(null);
+		if (res == JOptionPane.YES_OPTION) {			
 			getWorkbookManager().getOntologyManager().removeOntology(ontology);			
 		}
 	}
-
-	
-
-	
 
 }

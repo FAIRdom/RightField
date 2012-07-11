@@ -30,26 +30,26 @@ public class RDFExporter extends AbstractExporter {
 	
 	private static final Logger logger = Logger.getLogger(RDFExporter.class);
 	
-	private final String rootID;
+	private final IRI rootID;
 	
 	public static final String DEFAULT_PROPERTY_URI = "http://rightfield.org.uk/RightFieldOntology#contains";
 
-	public RDFExporter(File workbookFile,String rootID) throws IOException {
+	public RDFExporter(File workbookFile,IRI rootID) throws IOException {
 		super(workbookFile);
 		this.rootID = rootID;		
 	}
 
-	public RDFExporter(URI workbookURI,String rootID) throws IOException {
+	public RDFExporter(URI workbookURI,IRI rootID) throws IOException {
 		super(workbookURI);
 		this.rootID = rootID;		
 	}
 
-	public RDFExporter(WorkbookManager manager,String rootID) {
+	public RDFExporter(WorkbookManager manager,IRI rootID) {
 		super(manager);
 		this.rootID = rootID;		
 	}
 	
-	private String getRootID() {
+	private IRI getRootID() {
 		return rootID;
 	}
 	
@@ -63,7 +63,7 @@ public class RDFExporter extends AbstractExporter {
 	public void export(OutputStream outStream) {		
 		Model model = ModelFactory.createDefaultModel();
 		
-		Resource root = model.createResource(getRootID());			
+		Resource root = model.createResource(getRootID().toString());
 		
 		for (PopulatedValidatedCellDetails details : getPopulatedValidatedCellDetails()) {
 			addNode(root,model,details);

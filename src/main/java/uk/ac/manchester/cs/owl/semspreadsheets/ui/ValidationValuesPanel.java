@@ -52,7 +52,34 @@ public class ValidationValuesPanel extends JPanel {
     public ValidationValuesPanel(WorkbookManager manager) {
         this.workbookManager = manager;
         setLayout(new BorderLayout());
-        termList = new JList() {
+        createTermList();
+        JScrollPane sp = new JScrollPane(termList);
+        
+        add(sp, BorderLayout.CENTER);
+        sp.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+        workbookManager.getSelectionModel().addCellSelectionListener(new CellSelectionListener() {
+            public void selectionChanged(Range range) {
+                updateFromModel(range);
+            }
+        });
+        
+        workbookManager.getOntologyManager().addListener(new OntologyTermValidationListener() {
+            @Override
+        	public void validationsChanged() {
+                updateFromModel(workbookManager.getSelectionModel().getSelectedRange());
+            }			
+
+			@Override
+			public void ontologyTermSelected(
+					List<OntologyTermValidation> previewList) {
+				updateFromPreviewList(previewList);
+				
+			}
+        });        
+    }
+
+	private void createTermList() {
+		termList = new JList() {
             
             private Font nowValuesSpecifiedFont = new Font("Lucida Grande", Font.BOLD, 14);
 
@@ -80,30 +107,8 @@ public class ValidationValuesPanel extends JPanel {
             }
 
         };
-        JScrollPane sp = new JScrollPane(termList);
-        
-        add(sp, BorderLayout.CENTER);
-        sp.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
-        workbookManager.getSelectionModel().addCellSelectionListener(new CellSelectionListener() {
-            public void selectionChanged(Range range) {
-                updateFromModel(range);
-            }
-        });
         termList.setCellRenderer(new ValueListItemCellRenderer());
-        workbookManager.getOntologyManager().addListener(new OntologyTermValidationListener() {
-            @Override
-        	public void validationsChanged() {
-                updateFromModel(workbookManager.getSelectionModel().getSelectedRange());
-            }			
-
-			@Override
-			public void ontologyTermSelected(
-					List<OntologyTermValidation> previewList) {
-				updateFromPreviewList(previewList);
-				
-			}
-        });        
-    }
+	}
 
     protected void updateFromPreviewList(
 			List<OntologyTermValidation> previewList) {

@@ -6,8 +6,7 @@
  ******************************************************************************/
 package uk.ac.manchester.cs.owl.semspreadsheets.impl;
 
-import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookManagerEvent;
-import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookManagerListener;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManagerListener;
 
 /**
  * 
@@ -19,7 +18,7 @@ public class DummyWorkbookManagerListener implements
 	public boolean workbookLoadedFired = false;
 	public boolean workbookChangedFired = false;
 	public boolean validationAppliedFired = false;
-	public boolean ontologiesChanedFired = false;
+	
 	public boolean workbookSavedFired = false;
 	
 	public DummyWorkbookManagerListener() {
@@ -30,8 +29,7 @@ public class DummyWorkbookManagerListener implements
 	public void reset() {
 		workbookLoadedFired = false;
 		workbookChangedFired = false;
-		validationAppliedFired = false;
-		ontologiesChanedFired = false;
+		validationAppliedFired = false;		
 	}
 	
 	public boolean isWorkbookLoadedFired() {
@@ -44,38 +42,29 @@ public class DummyWorkbookManagerListener implements
 
 	public boolean isValidationAppliedFired() {
 		return validationAppliedFired;
-	}
-
-	public boolean isOntologiesChanedFired() {
-		return ontologiesChanedFired;
-	}
+	}	
 	
 	public boolean isWorkbookSavedFired() {
 		return workbookSavedFired;
 	}
 
 	@Override
-	public void workbookLoaded(WorkbookManagerEvent event) {
+	public void workbookLoaded() {
 		workbookLoadedFired=true;
 	}
 
 	@Override
-	public void workbookCreated(WorkbookManagerEvent event) {
+	public void workbookCreated() {
 		workbookChangedFired=true;
 	}
 
 	@Override
 	public void validationAppliedOrCancelled() {
 		validationAppliedFired=true;
-	}
+	}	
 
 	@Override
-	public void ontologiesChanged(WorkbookManagerEvent event) {
-		ontologiesChanedFired=true;
-	}
-
-	@Override
-	public void workbookSaved(WorkbookManagerEvent event) {
+	public void workbookSaved() {
 		workbookSavedFired=true;		
 	}
 	

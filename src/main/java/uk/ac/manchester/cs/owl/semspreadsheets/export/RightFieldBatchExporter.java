@@ -18,6 +18,7 @@ import javax.swing.JOptionPane;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.semanticweb.owlapi.model.IRI;
 
 /**
  * A simple tool for exporting rdf from a batch of spreadsheets in a directory. It is a one off tool, created for a specific purpose, but may have future uses
@@ -47,7 +48,7 @@ public class RightFieldBatchExporter {
 					if (file.getName().toLowerCase().endsWith(".xls")) {
 						logger.info("Processing "+file.getAbsolutePath());											
 						try {
-							Exporter exporter = new RDFExporter(file, generateRootURI(file));
+							Exporter exporter = new RDFExporter(file, generateRootIRI(file));
 							File outFile = getOutputFile(file);
 							
 							boolean export = !outFile.exists();
@@ -94,14 +95,14 @@ public class RightFieldBatchExporter {
 	 * @return rightfield:<filename>
 	 * @throws URISyntaxException
 	 */
-	private String generateRootURI(File inFile) throws URISyntaxException  {
+	private IRI generateRootIRI(File inFile) throws URISyntaxException  {
 		
 		String name = inFile.getName().replace(".xls", "");
 		
 		URI uri = new URI("rightfield",name,null);
 		
 		logger.info("Using URI of "+uri.toString());
-		return uri.toString();
+		return IRI.create(uri);
 		
 	}
 }

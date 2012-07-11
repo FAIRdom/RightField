@@ -22,9 +22,13 @@ import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
 import org.apache.log4j.Logger;
+import org.semanticweb.owlapi.model.OWLOntology;
 
+import uk.ac.manchester.cs.owl.semspreadsheets.model.EntitySelectionModelListener;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyManagerListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManagerListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.ApplyValidationAction;
 
 /**
@@ -44,54 +48,82 @@ public class ValidationInspectorPanel extends JPanel {
 
     private WorkbookManager workbookManager;
 
-    private JLabel selectedCellAddressLabel = new JLabel("No cells are currently selected");
+    private JLabel selectedCellAddressLabel = new JLabel("No cells are currently selected");        
 
     private static Color textColor = new Color(96, 110, 128);
     
     private JButton applyButton = new JButton("Apply");
     private JButton cancelButton = new JButton("Cancel");
 
-    public ValidationInspectorPanel(WorkbookFrame frame) {
-    	selectedCellAddressLabel.setBorder(BorderFactory.createEmptyBorder(5, 7, 5, 0));
-        workbookManager = frame.getWorkbookManager();
-        setLayout(new BorderLayout(14, 14));        
-        setBorder(BorderFactory.createEmptyBorder(7, 2, 7, 7));
-        
-        JPanel outerPanel = new JPanel();                
-        outerPanel.setLayout(new BoxLayout(outerPanel, BoxLayout.PAGE_AXIS));
+	private ValidationTypeSelectorPanel validationTypeSelectorPanel;
 
-        ClassHierarchyTreePanel classHierarchyTreePanel = new ClassHierarchyTreePanel(frame);
-        classHierarchyTreePanel.setBorder(createTitledBorder("ONTOLOGY HIERARCHIES"));
+	private ClassHierarchyTreePanel classHierarchyTreePanel;
+
+    public ValidationInspectorPanel(WorkbookFrame frame) {
+    	
+        workbookManager = frame.getWorkbookManager();
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        setBorder(BorderFactory.createEmptyBorder(7, 2, 7, 7));  
+        
+        //selected cell        
+        addSelectedCellLabel();        
+
+        //class hierarchy
+        addClassHierarchyPanel(frame);        
+        
+        //validation selection
+        addValidationSelectionPanel(frame);
+        
+        workbookManager.getOntologyManager().addListener(new OntologyManagerListener() {			
+			@Override
+			public void ontologySelected(OWLOntology ontology) {
+				validationTypeSelectorPanel.ontologySelected(ontology);				
+			}
+
+			@Override
+			public void ontologiesChanged() {
+				// TODO Auto-generated method stub				
+			}
+		});                        
+        
+        updateSelectionLabel(workbookManager.getSelectionModel().getSelectedRange());
+                
+    }    
+    
+	private void addValidationSelectionPanel(WorkbookFrame frame) {
+		validationTypeSelectorPanel = new ValidationTypeSelectorPanel(frame.getWorkbookManager());        
+        validationTypeSelectorPanel.setBorder(createTitledBorder("VALUE TYPE AND PROPERTY"));        
         
         ValidationValuesPanel valuesPanel = new ValidationValuesPanel(frame.getWorkbookManager());
         valuesPanel.setBorder(createTitledBorder("ALLOWED VALUES"));
         
-        JPanel validationSelectionPanel = new JPanel(new BorderLayout(7, 7));        
         
-        ValidationTypeSelectorPanel typeSelectorPanel = new ValidationTypeSelectorPanel(frame.getWorkbookManager());
-        
-        typeSelectorPanel.setBorder(createTitledBorder("VALUE TYPE AND PROPERTY"));
-        
-        JPanel buttonPanel = setupButtonPanel(typeSelectorPanel);                      
+        JPanel buttonPanel = setupButtonPanel(validationTypeSelectorPanel);                      
         
         frame.getWorkbookManager().getSelectionModel().addCellSelectionListener(new CellSelectionListener() {
             public void selectionChanged(Range range) {
                 updateSelectionLabel(range);
             }
         });     
-                
-        validationSelectionPanel.add(typeSelectorPanel, BorderLayout.NORTH);        
+          
+        JPanel validationSelectionPanel = new JPanel(new BorderLayout(7, 7));
+        validationSelectionPanel.add(validationTypeSelectorPanel, BorderLayout.NORTH);        
         validationSelectionPanel.add(valuesPanel, BorderLayout.CENTER);
-        validationSelectionPanel.add(buttonPanel, BorderLayout.SOUTH);
-        
-        outerPanel.add(classHierarchyTreePanel);        
-        outerPanel.add(validationSelectionPanel);
-       
-        add(selectedCellAddressLabel, BorderLayout.NORTH);
-        add(outerPanel,BorderLayout.CENTER);
-        
-        updateSelectionLabel(workbookManager.getSelectionModel().getSelectedRange());
-    }
+        validationSelectionPanel.add(buttonPanel, BorderLayout.SOUTH);        
+        add(validationSelectionPanel);
+	}
+
+	private void addClassHierarchyPanel(WorkbookFrame frame) {
+		classHierarchyTreePanel = new ClassHierarchyTreePanel(frame);
+        classHierarchyTreePanel.setBorder(createTitledBorder("ONTOLOGY HIERARCHIES")); 
+        add(classHierarchyTreePanel);
+	}
+
+	private void addSelectedCellLabel() {
+		selectedCellAddressLabel.setBorder(BorderFactory.createEmptyBorder(5, 7, 5, 0));		
+		selectedCellAddressLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+        add(selectedCellAddressLabel);
+	}
 
 	private JPanel setupButtonPanel(ValidationTypeSelectorPanel typeSelectorPanel) {
 		
@@ -127,12 +159,12 @@ public class ValidationInspectorPanel extends JPanel {
         workbookManager.addListener(new WorkbookManagerListener() {
 			
 			@Override
-			public void workbookLoaded(WorkbookManagerEvent event) {				
+			public void workbookLoaded() {				
 				
 			}
 			
 			@Override
-			public void workbookCreated(WorkbookManagerEvent event) {
+			public void workbookCreated() {
 				
 			}
 			
@@ -140,15 +172,10 @@ public class ValidationInspectorPanel extends JPanel {
 			public void validationAppliedOrCancelled() {
 				applyButton.setEnabled(false);
 				cancelButton.setEnabled(false);
-			}
+			}						
 			
 			@Override
-			public void ontologiesChanged(WorkbookManagerEvent event) {				
-				
-			}
-			
-			@Override
-			public void workbookSaved(WorkbookManagerEvent event) {
+			public void workbookSaved() {
 				
 			}
 		});

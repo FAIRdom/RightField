@@ -12,10 +12,6 @@ import org.semanticweb.owlapi.model.OWLOntologyIRIMapper;
 import uk.ac.manchester.cs.owl.semspreadsheets.repository.bioportal.BioPortalRepository;
 
 /**
- * Author: Matthew Horridge<br>
- * The University of Manchester<br>
- * Information Management Group<br>
- * Date: 12-Nov-2009
  * 
  * @author Matthew Horridge
  * @author Stuart Owen

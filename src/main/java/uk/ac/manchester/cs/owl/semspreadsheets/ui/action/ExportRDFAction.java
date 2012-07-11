@@ -14,6 +14,7 @@ import java.net.URISyntaxException;
 import javax.swing.JOptionPane;
 
 import org.apache.log4j.Logger;
+import org.semanticweb.owlapi.model.IRI;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.export.Exporter;
 import uk.ac.manchester.cs.owl.semspreadsheets.export.RDFExporter;
@@ -32,7 +33,7 @@ public class ExportRDFAction extends WorkbookFrameAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		String id=determineRootID();
+		IRI id=determineRootID();
 		if (id!=null) {
 			Exporter exporter = new RDFExporter(getWorkbookManager(), id);
 			String rdf = exporter.export();
@@ -46,7 +47,7 @@ public class ExportRDFAction extends WorkbookFrameAction {
 	 * Currently just asks the user for it.
 	 * @return the root ID
 	 */
-	private String determineRootID() {
+	private IRI determineRootID() {
 		String input = JOptionPane.showInputDialog(getWorkbookFrame(), "Please provide an identifier for this spreadsheet. It must be a valid URI");
 		if (input!=null) {
 			if (!validURI(input)) {
@@ -54,7 +55,7 @@ public class ExportRDFAction extends WorkbookFrameAction {
 				return determineRootID();
 			}
 		}
-		return input;
+		return IRI.create(input);
 	}
 	
 	private boolean validURI(String str) {

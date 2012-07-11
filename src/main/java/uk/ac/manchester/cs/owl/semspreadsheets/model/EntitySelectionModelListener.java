@@ -4,15 +4,16 @@
  * Licensed under the New BSD License. 
  * Please see LICENSE file that is distributed with the source code
  ******************************************************************************/
-package uk.ac.manchester.cs.owl.semspreadsheets.ui;
+package uk.ac.manchester.cs.owl.semspreadsheets.model;
 
 /**
- * Author: Matthew Horridge<br>
- * The University of Manchester<br>
- * Information Management Group<br>
- * Date: 08-Nov-2009
+ * @author Matthew Horridge
+ * @author Stuart Owen
  */
 public interface EntitySelectionModelListener {
 
+	/**
+	 * There has been a change in the selected term, validation type or property
+	 */
     void selectionChanged();
 }
