@@ -388,5 +388,56 @@ public class OntologyManagerTest {
 		
 		
 	}
+	
+	@Test
+	public void testGetPropertiesForSubclasses() throws Exception {
+		OWLOntology jermOntology = ontologyManager.loadOntology(IRI.create(DocumentsCatalogue.jermOntologyURI()));
+		ontologyManager.loadOntology(IRI.create(DocumentsCatalogue.aminoAcidOntologyURI()));
+		Set<OWLPropertyItem> properties = ontologyManager.getAllOWLProperties(jermOntology,ValidationType.SUBCLASSES);
+		assertEquals(properties,ontologyManager.getAllOWLProperties(jermOntology,ValidationType.DIRECTSUBCLASSES));
+		assertEquals(37,properties.size());
+		boolean found=false;
+		for (OWLPropertyItem item : properties) {
+			assertTrue(OWLPropertyType.DATA_PROPERTY==item.getPropertyType() || OWLPropertyType.OBJECT_PROPERTY==item.getPropertyType());
+			if (item.getIRI().equals(IRI.create("http://www.mygrid.org.uk/ontology/JERMOntology#Lab_internal_ID"))) {
+				found=true;
+			}
+		}
+		assertTrue("Should have found http://www.mygrid.org.uk/ontology/JERMOntology#Lab_internal_ID",found);
+	}
+	
+	@Test
+	public void testGetPropertiesForIndividuals() throws Exception {
+		OWLOntology jermOntology = ontologyManager.loadOntology(IRI.create(DocumentsCatalogue.jermOntologyURI()));
+		ontologyManager.loadOntology(IRI.create(DocumentsCatalogue.aminoAcidOntologyURI()));
+		Set<OWLPropertyItem> properties = ontologyManager.getAllOWLProperties(jermOntology,ValidationType.INDIVIDUALS);
+		assertEquals(properties,ontologyManager.getAllOWLProperties(jermOntology,ValidationType.DIRECTINDIVIDUALS));
+		assertEquals(19,properties.size());
+		boolean found=false;
+		for (OWLPropertyItem item : properties) {
+			assertEquals(OWLPropertyType.DATA_PROPERTY,item.getPropertyType());
+			if (item.getIRI().equals(IRI.create("http://www.mygrid.org.uk/ontology/JERMOntology#Lab_internal_ID"))) {
+				found=true;
+			}
+		}
+		assertTrue("Should have found http://www.mygrid.org.uk/ontology/JERMOntology#Lab_internal_ID",found);
+	}
+	
+	@Test
+	public void testGetPropertiesForFreeText() throws Exception {
+		OWLOntology jermOntology = ontologyManager.loadOntology(IRI.create(DocumentsCatalogue.jermOntologyURI()));
+		ontologyManager.loadOntology(IRI.create(DocumentsCatalogue.aminoAcidOntologyURI()));
+		Set<OWLPropertyItem> properties = ontologyManager.getAllOWLProperties(jermOntology,ValidationType.FREETEXT);
+		assertEquals(19,properties.size());
+		boolean found=false;
+		
+		for (OWLPropertyItem item : properties) {
+			assertEquals(OWLPropertyType.DATA_PROPERTY,item.getPropertyType());
+			if (item.getIRI().equals(IRI.create("http://www.mygrid.org.uk/ontology/JERMOntology#Lab_internal_ID"))) {
+				found=true;
+			}
+		}
+		assertTrue("Should have found http://www.mygrid.org.uk/ontology/JERMOntology#Lab_internal_ID",found);
+	}
 
 }
