@@ -30,10 +30,8 @@ import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.MissingImportHandlingStrategy;
 import org.semanticweb.owlapi.model.OWLAnnotationProperty;
 import org.semanticweb.owlapi.model.OWLDataFactory;
-import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLObject;
-import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyID;
@@ -72,7 +70,8 @@ public class OntologyManager {
 	private BidirectionalShortFormProviderAdapter shortFormProvider;
 	private OntologyTermValidationManager ontologyTermValidationManager;
 	private Set<OntologyManagerListener> ontologyManagerListeners = new HashSet<OntologyManagerListener>();
-	
+	private OWLPropertyHandler propertyHandler;	
+
 	private Set<OWLOntology> loadedOntologies = new HashSet<OWLOntology>();
 
 	public OntologyManager(WorkbookManager workbookManager) {
@@ -80,6 +79,7 @@ public class OntologyManager {
 		ontologyLoaderConfiguration = ontologyLoaderConfiguration.setMissingImportHandlingStrategy(MissingImportHandlingStrategy.SILENT);		
 		shortFormProvider = new BidirectionalShortFormProviderAdapter(new SimpleShortFormProvider());
 		ontologyTermValidationManager = new OntologyTermValidationManager(workbookManager);
+		propertyHandler = new OWLPropertyHandler(owlManager);
 	}
 	
 	public void addListener(OntologyTermValidationListener listener) {
@@ -187,81 +187,7 @@ public class OntologyManager {
     public Collection<OntologyTermValidation> getOntologyTermValidations() {
         return getOntologyTermValidationManager().getValidations();
     }
-    
-    
-    /**
-     * 
-     * @param ontology
-     * @return all the Object and Data property items for the given ontology
-     */
-    public Set<OWLPropertyItem> getAllOWLProperties(OWLOntology ontology) {
-    	Set<OWLPropertyItem> properties = getOWLDataProperties(ontology);
-    	properties.addAll(getOWLObjectProperties(ontology));
-    	return properties;
-    }
-    
-    /**
-     * @param ontology
-     * @return Data property items defined in the given ontology
-     */
-    public Set<OWLPropertyItem> getOWLDataProperties(OWLOntology ontology) {
-    	Set<OWLPropertyItem> properties = new HashSet<OWLPropertyItem>();
-    	
-		for (OWLDataProperty property : ontology.getDataPropertiesInSignature())
-		{
-			if (!property.isTopEntity()) {
-				properties.add(new OWLPropertyItem(property));
-			}
-		}    		
-    	    	
-    	return properties;
-    }
-    
-    /**
-     * @param ontology
-     * @return Object property items defined in the given ontology
-     */
-    public Set<OWLPropertyItem> getOWLObjectProperties(OWLOntology ontology) {
-    	Set<OWLPropertyItem> properties = new HashSet<OWLPropertyItem>();    	
-		for (OWLObjectProperty property : ontology.getObjectPropertiesInSignature())
-		{
-			if (!property.isTopEntity()) {
-				properties.add(new OWLPropertyItem(property));
-			}
-		}    		    	    
-    	return properties;
-    }
-    
-    /**
-     * @return all Object and Data properties defined within all loaded ontologies
-     */
-    public Set<OWLPropertyItem> getAllOWLProperties() {
-    	Set<OWLPropertyItem> properties = getOWLDataProperties();
-    	properties.addAll(getOWLObjectProperties());
-    	return properties;
-    }
-    
-    /**     
-     * @return Data properties defined within all loaded ontologies
-     */
-    public Set<OWLPropertyItem> getOWLDataProperties() {
-    	Set<OWLPropertyItem> properties = new HashSet<OWLPropertyItem>();
-    	for (OWLOntology ontology : getAllOntologies()) {
-    		properties.addAll(getOWLDataProperties(ontology)); 		
-    	}    	
-    	return properties;
-    }
-    
-    /**
-     * @return Object properties defined within all loaded ontologies
-     */
-    public Set<OWLPropertyItem> getOWLObjectProperties() {
-    	Set<OWLPropertyItem> properties = new HashSet<OWLPropertyItem>();
-    	for (OWLOntology ontology : getAllOntologies()) {
-    		properties.addAll(getOWLObjectProperties(ontology));    		
-    	}    	
-    	return properties;
-    }
+            
     
     public OWLOntologyManager getOWLOntologyManager() {
 		return owlManager;
@@ -489,9 +415,39 @@ public class OntologyManager {
 		ontologyReasoners.put(ontology.getOntologyID(), reasoner);
 		return reasoner;
 	}
-
+	
 	public void ontologySelected(OWLOntology ontology) {		
 		fireOntologySelected(ontology);
 	}
+
+	//Property related stuff
 	
+	public Set<OWLPropertyItem> getAllOWLProperties(OWLOntology ontology,
+			ValidationType type) {
+		return propertyHandler.getAllOWLProperties(ontology, type);
+	}
+
+	public Set<OWLPropertyItem> getAllOWLProperties(OWLOntology ontology) {
+		return propertyHandler.getAllOWLProperties(ontology);
+	}
+
+	public Set<OWLPropertyItem> getOWLDataProperties(OWLOntology ontology) {
+		return propertyHandler.getOWLDataProperties(ontology);
+	}
+
+	public Set<OWLPropertyItem> getOWLObjectProperties(OWLOntology ontology) {
+		return propertyHandler.getOWLObjectProperties(ontology);
+	}
+
+	public Set<OWLPropertyItem> getAllOWLProperties() {
+		return propertyHandler.getAllOWLProperties();
+	}
+
+	public Set<OWLPropertyItem> getOWLDataProperties() {
+		return propertyHandler.getOWLDataProperties();
+	}
+
+	public Set<OWLPropertyItem> getOWLObjectProperties() {
+		return propertyHandler.getOWLObjectProperties();
+	}
 }
