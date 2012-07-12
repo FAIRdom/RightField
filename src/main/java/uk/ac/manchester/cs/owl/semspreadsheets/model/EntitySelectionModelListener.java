@@ -6,14 +6,17 @@
  ******************************************************************************/
 package uk.ac.manchester.cs.owl.semspreadsheets.model;
 
+import org.semanticweb.owlapi.model.OWLEntity;
+
 /**
  * @author Matthew Horridge
  * @author Stuart Owen
  */
-public interface EntitySelectionModelListener {
-
-	/**
-	 * There has been a change in the selected term, validation type or property
-	 */
-    void selectionChanged();
+public interface EntitySelectionModelListener {	
+    
+    void owlPropertyChanged(OWLPropertyItem item);
+    
+    void validationTypeChanged(ValidationType type);
+    
+    void selectedEntityChanged(OWLEntity entity);
 }

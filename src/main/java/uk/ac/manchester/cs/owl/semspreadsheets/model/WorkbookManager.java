@@ -92,7 +92,7 @@ public class WorkbookManager {
     }
 
     private void handleCellSelectionChanged(Range range) {        
-        OWLEntity selEnt = getEntitySelectionModel().getSelection();
+        OWLEntity selEnt = getEntitySelectionModel().getSelectedEntity();
         if (range.isCellSelection()) {
             for (OntologyTermValidation validation : getOntologyManager().getContainingOntologyTermValidations(range)) {
                 OWLClass cls = getOntologyManager().getDataFactory().getOWLClass(validation.getValidationDescriptor().getEntityIRI());
@@ -100,7 +100,7 @@ public class WorkbookManager {
                 break;
             }
         }
-        getEntitySelectionModel().setSelection(selEnt);
+        getEntitySelectionModel().setSelectedEntity(selEnt);
     }
 
     private void fireWorkbookCreated() {       
@@ -210,7 +210,7 @@ public class WorkbookManager {
     }
 
     public void previewValidation() {
-    	IRI iri = entitySelectionModel.getSelection().getIRI();
+    	IRI iri = entitySelectionModel.getSelectedEntity().getIRI();
     	ValidationType type = entitySelectionModel.getValidationType();
     	OWLPropertyItem owlPropertyItem = entitySelectionModel.getOWLPropertyItem();
     	Range range = new Range(workbook.getSheet(0));
@@ -219,7 +219,7 @@ public class WorkbookManager {
     
     public void applyValidationChange() {
     	ValidationType type = entitySelectionModel.getValidationType();
-    	IRI iri = entitySelectionModel.getSelection().getIRI();
+    	IRI iri = entitySelectionModel.getSelectedEntity().getIRI();
     	OWLPropertyItem propertyItem = entitySelectionModel.getOWLPropertyItem();
     	logger.debug("Setting validation for IRI "+iri.toString()+", type "+type.toString()+", property "+propertyItem);    			        
         
@@ -280,7 +280,7 @@ public class WorkbookManager {
      */
     public boolean determineApplyButtonState() {
     	ValidationType type = entitySelectionModel.getValidationType();
-    	IRI iri = entitySelectionModel.getSelection().getIRI();
+    	IRI iri = entitySelectionModel.getSelectedEntity().getIRI();
     	OWLPropertyItem property = entitySelectionModel.getOWLPropertyItem();
     	Range selectedRange = getSelectionModel().getSelectedRange();
     	Collection<OntologyTermValidation> validations = getOntologyManager().getContainingOntologyTermValidations(selectedRange);

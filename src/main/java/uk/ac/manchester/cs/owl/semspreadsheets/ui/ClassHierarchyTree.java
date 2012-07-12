@@ -88,8 +88,8 @@ public class ClassHierarchyTree extends JTree {
 			}
 		}
 		OWLEntity selectedEntity = selectedEntities.iterator().next();
-		if (!workbookManager.getEntitySelectionModel().getSelection().equals(selectedEntity)) {
-			workbookManager.getEntitySelectionModel().setSelection(selectedEntity);
+		if (!workbookManager.getEntitySelectionModel().getSelectedEntity().equals(selectedEntity)) {
+			workbookManager.getEntitySelectionModel().setSelectedEntity(selectedEntity);
 		}			
 		workbookManager.previewValidation();		
 	}    
