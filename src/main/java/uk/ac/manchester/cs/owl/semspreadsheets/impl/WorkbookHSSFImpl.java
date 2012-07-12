@@ -28,15 +28,15 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
-import uk.ac.manchester.cs.owl.semspreadsheets.change.SetCellValue;
-import uk.ac.manchester.cs.owl.semspreadsheets.change.WorkbookChange;
-import uk.ac.manchester.cs.owl.semspreadsheets.change.WorkbookChangeEvent;
-import uk.ac.manchester.cs.owl.semspreadsheets.change.WorkbookChangeListener;
-import uk.ac.manchester.cs.owl.semspreadsheets.change.WorkbookChangeVisitor;
+import uk.ac.manchester.cs.owl.semspreadsheets.listeners.WorkbookChangeListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.MutableWorkbook;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.NamedRange;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.change.SetCellValue;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.change.WorkbookChange;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.change.WorkbookChangeEvent;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.change.WorkbookChangeVisitor;
 
 /**
  * @author Stuart Owen

@@ -12,6 +12,8 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.OWLEntity;
 
+import uk.ac.manchester.cs.owl.semspreadsheets.listeners.EntitySelectionModelListener;
+
 
 /**
  * Model containing the current selected validation type, ontology term, property items. This is the information that is stored in

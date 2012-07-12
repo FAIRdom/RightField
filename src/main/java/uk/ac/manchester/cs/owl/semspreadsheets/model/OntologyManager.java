@@ -50,6 +50,8 @@ import org.semanticweb.owlapi.util.ShortFormProvider;
 import org.semanticweb.owlapi.util.SimpleShortFormProvider;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
+import uk.ac.manchester.cs.owl.semspreadsheets.listeners.OntologyManagerListener;
+import uk.ac.manchester.cs.owl.semspreadsheets.listeners.OntologyTermValidationListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.repository.bioportal.BioPortalRepository;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.ErrorHandler;
 

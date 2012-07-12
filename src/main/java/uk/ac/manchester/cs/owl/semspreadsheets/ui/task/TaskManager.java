@@ -18,6 +18,7 @@ import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
 
+import uk.ac.manchester.cs.owl.semspreadsheets.listeners.TaskListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.ProgressDialog;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookFrame;
 

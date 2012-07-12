@@ -11,8 +11,8 @@ import java.net.URI;
 import java.util.Collection;
 import java.util.List;
 
-import uk.ac.manchester.cs.owl.semspreadsheets.change.WorkbookChange;
-import uk.ac.manchester.cs.owl.semspreadsheets.change.WorkbookChangeListener;
+import uk.ac.manchester.cs.owl.semspreadsheets.listeners.WorkbookChangeListener;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.change.WorkbookChange;
 
 /**
  * Author: Matthew Horridge<br>

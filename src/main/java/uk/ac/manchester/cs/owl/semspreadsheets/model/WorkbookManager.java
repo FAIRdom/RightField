@@ -21,10 +21,11 @@ import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
-import uk.ac.manchester.cs.owl.semspreadsheets.change.SetCellValue;
-import uk.ac.manchester.cs.owl.semspreadsheets.change.WorkbookChange;
-import uk.ac.manchester.cs.owl.semspreadsheets.change.WorkbookChangeListener;
-import uk.ac.manchester.cs.owl.semspreadsheets.ui.CellSelectionListener;
+import uk.ac.manchester.cs.owl.semspreadsheets.listeners.CellSelectionListener;
+import uk.ac.manchester.cs.owl.semspreadsheets.listeners.WorkbookChangeListener;
+import uk.ac.manchester.cs.owl.semspreadsheets.listeners.WorkbookManagerListener;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.change.SetCellValue;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.change.WorkbookChange;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.CellSelectionModel;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.ErrorHandler;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookState;

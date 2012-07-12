@@ -5,9 +5,11 @@
  * Please see LICENSE file that is distributed with the source code
  ******************************************************************************/
 
-package uk.ac.manchester.cs.owl.semspreadsheets.model;
+package uk.ac.manchester.cs.owl.semspreadsheets.listeners;
 
 import org.semanticweb.owlapi.model.OWLOntology;
+
+import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyManager;
 
 /**
  * Listener for events related to the {@link OntologyManager}

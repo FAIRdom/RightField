@@ -12,10 +12,10 @@ import java.awt.event.KeyEvent;
 
 import org.apache.log4j.Logger;
 
-import uk.ac.manchester.cs.owl.semspreadsheets.change.SetCellValue;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Cell;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.change.SetCellValue;
 
 /**
  * Action to handle 'cutting' a range of cells from a sheet

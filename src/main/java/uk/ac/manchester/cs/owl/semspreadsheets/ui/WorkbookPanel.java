@@ -15,14 +15,15 @@ import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import uk.ac.manchester.cs.owl.semspreadsheets.change.SetCellValue;
-import uk.ac.manchester.cs.owl.semspreadsheets.change.WorkbookChangeEvent;
-import uk.ac.manchester.cs.owl.semspreadsheets.change.WorkbookChangeListener;
+import uk.ac.manchester.cs.owl.semspreadsheets.listeners.AbstractWorkbookManagerListener;
+import uk.ac.manchester.cs.owl.semspreadsheets.listeners.CellSelectionListener;
+import uk.ac.manchester.cs.owl.semspreadsheets.listeners.WorkbookChangeListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Workbook;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManagerListener;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.change.SetCellValue;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.change.WorkbookChangeEvent;
 
 /**
  * @author Stuart Owen
@@ -32,6 +33,42 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManagerListener;
 public class WorkbookPanel extends JPanel {
 
 	// private Logger logger = Logger.getLogger(WorkbookPanel.class);
+
+	private final class WorkbookChangeListenerImpl implements
+			WorkbookChangeListener {
+		public void workbookChanged(WorkbookChangeEvent event) {				
+			if (event.getChange() instanceof SetCellValue) {
+				SetCellValue scv = (SetCellValue) event.getChange();
+				scv.getSheet().getName();
+				SheetPanel sheetPanel = (SheetPanel) tabbedPane
+						.getSelectedComponent();
+				SheetTableModel model = (SheetTableModel) sheetPanel
+						.getSheetTable().getModel();
+				model.fireTableCellUpdated(scv.getRow(), scv.getCol());
+			}
+			manager.getWorkbookState().changesUnsaved();
+		}
+
+		public void sheetAdded() {
+			rebuildTabs();
+			manager.getWorkbookState().changesUnsaved();
+		}
+
+		public void sheetRemoved() {
+			rebuildTabs();
+			manager.getWorkbookState().changesUnsaved();
+		}
+
+		public void sheetRenamed(String oldName, String newName) {
+			for (int i = 0; i < tabbedPane.getTabCount(); i++) {
+				if (tabbedPane.getTitleAt(i).equals(oldName)) {
+					tabbedPane.setTitleAt(i, newName);
+				}
+			}
+			manager.getWorkbookState().changesUnsaved();
+
+		}
+	}
 
 	private WorkbookManager manager;
 
@@ -51,40 +88,7 @@ public class WorkbookPanel extends JPanel {
 		tabbedPane = new JTabbedPane(JTabbedPane.BOTTOM);
 		setLayout(new BorderLayout());
 		add(tabbedPane, BorderLayout.CENTER);
-		workbookChangeListener = new WorkbookChangeListener() {
-			public void workbookChanged(WorkbookChangeEvent event) {				
-				if (event.getChange() instanceof SetCellValue) {
-					SetCellValue scv = (SetCellValue) event.getChange();
-					scv.getSheet().getName();
-					SheetPanel sheetPanel = (SheetPanel) tabbedPane
-							.getSelectedComponent();
-					SheetTableModel model = (SheetTableModel) sheetPanel
-							.getSheetTable().getModel();
-					model.fireTableCellUpdated(scv.getRow(), scv.getCol());
-				}
-				manager.getWorkbookState().changesUnsaved();
-			}
-
-			public void sheetAdded() {
-				rebuildTabs();
-				manager.getWorkbookState().changesUnsaved();
-			}
-
-			public void sheetRemoved() {
-				rebuildTabs();
-				manager.getWorkbookState().changesUnsaved();
-			}
-
-			public void sheetRenamed(String oldName, String newName) {
-				for (int i = 0; i < tabbedPane.getTabCount(); i++) {
-					if (tabbedPane.getTitleAt(i).equals(oldName)) {
-						tabbedPane.setTitleAt(i, newName);
-					}
-				}
-				manager.getWorkbookState().changesUnsaved();
-
-			}
-		};
+		workbookChangeListener = new WorkbookChangeListenerImpl();
 		manager.getWorkbook().addChangeListener(workbookChangeListener);
 		rebuildTabs();
 		tabbedPane.addChangeListener(new ChangeListener() {
@@ -98,7 +102,7 @@ public class WorkbookPanel extends JPanel {
 						updateSelectionFromModel(range);
 					}
 				});
-		workbookManager.addListener(new WorkbookManagerListener() {
+		workbookManager.addListener(new AbstractWorkbookManagerListener() {
 			
 			@Override
 			public void workbookCreated() {
@@ -110,17 +114,7 @@ public class WorkbookPanel extends JPanel {
 			public void workbookLoaded() {
 				rebuildTabs();
 				transmitSelectionToModel();
-			}			
-
-			@Override
-			public void validationAppliedOrCancelled() {
-
-			}
-
-			@Override
-			public void workbookSaved() {				
-				
-			}
+			}						
 		});
 	}
 

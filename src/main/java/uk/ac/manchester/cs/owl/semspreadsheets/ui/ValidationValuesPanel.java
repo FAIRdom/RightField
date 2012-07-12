@@ -25,8 +25,9 @@ import javax.swing.JScrollPane;
 
 import org.semanticweb.owlapi.model.EntityType;
 
+import uk.ac.manchester.cs.owl.semspreadsheets.listeners.CellSelectionListener;
+import uk.ac.manchester.cs.owl.semspreadsheets.listeners.OntologyTermValidationListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidation;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidationListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Term;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.ValidationType;

@@ -10,10 +10,10 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.JOptionPane;
 
-import uk.ac.manchester.cs.owl.semspreadsheets.change.SetCellValue;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Cell;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.change.SetCellValue;
 
 /**
  * Clears the text value and any appied validations to a range of cells.

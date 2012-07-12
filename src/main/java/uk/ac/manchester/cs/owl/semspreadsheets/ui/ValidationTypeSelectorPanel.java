@@ -17,7 +17,8 @@ import javax.swing.JPanel;
 import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.OWLOntology;
 
-import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyManagerListener;
+import uk.ac.manchester.cs.owl.semspreadsheets.listeners.CellSelectionListener;
+import uk.ac.manchester.cs.owl.semspreadsheets.listeners.OntologyManagerListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidation;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.ValidationType;

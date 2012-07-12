@@ -9,6 +9,7 @@ package uk.ac.manchester.cs.owl.semspreadsheets.ui;
 import java.util.ArrayList;
 import java.util.List;
 
+import uk.ac.manchester.cs.owl.semspreadsheets.listeners.CellSelectionListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 
 /**

@@ -5,29 +5,29 @@
  * Please see LICENSE file that is distributed with the source code
  ******************************************************************************/
 
-package uk.ac.manchester.cs.owl.semspreadsheets.model;
+package uk.ac.manchester.cs.owl.semspreadsheets.listeners;
 
 import org.semanticweb.owlapi.model.OWLEntity;
+
+import uk.ac.manchester.cs.owl.semspreadsheets.model.OWLPropertyItem;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.ValidationType;
 
 public abstract class AbstractEntitySelectionModelListener implements
 		EntitySelectionModelListener {
 
 	@Override
 	public void owlPropertyChanged(OWLPropertyItem item) {
-		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
 	public void validationTypeChanged(ValidationType type) {
-		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
 	public void selectedEntityChanged(OWLEntity entity) {
-		// TODO Auto-generated method stub
-
+		
 	}
 
 }

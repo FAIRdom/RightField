@@ -6,7 +6,8 @@
  ******************************************************************************/
 package uk.ac.manchester.cs.owl.semspreadsheets.model;
 
-import uk.ac.manchester.cs.owl.semspreadsheets.change.WorkbookChange;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.change.WorkbookChange;
+
 
 /**
  * Author: Matthew Horridge<br>
