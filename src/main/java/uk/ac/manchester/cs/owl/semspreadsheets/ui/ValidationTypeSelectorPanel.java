@@ -55,11 +55,7 @@ public class ValidationTypeSelectorPanel extends JPanel {
         
         workbookManager.getSelectionModel().addCellSelectionListener(cellSelectionListener);
         refreshTypeList();
-    }
-    
-    public void ontologySelected(OWLOntology ontology) {
-    	propertyListPanel.ontologySelected(ontology);
-    }
+    }        
 
 	private void setupListeners() {
 		comboBox.addItemListener(new ItemListener() {

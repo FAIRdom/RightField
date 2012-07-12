@@ -9,6 +9,7 @@ package uk.ac.manchester.cs.owl.semspreadsheets.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.OWLEntity;
 
 
@@ -20,6 +21,9 @@ import org.semanticweb.owlapi.model.OWLEntity;
  * @author Stuart Owen
  */
 public class EntitySelectionModel {
+	
+	@SuppressWarnings("unused")
+	private static final Logger logger = Logger.getLogger(EntitySelectionModel.class);
 
     private OWLEntity defaultSelection;
 
@@ -45,12 +49,11 @@ public class EntitySelectionModel {
     	allowSelectionEvents=false;
 		setValidationType(ValidationType.FREETEXT);
 		setOWLPropertyItem(null);
-		setSelection(null);
-		allowSelectionEvents=true;
-		fireSelectionChange();
+		setSelectedEntity(null);
+		allowSelectionEvents=true;		
     }
     
-    public void setSelection(OWLEntity entity) {
+    public void setSelectedEntity(OWLEntity entity) {
     	OWLEntity oldEntity = this.selectedEntity;
         if(entity == null) {
             this.selectedEntity = defaultSelection;            
@@ -59,7 +62,7 @@ public class EntitySelectionModel {
             this.selectedEntity = entity;            
         }
         if (oldEntity==null ? selectedEntity!=null : !oldEntity.equals(selectedEntity)) {
-        	fireSelectionChange();
+        	fireSelectedEntityChanged();        	        
         }        
     }
     
@@ -71,7 +74,7 @@ public class EntitySelectionModel {
 		ValidationType oldType = this.validationType;
 		this.validationType = validationType;
 		if (oldType==null ? this.validationType!=null : !oldType.equals(this.validationType)) {
-			fireSelectionChange();
+			fireValidationTypeChanged();			
 		}		
 	}
 
@@ -83,16 +86,16 @@ public class EntitySelectionModel {
 		OWLPropertyItem oldItem = this.owlPropertyItem;
 		this.owlPropertyItem = owlPropertyItem;
 		if (oldItem==null ? this.owlPropertyItem!=null : !oldItem.equals(this.owlPropertyItem)) {
-			fireSelectionChange();
+			fireOWLPropertyChanged();			
 		}		
 	}
     
     public void clearSelection() {
         selectedEntity = defaultSelection;
-        fireSelectionChange();
+        fireSelectedEntityChanged();
     }
 
-    public OWLEntity getSelection() {
+    public OWLEntity getSelectedEntity() {
         return selectedEntity;
     }
 
@@ -105,18 +108,34 @@ public class EntitySelectionModel {
 
     public void removeListener(EntitySelectionModelListener listener) {
         listeners.remove(listener);
-    }
+    }    
+    
+	protected void fireSelectedEntityChanged() {
+		if (allowSelectionEvents) {
+			for (EntitySelectionModelListener listener : new ArrayList<EntitySelectionModelListener>(
+					listeners)) {
+				listener.selectedEntityChanged(selectedEntity);
+			}
+		}
+	}
 
-    protected void fireSelectionChange() {
-    	if (allowSelectionEvents) {
-    		for(EntitySelectionModelListener listener : new ArrayList<EntitySelectionModelListener>(listeners)) {
-                try {
-                    listener.selectionChanged();
-                }
-                catch (Throwable e) {
-                    e.printStackTrace();
-                }
-            }
-    	}        
-    }        
+	protected void fireOWLPropertyChanged() {
+		if (allowSelectionEvents) {
+			for (EntitySelectionModelListener listener : new ArrayList<EntitySelectionModelListener>(
+					listeners)) {
+				listener.owlPropertyChanged(owlPropertyItem);
+			}
+		}
+	}
+
+	protected void fireValidationTypeChanged() {
+		if (allowSelectionEvents) {
+			for (EntitySelectionModelListener listener : new ArrayList<EntitySelectionModelListener>(
+					listeners)) {
+
+				listener.validationTypeChanged(validationType);
+
+			}
+		}
+	}
 }

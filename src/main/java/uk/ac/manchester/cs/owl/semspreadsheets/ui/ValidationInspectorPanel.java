@@ -22,11 +22,12 @@ import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
 import org.apache.log4j.Logger;
-import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLEntity;
 
-import uk.ac.manchester.cs.owl.semspreadsheets.model.EntitySelectionModelListener;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyManagerListener;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.AbstractEntitySelectionModelListener;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.OWLPropertyItem;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.ValidationType;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManagerListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.ApplyValidationAction;
@@ -72,19 +73,7 @@ public class ValidationInspectorPanel extends JPanel {
         addClassHierarchyPanel(frame);        
         
         //validation selection
-        addValidationSelectionPanel(frame);
-        
-        workbookManager.getOntologyManager().addListener(new OntologyManagerListener() {			
-			@Override
-			public void ontologySelected(OWLOntology ontology) {
-				validationTypeSelectorPanel.ontologySelected(ontology);				
-			}
-
-			@Override
-			public void ontologiesChanged() {
-				// TODO Auto-generated method stub				
-			}
-		});                        
+        addValidationSelectionPanel(frame);                                       
         
         updateSelectionLabel(workbookManager.getSelectionModel().getSelectedRange());
                 
@@ -127,12 +116,21 @@ public class ValidationInspectorPanel extends JPanel {
 
 	private JPanel setupButtonPanel(ValidationTypeSelectorPanel typeSelectorPanel) {
 		
-        workbookManager.getEntitySelectionModel().addListener(new EntitySelectionModelListener() {			
+        workbookManager.getEntitySelectionModel().addListener(new AbstractEntitySelectionModelListener() {			
 			@Override
-			public void selectionChanged() {
-				logger.debug("ValidationInspectorPanel's EntitySelectionModelListener selectionChanged fired");
+			public void owlPropertyChanged(OWLPropertyItem item) {				
 				updateApplyButtonState();
 			}
+
+			@Override
+			public void validationTypeChanged(ValidationType type) {				
+				updateApplyButtonState();
+			}
+
+			@Override
+			public void selectedEntityChanged(OWLEntity entity) {				
+				updateApplyButtonState();
+			}			
 		});
 		
         typeSelectorPanel.addListItemListener(new ItemListener() {			

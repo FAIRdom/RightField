@@ -14,6 +14,7 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.Set;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
@@ -22,16 +23,20 @@ import javax.swing.JTextArea;
 import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.OWLOntology;
 
+import uk.ac.manchester.cs.owl.semspreadsheets.model.AbstractEntitySelectionModelListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OWLPropertyItem;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyManagerListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidation;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.ValidationType;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 
 /**
- * UI Element that show the lists of properties that can be applied along with the Validation type.
+ * UI Element that show the lists of properties that can be applied along with
+ * the Validation type.
  * 
  * @author Stuart Owen
- *
+ * 
  */
 @SuppressWarnings("serial")
 public class PropertyListPanel extends JPanel {
@@ -40,37 +45,63 @@ public class PropertyListPanel extends JPanel {
 			.getLogger(PropertyListPanel.class);
 	private JComboBox comboBox;
 	private JCheckBox checkBox;
-	private JTextArea fullPropertyName;	
+	private JTextArea propertyFullNameText;
+	private OWLOntology selectedOntology;
+	private DefaultComboBoxModel propertyListModel;
 
 	public PropertyListPanel(WorkbookManager workbookManager) {
 
 		this.workbookManager = workbookManager;
 		setLayout(new BorderLayout());
-		comboBox = new JComboBox();
 		
-		checkBox = new JCheckBox("Include a property");		
+		addCheckBox();
+				
+		addDropDownBox();
 
-		add(checkBox, BorderLayout.NORTH);
-		add(comboBox, BorderLayout.CENTER);
+		addPropertyFullNameText();
 		
-		fullPropertyName=new JTextArea();
-		fullPropertyName.setOpaque(false);
-		fullPropertyName.setEditable(false);
-		fullPropertyName.setFocusable(false);
-		fullPropertyName.setRows(2);
-		fullPropertyName.setLineWrap(true);
-		fullPropertyName.setWrapStyleWord(false);		
-		
-		add(fullPropertyName,BorderLayout.SOUTH);
 		setupListeners();
-		setSelectedStatus(false);		
-	}
-	
-	public void ontologySelected(OWLOntology ontology) {		
-		updateModel(ontology);
+		setSelectedStatus(false);
 	}
 
-	private void setupListeners() {		
+	private void addPropertyFullNameText() {
+		propertyFullNameText = new JTextArea();
+		propertyFullNameText.setOpaque(false);
+		propertyFullNameText.setEditable(false);
+		propertyFullNameText.setFocusable(false);
+		propertyFullNameText.setRows(2);
+		propertyFullNameText.setLineWrap(true);
+		propertyFullNameText.setWrapStyleWord(false);
+		add(propertyFullNameText, BorderLayout.SOUTH);
+	}
+
+	private void addDropDownBox() {
+		comboBox = new JComboBox();
+		propertyListModel = new DefaultComboBoxModel();
+		comboBox.setModel(propertyListModel);
+		add(comboBox, BorderLayout.CENTER);		
+	}
+
+	private void addCheckBox() {
+		checkBox = new JCheckBox("Include a property");				
+		add(checkBox, BorderLayout.NORTH);
+	}
+
+	private void setupListeners() {
+		getWorkbookManager().getOntologyManager().addListener(
+				new OntologyManagerListener() {
+
+					@Override
+					public void ontologySelected(OWLOntology ontology) {
+						selectedOntology = ontology;
+						updateModel();
+					}
+
+					@Override
+					public void ontologiesChanged() {
+
+					}
+				});
 		getWorkbookManager().getSelectionModel().addCellSelectionListener(
 				new CellSelectionListener() {
 
@@ -83,65 +114,72 @@ public class PropertyListPanel extends JPanel {
 		comboBox.addItemListener(new ItemListener() {
 
 			@Override
-			public void itemStateChanged(ItemEvent event) {				
-				if (event.getStateChange()==ItemEvent.SELECTED) {
-					updateEntityModel();	
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					updateEntityModel();
 					updatePropertyDetails();
-				}				
+				}
 			}
 		});
 
-		checkBox.addItemListener(new ItemListener() {
+		getWorkbookManager().getEntitySelectionModel().addListener(
+				new AbstractEntitySelectionModelListener() {
 
+					@Override
+					public void validationTypeChanged(ValidationType type) {
+						updateModel();
+					}
+				});
+
+		checkBox.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent event) {
 				Object source = event.getItemSelectable();
 				if (source == checkBox) {
-					boolean selected = checkBox.isSelected();
-					logger.debug("Checkbox changed to " + selected);
-					comboBox.setEnabled(selected);	
-					fullPropertyName.setEnabled(selected);
-					updateEntityModel();					
+					setEnabledStatus();
+					updateEntityModel();
 				}
 			}
 		});
 	}
-	
+
 	private void updatePropertyDetails() {
-		OWLPropertyItem item = (OWLPropertyItem)comboBox.getSelectedItem();
+		OWLPropertyItem item = (OWLPropertyItem) propertyListModel
+				.getSelectedItem();
 		String txt = item.getIRI().toString();
-		fullPropertyName.setText(txt);
+		propertyFullNameText.setText(txt);
 	}
 
-	private void updatePropertySelectionFromModel(Range range) {		
-		if(range == null) {
+	private void updatePropertySelectionFromModel(Range range) {
+		if (range == null) {
 			setEnabledStatusAccordingToSelectedRange(range);
-            return;
-        }		
-		
+			return;
+		}
+
 		Collection<OntologyTermValidation> containingValidations = getWorkbookManager()
 				.getOntologyManager().getContainingOntologyTermValidations(
 						range);
-				
-		
+
 		if (containingValidations.size() == 1) {
-			OntologyTermValidation validation = containingValidations.iterator().next();
+			OntologyTermValidation validation = containingValidations
+					.iterator().next();
 			OWLPropertyItem property = validation.getValidationDescriptor()
 					.getOWLPropertyItem();
 			if (property == null) {
 				setSelectedStatus(false);
 			} else {
-				comboBox.setSelectedItem(property);
-				checkBox.setSelected(true);				
+				propertyListModel.setSelectedItem(property);
+				checkBox.setSelected(true);
 			}
 		} else {
 			setSelectedStatus(false);
-		}				
+		}
 		setEnabledStatusAccordingToSelectedRange(range);
 	}
 
 	private void updateEntityModel() {
-		OWLPropertyItem item = (OWLPropertyItem) comboBox.getSelectedItem();
+		OWLPropertyItem item = (OWLPropertyItem) propertyListModel
+				.getSelectedItem();
 		if (item == null || !checkBox.isSelected()) {
 			logger.debug("Property item not selected or wanted");
 			getWorkbookManager().getEntitySelectionModel().setOWLPropertyItem(
@@ -157,73 +195,86 @@ public class PropertyListPanel extends JPanel {
 	private WorkbookManager getWorkbookManager() {
 		return this.workbookManager;
 	}
-	
-	private Set<OWLPropertyItem> getPropertyItems(OWLOntology ontology) {		
-		return getWorkbookManager().getOntologyManager().getAllOWLProperties(ontology);		
+
+	private synchronized void updateModel() {
+
+		if (selectedOntology == null) {
+			propertyListModel.removeAllElements();
+		} else {
+			ValidationType type = getWorkbookManager()
+					.getEntitySelectionModel().getValidationType();
+			Set<OWLPropertyItem> properties = getWorkbookManager()
+					.getOntologyManager().getAllOWLProperties(selectedOntology,
+							type);
+			OWLPropertyItem[] sortedProperties = properties
+					.toArray(new OWLPropertyItem[] {});
+			Arrays.sort(sortedProperties, new Comparator<OWLPropertyItem>() {
+				@Override
+				public int compare(OWLPropertyItem o1, OWLPropertyItem o2) {
+					return o1.toString().toLowerCase()
+							.compareTo(o2.toString().toLowerCase());
+				}
+			});
+
+			logger.debug("Updating model for properties list with "
+					+ sortedProperties.length + " properties");
+			
+			propertyListModel.removeAllElements();
+			for (OWLPropertyItem property : sortedProperties) {
+				propertyListModel.addElement(property);
+			}
+			
+		}
+		setEnabledStatus();			
 	}
 
-	private void updateModel(OWLOntology ontology) {
-		
-		OWLPropertyItem[] sortedProperties = getPropertyItems(ontology).toArray(new OWLPropertyItem[]{});
-		Arrays.sort(sortedProperties, new Comparator<OWLPropertyItem>() {
-			@Override
-			public int compare(OWLPropertyItem o1, OWLPropertyItem o2) {
-				return o1.toString().toLowerCase().compareTo(o2.toString().toLowerCase());
-			}
-		});
-		
-		logger.debug("Updating model for properties list with "
-				+ sortedProperties.length+ " properties");
-		
-		comboBox.removeAllItems();
-		for (OWLPropertyItem property : sortedProperties) {
-			comboBox.addItem(property);
-		}
-		setEnabledStatus();
-	}
-	
 	private void setEnabledStatusAccordingToSelectedRange(Range range) {
-		if (range==null) {
+		if (range == null) {
 			checkBox.setEnabled(false);
 			comboBox.setEnabled(checkBox.isSelected());
-		}
-		else {
+		} else {
 			if (!range.isCellSelection() || !isPropertiesAvailable()) {
 				checkBox.setEnabled(false);
 				comboBox.setEnabled(checkBox.isSelected());
-			}
-			else {
-				Collection<OntologyTermValidation> intersectingValidations = getWorkbookManager().getOntologyManager().getIntersectingOntologyTermValidations(range);
-				Collection<OntologyTermValidation> containingValidations = getWorkbookManager().getOntologyManager().getContainingOntologyTermValidations(
-						range);
-				boolean enabledStatus = containingValidations.size() <= 1 && intersectingValidations.size() == containingValidations.size();
+			} else {
+				Collection<OntologyTermValidation> intersectingValidations = getWorkbookManager()
+						.getOntologyManager()
+						.getIntersectingOntologyTermValidations(range);
+				Collection<OntologyTermValidation> containingValidations = getWorkbookManager()
+						.getOntologyManager()
+						.getContainingOntologyTermValidations(range);
+				boolean enabledStatus = containingValidations.size() <= 1
+						&& intersectingValidations.size() == containingValidations
+								.size();
 				checkBox.setEnabled(enabledStatus);
 				comboBox.setEnabled(checkBox.isSelected());
 			}
 		}
 	}
-	private void setEnabledStatus() {		
+
+	private void setEnabledStatus() {
 		if (!isPropertiesAvailable()) {
 			comboBox.setEnabled(false);
-			checkBox.setEnabled(false);			
-		}
-		else {
+			checkBox.setEnabled(false);
+		} else {
 			checkBox.setEnabled(true);
 			comboBox.setEnabled(checkBox.isSelected());
 		}
-			
-	}
-	
-	private boolean isPropertiesAvailable() {
-		return getPropertyCount()>0;
-	}
-	private int getPropertyCount() {
-		return comboBox.getItemCount();
+		propertyFullNameText.setEnabled(comboBox.isEnabled());
+		checkBox.setSelected(checkBox.isSelected() && comboBox.isEnabled());
 	}
 
-	private void setSelectedStatus(boolean selected) {		
-		checkBox.setSelected(selected);
+	private boolean isPropertiesAvailable() {
+		return getPropertyCount() > 0;
+	}
+
+	private int getPropertyCount() {
+		return propertyListModel.getSize();
+	}
+
+	private void setSelectedStatus(boolean selected) {
+		checkBox.setSelected(selected && getPropertyCount()>0);
 		setEnabledStatus();
-	}	
+	}
 
 }

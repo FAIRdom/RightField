@@ -33,7 +33,7 @@ import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
-import uk.ac.manchester.cs.owl.semspreadsheets.model.EntitySelectionModelListener;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.AbstractEntitySelectionModelListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyManagerListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidation;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
@@ -119,10 +119,9 @@ public class ClassHierarchyTabbedPane extends JTabbedPane {
 		
 		//as far as I can tell, this is only needed for the FindClassPanel searching. Other selections are made through
 		//the CellSelectionListener
-		getWorkbookManager().getEntitySelectionModel().addListener(new EntitySelectionModelListener() {			
+		getWorkbookManager().getEntitySelectionModel().addListener(new AbstractEntitySelectionModelListener() {			
 			@Override
-			public void selectionChanged() {
-				OWLEntity entity = getWorkbookManager().getEntitySelectionModel().getSelection();
+			public void selectedEntityChanged(OWLEntity entity) {				
 				updateSelectedTabAndClass(entity);
 			}
 		});

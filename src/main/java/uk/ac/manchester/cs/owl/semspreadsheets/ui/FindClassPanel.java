@@ -142,7 +142,7 @@ public class FindClassPanel extends JPanel {
 		Object o = resultList.getSelectedValue();
 		logger.debug("Navigating to "+o);
 		if (o != null) {
-			manager.getEntitySelectionModel().setSelection((OWLEntity) o);
+			manager.getEntitySelectionModel().setSelectedEntity((OWLEntity) o);
 		}
 		resultWindow.setVisible(false);
 	}
