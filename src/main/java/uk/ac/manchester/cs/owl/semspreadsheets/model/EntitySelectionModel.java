@@ -51,14 +51,41 @@ public class EntitySelectionModel {
     }
     
     public void setSelection(OWLEntity entity) {
+    	OWLEntity oldEntity = this.selectedEntity;
         if(entity == null) {
-            selectedEntity = defaultSelection;            
+            this.selectedEntity = defaultSelection;            
         }
         else {
-            selectedEntity = entity;            
+            this.selectedEntity = entity;            
         }
-        fireSelectionChange();
+        if (oldEntity==null ? selectedEntity!=null : !oldEntity.equals(selectedEntity)) {
+        	fireSelectionChange();
+        }        
     }
+    
+    public ValidationType getValidationType() {
+		return validationType;
+	}
+
+	public void setValidationType(ValidationType validationType) {
+		ValidationType oldType = this.validationType;
+		this.validationType = validationType;
+		if (oldType==null ? this.validationType!=null : !oldType.equals(this.validationType)) {
+			fireSelectionChange();
+		}		
+	}
+
+	public OWLPropertyItem getOWLPropertyItem() {
+		return owlPropertyItem;
+	}
+
+	public void setOWLPropertyItem(OWLPropertyItem owlPropertyItem) {
+		OWLPropertyItem oldItem = this.owlPropertyItem;
+		this.owlPropertyItem = owlPropertyItem;
+		if (oldItem==null ? this.owlPropertyItem!=null : !oldItem.equals(this.owlPropertyItem)) {
+			fireSelectionChange();
+		}		
+	}
     
     public void clearSelection() {
         selectedEntity = defaultSelection;
@@ -91,23 +118,5 @@ public class EntitySelectionModel {
                 }
             }
     	}        
-    }
-    
-    public ValidationType getValidationType() {
-		return validationType;
-	}
-
-	public void setValidationType(ValidationType validationType) {
-		this.validationType = validationType;
-		fireSelectionChange();
-	}
-
-	public OWLPropertyItem getOWLPropertyItem() {
-		return owlPropertyItem;
-	}
-
-	public void setOWLPropertyItem(OWLPropertyItem owlPropertyItem) {
-		this.owlPropertyItem = owlPropertyItem;
-		fireSelectionChange();
-	}
+    }        
 }
