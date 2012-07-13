@@ -412,10 +412,10 @@ public class OntologyManagerTest {
 		ontologyManager.loadOntology(IRI.create(DocumentsCatalogue.aminoAcidOntologyURI()));
 		Set<OWLPropertyItem> properties = ontologyManager.getAllOWLProperties(jermOntology,ValidationType.INDIVIDUALS);
 		assertEquals(properties,ontologyManager.getAllOWLProperties(jermOntology,ValidationType.DIRECTINDIVIDUALS));
-		assertEquals(19,properties.size());
+		assertEquals(37,properties.size());
 		boolean found=false;
 		for (OWLPropertyItem item : properties) {
-			assertEquals(OWLPropertyType.DATA_PROPERTY,item.getPropertyType());
+			assertTrue(OWLPropertyType.DATA_PROPERTY==item.getPropertyType() || OWLPropertyType.OBJECT_PROPERTY==item.getPropertyType());
 			if (item.getIRI().equals(IRI.create("http://www.mygrid.org.uk/ontology/JERMOntology#Lab_internal_ID"))) {
 				found=true;
 			}
