@@ -18,6 +18,8 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.IRI;
 
+import uk.ac.manchester.cs.owl.semspreadsheets.listeners.OntologyTermValidationListener;
+
 /**
  * @author Stuart Owen
  * @author Matthew Horridge

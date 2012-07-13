@@ -6,7 +6,7 @@
  ******************************************************************************/
 package uk.ac.manchester.cs.owl.semspreadsheets.impl;
 
-import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManagerListener;
+import uk.ac.manchester.cs.owl.semspreadsheets.listeners.WorkbookManagerListener;
 
 /**
  * 

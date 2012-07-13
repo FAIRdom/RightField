@@ -6,6 +6,7 @@
  ******************************************************************************/
 package uk.ac.manchester.cs.owl.semspreadsheets.ui.task;
 
+import uk.ac.manchester.cs.owl.semspreadsheets.listeners.TaskListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookFrame;
 
 

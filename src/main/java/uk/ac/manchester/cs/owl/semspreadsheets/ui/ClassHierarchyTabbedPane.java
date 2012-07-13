@@ -33,8 +33,9 @@ import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
-import uk.ac.manchester.cs.owl.semspreadsheets.model.AbstractEntitySelectionModelListener;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyManagerListener;
+import uk.ac.manchester.cs.owl.semspreadsheets.listeners.AbstractEntitySelectionModelListener;
+import uk.ac.manchester.cs.owl.semspreadsheets.listeners.CellSelectionListener;
+import uk.ac.manchester.cs.owl.semspreadsheets.listeners.OntologyManagerListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidation;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;

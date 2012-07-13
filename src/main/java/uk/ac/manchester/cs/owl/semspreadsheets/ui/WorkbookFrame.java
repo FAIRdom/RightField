@@ -42,16 +42,17 @@ import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
+import uk.ac.manchester.cs.owl.semspreadsheets.listeners.AbstractWorkbookManagerListener;
+import uk.ac.manchester.cs.owl.semspreadsheets.listeners.OntologyManagerListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.KnownOntologies;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyManagerListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManagerListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.repository.RepositoryItem;
 import uk.ac.manchester.cs.owl.semspreadsheets.repository.RepositoryManager;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.AboutBoxAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.ClearOntologyValuesAction;
+import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.CloseSelectedOntologyAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.CloseWorkbookAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.ExitAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.ExportRDFAction;
@@ -61,7 +62,6 @@ import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.OpenFromBioPortalAction
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.OpenOntologyAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.OpenOntologyFromURLAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.OpenWorkbookAction;
-import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.CloseSelectedOntologyAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.RemoveSheetAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.RenameSheetAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.SaveAction;
@@ -134,7 +134,7 @@ public class WorkbookFrame extends JFrame {
 			}
 		});
 		
-		workbookManager.addListener(new WorkbookManagerListener() {
+		workbookManager.addListener(new AbstractWorkbookManagerListener() {
 			@Override
 			public void workbookCreated() {
 				handleNewWorkbook();
@@ -143,12 +143,7 @@ public class WorkbookFrame extends JFrame {
 			@Override
 			public void workbookLoaded() {
 				handleNewWorkbook();
-			}						
-
-			@Override
-			public void validationAppliedOrCancelled() {				
-				
-			}
+			}									
 			
 			@Override
 			public void workbookSaved() {

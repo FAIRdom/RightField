@@ -2,7 +2,7 @@ package uk.ac.manchester.cs.owl.semspreadsheets.impl;
 
 import org.semanticweb.owlapi.model.OWLEntity;
 
-import uk.ac.manchester.cs.owl.semspreadsheets.model.EntitySelectionModelListener;
+import uk.ac.manchester.cs.owl.semspreadsheets.listeners.EntitySelectionModelListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OWLPropertyItem;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.ValidationType;
 

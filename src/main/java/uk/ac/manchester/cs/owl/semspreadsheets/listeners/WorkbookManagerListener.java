@@ -4,14 +4,20 @@
  * Licensed under the New BSD License. 
  * Please see LICENSE file that is distributed with the source code
  ******************************************************************************/
-package uk.ac.manchester.cs.owl.semspreadsheets.ui;
-
-import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
+package uk.ac.manchester.cs.owl.semspreadsheets.listeners;
 
 /**
  * @author Matthew Horridge
+ * @author Stuart Owen
  */
-public interface CellSelectionListener {
+public interface WorkbookManagerListener {
 
-    void selectionChanged(Range range);
+    void workbookCreated();
+
+    void workbookLoaded();
+    
+    void workbookSaved();         
+    
+    void validationAppliedOrCancelled();
+        
 }

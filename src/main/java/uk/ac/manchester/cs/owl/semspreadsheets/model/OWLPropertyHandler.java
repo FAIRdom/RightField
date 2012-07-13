@@ -39,7 +39,7 @@ public class OWLPropertyHandler {
 	 */
 	public Set<OWLPropertyItem> getAllOWLProperties(OWLOntology ontology, ValidationType type) {
 		Set<OWLPropertyItem> properties = getOWLDataProperties(ontology);		
-		if (type==ValidationType.SUBCLASSES || type==ValidationType.DIRECTSUBCLASSES) {
+		if (type!=ValidationType.FREETEXT) {
 			properties.addAll(getOWLObjectProperties(ontology));
 		}
 		return properties;

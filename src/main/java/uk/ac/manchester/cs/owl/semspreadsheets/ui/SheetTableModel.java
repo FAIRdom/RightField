@@ -8,10 +8,10 @@ package uk.ac.manchester.cs.owl.semspreadsheets.ui;
 
 import javax.swing.table.AbstractTableModel;
 
-import uk.ac.manchester.cs.owl.semspreadsheets.change.SetCellValue;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Cell;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Workbook;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.change.SetCellValue;
 
 /**
  * 

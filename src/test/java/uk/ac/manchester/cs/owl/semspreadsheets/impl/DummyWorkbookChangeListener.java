@@ -6,8 +6,8 @@
  ******************************************************************************/
 package uk.ac.manchester.cs.owl.semspreadsheets.impl;
 
-import uk.ac.manchester.cs.owl.semspreadsheets.change.WorkbookChangeEvent;
-import uk.ac.manchester.cs.owl.semspreadsheets.change.WorkbookChangeListener;
+import uk.ac.manchester.cs.owl.semspreadsheets.listeners.WorkbookChangeListener;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.change.WorkbookChangeEvent;
 
 public class DummyWorkbookChangeListener implements WorkbookChangeListener {
 	

@@ -14,7 +14,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.List;
 
 import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
@@ -26,9 +25,9 @@ import javax.swing.plaf.basic.BasicButtonUI;
 import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.OWLOntology;
 
+import uk.ac.manchester.cs.owl.semspreadsheets.listeners.AbstractOntologyTermValidationListener;
+import uk.ac.manchester.cs.owl.semspreadsheets.listeners.OntologyTermValidationListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyManager;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidation;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidationListener;
 
 /**
  * @author Stuart Owen
@@ -111,17 +110,11 @@ class ClassHierarchyTabComponent extends JPanel {
 	}	
 	
 	private void addOntologyTermValidationListener() {
-		ontologyValidationListener = new OntologyTermValidationListener() {
-			
+		ontologyValidationListener = new AbstractOntologyTermValidationListener() {			
 			@Override
 			public void validationsChanged() {
 				updateTabClosableStatus();
-			}
-			
-			@Override
-			public void ontologyTermSelected(List<OntologyTermValidation> previewList) {
-				
-			}
+			}						
 		};
 		getOntologyManager().addListener(ontologyValidationListener);		
 	}

@@ -2,7 +2,7 @@ package uk.ac.manchester.cs.owl.semspreadsheets.impl;
 
 import org.semanticweb.owlapi.model.OWLOntology;
 
-import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyManagerListener;
+import uk.ac.manchester.cs.owl.semspreadsheets.listeners.OntologyManagerListener;
 
 public class DummyOntologyManagerListener implements OntologyManagerListener {
 	

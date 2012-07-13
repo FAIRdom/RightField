@@ -6,9 +6,9 @@
  ******************************************************************************/
 package uk.ac.manchester.cs.owl.semspreadsheets.ui.action;
 
+import uk.ac.manchester.cs.owl.semspreadsheets.listeners.CellSelectionListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
-import uk.ac.manchester.cs.owl.semspreadsheets.ui.CellSelectionListener;
 
 /**
  * Author: Matthew Horridge<br>

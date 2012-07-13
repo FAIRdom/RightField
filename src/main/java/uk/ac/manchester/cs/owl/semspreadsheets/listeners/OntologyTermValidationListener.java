@@ -4,16 +4,18 @@
  * Licensed under the New BSD License. 
  * Please see LICENSE file that is distributed with the source code
  ******************************************************************************/
-package uk.ac.manchester.cs.owl.semspreadsheets.change;
+package uk.ac.manchester.cs.owl.semspreadsheets.listeners;
+
+import java.util.List;
+
+import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidation;
 
 /**
- * Author: Matthew Horridge<br>
- * The University of Manchester<br>
- * Information Management Group<br>
- * Date: 01-Nov-2009
+ * @author Matthew Horridge
  */
-public interface WorkbookChangeVisitor {
+public interface OntologyTermValidationListener {
 
-    void visit(SetCellValue setCellValue);
+    void validationsChanged();
 
+	void ontologyTermSelected(List<OntologyTermValidation> previewList);
 }

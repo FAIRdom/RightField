@@ -6,16 +6,13 @@
  ******************************************************************************/
 package uk.ac.manchester.cs.owl.semspreadsheets.ui;
 
-import java.util.List;
-
 import javax.swing.Action;
 import javax.swing.JMenuItem;
 
 import org.semanticweb.owlapi.model.OWLOntology;
 
+import uk.ac.manchester.cs.owl.semspreadsheets.listeners.AbstractOntologyTermValidationListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyManager;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidation;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidationListener;
 
 /**
  * A menu item that listens to OntologyValidation changes in the sheet, and tracks the selected ontology, to enable it to determine
@@ -56,18 +53,12 @@ public class CloseSelectedOntologyMenuItem extends JMenuItem {
 			
 	
 	private void addListener() {
-		getOntologyManager().addListener(new OntologyTermValidationListener() {
-			
+		getOntologyManager().addListener(new AbstractOntologyTermValidationListener() {			
 			@Override
 			public void validationsChanged() {
 				checkEnabledState();
 				
-			}
-			
-			@Override
-			public void ontologyTermSelected(List<OntologyTermValidation> previewList) {
-				
-			}
+			}			
 		});				
 	}
 

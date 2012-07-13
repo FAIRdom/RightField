@@ -24,12 +24,13 @@ import javax.swing.border.TitledBorder;
 import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.OWLEntity;
 
-import uk.ac.manchester.cs.owl.semspreadsheets.model.AbstractEntitySelectionModelListener;
+import uk.ac.manchester.cs.owl.semspreadsheets.listeners.AbstractEntitySelectionModelListener;
+import uk.ac.manchester.cs.owl.semspreadsheets.listeners.AbstractWorkbookManagerListener;
+import uk.ac.manchester.cs.owl.semspreadsheets.listeners.CellSelectionListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OWLPropertyItem;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.ValidationType;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManagerListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.ApplyValidationAction;
 
 /**
@@ -154,28 +155,12 @@ public class ValidationInspectorPanel extends JPanel {
 		//cancelButton.setEnabled(false);
 		//buttonPanel.add(cancelButton);		               
         
-        workbookManager.addListener(new WorkbookManagerListener() {
-			
-			@Override
-			public void workbookLoaded() {				
-				
-			}
-			
-			@Override
-			public void workbookCreated() {
-				
-			}
-			
+        workbookManager.addListener(new AbstractWorkbookManagerListener() {									
 			@Override
 			public void validationAppliedOrCancelled() {
 				applyButton.setEnabled(false);
 				cancelButton.setEnabled(false);
-			}						
-			
-			@Override
-			public void workbookSaved() {
-				
-			}
+			}									
 		});
         
         return buttonPanel;
