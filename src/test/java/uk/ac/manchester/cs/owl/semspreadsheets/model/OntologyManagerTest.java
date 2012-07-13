@@ -290,20 +290,14 @@ public class OntologyManagerTest {
 		URI uri = DocumentsCatalogue.scoroOntologyURI();
 		ontologyManager.loadOntology(IRI.create(uri));
 		Set<OWLPropertyItem> properties = ontologyManager.getAllOWLProperties();
-		assertEquals(113,properties.size());
+		
 		boolean found=false;
 		for (OWLPropertyItem item : properties) {
 			if (item.getIRI().toString().equals("http://www.ontologydesignpatterns.org/cp/owl/timeindexedsituation.owl#forEntity")) {
 				found=true;
 			}			
 		}
-		assertTrue("Should have found the imported property http://www.ontologydesignpatterns.org/cp/owl/timeindexedsituation.owl#forEntity", found);				
-		
-		properties = ontologyManager.getOWLObjectProperties();
-		assertEquals(76,properties.size());
-		
-		properties = ontologyManager.getOWLDataProperties();
-		assertEquals(37,properties.size());
+		assertTrue("Should have found the imported property http://www.ontologydesignpatterns.org/cp/owl/timeindexedsituation.owl#forEntity", found);								
 	}
 	
 	@Test
