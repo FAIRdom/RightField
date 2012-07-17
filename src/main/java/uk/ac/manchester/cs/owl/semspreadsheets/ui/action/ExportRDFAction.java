@@ -11,7 +11,10 @@ import java.awt.event.ActionEvent;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 
 import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.IRI;
@@ -33,9 +36,11 @@ public class ExportRDFAction extends WorkbookFrameAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		IRI id=determineRootID();
-		if (id!=null) {
-			Exporter exporter = new RDFExporter(getWorkbookManager(), id);
+		IRI iris[]=determineRootAndPropertyIDs();
+		IRI rootID=iris[0];
+		IRI propertyID=iris[1]!=null ? iris[1] : IRI.create(RDFExporter.DEFAULT_PROPERTY_URI);
+		if (rootID!=null) {			
+			Exporter exporter = new RDFExporter(getWorkbookManager(), rootID,propertyID);
 			String rdf = exporter.export();
 			
 			RDFExportResultPanel.showDialog(getWorkbookFrame(), rdf);
@@ -43,19 +48,48 @@ public class ExportRDFAction extends WorkbookFrameAction {
 	}
 	
 	/**
-	 * Determines the root ID for the top level RDF, i.e an identifier for the data file.
+	 * Determines the root ID for the top level RDF, i.e an identifier for the data file, and also the default propertyID (which defaults to {@link RDFExporter#DEFAULT_PROPERTY_URI}
 	 * Currently just asks the user for it.
-	 * @return the root ID
+	 * @return the [root ID, propertyID]
+	 * 
 	 */
-	private IRI determineRootID() {
-		String input = JOptionPane.showInputDialog(getWorkbookFrame(), "Please provide an identifier for this spreadsheet. It must be a valid URI");
-		if (input!=null) {
-			if (!validURI(input)) {
-				JOptionPane.showMessageDialog(getWorkbookFrame(), "'" + input + "' is not a valid URI","Invalid URI",JOptionPane.ERROR_MESSAGE);
-				return determineRootID();
+	private IRI[] determineRootAndPropertyIDs() {
+		IRI rootID = null;
+		IRI propertyID = null;
+		JTextField rootIDFIeld = new JTextField();
+		JTextField propertyIDField = new JTextField(RDFExporter.DEFAULT_PROPERTY_URI+" ");
+		JComponent [] components = new JComponent[] {
+				new JLabel("Spreadsheet root identifier URI"),
+				rootIDFIeld,
+				new JLabel("Default property identifier URI"),
+				propertyIDField
+		};
+		int retVal = 99;
+		boolean validInput=false;
+		while (!validInput) {
+			retVal = JOptionPane.showConfirmDialog(getWorkbookFrame(), components,"Please provide some identifiers",JOptionPane.OK_CANCEL_OPTION);
+			if (retVal == JOptionPane.OK_OPTION) {
+				String propertyURI = propertyIDField.getText().trim();
+				String rootURI = rootIDFIeld.getText().trim();
+				if (!validURI(rootURI)) {
+					JOptionPane.showMessageDialog(getWorkbookFrame(), "'"+rootURI+"' is not a valid URI");
+				}
+				else if (!validURI(propertyURI)) {
+					JOptionPane.showMessageDialog(getWorkbookFrame(), "'"+propertyURI+"' is not a valid URI");
+				}
+				else {					
+					rootID=IRI.create(rootURI);
+					propertyID=IRI.create(propertyURI);
+					validInput=true;
+				}				
+			}	
+			else {
+				//cancel is a valid input
+				validInput=true;
 			}
 		}
-		return IRI.create(input);
+		
+		return new IRI[] {rootID,propertyID};
 	}
 	
 	private boolean validURI(String str) {
