@@ -32,21 +32,38 @@ public class RDFExporter extends AbstractExporter {
 	
 	private final IRI rootID;
 	
-	public static final String DEFAULT_PROPERTY_URI = "http://rightfield.org.uk/RightFieldOntology#contains";
+	public static final String DEFAULT_PROPERTY_URI = "http://www.mygrid.org.uk/ontology/JERMOntology#hasAssociatedItem";
 
-	public RDFExporter(File workbookFile,IRI rootID) throws IOException {
+	private final IRI defaultProperty;		
+
+	public RDFExporter(File workbookFile,IRI rootID, IRI defaultProperty) throws IOException {
 		super(workbookFile);
-		this.rootID = rootID;		
+		this.rootID = rootID;
+		this.defaultProperty = defaultProperty;		
+	}
+
+	public RDFExporter(URI workbookURI,IRI rootID,IRI defaultProperty) throws IOException {
+		super(workbookURI);
+		this.rootID = rootID;
+		this.defaultProperty = defaultProperty;			
+	}
+
+	public RDFExporter(WorkbookManager manager,IRI rootID,IRI defaultProperty) {
+		super(manager);
+		this.rootID = rootID;
+		this.defaultProperty = defaultProperty;		
+	}
+	
+	public RDFExporter(File workbookFile,IRI rootID) throws IOException {
+		this(workbookFile,rootID,IRI.create(DEFAULT_PROPERTY_URI));
 	}
 
 	public RDFExporter(URI workbookURI,IRI rootID) throws IOException {
-		super(workbookURI);
-		this.rootID = rootID;		
+		this(workbookURI,rootID,IRI.create(DEFAULT_PROPERTY_URI));		
 	}
 
 	public RDFExporter(WorkbookManager manager,IRI rootID) {
-		super(manager);
-		this.rootID = rootID;		
+		this(manager,rootID,IRI.create(DEFAULT_PROPERTY_URI));		
 	}
 	
 	private IRI getRootID() {
@@ -54,14 +71,13 @@ public class RDFExporter extends AbstractExporter {
 	}
 	
 	private Property getDefaultProperty(Model model) {		
-		Property property = model.createProperty(DEFAULT_PROPERTY_URI);
-		model.setNsPrefix("rightfield", IRI.create(DEFAULT_PROPERTY_URI).getStart());
+		Property property = model.createProperty(defaultProperty.toString());						
 		return property;		
 	}
 
 	@Override
 	public void export(OutputStream outStream) {		
-		Model model = ModelFactory.createDefaultModel();
+		Model model = ModelFactory.createDefaultModel();		
 		
 		Resource root = model.createResource(getRootID().toString());
 		
@@ -73,21 +89,27 @@ public class RDFExporter extends AbstractExporter {
 			model.write(new OutputStreamWriter(outStream,"UTF-8"));
 		} catch (UnsupportedEncodingException e) {
 			logger.error("Error writing to stream with UTF-8 encoding",e);
-		}
+		}		
 	}
 	
-	private Property createProperty(Model model,OWLPropertyItem property) {
-		if (property==null) {
-			return getDefaultProperty(model);
+	private Property createProperty(Model model,OWLPropertyItem propertyItem) {
+		Property property;
+		if (propertyItem==null) {
+			property = getDefaultProperty(model);
 		}
 		else {
-			Property result = model.createProperty(property.getIRI().toString());
-			String start = property.getIRI().getStart(); 
-			if (start.equals("http://www.mygrid.org.uk/ontology/JERMOntology#")) {
-				model.setNsPrefix("jerm", start);
-			}
-			return result;
-		}
+			property = model.createProperty(propertyItem.getIRI().toString());						
+		}				
+		setKnownPropertyPrefixes(model, property);		
+		return property;
+	}
+
+	private void setKnownPropertyPrefixes(Model model, Property property) {
+		if (!model.getNsPrefixMap().containsKey("jerm")) {
+			if (property.getURI().startsWith("http://www.mygrid.org.uk/ontology/JERMOntology#")) {
+				model.setNsPrefix("jerm", "http://www.mygrid.org.uk/ontology/JERMOntology#");
+			}			
+		}				
 	}
 	
 	private void addNode(Resource rootResource,Model model,PopulatedValidatedCellDetails cellDetails) {

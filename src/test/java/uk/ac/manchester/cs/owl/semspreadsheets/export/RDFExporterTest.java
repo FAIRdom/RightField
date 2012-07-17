@@ -33,8 +33,8 @@ public class RDFExporterTest {
 		assertEquals("Metadata Template",exporter.getWorkbook().getSheet(0).getName());
 		assertNotNull(exporter.getWorkbookManager());
 		assertEquals(9,exporter.getValidations().size());
-	}
-
+	}	
+	
 	@Test
 	public void testInitiWithURI() throws Exception {
 		URI uri = DocumentsCatalogue.populatedJermWorkbookURI();
@@ -43,6 +43,36 @@ public class RDFExporterTest {
 		assertEquals("Metadata Template",exporter.getWorkbook().getSheet(0).getName());
 		assertNotNull(exporter.getWorkbookManager());
 		assertEquals(9,exporter.getValidations().size());
+	}
+	
+	@Test
+	public void testDefaultProperty() throws Exception {
+		assertEquals("http://www.mygrid.org.uk/ontology/JERMOntology#hasAssociatedItem",RDFExporter.DEFAULT_PROPERTY_URI);
+		URI uri = DocumentsCatalogue.populatedJermWorkbookURI();
+		AbstractExporter exporter = new RDFExporter(uri,rootID);
+		String rdf = exporter.export();
+		Model model = ModelFactory.createDefaultModel();
+		StringReader reader = new StringReader(rdf);
+		
+		model.read(reader, "");
+		Resource resource = model.getResource(rootID.toString());
+		Statement statement = resource.listProperties().nextStatement();
+		assertEquals("http://www.mygrid.org.uk/ontology/JERMOntology#hasAssociatedItem",statement.getPredicate().getURI());
+	}
+	
+	@Test
+	public void testProvidedDefaultProperty() throws Exception {
+		String property = "http://www.mygrid.org.uk/ontology/JERMOntology#description";
+		URI uri = DocumentsCatalogue.populatedJermWorkbookURI();
+		AbstractExporter exporter = new RDFExporter(uri,rootID,IRI.create(property));
+		String rdf = exporter.export();
+		Model model = ModelFactory.createDefaultModel();
+		StringReader reader = new StringReader(rdf);
+		
+		model.read(reader, "");
+		Resource resource = model.getResource(rootID.toString());
+		Statement statement = resource.listProperties().nextStatement();
+		assertEquals("http://www.mygrid.org.uk/ontology/JERMOntology#description",statement.getPredicate().getURI());
 	}
 	
 	@Test
