@@ -15,6 +15,7 @@ public class RightFieldOptionsTest {
 		assertTrue(opts.isExport());
 		assertEquals("fish",opts.getId());
 		assertEquals("c:\\file.xls",opts.getFilename());
+		assertNull(opts.getProperty());
 	}
 	
 	@Test
@@ -26,6 +27,7 @@ public class RightFieldOptionsTest {
 		assertEquals("rdf",opts.getExportFormat());
 		assertEquals("fish",opts.getId());
 		assertEquals("c:\\file.xls",opts.getFilename());
+		assertNull(opts.getProperty());
 	}
 	
 	@Test
@@ -37,6 +39,19 @@ public class RightFieldOptionsTest {
 		assertEquals("csv",opts.getExportFormat());
 		assertEquals("fish",opts.getId());
 		assertEquals("c:\\file.xls",opts.getFilename());
+		assertNull(opts.getProperty());
+	}
+	
+	@Test
+	public void testWithProperty() {
+		String [] args = new String[] {"-export","-property","http://ontology.org#property","-id","fish","c:\\file.xls"};
+		RightFieldOptions opts = new RightFieldOptions(args);
+		assertEquals(6,opts.count());
+		assertTrue(opts.isExport());
+		assertEquals("rdf",opts.getExportFormat());
+		assertEquals("fish",opts.getId());
+		assertEquals("c:\\file.xls",opts.getFilename());
+		assertEquals("http://ontology.org#property",opts.getProperty());
 	}
 
 }
