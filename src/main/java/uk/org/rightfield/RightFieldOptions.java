@@ -25,6 +25,7 @@ public class RightFieldOptions {
 	String exportFormat="rdf";
 	boolean export=false;
 	String filename=null;
+	String property=null;
 	private final String[] args;
 	
 	public RightFieldOptions(String [] args) {
@@ -32,6 +33,10 @@ public class RightFieldOptions {
 		readArgs();
 	}	
 
+	public String getProperty() {
+		return property;
+	}
+	
 	public int count() {
 		return args.length;
 	}
@@ -52,8 +57,6 @@ public class RightFieldOptions {
 		return filename;
 	}	
 	
-	
-	
 	@Override
 	public String toString() {
 		String result = "";
@@ -71,9 +74,15 @@ public class RightFieldOptions {
 			}
 			if (args[i].equals("-id")) {
 				id=args[i+1];
+				i++;
 			}
 			if (args[i].equals("-format")) {
 				exportFormat=args[i+1];
+				i++;
+			}
+			if (args[i].equals("-property")) {
+				property=args[i+1];
+				i++;
 			}
 		}
 		if (count()>0) {

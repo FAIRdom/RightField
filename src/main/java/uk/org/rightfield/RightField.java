@@ -72,7 +72,13 @@ public class RightField {
     	File file = new File(options.getFilename());
     	Exporter exporter;
     	if (options.getExportFormat().equals("rdf")) {
-    		exporter=new RDFExporter(file,IRI.create(options.getId()));
+    		if (options.getProperty()==null) {
+    			exporter=new RDFExporter(file,IRI.create(options.getId()));
+    		}
+    		else {
+    			exporter=new RDFExporter(file,IRI.create(options.getId()),IRI.create(options.getProperty()));
+    		}
+    		
     	}
     	else if (options.getExportFormat().equals("csv")) {
     		exporter=new CSVExporter(file);
