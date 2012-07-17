@@ -77,8 +77,7 @@ public class RightField {
     		}
     		else {
     			exporter=new RDFExporter(file,IRI.create(options.getId()),IRI.create(options.getProperty()));
-    		}
-    		
+    		}    		
     	}
     	else if (options.getExportFormat().equals("csv")) {
     		exporter=new CSVExporter(file);
