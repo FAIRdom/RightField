@@ -1,1 +1,0 @@
-java -Xmx500M -classpath rightfield-bin.jar uk.ac.manchester.cs.owl.semspreadsheets.export.RightFieldBatchExporter
