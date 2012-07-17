@@ -92,26 +92,26 @@ public class OntologyManagerTest {
 		Set<OWLOntology> loadedOntologies = ontologyManager.getLoadedOntologies();
 		assertEquals(0,loadedOntologies.size());
 		
-		ontologyManager.loadOntology(DocumentsCatalogue.scoroOntologyURI());
+		ontologyManager.loadOntology(DocumentsCatalogue.aminoAcidOntologyURI());
 		
 		loadedOntologies = ontologyManager.getLoadedOntologies();
 		assertEquals(1,loadedOntologies.size());
-		assertEquals(9,ontologyManager.getAllOntologies().size());
+		assertEquals(2,ontologyManager.getAllOntologies().size());
 		OWLOntology ontology = loadedOntologies.iterator().next();
-		assertEquals(IRI.create("http://purl.org/spar/scoro/"),ontology.getOntologyID().getOntologyIRI());
-		assertEquals(IRI.create(DocumentsCatalogue.scoroOntologyURI()),ontology.getOntologyID().getVersionIRI());
-		assertEquals(IRI.create(DocumentsCatalogue.scoroOntologyURI()),ontology.getOntologyID().getDefaultDocumentIRI());				
+		assertEquals(IRI.create("http://www.co-ode.org/ontologies/amino-acid/2005/10/11/amino-acid.owl"),ontology.getOntologyID().getOntologyIRI());
+		assertEquals(IRI.create(DocumentsCatalogue.aminoAcidOntologyURI()),ontology.getOntologyID().getVersionIRI());
+		assertEquals(IRI.create(DocumentsCatalogue.aminoAcidOntologyURI()),ontology.getOntologyID().getDefaultDocumentIRI());				
 		
 		//check reasoner includes imported ontologies and can find subclasses and individuals from them
-		OWLClass cls = ontologyManager.getDataFactory().getOWLClass(IRI.create("http://www.ontologydesignpatterns.org/cp/owl/situation.owl#Situation"));
+		OWLClass cls = ontologyManager.getDataFactory().getOWLClass(IRI.create("http://www.co-ode.org/ontologies/meta/2005/06/15/meta.owl#OWLList"));
 		NodeSet<OWLClass> subClasses = ontologyManager.getStructuralReasoner().getSubClasses(cls, false);
 		assertFalse(subClasses.isEmpty());
-		assertTrue(subClasses.containsEntity(ontologyManager.getDataFactory().getOWLClass(IRI.create("http://purl.org/spar/pro/RoleInTime"))));
+		assertTrue(subClasses.containsEntity(ontologyManager.getDataFactory().getOWLClass(IRI.create("http://www.co-ode.org/ontologies/meta/2005/06/15/meta.owl#EmptyList"))));
 		
-		cls = ontologyManager.getDataFactory().getOWLClass(IRI.create("http://www.w3.org/2006/time#DayOfWeek"));
+		cls = ontologyManager.getDataFactory().getOWLClass(IRI.create("http://www.co-ode.org/ontologies/meta/2005/06/15/meta.owl#EmptyList"));
 		NodeSet<OWLNamedIndividual> instances = ontologyManager.getStructuralReasoner().getInstances(cls, false);
 		assertFalse(instances.isEmpty());
-		assertTrue(instances.containsEntity(ontologyManager.getDataFactory().getOWLNamedIndividual(IRI.create("http://www.w3.org/2006/time#Friday"))));							
+		assertTrue(instances.containsEntity(ontologyManager.getDataFactory().getOWLNamedIndividual(IRI.create("http://www.co-ode.org/ontologies/meta/2005/06/15/meta.owl#nil"))));							
 	}		
 	
 	@Test
@@ -287,26 +287,26 @@ public class OntologyManagerTest {
 	
 	@Test
 	public void includesImportedProperties() throws Exception {
-		URI uri = DocumentsCatalogue.scoroOntologyURI();
+		URI uri = DocumentsCatalogue.aminoAcidOntologyURI();
 		ontologyManager.loadOntology(IRI.create(uri));
 		Set<OWLPropertyItem> properties = ontologyManager.getAllOWLProperties();
 		
 		boolean found=false;
 		for (OWLPropertyItem item : properties) {
-			if (item.getIRI().toString().equals("http://www.ontologydesignpatterns.org/cp/owl/timeindexedsituation.owl#forEntity")) {
+			if (item.getIRI().toString().equals("http://www.co-ode.org/ontologies/meta/2005/06/15/meta.owl#hasBeenClassified")) {
 				found=true;
 			}			
 		}
-		assertTrue("Should have found the imported property http://www.ontologydesignpatterns.org/cp/owl/timeindexedsituation.owl#forEntity", found);								
+		assertTrue("Should have found the imported property http://www.co-ode.org/ontologies/meta/2005/06/15/meta.owl#hasBeenClassified", found);								
 	}
 	
 	@Test
 	public void testOntologyInUse() throws Exception {
 		
-		OWLOntology scoroOntology = ontologyManager.loadOntology(DocumentsCatalogue.scoroOntologyURI());
+		OWLOntology aminoAcidOntology = ontologyManager.loadOntology(DocumentsCatalogue.aminoAcidOntologyURI());
 		OWLOntology jermOntology = ontologyManager.loadOntology(DocumentsCatalogue.jermOntologyURI());
 		
-		assertEquals("http://purl.org/spar/scoro/",scoroOntology.getOntologyID().getOntologyIRI().toString());
+		assertEquals("http://www.co-ode.org/ontologies/amino-acid/2005/10/11/amino-acid.owl",aminoAcidOntology.getOntologyID().getOntologyIRI().toString());
 		assertEquals("http://www.mygrid.org.uk/ontology/JERMOntology",jermOntology.getOntologyID().getOntologyIRI().toString());
 		
 		Sheet sheet = workbookManager.getWorkbook().getSheet(0);
@@ -318,20 +318,20 @@ public class OntologyManagerTest {
 		ontologyManager.remoteOntologyTermValidations(range);
 		assertFalse(ontologyManager.isOntologyInUse(jermOntology));
 		
-		assertFalse(ontologyManager.isOntologyInUse(scoroOntology));
-		ontologyManager.setOntologyTermValidation(range,ValidationType.SUBCLASSES,IRI.create("http://www.ontologydesignpatterns.org/cp/owl/situation.owl#Situation"),null);
-		assertTrue(ontologyManager.isOntologyInUse(scoroOntology));
+		assertFalse(ontologyManager.isOntologyInUse(aminoAcidOntology));
+		ontologyManager.setOntologyTermValidation(range,ValidationType.SUBCLASSES,IRI.create("http://www.co-ode.org/ontologies/amino-acid/2005/10/11/amino-acid.owl#Hydrophobic"),null);
+		assertTrue(ontologyManager.isOntologyInUse(aminoAcidOntology));
 		ontologyManager.remoteOntologyTermValidations(range);
-		assertFalse(ontologyManager.isOntologyInUse(scoroOntology));
+		assertFalse(ontologyManager.isOntologyInUse(aminoAcidOntology));
 		
 		assertFalse(ontologyManager.isOntologyInUse(jermOntology));
-		assertFalse(ontologyManager.isOntologyInUse(scoroOntology));
-		ontologyManager.setOntologyTermValidation(range, ValidationType.SUBCLASSES, IRI.create("http://www.mygrid.org.uk/ontology/JERMOntology#AssayType"), new OWLPropertyItem(IRI.create("http://www.ontologydesignpatterns.org/cp/owl/timeindexedsituation.owl#forEntity"),OWLPropertyType.OBJECT_PROPERTY));
+		assertFalse(ontologyManager.isOntologyInUse(aminoAcidOntology));
+		ontologyManager.setOntologyTermValidation(range, ValidationType.SUBCLASSES, IRI.create("http://www.mygrid.org.uk/ontology/JERMOntology#AssayType"), new OWLPropertyItem(IRI.create("http://www.co-ode.org/ontologies/amino-acid/2005/10/11/amino-acid.owl#hasCharge"),OWLPropertyType.OBJECT_PROPERTY));
 		assertTrue(ontologyManager.isOntologyInUse(jermOntology));
-		assertTrue(ontologyManager.isOntologyInUse(scoroOntology));
+		assertTrue(ontologyManager.isOntologyInUse(aminoAcidOntology));
 		ontologyManager.remoteOntologyTermValidations(range);
 		assertFalse(ontologyManager.isOntologyInUse(jermOntology));
-		assertFalse(ontologyManager.isOntologyInUse(scoroOntology));
+		assertFalse(ontologyManager.isOntologyInUse(aminoAcidOntology));
 		
 	}
 	
