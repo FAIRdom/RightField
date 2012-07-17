@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.sysmo-db</groupId>
 	<artifactId>rightfield</artifactId>
-	<version>0.18-2012-07-10-SNAPSHOT</version>
+	<version>0.18-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>RightField</name>
 	<description>
