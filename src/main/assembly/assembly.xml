@@ -3,6 +3,7 @@
 	<formats>
 		<format>zip</format>
 	</formats>
+	<baseDirectory>RightField</baseDirectory>
 	<fileSets>
 		<fileSet>
 			<directory></directory>
