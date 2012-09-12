@@ -54,7 +54,7 @@ public class WorkbookHSSFImpl implements MutableWorkbook, WorkbookChangeVisitor 
 
     public WorkbookHSSFImpl() {
         workbook = new HSSFWorkbook();
-        workbook.createSheet();
+        workbook.createSheet();        
     }
 
     public WorkbookHSSFImpl(URI uri) throws IOException,InvalidWorkbookFormatException {
