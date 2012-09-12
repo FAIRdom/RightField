@@ -14,6 +14,7 @@ import java.io.PrintWriter;
 import java.net.URI;
 import java.util.Iterator;
 
+import uk.ac.manchester.cs.owl.semspreadsheets.impl.InvalidWorkbookFormatException;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 /**
  * A simple CSV export, mainly for use to test exporting and as a debugging tool.
@@ -23,11 +24,11 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
  */
 public class CSVExporter extends AbstractExporter {
 
-	public CSVExporter(File workbookFile) throws IOException {
+	public CSVExporter(File workbookFile) throws IOException,InvalidWorkbookFormatException {
 		super(workbookFile);		
 	}
 
-	public CSVExporter(URI workbookURI) throws IOException {
+	public CSVExporter(URI workbookURI) throws IOException,InvalidWorkbookFormatException {
 		super(workbookURI);		
 	}
 

@@ -9,6 +9,7 @@ package uk.ac.manchester.cs.owl.semspreadsheets.model;
 import java.io.IOException;
 import java.net.URI;
 
+import uk.ac.manchester.cs.owl.semspreadsheets.impl.InvalidWorkbookFormatException;
 import uk.ac.manchester.cs.owl.semspreadsheets.impl.WorkbookHSSFImpl;
 
 /**
@@ -32,8 +33,9 @@ public class WorkbookFactory {
      * @param uri The URI that points to the Excel workbook
      * @return A representation of the workbook at the specified URI
      * @throws IOException If there was an IO problem loading the workbook
+     * @throws InvalidWorkbookFormatException indicates the format of the file behind the URI is not supported
      */
-    public static Workbook createWorkbook(URI uri) throws IOException {
+    public static Workbook createWorkbook(URI uri) throws IOException,InvalidWorkbookFormatException {
         return new WorkbookHSSFImpl(uri);
     }
 

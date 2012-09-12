@@ -21,6 +21,7 @@ import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
+import uk.ac.manchester.cs.owl.semspreadsheets.impl.InvalidWorkbookFormatException;
 import uk.ac.manchester.cs.owl.semspreadsheets.listeners.CellSelectionListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.listeners.WorkbookChangeListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.listeners.WorkbookManagerListener;
@@ -166,7 +167,7 @@ public class WorkbookManager {
         return workbook;
     }
 
-    public Workbook loadWorkbook(URI uri) throws IOException {
+    public Workbook loadWorkbook(URI uri) throws IOException,InvalidWorkbookFormatException {
         try {
         	//need to preserve the listeners on the workbook
         	List<WorkbookChangeListener> existingListeners = workbook.getAllChangeListeners();
@@ -189,7 +190,7 @@ public class WorkbookManager {
         }
     }    
 
-    public void loadWorkbook(File file) throws IOException {
+    public void loadWorkbook(File file) throws IOException,InvalidWorkbookFormatException {
         loadWorkbook(file.toURI());
     }
 

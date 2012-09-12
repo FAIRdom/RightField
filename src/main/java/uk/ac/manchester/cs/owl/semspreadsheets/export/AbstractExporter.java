@@ -18,6 +18,7 @@ import java.util.Comparator;
 
 import org.apache.log4j.Logger;
 
+import uk.ac.manchester.cs.owl.semspreadsheets.impl.InvalidWorkbookFormatException;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Cell;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyManager;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidation;
@@ -47,12 +48,12 @@ public abstract class AbstractExporter implements Exporter {
 		this.manager = manager;		
 	}
 	
-	public AbstractExporter(URI workbookURI) throws IOException {
+	public AbstractExporter(URI workbookURI) throws IOException,InvalidWorkbookFormatException {
 		this.manager = new WorkbookManager();
 		this.manager.loadWorkbook(workbookURI);		
 	}
 	
-	public AbstractExporter(File workbookFile) throws IOException {
+	public AbstractExporter(File workbookFile) throws IOException,InvalidWorkbookFormatException {
 		this.manager = new WorkbookManager();
 		this.manager.loadWorkbook(workbookFile);		
 	}

@@ -20,6 +20,8 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.IRI;
 
+import uk.ac.manchester.cs.owl.semspreadsheets.impl.InvalidWorkbookFormatException;
+
 /**
  * A simple tool for exporting rdf from a batch of spreadsheets in a directory. It is a one off tool, created for a specific purpose, but may have future uses
  * and enhancements.
@@ -67,7 +69,10 @@ public class RightFieldBatchExporter {
 							logger.error("Unable to process "+file.getAbsolutePath(),e);
 						} catch (URISyntaxException e) {
 							logger.error("Error creating the root URI for "+file.getAbsolutePath(),e);
-						}						
+						} catch (InvalidWorkbookFormatException e) {
+							logger.error("The format of the workbook file is not supported",e);
+						}
+						
 					}
 				}
 			}
