@@ -81,6 +81,10 @@ public class DocumentsCatalogue {
 		return uriForResourceName("spreadsheet_with_colours.xlsx");
 	}
 	
+	public static URI workbookWithColoursURI() throws Exception {
+		return uriForResourceName("spreadsheet_with_colours.xls");
+	}
+	
 	private static URI uriForResourceName(String resource) throws Exception {
 		return DocumentsCatalogue.class.getResource("/"+resource).toURI();
 	}

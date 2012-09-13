@@ -322,7 +322,7 @@ public class CellHSSFImpl implements Cell {
 	 * Gets access to the POI internals for this cell - for debugging,testing and subclassing purposes only
 	 * @return
 	 */
-	protected HSSFCell getInnards() {
+	public HSSFCell getInnards() {
 		return theCell;
 	}
 
