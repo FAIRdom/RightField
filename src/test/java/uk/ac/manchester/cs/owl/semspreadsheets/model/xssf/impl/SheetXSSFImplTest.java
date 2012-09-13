@@ -52,6 +52,19 @@ public class SheetXSSFImplTest {
 	}
 	
 	@Test
+	public void testAddPropertyValidation() throws Exception {		
+		Sheet sheet = getTestWorkbook().addSheet();
+		assertEquals(0,sheet.getValidations().size());
+		sheet.addLiteralValidation("wksowlv0", 2, 3,3, 4);
+		assertEquals(1,sheet.getValidations().size());
+		Validation validation = sheet.getValidations().iterator().next();
+		assertTrue(validation.isLiteralValidation());
+		assertFalse(validation.isDataValidation());
+		assertEquals("propliteral^wksowlv0",validation.getFormula());
+		assertEquals(new Range(sheet,2,3,3,4),validation.getRange());
+	}
+	
+	@Test
 	public void testGetColumnWidth() throws Exception {
 		Sheet sheet = getBlankSheet();
 		assertEquals(48,sheet.getColumnWidth(0));

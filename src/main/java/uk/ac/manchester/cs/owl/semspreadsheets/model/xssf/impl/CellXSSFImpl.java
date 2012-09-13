@@ -9,10 +9,6 @@ import javax.swing.SwingConstants;
 import javax.swing.text.Style;
 
 import org.apache.log4j.Logger;
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFFont;
-import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFColor;
@@ -149,10 +145,10 @@ public class CellXSSFImpl implements Cell {
             cellStyle.setFont(font);
         }
         if (b) {
-            font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+            font.setBoldweight(XSSFFont.BOLDWEIGHT_BOLD);
         }
         else {
-            font.setBoldweight(HSSFFont.BOLDWEIGHT_NORMAL);
+            font.setBoldweight(XSSFFont.BOLDWEIGHT_NORMAL);
         }
         fontCache.clear();
     }
@@ -172,7 +168,7 @@ public class CellXSSFImpl implements Cell {
             String name = hssfFont.getFontName();
             int size = hssfFont.getFontHeightInPoints();
             int style = Font.PLAIN;
-            if (hssfFont.getBoldweight() == HSSFFont.BOLDWEIGHT_BOLD) {
+            if (hssfFont.getBoldweight() == XSSFFont.BOLDWEIGHT_BOLD) {
                 style = Font.BOLD;
                 if (hssfFont.getItalic()) {
                     style = style | Font.ITALIC;
@@ -220,7 +216,7 @@ public class CellXSSFImpl implements Cell {
 		XSSFColor col = new XSSFColor(colour);
 		
 		XSSFCellStyle cellStyle = workbook.createCellStyle();
-		cellStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND );
+		cellStyle.setFillPattern(XSSFCellStyle.SOLID_FOREGROUND );
 		cellStyle.setFillForegroundColor(col.getIndexed());			
 		theCell.setCellStyle(cellStyle);
 		logger.debug("Cell colour changed to "+col.toString());	
@@ -240,13 +236,13 @@ public class CellXSSFImpl implements Cell {
             return SwingConstants.LEFT;
         }
         short hssfAlignment = cellStyle.getAlignment();
-        if (hssfAlignment == HSSFCellStyle.ALIGN_LEFT) {
+        if (hssfAlignment == XSSFCellStyle.ALIGN_LEFT) {
             return SwingConstants.LEFT;
         }
-        else if (hssfAlignment == HSSFCellStyle.ALIGN_CENTER) {
+        else if (hssfAlignment == XSSFCellStyle.ALIGN_CENTER) {
             return SwingConstants.CENTER;
         }
-        else if (hssfAlignment == HSSFCellStyle.ALIGN_RIGHT) {
+        else if (hssfAlignment == XSSFCellStyle.ALIGN_RIGHT) {
             return SwingConstants.RIGHT;
         }
         else {
@@ -264,6 +260,26 @@ public class CellXSSFImpl implements Cell {
 
     public boolean isDataValidation() {
         return false;
+    }
+    
+    @Override
+	public int hashCode() {
+		return theCell.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof CellXSSFImpl) {
+			CellXSSFImpl cell = (CellXSSFImpl)obj;
+			return cell.theCell.equals(this.theCell);			
+		}
+		else {
+			return false;
+		}
+	}
+    
+    public XSSFCell getInnards() {
+    	return theCell;
     }
 
 	

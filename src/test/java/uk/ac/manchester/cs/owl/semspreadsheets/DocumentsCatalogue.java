@@ -60,6 +60,10 @@ public class DocumentsCatalogue {
 		return uriForResourceName("populated_JERM_template.xls");
 	}	
 	
+	public static URI populatedJermWorkbookXLSXURI() throws Exception {
+		return uriForResourceName("populated_JERM_template.xlsx");
+	}
+	
 	public static URI twoOntologiesWorkbookURI() throws Exception {
 		return uriForResourceName("two_ontologies.xls");
 	}

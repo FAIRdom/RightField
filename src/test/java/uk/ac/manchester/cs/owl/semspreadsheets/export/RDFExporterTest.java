@@ -36,6 +36,16 @@ public class RDFExporterTest {
 	}	
 	
 	@Test
+	public void testInitWithXLSXFile() throws Exception {
+		URI uri = DocumentsCatalogue.populatedJermWorkbookXLSXURI();
+		AbstractExporter exporter = new RDFExporter(uri,rootID);
+		assertNotNull(exporter.getWorkbook());
+		assertEquals("Metadata Template",exporter.getWorkbook().getSheet(0).getName());
+		assertNotNull(exporter.getWorkbookManager());
+		assertEquals(9,exporter.getValidations().size());
+	}
+	
+	@Test
 	public void testInitiWithURI() throws Exception {
 		URI uri = DocumentsCatalogue.populatedJermWorkbookURI();
 		AbstractExporter exporter = new RDFExporter(uri,rootID);
@@ -111,7 +121,7 @@ public class RDFExporterTest {
 		assertEquals("http://www.mygrid.org.uk/ontology/JERMOntology#isAssociatedWith",statements.get(1).getPredicate().getURI());
 		assertTrue(statements.get(1).getObject().isResource());
 		assertEquals("http://www.mygrid.org.uk/ontology/JERMOntology#COSMIC",statements.get(1).getObject().asResource().getURI());						
-	}
+	}		
 	
 	@Test
 	public void testExportWithNoProperties() throws Exception {

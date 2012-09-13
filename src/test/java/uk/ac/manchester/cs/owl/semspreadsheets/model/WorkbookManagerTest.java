@@ -108,12 +108,37 @@ public class WorkbookManagerTest {
 		assertNotNull(manager.getWorkbookURI());
 		assertEquals(uri,manager.getWorkbookURI());
 		assertTrue(testListener.isWorkbookLoadedFired());				
-	}
+	}	
 	
 	@Test
 	//checks the ontologyIRIs that are imported from the spreadsheet. This case there are 2 ontologies, and the protege imported ontology should be ignored
 	public void testLoadWorkbook2() throws Exception {		
 		URI uri = DocumentsCatalogue.populatedJermWorkbookURI();
+		manager.loadWorkbook(uri);
+		assertEquals(2,manager.getOntologyManager().getOntologyIRIs().size());
+		assertTrue(manager.getOntologyManager().getOntologyIRIs().contains(IRI.create("http://www.mygrid.org.uk/ontology/JERMOntology")));
+		assertTrue(manager.getOntologyManager().getOntologyIRIs().contains(IRI.create("http://mged.sourceforge.net/ontologies/MGEDOntology.owl")));
+		
+		assertEquals(9,manager.getOntologyManager().getOntologyTermValidations().size());
+	}
+	
+	@Test
+	public void testLoadXLSXWorkbook() throws Exception {
+		URI uri = DocumentsCatalogue.simpleAnnotatedXLSXWorkbookURI();
+		manager.getWorkbookState().changesUnsaved();
+		Workbook book = manager.loadWorkbook(uri);
+		assertNotNull(book);
+		assertTrue(manager.getWorkbookState().isChangesSaved());
+		assertSame(book, manager.getWorkbook());
+		assertNotNull(manager.getWorkbookURI());
+		assertEquals(uri,manager.getWorkbookURI());
+		assertTrue(testListener.isWorkbookLoadedFired());
+	}
+	
+	@Test
+	//checks the ontologyIRIs that are imported from the spreadsheet. This case there are 2 ontologies, and the protege imported ontology should be ignored
+	public void testLoadWorkbookXLSX2() throws Exception {		
+		URI uri = DocumentsCatalogue.populatedJermWorkbookXLSXURI();
 		manager.loadWorkbook(uri);
 		assertEquals(2,manager.getOntologyManager().getOntologyIRIs().size());
 		assertTrue(manager.getOntologyManager().getOntologyIRIs().contains(IRI.create("http://www.mygrid.org.uk/ontology/JERMOntology")));
