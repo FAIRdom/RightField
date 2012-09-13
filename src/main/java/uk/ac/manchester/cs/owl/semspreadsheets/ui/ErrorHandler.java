@@ -17,7 +17,7 @@ import org.semanticweb.owlapi.io.OWLOntologyCreationIOException;
 import org.semanticweb.owlapi.io.UnparsableOntologyException;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
-import uk.ac.manchester.cs.owl.semspreadsheets.impl.InvalidWorkbookFormatException;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.InvalidWorkbookFormatException;
 import uk.ac.manchester.cs.owl.semspreadsheets.repository.bioportal.BioPortalAccessDeniedException;
 
 /**

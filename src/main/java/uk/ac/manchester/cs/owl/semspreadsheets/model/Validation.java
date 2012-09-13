@@ -11,7 +11,7 @@ package uk.ac.manchester.cs.owl.semspreadsheets.model;
  * @author Matthew Horridge
  * @author Stuart Owen
  */
-public interface Validation {
+public interface Validation {	
 
     String getFormula();
 

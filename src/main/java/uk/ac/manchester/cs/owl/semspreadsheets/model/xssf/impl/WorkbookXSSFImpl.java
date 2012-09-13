@@ -1,11 +1,4 @@
-/*******************************************************************************
- * Copyright (c) 2009-2012, University of Manchester
- * 
- * Licensed under the New BSD License. 
- * Please see LICENSE file that is distributed with the source code
- ******************************************************************************/
-
-package uk.ac.manchester.cs.owl.semspreadsheets.impl;
+package uk.ac.manchester.cs.owl.semspreadsheets.model.xssf.impl;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -16,18 +9,16 @@ import java.io.InputStream;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.log4j.Logger;
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFName;
-import org.apache.poi.hssf.usermodel.HSSFRichTextString;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.poifs.filesystem.OfficeXmlFileException;
+import org.apache.poi.ss.usermodel.Name;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFName;
+import org.apache.poi.xssf.usermodel.XSSFRichTextString;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.listeners.WorkbookChangeListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.MutableWorkbook;
@@ -39,43 +30,62 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.change.WorkbookChange;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.change.WorkbookChangeEvent;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.change.WorkbookChangeVisitor;
 
+/*
+ * Copyright (C) 2009, University of Manchester
+ *
+ * Modifications to the initial code base are copyright of their
+ * respective authors, or their employers as appropriate.  Authorship
+ * of the modifications may be determined from the ChangeLog placed at
+ * the end of this file.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ */
+
 /**
+ * Author: Matthew Horridge, Stuart Owen<br>
+ * The University of Manchester<br>
+ * Information Management Group<br>
+ * Date: 20-Sep-2009
+ * 
  * @author Stuart Owen
  * @author Matthew Horridge
  */
 
-public class WorkbookHSSFImpl implements MutableWorkbook, WorkbookChangeVisitor {
+public class WorkbookXSSFImpl implements MutableWorkbook, WorkbookChangeVisitor {
 
-    private HSSFWorkbook workbook;
+    private XSSFWorkbook workbook;
     
-    private static final Logger logger = Logger.getLogger(WorkbookHSSFImpl.class);    
+    private static final Logger logger = Logger.getLogger(WorkbookXSSFImpl.class);
 
-    private Set<WorkbookChangeListener> changeListeners = new HashSet<WorkbookChangeListener>();
+    private List<WorkbookChangeListener> changeListeners = new ArrayList<WorkbookChangeListener>();
 
-    public WorkbookHSSFImpl() {
-        workbook = new HSSFWorkbook();
-        workbook.createSheet();        
+    public WorkbookXSSFImpl() {
+        workbook = new XSSFWorkbook();
+        workbook.createSheet();
+    }
+    
+    public WorkbookXSSFImpl(XSSFWorkbook workbook) {
+    	this.workbook=workbook;
     }
 
-    public WorkbookHSSFImpl(URI uri) throws IOException,InvalidWorkbookFormatException {
+    public WorkbookXSSFImpl(URI uri) throws IOException {
         InputStream inputStream = uri.toURL().openStream();
-        try {
-        	workbook = new HSSFWorkbook(new BufferedInputStream(inputStream));
-        }
-        catch (OfficeXmlFileException e) {
-        	throw new InvalidWorkbookFormatException(e,uri);
-        }
-        catch (IOException e) {
-        	if (e.getMessage().toLowerCase().contains("invalid header signature")) {
-        		throw new InvalidWorkbookFormatException(e,uri);
-        	}
-        	else {
-        		throw e;
-        	}
-        }
+        workbook = new XSSFWorkbook(new BufferedInputStream(inputStream));
     }
 
-    public HSSFWorkbook getHSSFWorkbook() {
+    public XSSFWorkbook getXSSFWorkbook() {
         return workbook;
     }
 
@@ -87,7 +97,7 @@ public class WorkbookHSSFImpl implements MutableWorkbook, WorkbookChangeVisitor 
                 listener.workbookChanged(new WorkbookChangeEvent(change));
             }
             catch (Throwable e) {
-                logger.error("Error notifying listener",e);
+                e.printStackTrace();
             }
         }
     }
@@ -95,9 +105,9 @@ public class WorkbookHSSFImpl implements MutableWorkbook, WorkbookChangeVisitor 
     public Collection<NamedRange> getNamedRanges() {
         Collection<NamedRange> result = new ArrayList<NamedRange>();
         for(int i = 0; i < workbook.getNumberOfNames(); i++) {
-            HSSFName name = workbook.getNameAt(i);
+            XSSFName name = workbook.getNameAt(i);
             if(!name.isDeleted() && !name.isFunctionName()) {
-                NamedRange range = new NamedRangeHSSFImpl(this, name);
+                NamedRange range = new NamedRangeXSSFImpl(this, name);
                 result.add(range);
             }
         }
@@ -105,8 +115,8 @@ public class WorkbookHSSFImpl implements MutableWorkbook, WorkbookChangeVisitor 
     }
 
     public void addChangeListener(WorkbookChangeListener changeListener) {
-    	changeListeners.add(changeListener);    	
-    }        
+        changeListeners.add(changeListener);
+    }
 
     public void removeChangeListener(WorkbookChangeListener changeListener) {
         changeListeners.remove(changeListener);
@@ -123,7 +133,7 @@ public class WorkbookHSSFImpl implements MutableWorkbook, WorkbookChangeVisitor 
         }
         for(WorkbookChangeListener listener : new ArrayList<WorkbookChangeListener>(changeListeners)) {
             try {
-                listener.sheetRemoved();                
+                listener.sheetRemoved();
             }
             catch (Exception e) {
             	logger.error("Error removing a sheet",e);
@@ -135,9 +145,9 @@ public class WorkbookHSSFImpl implements MutableWorkbook, WorkbookChangeVisitor 
         if(workbook.getName(name) != null) {
             workbook.removeName(name);
         }
-        HSSFName hssfName = workbook.createName();
-        hssfName.setNameName(name);
-        hssfName.setRefersToFormula(rng.toFixedAddress());
+        Name xssfName = workbook.createName();
+        xssfName.setNameName(name);
+        xssfName.setRefersToFormula(rng.toFixedAddress());
     }
 
     public void removeName(String name) {
@@ -160,22 +170,13 @@ public class WorkbookHSSFImpl implements MutableWorkbook, WorkbookChangeVisitor 
     protected Sheet createSheet() { 
     	int x=0;
     	String name = "Sheet" + Integer.toString(x);
-    	while (sheetNameExists(name)) {
+    	while (containsSheet(name)) {
     		x++;
     		name = "Sheet" + Integer.toString(x);
     	}
-    	HSSFSheet hssfSheet = workbook.createSheet(name);
-    	return new SheetHSSFImpl(this, hssfSheet);
-    }
-    
-    protected boolean sheetNameExists(String name) {    	
-    	for (Sheet sheet : getSheets()) {
-    		if (sheet.getName().equals(name)) {
-    			return true;
-    		}
-    	}
-    	return false;
-    }
+    	XSSFSheet xssfSheet = workbook.createSheet(name);
+    	return new SheetXSSFImpl(this, xssfSheet);
+    }    
 
     public Sheet addHiddenSheet() {
         Sheet sheet = createSheet();
@@ -203,54 +204,56 @@ public class WorkbookHSSFImpl implements MutableWorkbook, WorkbookChangeVisitor 
     public List<Sheet> getSheets() {
         List<Sheet> sheets = new ArrayList<Sheet>();
         for (int i = 0; i < workbook.getNumberOfSheets(); i++) {
-            sheets.add(new SheetHSSFImpl(this, workbook.getSheetAt(i)));
+            sheets.add(new SheetXSSFImpl(this, workbook.getSheetAt(i)));
         }
         return sheets;
     }
 
     public Sheet getSheet(String name) {
-        HSSFSheet hssfSheet = workbook.getSheet(name);
-        if (hssfSheet == null) {
+        XSSFSheet xssfSheet = workbook.getSheet(name);
+        if (xssfSheet == null) {
             return null;
         }
         else {
-            return new SheetHSSFImpl(this, hssfSheet);
+            return new SheetXSSFImpl(this, xssfSheet);
         }
     }
 
     public Sheet getSheet(int index) {
-        HSSFSheet hssfSheet = workbook.getSheetAt(index);
-        if(hssfSheet == null) {
+        XSSFSheet xssfSheet = workbook.getSheetAt(index);
+        if(xssfSheet == null) {
             return null;
         }
         else {
-            return new SheetHSSFImpl(this, hssfSheet);
+            return new SheetXSSFImpl(this, xssfSheet);
         }
     }
 
     public void saveAs(URI uri) throws IOException {
         File file = new File(uri);
-        BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(file));
+        BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(file));        
         workbook.write(stream);        
         stream.close();
     }        
 
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     public void visit(SetCellValue setCellValue) {
-        HSSFSheet hssfSheet = workbook.getSheet(setCellValue.getSheet().getName());
-        HSSFRow hssfRow = hssfSheet.getRow(setCellValue.getRow());
-        if(hssfRow == null && setCellValue.getNewValue() != null) {
-            hssfRow = hssfSheet.createRow(setCellValue.getRow());
+        XSSFSheet xssfSheet = workbook.getSheet(setCellValue.getSheet().getName());
+        XSSFRow xssfRow = xssfSheet.getRow(setCellValue.getRow());
+        if(xssfRow == null && setCellValue.getNewValue() != null) {
+            xssfRow = xssfSheet.createRow(setCellValue.getRow());
         }
-        HSSFCell hssfCell = hssfRow.getCell(setCellValue.getCol());
-        if (hssfCell == null && setCellValue.getNewValue() != null) {
-            hssfCell = hssfRow.createCell(setCellValue.getCol());
+        XSSFCell xssfCell = xssfRow.getCell(setCellValue.getCol());
+        if (xssfCell == null && setCellValue.getNewValue() != null) {
+            xssfCell = xssfRow.createCell(setCellValue.getCol());
         }
-        if (hssfCell != null) {
+        if (xssfCell != null) {
             if (setCellValue.getNewValue() != null) {
-                hssfCell.setCellValue(new HSSFRichTextString(setCellValue.getNewValue().toString()));
+                xssfCell.setCellValue(new XSSFRichTextString(setCellValue.getNewValue().toString()));
             }
             else {
-                hssfRow.removeCell(hssfCell);
+                xssfRow.removeCell(xssfCell);
             }
         }
     }

@@ -5,7 +5,7 @@
  * Please see LICENSE file that is distributed with the source code
  ******************************************************************************/
 
-package uk.ac.manchester.cs.owl.semspreadsheets.impl;
+package uk.ac.manchester.cs.owl.semspreadsheets.model;
 
 import java.net.URI;
 

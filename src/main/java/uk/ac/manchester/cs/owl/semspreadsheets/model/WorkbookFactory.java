@@ -9,8 +9,7 @@ package uk.ac.manchester.cs.owl.semspreadsheets.model;
 import java.io.IOException;
 import java.net.URI;
 
-import uk.ac.manchester.cs.owl.semspreadsheets.impl.InvalidWorkbookFormatException;
-import uk.ac.manchester.cs.owl.semspreadsheets.impl.WorkbookHSSFImpl;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.hssf.impl.WorkbookHSSFImpl;
 
 /**
  * Author: Matthew Horridge<br>

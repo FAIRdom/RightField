@@ -6,10 +6,13 @@
  ******************************************************************************/
 package uk.ac.manchester.cs.owl.semspreadsheets;
 
+import java.io.File;
 import java.net.URI;
+import java.util.UUID;
 
-import uk.ac.manchester.cs.owl.semspreadsheets.impl.SheetHSSFImpl;
-import uk.ac.manchester.cs.owl.semspreadsheets.impl.WorkbookHSSFImpl;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.hssf.impl.SheetHSSFImpl;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.hssf.impl.WorkbookHSSFImpl;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.xssf.impl.WorkbookXSSFImpl;
 
 /**
  * Some helpful common utility methods for setting up spreadsheet tests
@@ -22,6 +25,11 @@ public class SpreadsheetTestHelper {
 		return new WorkbookHSSFImpl();
 	}
 	
+	public static WorkbookXSSFImpl getBlankXSSFWorkbook() throws Exception 
+	{
+		return new WorkbookXSSFImpl();
+	}
+	
 	public static SheetHSSFImpl getWorkbookSheet(URI resourceURI, int index) throws Exception {
 		WorkbookHSSFImpl book = openWorkbookHSSF(resourceURI);
 		return (SheetHSSFImpl)book.getSheet(index);
@@ -30,6 +38,18 @@ public class SpreadsheetTestHelper {
 	public static WorkbookHSSFImpl openWorkbookHSSF(URI uri) throws Exception 
 	{
 		return new WorkbookHSSFImpl(uri);
+	}
+	
+	public static WorkbookXSSFImpl openWorkbookXSSF(URI uri) throws Exception 
+	{
+		return new WorkbookXSSFImpl(uri);
+	}
+	
+	public static File getTempFile(String extension) {
+		File tmpDir = new File(System.getProperty("java.io.tmpdir"));
+		
+		String uuid = UUID.randomUUID().toString();
+		return new File(tmpDir,uuid+"."+extension);
 	}
 		
 		

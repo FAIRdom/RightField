@@ -20,7 +20,7 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.IRI;
 
-import uk.ac.manchester.cs.owl.semspreadsheets.impl.InvalidWorkbookFormatException;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.InvalidWorkbookFormatException;
 
 /**
  * A simple tool for exporting rdf from a batch of spreadsheets in a directory. It is a one off tool, created for a specific purpose, but may have future uses

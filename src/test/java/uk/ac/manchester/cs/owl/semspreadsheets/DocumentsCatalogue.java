@@ -36,6 +36,10 @@ public class DocumentsCatalogue {
 		return uriForResourceName("simple_annotated_book.xls");
 	}
 	
+	public static URI simpleAnnotatedXLSXWorkbookURI() throws Exception {
+		return uriForResourceName("simple_annotated_book.xlsx");
+	}
+	
 	public static URI simpleWorkbookURI() throws Exception {
 		return uriForResourceName("simple_book.xls");
 	}
@@ -67,6 +71,10 @@ public class DocumentsCatalogue {
 	public static URI nonExistantFileURI() throws Exception {
 		URI uri = DocumentsCatalogue.class.getResource("/").toURI();
 		return new URI(uri.toString()+"dont_exist.xls");
+	}
+	
+	public static URI workbookWithColoursXLSXURI() throws Exception {
+		return uriForResourceName("spreadsheet_with_colours.xlsx");
 	}
 	
 	private static URI uriForResourceName(String resource) throws Exception {

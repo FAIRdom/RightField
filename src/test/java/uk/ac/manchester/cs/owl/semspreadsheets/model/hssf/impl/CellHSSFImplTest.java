@@ -1,4 +1,4 @@
-package uk.ac.manchester.cs.owl.semspreadsheets.impl;
+package uk.ac.manchester.cs.owl.semspreadsheets.model.hssf.impl;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -12,6 +12,7 @@ import org.junit.Test;
 import uk.ac.manchester.cs.owl.semspreadsheets.SpreadsheetTestHelper;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Cell;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Workbook;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.hssf.impl.CellHSSFImpl;
 
 public class CellHSSFImplTest {
 	

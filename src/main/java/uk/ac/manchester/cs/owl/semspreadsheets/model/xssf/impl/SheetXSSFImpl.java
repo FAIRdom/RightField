@@ -1,25 +1,20 @@
-/*******************************************************************************
- * Copyright (c) 2009-2012, University of Manchester
- * 
- * Licensed under the New BSD License. 
- * Please see LICENSE file that is distributed with the source code
- ******************************************************************************/
-package uk.ac.manchester.cs.owl.semspreadsheets.impl;
+package uk.ac.manchester.cs.owl.semspreadsheets.model.xssf.impl;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.poi.hssf.usermodel.DVConstraint;
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFDataValidation;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.DataValidation;
+import org.apache.poi.ss.usermodel.DataValidationConstraint;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellRangeAddressList;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFDataValidation;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Cell;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.PropertyValidationForumlaDefinition;
@@ -27,41 +22,35 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Validation;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Workbook;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.impl.ValidationImpl;
 
 /**
- * @author Stuart Owen
- * @author Matthew Horridge
+ * Author: Matthew Horridge<br>
+ * The University of Manchester<br>
+ * Information Management Group<br>
+ * Date: 18-Sep-2009
  */
-public class SheetHSSFImpl implements Sheet {
+public class SheetXSSFImpl implements Sheet {
 
-    private WorkbookHSSFImpl workbook;
+    private WorkbookXSSFImpl workbook;
 
-    private HSSFWorkbook hssfWorkbook;
+    private XSSFWorkbook hssfWorkbook;       
 
-    private HSSFSheet sheet;
+    private XSSFSheet sheet;
 
     private static final short MAX_ROWS = Short.MAX_VALUE;
 
     private static final int MAX_COLUMNS = 256;
 
 
-    public SheetHSSFImpl(WorkbookHSSFImpl workbook, HSSFSheet hssfSheet) {
+    public SheetXSSFImpl(WorkbookXSSFImpl workbook, XSSFSheet hssfSheet) {
         this.workbook = workbook;
-        this.hssfWorkbook = workbook.getHSSFWorkbook();
+        this.hssfWorkbook = workbook.getXSSFWorkbook();
         this.sheet = hssfSheet;
     }
 
     public Workbook getWorkbook() {
         return workbook;
-    }
-    
-    public int getIndex() {
-    	for (int index = 0 ; index < getWorkbook().getSheets().size(); index++) {
-    		if (getWorkbook().getSheet(index).equals(this)) {
-    			return index;
-    		}
-    	}
-    	return -1;
     }
 
     public void setName(String name) {
@@ -93,18 +82,18 @@ public class SheetHSSFImpl implements Sheet {
 	}
 
     public boolean equals(Object obj) {
-        if (!(obj instanceof SheetHSSFImpl)) {
+        if (!(obj instanceof SheetXSSFImpl)) {
             return false;
         }
-        SheetHSSFImpl other = (SheetHSSFImpl) obj;
+        SheetXSSFImpl other = (SheetXSSFImpl) obj;
         return sheet == other.sheet;
     }
 
-    public HSSFSheet getHSSFSheet() {
+    public XSSFSheet getHSSFSheet() {
         return sheet;
     }
 
-    public int getColumnWidth(int col) {
+    public int getColumnWidth(int col) {    	    	
         int width = (sheet.getColumnWidth(col) / 256) * 6;
         return width;
     }
@@ -129,35 +118,35 @@ public class SheetHSSFImpl implements Sheet {
     }    
 
     public Cell getCellAt(int col, int row) {
-        HSSFRow hssfRow = sheet.getRow(row);
+        XSSFRow hssfRow = sheet.getRow(row);
         if (hssfRow == null) {
             return null;
         }
-        HSSFCell hssfCell = hssfRow.getCell(col);
+        XSSFCell hssfCell = hssfRow.getCell(col);
         if (hssfCell == null) {
             return null;
         }
         else {
-            return new CellHSSFImpl(hssfWorkbook, hssfCell);
+            return new CellXSSFImpl(hssfWorkbook, hssfCell);
         }
     }
 
     public Cell addCellAt(int col, int row) {
-        HSSFRow hssfRow = sheet.getRow(row);
+        XSSFRow hssfRow = sheet.getRow(row);
         if (hssfRow == null) {
             hssfRow = sheet.createRow(row);
         }
-        HSSFCell cell = hssfRow.getCell(col);
+        XSSFCell cell = hssfRow.getCell(col);
         if (cell == null) {
             cell = hssfRow.createCell(col);
         }
-        return new CellHSSFImpl(hssfWorkbook, cell);
+        return new CellXSSFImpl(hssfWorkbook, cell);
     }
 
     public void clearCellAt(int col, int row) {
-        HSSFRow theRow = sheet.getRow(row);
+        XSSFRow theRow = sheet.getRow(row);
         if(theRow != null) {
-            HSSFCell theCell = theRow.getCell(col);
+            XSSFCell theCell = theRow.getCell(col);
             theCell.setCellValue("");
         }
     }            
@@ -182,14 +171,6 @@ public class SheetHSSFImpl implements Sheet {
         }
         return containingValidations;
     }
-
-    /**
-     * Creates a Formula List constraint validation, with creates a dropdown list based on values defined by namedRange(the name of the hidden sheet).
-     */
-    public void addValidation(String namedRange, int firstCol, int firstRow, int lastCol, int lastRow) {
-    	DVConstraint constraint = DVConstraint.createFormulaListConstraint(namedRange);
-    	addConstraint(constraint, firstCol, firstRow, lastCol, lastRow);
-    }
     
     /**
      * Creates a custom validation that embeds the hidden sheet name (that contains the ontology details) .
@@ -202,33 +183,50 @@ public class SheetHSSFImpl implements Sheet {
     	
     	//the cell title A1 is irrelevant, when the sheet is saved it gets turned into the current cell.
     	String formula="AND(A1<>\""+encoded+"\")";
-    	DVConstraint constraint = DVConstraint.createCustomFormulaConstraint(formula);
-    	addConstraint(constraint, firstCol, firstRow, lastCol, lastRow);
+    	CellRangeAddressList addressList = new CellRangeAddressList(firstRow, lastRow, firstCol, lastCol); 
+    	DataValidationConstraint constraint = sheet.getDataValidationHelper().createFormulaListConstraint(formula);
+    	DataValidation dataValidation = sheet.getDataValidationHelper().createValidation(constraint, addressList);
+        sheet.addValidationData(dataValidation);
     }
-    
-    protected void addConstraint(DVConstraint constraint, int firstCol, int firstRow, int lastCol, int lastRow) {
-    	CellRangeAddressList addressList = new CellRangeAddressList(firstRow, lastRow, firstCol, lastCol);    	
-    	HSSFDataValidation dataValidation = new HSSFDataValidation(addressList, constraint);
-    	sheet.addValidationData(dataValidation);
+
+    public void addValidation(String namedRange, int firstCol, int firstRow, int lastCol, int lastRow) {
+        CellRangeAddressList addressList = new CellRangeAddressList(firstRow, lastRow, firstCol, lastCol);        
+        DataValidationConstraint constraint = sheet.getDataValidationHelper().createFormulaListConstraint(namedRange);
+        DataValidation dataValidation = sheet.getDataValidationHelper().createValidation(constraint, addressList);
+        sheet.addValidationData(dataValidation);
     }
 
     public Collection<Validation> getValidations() {
         List<Validation> validationList = new ArrayList<Validation>();
-        for (HSSFDataValidation validation : getValidationData()) {
+        for (XSSFDataValidation validation : getValidationData()) {
             for (CellRangeAddress address : validation.getRegions().getCellRangeAddresses()) {
-                validationList.add(new ValidationImpl(validation.getConstraint().getFormula1(), this, address.getFirstColumn(), address.getLastColumn(), address.getFirstRow(), address.getLastRow()));
+            	String formula1=validation.getValidationConstraint().getFormula1();
+                validationList.add(new ValidationImpl(formula1, this, address.getFirstColumn(), address.getLastColumn(), address.getFirstRow(), address.getLastRow()));
             }
 
         }
         return validationList;
-    }   
+    }
     
-    public List<HSSFDataValidation> getValidationData() {    	    	
-    	return PatchedPoi.getInstance().getValidationData(sheet, hssfWorkbook);
+    public int getIndex() {    	
+    	for (int index = 0 ; index < getWorkbook().getSheets().size(); index++) {
+    		if (getWorkbook().getSheet(index).equals(this)) {
+    			return index;
+    		}
+    	}
+    	return -1;
+    }
+    
+    public List<XSSFDataValidation> getValidationData() {    	    	
+    	return sheet.getDataValidations();
     }    
     
     public void clearValidationData() {
-        PatchedPoi.getInstance().clearValidationData(sheet);
+    	if (sheet.getCTWorksheet().getDataValidations() != null) {
+	    	for (int i=0;i<sheet.getCTWorksheet().getDataValidations().getCount();i++) {
+	    		sheet.getCTWorksheet().getDataValidations().removeDataValidation(i);	    	
+	    	}        
+    	}
     }
 
 }
