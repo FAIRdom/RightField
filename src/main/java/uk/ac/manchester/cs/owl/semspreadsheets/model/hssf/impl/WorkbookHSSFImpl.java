@@ -161,7 +161,7 @@ public class WorkbookHSSFImpl implements MutableWorkbook, WorkbookChangeVisitor 
     protected Sheet createSheet() { 
     	int x=0;
     	String name = "Sheet" + Integer.toString(x);
-    	while (sheetNameExists(name)) {
+    	while (containsSheet(name)) {
     		x++;
     		name = "Sheet" + Integer.toString(x);
     	}
@@ -169,15 +169,6 @@ public class WorkbookHSSFImpl implements MutableWorkbook, WorkbookChangeVisitor 
     	return new SheetHSSFImpl(this, hssfSheet);
     }
     
-    protected boolean sheetNameExists(String name) {    	
-    	for (Sheet sheet : getSheets()) {
-    		if (sheet.getName().equals(name)) {
-    			return true;
-    		}
-    	}
-    	return false;
-    }
-
     public Sheet addHiddenSheet() {
         Sheet sheet = createSheet();
         sheet.setHidden(true);
