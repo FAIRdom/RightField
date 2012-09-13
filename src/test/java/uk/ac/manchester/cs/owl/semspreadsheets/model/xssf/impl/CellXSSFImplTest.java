@@ -1,14 +1,5 @@
 package uk.ac.manchester.cs.owl.semspreadsheets.model.xssf.impl;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import java.awt.Color;
-
-import org.junit.Before;
-import org.junit.Test;
-
 import uk.ac.manchester.cs.owl.semspreadsheets.DocumentsCatalogue;
 import uk.ac.manchester.cs.owl.semspreadsheets.SpreadsheetTestHelper;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Cell;
