@@ -1,4 +1,4 @@
-package uk.ac.manchester.cs.owl.semspreadsheets.impl;
+package uk.ac.manchester.cs.owl.semspreadsheets.model.impl;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -6,36 +6,35 @@ import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
 
-import org.junit.Before;
 import org.junit.Test;
 
-import uk.ac.manchester.cs.owl.semspreadsheets.SpreadsheetTestHelper;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Cell;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Workbook;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.hssf.impl.CellHSSFImpl;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.xssf.impl.CellXSSFImpl;
 
-public class CellHSSFImplTest {
-	
-	private Workbook workbook;
-	private Workbook workbook2;
-	@Before
-	public void setup() throws Exception {
-		workbook = SpreadsheetTestHelper.getBlankWorkbook();
-		workbook.addSheet();
-		workbook2 = SpreadsheetTestHelper.getBlankWorkbook();		
-	}
+public abstract class GeneralCellTests {
 	
 	@Test
 	public void testReusesStyleForFillColour() throws Exception {
-		CellHSSFImpl cellA = (CellHSSFImpl)workbook.getSheet(0).addCellAt(1, 1);
-		CellHSSFImpl cellB = (CellHSSFImpl)workbook.getSheet(0).addCellAt(2, 1);
+		Workbook workbook = getTestWorkbook();
+		Cell cellA = workbook.getSheet(0).addCellAt(1, 1);
+		Cell cellB = workbook.getSheet(0).addCellAt(2, 1);
 		cellA.setBackgroundFill(Color.BLUE);
 		cellB.setBackgroundFill(Color.YELLOW);		
 		cellB.setBackgroundFill(Color.BLUE);
-		assertEquals(cellA.getInnards().getCellStyle(), cellB.getInnards().getCellStyle());
+		if (cellA instanceof CellXSSFImpl) {
+			assertEquals(((CellXSSFImpl)cellA).getInnards().getCellStyle(), ((CellXSSFImpl)cellB).getInnards().getCellStyle());
+		}
+		else {			
+			assertEquals(((CellHSSFImpl)cellA).getInnards().getCellStyle(), ((CellHSSFImpl)cellB).getInnards().getCellStyle());
+		}
 	}
 
 	@Test
 	public void testEquals() throws Exception {
+		Workbook workbook = getTestWorkbook();
+		Workbook workbook2 = getTestWorkbook();
 		Cell cellA = workbook.getSheet(0).addCellAt(1,1);
 		Cell cellA1 = workbook.getSheet(0).addCellAt(1,1);
 		Cell cellB = workbook.getSheet(0).addCellAt(1,2);
@@ -55,6 +54,8 @@ public class CellHSSFImplTest {
 	
 	@Test
 	public void testHashCode() throws Exception {
+		Workbook workbook = getTestWorkbook();
+		Workbook workbook2 = getTestWorkbook();
 		Cell cellA = workbook.getSheet(0).addCellAt(1,1);
 		Cell cellA1 = workbook.getSheet(0).addCellAt(1,1);
 		Cell cellB = workbook.getSheet(0).addCellAt(1,2);
@@ -66,5 +67,34 @@ public class CellHSSFImplTest {
 		assertFalse(cellA.hashCode()==cellC.hashCode());
 		assertFalse(cellA.hashCode()==cellD.hashCode());		
 	}
+	
+	@Test
+	public void testBackgroundColour() throws Exception {
+		Cell cell = getTestCell();				
+		Color col = cell.getBackgroundFill();
+		assertEquals(Color.BLUE,col);
+	}
+	
+	@Test
+	public void testForegroundColour() throws Exception {
+		Cell cell = getTestCell();				
+		Color col = cell.getForeground();
+		assertEquals(Color.RED,col);
+	}
+	@Test
+	public void testGetValue() throws Exception {
+		Cell cell = getTestCell();
+		assertEquals("hello",cell.getValue());
+	}
+	
+	@Test
+	public void testSetValue() throws Exception {
+		Cell cell = getTestCell();
+		cell.setValue("Hello World");
+		assertEquals("Hello World",cell.getValue());
+	}
+	
+	protected abstract Cell getTestCell() throws Exception;
+	protected abstract Workbook getTestWorkbook() throws Exception;
 
 }

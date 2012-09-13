@@ -14,7 +14,7 @@ import java.io.PrintWriter;
 import java.net.URI;
 import java.util.Iterator;
 
-import uk.ac.manchester.cs.owl.semspreadsheets.impl.InvalidWorkbookFormatException;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.InvalidWorkbookFormatException;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 /**
  * A simple CSV export, mainly for use to test exporting and as a debugging tool.

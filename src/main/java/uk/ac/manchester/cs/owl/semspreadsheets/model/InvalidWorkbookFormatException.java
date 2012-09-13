@@ -5,7 +5,7 @@
  * Please see LICENSE file that is distributed with the source code
  ******************************************************************************/
 
-package uk.ac.manchester.cs.owl.semspreadsheets.impl;
+package uk.ac.manchester.cs.owl.semspreadsheets.model;
 
 import java.net.URI;
 
@@ -30,14 +30,7 @@ public class InvalidWorkbookFormatException extends Exception {
 
 	@Override
 	public String getMessage() {
-		if (getCause().getMessage().toLowerCase().contains("office 2007")) {
-			String msg = "This format of " + getFilename() + " appears to be Microsoft Excel 2007+ (XLSX).\nThis version of RightField doesn't currently support this format.";
-			msg+="\nThis is something we plan to support in the near future, however in the meantime it is safe to convert to and from Microsoft Excel 97-2003 (XLS) format without losing RightField added information.";
-			return msg;
-		}
-		else {
-			return "The format of the file " + getFilename() + " is not supported by RightField.\nCurrently only Microsoft Excel 97-2003 (XLS) is supported";
-		}		
+		return "The format of the file " + getFilename() + " is not supported by RightField.\nCurrently Microsoft Excel 97-2003 (XLS) and Excel 2007+ (XLSX) are supported";			
 	}
 	
 	private String getFilename() {

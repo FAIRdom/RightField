@@ -17,7 +17,7 @@ import java.net.URI;
 import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.IRI;
 
-import uk.ac.manchester.cs.owl.semspreadsheets.impl.InvalidWorkbookFormatException;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.InvalidWorkbookFormatException;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OWLPropertyItem;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 

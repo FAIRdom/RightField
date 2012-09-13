@@ -8,7 +8,7 @@ import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLEntity;
 
-import uk.ac.manchester.cs.owl.semspreadsheets.impl.DummyEntitySelectionModelListener;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.hssf.impl.DummyEntitySelectionModelListener;
 
 public class EntitySelectionModelTest {
 	

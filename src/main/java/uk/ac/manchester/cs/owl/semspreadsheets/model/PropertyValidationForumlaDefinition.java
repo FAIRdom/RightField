@@ -14,6 +14,7 @@ import org.apache.log4j.Logger;
  * 
  * e.g if hidden sheet name is 'sheetxxx' then the encoding is:
  * propliteral^sheetxxx
+ * from XLSX spreadsheets the formula to be decoded can look like AND(B2<>\"propliteral^sheetX\") because of the way XSSF stores and retrieves its validations
  * 
  * @author Stuart Owen
  *
@@ -32,24 +33,35 @@ public class PropertyValidationForumlaDefinition {
 	}
 
 	public static String decode(String formula) {
-		String name = null;
-		String [] bits = formula.split("\\"+PropertyValidationForumlaDefinition.SEPERATOR);
-		if (bits.length==2) {
-			name = bits[1].trim();															
+		logger.debug("Decoding formula: "+formula);		
+		String decoded = null;
+		if (valid(formula)) {
+			String [] bits = formula.split("\\"+PropertyValidationForumlaDefinition.SEPERATOR);
+			if (bits.length==2) {
+				decoded = bits[1].trim();	
+				if (!formula.toLowerCase().startsWith("propliteral")) {
+					decoded=decoded.substring(0,decoded.length()-2);
+				}
+			}
+			else {
+				//FIXME: should raise exception rather than just return null
+				logger.error("Unexpected number of elements in encoded property "+formula);
+			}  
 		}
 		else {
 			//FIXME: should raise exception rather than just return null
-			logger.warn("Unexpected number of elements in encoded property "+formula);
-		}    
-
-		return name;
+			logger.warn("Attempt to decode invalid validation formula for property validation: "+formula);
+		}
+		  
+		logger.debug("Decoded formula "+formula+" to "+decoded);
+		return decoded;
 	}
 	
 	public static boolean valid(String formula) {
 		boolean valid=false;
 		String [] bits = formula.split("\\"+PropertyValidationForumlaDefinition.SEPERATOR);
 		if (bits.length==2) {
-			if (bits[0].equals("propliteral")) {
+			if (bits[0].contains("propliteral")) {
 				if (!bits[1].trim().isEmpty()) {
 					valid=true;
 				}

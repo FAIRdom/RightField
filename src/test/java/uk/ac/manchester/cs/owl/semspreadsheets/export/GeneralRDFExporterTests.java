@@ -12,7 +12,6 @@ import java.util.List;
 import org.junit.Test;
 import org.semanticweb.owlapi.model.IRI;
 
-import uk.ac.manchester.cs.owl.semspreadsheets.DocumentsCatalogue;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 
 import com.hp.hpl.jena.rdf.model.Model;
@@ -20,24 +19,24 @@ import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Statement;
 
-public class RDFExporterTest {
+public abstract class GeneralRDFExporterTests {
 	
 	private static IRI rootID=IRI.create("http://files/data/1");	
 	
 	@Test
 	public void testInitWithManager() throws Exception {
 		WorkbookManager manager = new WorkbookManager();
-		manager.loadWorkbook(DocumentsCatalogue.populatedJermWorkbookURI());
+		manager.loadWorkbook(populatedJERMWorkbookURI());
 		AbstractExporter exporter = new RDFExporter(manager,rootID);
 		assertNotNull(exporter.getWorkbook());
 		assertEquals("Metadata Template",exporter.getWorkbook().getSheet(0).getName());
 		assertNotNull(exporter.getWorkbookManager());
 		assertEquals(9,exporter.getValidations().size());
-	}	
+	}			
 	
 	@Test
 	public void testInitiWithURI() throws Exception {
-		URI uri = DocumentsCatalogue.populatedJermWorkbookURI();
+		URI uri = populatedJERMWorkbookURI();
 		AbstractExporter exporter = new RDFExporter(uri,rootID);
 		assertNotNull(exporter.getWorkbook());
 		assertEquals("Metadata Template",exporter.getWorkbook().getSheet(0).getName());
@@ -48,7 +47,7 @@ public class RDFExporterTest {
 	@Test
 	public void testDefaultProperty() throws Exception {
 		assertEquals("http://www.mygrid.org.uk/ontology/JERMOntology#hasAssociatedItem",RDFExporter.DEFAULT_PROPERTY_URI);
-		URI uri = DocumentsCatalogue.populatedJermWorkbookURI();
+		URI uri = populatedJERMWorkbookURI();
 		AbstractExporter exporter = new RDFExporter(uri,rootID);
 		String rdf = exporter.export();
 		Model model = ModelFactory.createDefaultModel();
@@ -63,7 +62,7 @@ public class RDFExporterTest {
 	@Test
 	public void testProvidedDefaultProperty() throws Exception {
 		String property = "http://www.mygrid.org.uk/ontology/JERMOntology#description";
-		URI uri = DocumentsCatalogue.populatedJermWorkbookURI();
+		URI uri = populatedJERMWorkbookURI();
 		AbstractExporter exporter = new RDFExporter(uri,rootID,IRI.create(property));
 		String rdf = exporter.export();
 		Model model = ModelFactory.createDefaultModel();
@@ -77,7 +76,7 @@ public class RDFExporterTest {
 	
 	@Test
 	public void testInitiWithFile() throws Exception {
-		File file = DocumentsCatalogue.populatedJermWorkbookFile();
+		File file = populatedJERMWorkbookFile();
 		AbstractExporter exporter = new RDFExporter(file,rootID);
 		assertNotNull(exporter.getWorkbook());
 		assertEquals("Metadata Template",exporter.getWorkbook().getSheet(0).getName());
@@ -87,7 +86,7 @@ public class RDFExporterTest {
 
 	@Test
 	public void testExport() throws Exception {
-		URI uri = DocumentsCatalogue.bookWithPropertiesURI();
+		URI uri = bookWithPropertiesURI();
 		Exporter exp = new RDFExporter(uri,rootID);
 		String rdf = exp.export();
 		
@@ -111,11 +110,11 @@ public class RDFExporterTest {
 		assertEquals("http://www.mygrid.org.uk/ontology/JERMOntology#isAssociatedWith",statements.get(1).getPredicate().getURI());
 		assertTrue(statements.get(1).getObject().isResource());
 		assertEquals("http://www.mygrid.org.uk/ontology/JERMOntology#COSMIC",statements.get(1).getObject().asResource().getURI());						
-	}
-	
+	}				
+
 	@Test
 	public void testExportWithNoProperties() throws Exception {
-		URI uri = DocumentsCatalogue.populatedJermWorkbookURI();
+		URI uri = populatedJERMWorkbookURI();
 		Exporter exp = new RDFExporter(uri,rootID);
 		String rdf = exp.export();		
 		Model model = ModelFactory.createDefaultModel();
@@ -136,9 +135,9 @@ public class RDFExporterTest {
 	
 	@Test
 	public void testExportWithLiterals() throws Exception {
-		URI uri = DocumentsCatalogue.simpleWorkbookWithLiteralsOverRangeURI();
+		URI uri = simpleWorkbookWithLiteralsOverRangeURI();
 		Exporter exp = new RDFExporter(uri,rootID);
-		String rdf = exp.export();
+		String rdf = exp.export();		
 				
 		Model model = ModelFactory.createDefaultModel();
 		StringReader reader = new StringReader(rdf);
@@ -153,14 +152,21 @@ public class RDFExporterTest {
 		assertEquals(rootID.toString(),statements.get(0).getSubject().getURI());
 		assertEquals("http://www.mygrid.org.uk/ontology/JERMOntology#ECNumber",statements.get(0).getPredicate().getURI());
 		assertTrue(statements.get(0).getObject().isLiteral());
-		assertEquals("hello",statements.get(0).getObject().asLiteral().getValue());
-		
+		assertEquals("hello",statements.get(0).getObject().asLiteral().getValue());		
 		
 		assertEquals(rootID.toString(),statements.get(1).getSubject().getURI());
 		assertEquals("http://www.mygrid.org.uk/ontology/JERMOntology#ECNumber",statements.get(1).getPredicate().getURI());
 		assertTrue(statements.get(1).getObject().isLiteral());
 		assertEquals("world",statements.get(1).getObject().asLiteral().getValue());
 	}
+	
+	protected abstract URI populatedJERMWorkbookURI() throws Exception;
+	
+	protected abstract File populatedJERMWorkbookFile() throws Exception;
+	
+	protected abstract URI bookWithPropertiesURI() throws Exception;
+	
+	protected abstract URI simpleWorkbookWithLiteralsOverRangeURI() throws Exception;
 	
 	
 

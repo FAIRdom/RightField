@@ -21,7 +21,6 @@ import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
-import uk.ac.manchester.cs.owl.semspreadsheets.impl.InvalidWorkbookFormatException;
 import uk.ac.manchester.cs.owl.semspreadsheets.listeners.CellSelectionListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.listeners.WorkbookChangeListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.listeners.WorkbookManagerListener;

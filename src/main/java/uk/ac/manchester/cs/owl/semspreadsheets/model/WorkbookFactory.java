@@ -7,10 +7,15 @@
 package uk.ac.manchester.cs.owl.semspreadsheets.model;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 
-import uk.ac.manchester.cs.owl.semspreadsheets.impl.InvalidWorkbookFormatException;
-import uk.ac.manchester.cs.owl.semspreadsheets.impl.WorkbookHSSFImpl;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import uk.ac.manchester.cs.owl.semspreadsheets.model.hssf.impl.WorkbookHSSFImpl;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.xssf.impl.WorkbookXSSFImpl;
 
 /**
  * Author: Matthew Horridge<br>
@@ -36,7 +41,22 @@ public class WorkbookFactory {
      * @throws InvalidWorkbookFormatException indicates the format of the file behind the URI is not supported
      */
     public static Workbook createWorkbook(URI uri) throws IOException,InvalidWorkbookFormatException {
-        return new WorkbookHSSFImpl(uri);
+    	InputStream inputStream = uri.toURL().openStream();
+    	Workbook wb = null;
+        try {
+			org.apache.poi.ss.usermodel.Workbook created = org.apache.poi.ss.usermodel.WorkbookFactory.create(inputStream);
+			if (created instanceof HSSFWorkbook) {
+				wb = new WorkbookHSSFImpl((HSSFWorkbook)created);
+			}
+			else {
+				wb = new WorkbookXSSFImpl((XSSFWorkbook)created);
+			}
+		} catch (InvalidFormatException e) {
+			throw new InvalidWorkbookFormatException(e, uri);
+		} catch (IllegalArgumentException e) {
+			throw new InvalidWorkbookFormatException(e, uri);
+		}
+        return wb;
     }
 
 }

@@ -4,19 +4,19 @@
  * Licensed under the New BSD License. 
  * Please see LICENSE file that is distributed with the source code
  ******************************************************************************/
-package uk.ac.manchester.cs.owl.semspreadsheets.impl;
+package uk.ac.manchester.cs.owl.semspreadsheets.model.hssf.impl;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.poi.hssf.usermodel.DVConstraint;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFDataValidation;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.DataValidationConstraint;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellRangeAddressList;
@@ -27,6 +27,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Validation;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Workbook;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.impl.ValidationImpl;
 
 /**
  * @author Stuart Owen
@@ -104,7 +105,7 @@ public class SheetHSSFImpl implements Sheet {
         return sheet;
     }
 
-    public int getColumnWidth(int col) {
+    public int getColumnWidth(int col) {    	
         int width = (sheet.getColumnWidth(col) / 256) * 6;
         return width;
     }
@@ -187,7 +188,7 @@ public class SheetHSSFImpl implements Sheet {
      * Creates a Formula List constraint validation, with creates a dropdown list based on values defined by namedRange(the name of the hidden sheet).
      */
     public void addValidation(String namedRange, int firstCol, int firstRow, int lastCol, int lastRow) {
-    	DVConstraint constraint = DVConstraint.createFormulaListConstraint(namedRange);
+    	DataValidationConstraint constraint=sheet.getDataValidationHelper().createFormulaListConstraint(namedRange);    	
     	addConstraint(constraint, firstCol, firstRow, lastCol, lastRow);
     }
     
@@ -202,15 +203,15 @@ public class SheetHSSFImpl implements Sheet {
     	
     	//the cell title A1 is irrelevant, when the sheet is saved it gets turned into the current cell.
     	String formula="AND(A1<>\""+encoded+"\")";
-    	DVConstraint constraint = DVConstraint.createCustomFormulaConstraint(formula);
+    	DataValidationConstraint constraint = sheet.getDataValidationHelper().createCustomConstraint(formula);
     	addConstraint(constraint, firstCol, firstRow, lastCol, lastRow);
     }
     
-    protected void addConstraint(DVConstraint constraint, int firstCol, int firstRow, int lastCol, int lastRow) {
+    protected void addConstraint(DataValidationConstraint constraint, int firstCol, int firstRow, int lastCol, int lastRow) {
     	CellRangeAddressList addressList = new CellRangeAddressList(firstRow, lastRow, firstCol, lastCol);    	
     	HSSFDataValidation dataValidation = new HSSFDataValidation(addressList, constraint);
     	sheet.addValidationData(dataValidation);
-    }
+    }        
 
     public Collection<Validation> getValidations() {
         List<Validation> validationList = new ArrayList<Validation>();
