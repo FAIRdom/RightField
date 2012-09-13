@@ -12,7 +12,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.SwingConstants;
-import javax.swing.text.Style;
 
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -37,6 +36,8 @@ public class CellHSSFImpl implements Cell {
     public static final Font DEFAULT_FONT = new Font("verdana", Font.PLAIN, 10);
 
     private static Map<HSSFFont, Font> fontCache = new HashMap<HSSFFont, Font>();
+    
+    private static Map<HSSFWorkbook,Map<Color,HSSFCellStyle>> colourStylesForWorkbook = new HashMap<HSSFWorkbook, Map<Color,HSSFCellStyle>>();
 
     private HSSFCell theCell;
 
@@ -45,21 +46,17 @@ public class CellHSSFImpl implements Cell {
     private Color foreground;
 
     public CellHSSFImpl(HSSFWorkbook workbook, HSSFCell theCell) {
-        this.workbook = workbook;
+        this.workbook = workbook;        
         this.theCell = theCell;        
     }
 
     public Font getDefaultFont() {
-        HSSFFont font = workbook.getFontAt((short) 0);
+        HSSFFont font = getWorkbook().getFontAt((short) 0);
         if (font == null) {
             return DEFAULT_FONT;
         }
         return getFont(font);
-    }
-
-    public Style getStyle() {
-        return null;
-    }
+    }    
 
     public int getRow() {
         return theCell.getRowIndex();
@@ -81,17 +78,17 @@ public class CellHSSFImpl implements Cell {
     }
 
     public boolean isStrikeThrough() {
-        HSSFFont hssfFont = theCell.getCellStyle().getFont(workbook);
+        HSSFFont hssfFont = theCell.getCellStyle().getFont(getWorkbook());
         return hssfFont.getStrikeout();
     }
 
     public boolean isUnderline() {
-        HSSFFont hssfFont = theCell.getCellStyle().getFont(workbook);
+        HSSFFont hssfFont = theCell.getCellStyle().getFont(getWorkbook());
         return hssfFont.getUnderline() != 0;
     }
 
     public boolean isItalic() {
-        HSSFFont hssfFont = theCell.getCellStyle().getFont(workbook);
+        HSSFFont hssfFont = theCell.getCellStyle().getFont(getWorkbook());
         return hssfFont.getItalic();
     }
 
@@ -144,12 +141,12 @@ public class CellHSSFImpl implements Cell {
     public void setBold(boolean b) {
         HSSFCellStyle cellStyle = theCell.getCellStyle();        
         if (cellStyle == null) {
-            cellStyle = workbook.createCellStyle();
+            cellStyle = getWorkbook().createCellStyle();
             theCell.setCellStyle(cellStyle);
         }
-        HSSFFont font = cellStyle.getFont(workbook);
+        HSSFFont font = cellStyle.getFont(getWorkbook());
         if (font == null) {
-            font = workbook.createFont();
+            font = getWorkbook().createFont();
             cellStyle.setFont(font);
         }
         if (b) {
@@ -166,7 +163,7 @@ public class CellHSSFImpl implements Cell {
         if (cellStyle == null) {
             return getDefaultFont();
         }
-        HSSFFont hssfFont = cellStyle.getFont(workbook);
+        HSSFFont hssfFont = cellStyle.getFont(getWorkbook());
         return getFont(hssfFont);
     }
 
@@ -208,22 +205,36 @@ public class CellHSSFImpl implements Cell {
 		if (col==null) {
 			logger.warn("Unable to find similar colour in palette for "+colour.toString());
 		}
-		else {
-			HSSFCellStyle cellStyle = workbook.createCellStyle();
-			cellStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND );
-			cellStyle.setFillForegroundColor(col.getIndex());			
-			theCell.setCellStyle(cellStyle);
+		else {						
+			theCell.setCellStyle(getFillStyleForColour(colour));
 			logger.debug("Cell colour changed to "+col.toString());
 		}
 	}
-
+    
+    private HSSFCellStyle getFillStyleForColour(Color colour) {
+    	Map<Color,HSSFCellStyle> styles = colourStylesForWorkbook.get(getWorkbook());
+    	if (styles == null) {
+    		styles = new HashMap<Color,HSSFCellStyle>();
+    		colourStylesForWorkbook.put(getWorkbook(), styles);
+    	}
+    	HSSFCellStyle style = styles.get(colour);    	    	
+    	if (style == null) {
+    		HSSFColor col = translateColour(colour);
+    		style = getWorkbook().createCellStyle();
+    		style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND );
+    		style.setFillForegroundColor(col.getIndex());
+    		styles.put(colour, style);
+    	}
+    	return style;
+    }
+ 
     public Color getForeground() {
         if (foreground == null) {
             HSSFCellStyle cellStyle = theCell.getCellStyle();
             if (cellStyle == null) {
                 return Color.BLACK;
             }
-            HSSFFont hssfFont = cellStyle.getFont(workbook);
+            HSSFFont hssfFont = cellStyle.getFont(getWorkbook());
             short colorIndex = hssfFont.getColor();
             Color theColor = translateColour(colorIndex);
             foreground = theColor;
@@ -237,7 +248,7 @@ public class CellHSSFImpl implements Cell {
      * @return
      */
     private HSSFColor translateColour(Color colour) {
-    	HSSFPalette palette = workbook.getCustomPalette();
+    	HSSFPalette palette = getWorkbook().getCustomPalette();
     	
     	HSSFColor col = palette.findSimilarColor((byte)colour.getRed(), (byte)colour.getGreen(), (byte)colour.getBlue());
     	return col;
@@ -249,7 +260,7 @@ public class CellHSSFImpl implements Cell {
      * @return java Color
      */
 	private Color translateColour(short colorIndex) {
-		HSSFPalette palette = workbook.getCustomPalette();
+		HSSFPalette palette = getWorkbook().getCustomPalette();
 		HSSFColor color = palette.getColor(colorIndex);
 		Color theColor = Color.BLACK;
 		if (color != null) {
@@ -307,7 +318,15 @@ public class CellHSSFImpl implements Cell {
 		}
 	}
 
-	
+	/**
+	 * Gets access to the POI internals for this cell - for debugging,testing and subclassing purposes only
+	 * @return
+	 */
+	protected HSSFCell getInnards() {
+		return theCell;
+	}
 
-	
+	public HSSFWorkbook getWorkbook() {
+		return workbook;
+	}	
 }

@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.awt.Color;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,6 +22,16 @@ public class CellHSSFImplTest {
 		workbook = SpreadsheetTestHelper.getBlankWorkbook();
 		workbook.addSheet();
 		workbook2 = SpreadsheetTestHelper.getBlankWorkbook();		
+	}
+	
+	@Test
+	public void testReusesStyleForFillColour() throws Exception {
+		CellHSSFImpl cellA = (CellHSSFImpl)workbook.getSheet(0).addCellAt(1, 1);
+		CellHSSFImpl cellB = (CellHSSFImpl)workbook.getSheet(0).addCellAt(2, 1);
+		cellA.setBackgroundFill(Color.BLUE);
+		cellB.setBackgroundFill(Color.YELLOW);		
+		cellB.setBackgroundFill(Color.BLUE);
+		assertEquals(cellA.getInnards().getCellStyle(), cellB.getInnards().getCellStyle());
 	}
 
 	@Test

@@ -17,6 +17,7 @@ import java.net.URI;
 import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.IRI;
 
+import uk.ac.manchester.cs.owl.semspreadsheets.impl.InvalidWorkbookFormatException;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OWLPropertyItem;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 
@@ -36,13 +37,13 @@ public class RDFExporter extends AbstractExporter {
 
 	private final IRI defaultProperty;		
 
-	public RDFExporter(File workbookFile,IRI rootID, IRI defaultProperty) throws IOException {
+	public RDFExporter(File workbookFile,IRI rootID, IRI defaultProperty) throws IOException,InvalidWorkbookFormatException {
 		super(workbookFile);
 		this.rootID = rootID;
 		this.defaultProperty = defaultProperty;		
 	}
 
-	public RDFExporter(URI workbookURI,IRI rootID,IRI defaultProperty) throws IOException {
+	public RDFExporter(URI workbookURI,IRI rootID,IRI defaultProperty) throws IOException,InvalidWorkbookFormatException {
 		super(workbookURI);
 		this.rootID = rootID;
 		this.defaultProperty = defaultProperty;			
@@ -54,11 +55,11 @@ public class RDFExporter extends AbstractExporter {
 		this.defaultProperty = defaultProperty;		
 	}
 	
-	public RDFExporter(File workbookFile,IRI rootID) throws IOException {
+	public RDFExporter(File workbookFile,IRI rootID) throws IOException,InvalidWorkbookFormatException {
 		this(workbookFile,rootID,IRI.create(DEFAULT_PROPERTY_URI));
 	}
 
-	public RDFExporter(URI workbookURI,IRI rootID) throws IOException {
+	public RDFExporter(URI workbookURI,IRI rootID) throws IOException,InvalidWorkbookFormatException {
 		this(workbookURI,rootID,IRI.create(DEFAULT_PROPERTY_URI));		
 	}
 

@@ -60,9 +60,19 @@ public class DocumentsCatalogue {
 		return uriForResourceName("two_ontologies.xls");
 	}
 	
+	public static URI simpleExcel2007WorkbookURI() throws Exception {
+		return uriForResourceName("simple_excel2007.xlsx");
+	}
+	
+	public static URI nonExistantFileURI() throws Exception {
+		URI uri = DocumentsCatalogue.class.getResource("/").toURI();
+		return new URI(uri.toString()+"dont_exist.xls");
+	}
+	
 	private static URI uriForResourceName(String resource) throws Exception {
 		return DocumentsCatalogue.class.getResource("/"+resource).toURI();
 	}
+		
 	
 	private static File fileForResourceName(String resource) throws Exception {
 		String filename = DocumentsCatalogue.class.getResource("/"+resource).getFile();

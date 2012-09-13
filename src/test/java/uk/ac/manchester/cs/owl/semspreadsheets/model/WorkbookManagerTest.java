@@ -15,6 +15,7 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.util.Collection;
 
@@ -25,6 +26,7 @@ import org.semanticweb.owlapi.model.IRI;
 import uk.ac.manchester.cs.owl.semspreadsheets.DocumentsCatalogue;
 import uk.ac.manchester.cs.owl.semspreadsheets.impl.DummyWorkbookChangeListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.impl.DummyWorkbookManagerListener;
+import uk.ac.manchester.cs.owl.semspreadsheets.impl.InvalidWorkbookFormatException;
 import uk.ac.manchester.cs.owl.semspreadsheets.listeners.WorkbookChangeListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OWLPropertyType;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidation;
@@ -38,8 +40,7 @@ public class WorkbookManagerTest {
 	WorkbookManager manager;
 	DummyWorkbookManagerListener testListener;
 	DummyWorkbookChangeListener testChangeListener;
-	
-	
+		
 	@Before
 	public void setUp() {
 		manager = new WorkbookManager();		
@@ -77,6 +78,24 @@ public class WorkbookManagerTest {
 		assertEquals(uri,manager.getWorkbookURI());
 		assertTrue(tmpfile.exists());
 		assertTrue(testListener.isWorkbookSavedFired());
+	}
+	
+	@Test(expected=InvalidWorkbookFormatException.class)
+	public void testLoadInvalidFormatHandled() throws Exception {
+		URI uri = DocumentsCatalogue.simpleExcel2007WorkbookURI();		
+		manager.loadWorkbook(uri);		
+	}
+	
+	@Test(expected=InvalidWorkbookFormatException.class)
+	public void testLoadNonSpreadsheetFormatHandled() throws Exception {
+		URI uri = DocumentsCatalogue.jermOntologyURI();		
+		manager.loadWorkbook(uri);
+	}
+	
+	@Test(expected=IOException.class)
+	public void testNonExistantFormatHandled() throws Exception {
+		URI uri = DocumentsCatalogue.nonExistantFileURI();
+		manager.loadWorkbook(uri);		
 	}
 	
 	@Test

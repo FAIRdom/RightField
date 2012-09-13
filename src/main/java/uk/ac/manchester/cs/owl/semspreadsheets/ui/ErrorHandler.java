@@ -17,6 +17,7 @@ import org.semanticweb.owlapi.io.OWLOntologyCreationIOException;
 import org.semanticweb.owlapi.io.UnparsableOntologyException;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
+import uk.ac.manchester.cs.owl.semspreadsheets.impl.InvalidWorkbookFormatException;
 import uk.ac.manchester.cs.owl.semspreadsheets.repository.bioportal.BioPortalAccessDeniedException;
 
 /**
@@ -43,27 +44,34 @@ public class ErrorHandler {
         if(throwable instanceof OWLOntologyCreationException) {        	
             if(throwable instanceof OWLOntologyCreationIOException) {
                 OWLOntologyCreationIOException e = (OWLOntologyCreationIOException) throwable;
-                JOptionPane.showMessageDialog(null, "An error occurred trying to open the onology:"+e.getCause().getMessage(), "Could not open ontology", JOptionPane.ERROR_MESSAGE);
+                reportError("An error occurred trying to open the onology:"+e.getCause().getMessage(), "Could not open ontology",throwable);
             }
             else if(throwable instanceof UnparsableOntologyException) {
-                JOptionPane.showMessageDialog(null, "The ontology document appears to be in an unsupported format or contains syntax errors", "Could not load ontology", JOptionPane.ERROR_MESSAGE);
+            	reportError("The ontology document appears to be in an unsupported format or contains syntax errors", "Could not load ontology",throwable);
             }
             else {
-                JOptionPane.showMessageDialog(null, throwable.getMessage(), "Could not load ontology", JOptionPane.ERROR_MESSAGE);
+            	reportError(throwable.getMessage(), "Could not load ontology",throwable);
             }
         }
         else if(throwable instanceof UnknownHostException) {
-            JOptionPane.showMessageDialog(null, "You are not connected to the internet.  Please check your network connection.", "Not connected to network", JOptionPane.ERROR_MESSAGE);
+        	reportError("You are not connected to the internet.  Please check your network connection.", "Not connected to network",throwable);
         }        
         else if (throwable instanceof BioPortalAccessDeniedException) {
-        	JOptionPane.showMessageDialog(null, "Access to the BioPortal API was forbidden. This could be due to an invalid API key.", "Error", JOptionPane.ERROR_MESSAGE);
+        	reportError("Access to the BioPortal API was forbidden. This could be due to an invalid API key.", "Error",throwable);
         }
         else if (throwable instanceof MalformedURLException || throwable instanceof URISyntaxException) {
-        	JOptionPane.showMessageDialog(null, "The URL provided was invalid", "Error", JOptionPane.ERROR_MESSAGE);
-        }        
+        	reportError("The URL provided was invalid", "Error",throwable);
+        }   
+        else if (throwable instanceof InvalidWorkbookFormatException) {
+        	reportError(throwable.getMessage(),"Invalid file format",throwable);
+        }
         else {
         	JOptionPane.showMessageDialog(null, "An Unexpected "+throwable.getClass().getSimpleName() +" error occurred: " + throwable.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         	logger.error("Unexpected error reported",throwable);
         }        
+    }
+    
+    private void reportError(String message, String title,Throwable exception) {
+    	JOptionPane.showMessageDialog(null, message,title,JOptionPane.ERROR_MESSAGE);
     }
 }

@@ -27,6 +27,7 @@ import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.poifs.filesystem.OfficeXmlFileException;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.listeners.WorkbookChangeListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.MutableWorkbook;
@@ -53,12 +54,25 @@ public class WorkbookHSSFImpl implements MutableWorkbook, WorkbookChangeVisitor 
 
     public WorkbookHSSFImpl() {
         workbook = new HSSFWorkbook();
-        workbook.createSheet();
+        workbook.createSheet();        
     }
 
-    public WorkbookHSSFImpl(URI uri) throws IOException {
+    public WorkbookHSSFImpl(URI uri) throws IOException,InvalidWorkbookFormatException {
         InputStream inputStream = uri.toURL().openStream();
-        workbook = new HSSFWorkbook(new BufferedInputStream(inputStream));
+        try {
+        	workbook = new HSSFWorkbook(new BufferedInputStream(inputStream));
+        }
+        catch (OfficeXmlFileException e) {
+        	throw new InvalidWorkbookFormatException(e,uri);
+        }
+        catch (IOException e) {
+        	if (e.getMessage().toLowerCase().contains("invalid header signature")) {
+        		throw new InvalidWorkbookFormatException(e,uri);
+        	}
+        	else {
+        		throw e;
+        	}
+        }
     }
 
     public HSSFWorkbook getHSSFWorkbook() {
