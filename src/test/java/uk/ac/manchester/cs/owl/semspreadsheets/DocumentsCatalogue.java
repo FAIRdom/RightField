@@ -32,6 +32,11 @@ public class DocumentsCatalogue {
 		return uriForResourceName("literals_only_over_range.xls");
 	}
 	
+	//A workbook with the cells B2:D5 applied with FreeText and property http://www.mygrid.org.uk/ontology/JERMOntology#ECNumber
+		public static URI simpleWorkbookWithLiteralsOverRangeXLSXURI() throws Exception {
+			return uriForResourceName("literals_only_over_range.xlsx");
+		}
+	
 	public static URI simpleAnnotatedworkbookURI() throws Exception {
 		return uriForResourceName("simple_annotated_book.xls");
 	}
@@ -48,12 +53,20 @@ public class DocumentsCatalogue {
 		return uriForResourceName("book_with_properties.xls");
 	}
 	
+	public static URI bookWithPropertiesXLSXURI() throws Exception {
+		return uriForResourceName("book_with_properties.xlsx");
+	}
+	
 	public static URI partiallyPopulatedWorkbookURI() throws Exception {
 		return uriForResourceName("partially_populated_JERM_template.xls");		
 	}
 	
 	public static File populatedJermWorkbookFile() throws Exception {
 		return fileForResourceName("populated_JERM_template.xls");
+	}
+	
+	public static File populatedJermWorkbookXLSXFile() throws Exception {
+		return fileForResourceName("populated_JERM_template.xlsx");
 	}
 	
 	public static URI populatedJermWorkbookURI() throws Exception {
@@ -66,6 +79,10 @@ public class DocumentsCatalogue {
 	
 	public static URI twoOntologiesWorkbookURI() throws Exception {
 		return uriForResourceName("two_ontologies.xls");
+	}
+	
+	public static URI twoOntologiesWorkbookXLSXURI() throws Exception {
+		return uriForResourceName("two_ontologies.xlsx");
 	}
 	
 	public static URI simpleExcel2007WorkbookURI() throws Exception {
