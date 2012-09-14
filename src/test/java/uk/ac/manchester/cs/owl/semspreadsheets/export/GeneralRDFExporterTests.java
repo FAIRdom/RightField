@@ -137,7 +137,7 @@ public abstract class GeneralRDFExporterTests {
 	public void testExportWithLiterals() throws Exception {
 		URI uri = simpleWorkbookWithLiteralsOverRangeURI();
 		Exporter exp = new RDFExporter(uri,rootID);
-		String rdf = exp.export();
+		String rdf = exp.export();		
 				
 		Model model = ModelFactory.createDefaultModel();
 		StringReader reader = new StringReader(rdf);

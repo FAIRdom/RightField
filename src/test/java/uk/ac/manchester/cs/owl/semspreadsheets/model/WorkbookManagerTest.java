@@ -33,6 +33,8 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.Workbook;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.hssf.impl.DummyWorkbookChangeListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.hssf.impl.DummyWorkbookManagerListener;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.hssf.impl.WorkbookHSSFImpl;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.xssf.impl.WorkbookXSSFImpl;
 
 public class WorkbookManagerTest {
 	
@@ -102,6 +104,7 @@ public class WorkbookManagerTest {
 		URI uri = DocumentsCatalogue.simpleAnnotatedworkbookURI();
 		manager.getWorkbookState().changesUnsaved();
 		Workbook book = manager.loadWorkbook(uri);
+		assertTrue(book instanceof WorkbookHSSFImpl);
 		assertNotNull(book);
 		assertTrue(manager.getWorkbookState().isChangesSaved());
 		assertSame(book, manager.getWorkbook());
@@ -127,6 +130,7 @@ public class WorkbookManagerTest {
 		URI uri = DocumentsCatalogue.simpleAnnotatedXLSXWorkbookURI();
 		manager.getWorkbookState().changesUnsaved();
 		Workbook book = manager.loadWorkbook(uri);
+		assertTrue(book instanceof WorkbookXSSFImpl);
 		assertNotNull(book);
 		assertTrue(manager.getWorkbookState().isChangesSaved());
 		assertSame(book, manager.getWorkbook());
