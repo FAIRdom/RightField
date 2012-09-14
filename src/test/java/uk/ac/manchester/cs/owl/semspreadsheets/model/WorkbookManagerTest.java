@@ -79,13 +79,7 @@ public class WorkbookManagerTest {
 		assertEquals(uri,manager.getWorkbookURI());
 		assertTrue(tmpfile.exists());
 		assertTrue(testListener.isWorkbookSavedFired());
-	}
-	
-	@Test(expected=InvalidWorkbookFormatException.class)
-	public void testLoadInvalidFormatHandled() throws Exception {
-		URI uri = DocumentsCatalogue.simpleExcel2007WorkbookURI();		
-		manager.loadWorkbook(uri);		
-	}
+	}	
 	
 	@Test(expected=InvalidWorkbookFormatException.class)
 	public void testLoadNonSpreadsheetFormatHandled() throws Exception {

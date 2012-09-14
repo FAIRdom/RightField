@@ -52,8 +52,9 @@ public class WorkbookFactory {
 				wb = new WorkbookXSSFImpl((XSSFWorkbook)created);
 			}
 		} catch (InvalidFormatException e) {
-			//FIXME:handle exception to report back invalid format correctly
-			e.printStackTrace();
+			throw new InvalidWorkbookFormatException(e, uri);
+		} catch (IllegalArgumentException e) {
+			throw new InvalidWorkbookFormatException(e, uri);
 		}
         return wb;
     }
