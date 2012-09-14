@@ -234,6 +234,11 @@ public class WorkbookXSSFImpl implements MutableWorkbook, WorkbookChangeVisitor 
         BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(file));        
         workbook.write(stream);        
         stream.close();
+        
+        //this is a work-around to avoid https://issues.apache.org/bugzilla/show_bug.cgi?id=52233
+        for (int i=0; i<workbook.getNumberOfSheets();i++) {
+        	workbook.getSheetAt(i).getColumnHelper().cleanColumns();
+        }
     }        
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////

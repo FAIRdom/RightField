@@ -228,7 +228,7 @@ public class WorkbookHSSFImpl implements MutableWorkbook, WorkbookChangeVisitor 
         File file = new File(uri);
         BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(file));
         workbook.write(stream);        
-        stream.close();
+        stream.close();        
     }        
 
     public void visit(SetCellValue setCellValue) {
