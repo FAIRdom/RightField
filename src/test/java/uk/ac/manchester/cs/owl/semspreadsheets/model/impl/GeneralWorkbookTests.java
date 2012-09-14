@@ -7,9 +7,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
-import java.io.FileInputStream;
 
-import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.junit.Test;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.SpreadsheetTestHelper;
@@ -17,7 +15,9 @@ import uk.ac.manchester.cs.owl.semspreadsheets.listeners.WorkbookChangeListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Cell;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Workbook;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookFactory;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.hssf.impl.DummyWorkbookChangeListener;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.hssf.impl.WorkbookHSSFImpl;
 
 public abstract class GeneralWorkbookTests {
 	
@@ -145,25 +145,25 @@ public abstract class GeneralWorkbookTests {
 		assertFalse(sheet0.isVeryHidden());
 		assertTrue(sheet1.isVeryHidden());
 		
-	}
+	}	
 	
 	@Test
 	public void testSave() throws Exception {
 		Workbook wb = getTestWorkbook();
 		File f = SpreadsheetTestHelper.getTempFile(getExtension());
 		Sheet sheet = wb.getSheet(0);
-		sheet.getColumnWidth(3);
+		
 		assertFalse(f.exists());
 		wb.saveAs(f.toURI());
 		assertTrue(f.exists());
-		assertNotNull(WorkbookFactory.create(new FileInputStream(f)));
+		assertNotNull(WorkbookFactory.createWorkbook(f.toURI()));
 		
 		//this is to test a weird problem with the sheet column widths becoming corrupt after a save
 		sheet = wb.getSheet(0);
 		
 		Cell cell = sheet.getCellAt(3, 11);
 		assertEquals("Experimental Design",cell.getValue());
-		sheet.getColumnWidth(3);
+		
 	}
 	
 	
@@ -178,10 +178,30 @@ public abstract class GeneralWorkbookTests {
 		
 		wb.saveAs(f.toURI());
 		
+		Workbook wb2 = WorkbookFactory.createWorkbook(f.toURI());
+		sheet = wb2.getSheet(0);		
+		cell = sheet.getCellAt(3, 11);
+		assertEquals("Experimental Design",cell.getValue());
+		sheet.getColumnWidth(3);
+		
 		sheet = wb.getSheet(0);		
 		cell = sheet.getCellAt(3, 11);
 		assertEquals("Experimental Design",cell.getValue());
 		sheet.getColumnWidth(3); //<- IndexOutOfBoundsException thrown
+	}
+	
+	@Test
+	public void testReadColumnWidthAferLoad() throws Exception {
+		Workbook book = getTestWorkbook();
+		int expectedWidth = 0;
+		//for some reason the width in the converted spreadsheet is slightly less than the original xls workbook
+		if (book instanceof WorkbookHSSFImpl) {
+			expectedWidth = 66;
+		}
+		else {
+			expectedWidth = 60;
+		}
+		assertEquals(expectedWidth,book.getSheet(0).getColumnWidth(0));
 	}
 	
 	protected abstract Workbook getTestWorkbook() throws Exception;

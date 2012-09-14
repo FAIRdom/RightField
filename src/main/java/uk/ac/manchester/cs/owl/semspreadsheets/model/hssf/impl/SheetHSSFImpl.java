@@ -105,7 +105,7 @@ public class SheetHSSFImpl implements Sheet {
         return sheet;
     }
 
-    public int getColumnWidth(int col) {
+    public int getColumnWidth(int col) {    	
         int width = (sheet.getColumnWidth(col) / 256) * 6;
         return width;
     }

@@ -29,6 +29,7 @@ public class WorkbookXSSFImplTest extends GeneralWorkbookTests {
 		XSSFRow row = sheet.createRow(0);
 		XSSFCell cell = row.createCell(0);
 		cell.setCellValue("hello world");
+		workbook.getSheetAt(0).getColumnHelper().getColumn(0, false);
 		assertEquals("hello world",workbook.getSheetAt(0).getRow(0).getCell(0).getStringCellValue());
 		assertEquals(2048,workbook.getSheetAt(0).getColumnWidth(0));
 		
@@ -43,9 +44,9 @@ public class WorkbookXSSFImplTest extends GeneralWorkbookTests {
         assertTrue(f.exists());
         
         assertEquals("hello world",workbook.getSheetAt(0).getRow(0).getCell(0).getStringCellValue());
+        workbook.getSheetAt(0).getColumnHelper().getColumn(0, false);
 		assertEquals(2048,workbook.getSheetAt(0).getColumnWidth(0));        
 	}
-
 	
 	protected Workbook getEmptyWorkbook() throws Exception {
 		return SpreadsheetTestHelper.getBlankXSSFWorkbook();
