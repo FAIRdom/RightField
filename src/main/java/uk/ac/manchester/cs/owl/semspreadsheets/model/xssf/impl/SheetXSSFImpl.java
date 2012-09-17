@@ -182,9 +182,10 @@ public class SheetXSSFImpl implements Sheet {
     	String encoded = PropertyValidationForumlaDefinition.encode(hiddenSheetName);
     	
     	//the cell title A1 is irrelevant, when the sheet is saved it gets turned into the current cell.
-    	String formula="AND(A1<>\""+encoded+"\")";
+    	String formula="AND(A1<>\""+encoded+"\")";    	
+    	
     	CellRangeAddressList addressList = new CellRangeAddressList(firstRow, lastRow, firstCol, lastCol); 
-    	DataValidationConstraint constraint = sheet.getDataValidationHelper().createFormulaListConstraint(formula);
+    	DataValidationConstraint constraint = sheet.getDataValidationHelper().createCustomConstraint(formula);
     	DataValidation dataValidation = sheet.getDataValidationHelper().createValidation(constraint, addressList);
         sheet.addValidationData(dataValidation);
     }
@@ -200,10 +201,9 @@ public class SheetXSSFImpl implements Sheet {
         List<Validation> validationList = new ArrayList<Validation>();
         for (XSSFDataValidation validation : getValidationData()) {
             for (CellRangeAddress address : validation.getRegions().getCellRangeAddresses()) {
-            	String formula1=validation.getValidationConstraint().getFormula1();
+            	String formula1=validation.getValidationConstraint().getFormula1();            	
                 validationList.add(new ValidationImpl(formula1, this, address.getFirstColumn(), address.getLastColumn(), address.getFirstRow(), address.getLastRow()));
             }
-
         }
         return validationList;
     }
@@ -217,11 +217,11 @@ public class SheetXSSFImpl implements Sheet {
     	return -1;
     }
     
-    public List<XSSFDataValidation> getValidationData() {    	    	
+    protected List<XSSFDataValidation> getValidationData() {    	    	    	
     	return sheet.getDataValidations();
     }    
     
-    public void clearValidationData() {
+    public void clearValidationData() {    	
     	if (sheet.getCTWorksheet().getDataValidations() != null) {
 	    	for (int i=0;i<sheet.getCTWorksheet().getDataValidations().getCount();i++) {
 	    		sheet.getCTWorksheet().getDataValidations().removeDataValidation(0);	    	

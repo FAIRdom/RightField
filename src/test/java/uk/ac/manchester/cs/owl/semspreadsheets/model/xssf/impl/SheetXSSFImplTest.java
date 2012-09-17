@@ -4,8 +4,14 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
+import org.apache.poi.ss.usermodel.DataValidation;
+import org.apache.poi.ss.usermodel.DataValidationConstraint;
+import org.apache.poi.ss.usermodel.DataValidationHelper;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.ss.util.CellRangeAddressList;
 import org.apache.poi.xssf.usermodel.XSSFDataValidation;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Test;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.DocumentsCatalogue;
@@ -39,6 +45,21 @@ public class SheetXSSFImplTest extends GeneralSheetTests {
 		sheet.clearValidationData();
 		validationData = sheet.getValidationData();
 		assertEquals(0,validationData.size());		
+	}
+	
+	@Test
+	public void testGettingValidationsAfterAddingCustomInPOI() throws Exception {
+		XSSFWorkbook wb = new XSSFWorkbook();
+		XSSFSheet sheet = wb.createSheet();
+		sheet.getDataValidations();
+		
+		DataValidationHelper dataValidationHelper = sheet.getDataValidationHelper();
+		DataValidationConstraint constraint = dataValidationHelper.createCustomConstraint("SUM($C$3:$C$7) <= 3500");
+		CellRangeAddressList addressList = new CellRangeAddressList(0, 0, 1, 1);
+		DataValidation validation = dataValidationHelper.createValidation(constraint, addressList);
+		sheet.addValidationData(validation);	
+        		
+		sheet.getDataValidations();		
 	}
 	
 	

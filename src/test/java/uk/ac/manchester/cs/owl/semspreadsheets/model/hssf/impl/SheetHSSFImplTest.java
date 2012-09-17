@@ -45,7 +45,7 @@ public class SheetHSSFImplTest extends GeneralSheetTests {
 		sheet.clearValidationData();
 		validationData = sheet.getValidationData();
 		assertEquals(0,validationData.size());		
-	}
+	}		
 	
 	
 	protected Workbook getTestWorkbook() throws Exception {
