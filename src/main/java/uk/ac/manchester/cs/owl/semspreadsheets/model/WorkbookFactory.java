@@ -12,16 +12,12 @@ import java.net.URI;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.hssf.impl.WorkbookHSSFImpl;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.xssf.impl.WorkbookXSSFImpl;
 
 /**
- * Author: Matthew Horridge<br>
- * The University of Manchester<br>
- * Information Management Group<br>
- * Date: 18-Sep-2009
+ * @author Stuart Owen
+ * @author Matthew Horridge
  */
 public class WorkbookFactory {
 
@@ -49,7 +45,8 @@ public class WorkbookFactory {
 				wb = new WorkbookHSSFImpl((HSSFWorkbook)created);
 			}
 			else {
-				wb = new WorkbookXSSFImpl((XSSFWorkbook)created);
+				//wb = new WorkbookXSSFImpl((XSSFWorkbook)created);
+				throw new InvalidXLSXWorkbookFormatException(uri);
 			}
 		} catch (InvalidFormatException e) {
 			throw new InvalidWorkbookFormatException(e, uri);

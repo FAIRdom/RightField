@@ -25,9 +25,10 @@ public class WorkbookFactoryTest {
 		assertEquals("Metadata Template",book.getSheet(0).getName());
 	}
 	
-	@Test
+	@Test(expected=InvalidWorkbookFormatException.class) 
 	public void testLoadXLSXWorkbook() throws Exception {
 		Workbook book = WorkbookFactory.createWorkbook(DocumentsCatalogue.populatedJermWorkbookXLSXURI());
+		//will throw exception and skip assertions until xlsx support is re-enabled
 		assertTrue(book instanceof WorkbookXSSFImpl);
 		assertEquals(11,book.getSheets().size());
 		assertEquals("Metadata Template",book.getSheet(0).getName());

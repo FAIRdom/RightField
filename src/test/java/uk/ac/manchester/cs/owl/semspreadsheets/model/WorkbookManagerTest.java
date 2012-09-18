@@ -20,6 +20,7 @@ import java.net.URI;
 import java.util.Collection;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.semanticweb.owlapi.model.IRI;
 
@@ -87,6 +88,13 @@ public class WorkbookManagerTest {
 		manager.loadWorkbook(uri);
 	}
 	
+	@Test(expected=InvalidWorkbookFormatException.class)
+	public void testLoadInvalidFormatHandled() throws Exception {
+		URI uri = DocumentsCatalogue.simpleExcel2007WorkbookURI();		
+		manager.loadWorkbook(uri);		
+	}
+
+	
 	@Test(expected=IOException.class)
 	public void testNonExistantFormatHandled() throws Exception {
 		URI uri = DocumentsCatalogue.nonExistantFileURI();
@@ -120,6 +128,7 @@ public class WorkbookManagerTest {
 	}
 	
 	@Test
+	@Ignore("Ignoring XLSX tests until XLSX support is renabled (see xlsx2 branch)")
 	public void testLoadXLSXWorkbook() throws Exception {
 		URI uri = DocumentsCatalogue.simpleAnnotatedXLSXWorkbookURI();
 		manager.getWorkbookState().changesUnsaved();
@@ -134,6 +143,7 @@ public class WorkbookManagerTest {
 	}
 	
 	@Test
+	@Ignore("Ignoring XLSX tests until XLSX support is renabled (see xlsx2 branch)")
 	//checks the ontologyIRIs that are imported from the spreadsheet. This case there are 2 ontologies, and the protege imported ontology should be ignored
 	public void testLoadWorkbookXLSX2() throws Exception {		
 		URI uri = DocumentsCatalogue.populatedJermWorkbookXLSXURI();

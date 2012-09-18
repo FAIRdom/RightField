@@ -12,6 +12,7 @@ import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.DocumentsCatalogue;
@@ -19,7 +20,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.SpreadsheetTestHelper;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Workbook;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.impl.GeneralWorkbookTests;
 
-
+@Ignore("Ignoring XLSX tests until XLSX support is renabled (see xlsx2 branch)")
 public class WorkbookXSSFImplTest extends GeneralWorkbookTests {
 		
 	@Test
