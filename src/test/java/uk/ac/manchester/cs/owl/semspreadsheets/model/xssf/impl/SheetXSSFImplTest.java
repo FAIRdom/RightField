@@ -51,19 +51,20 @@ public class SheetXSSFImplTest extends GeneralSheetTests {
 	public void testGettingValidationsAfterAddingCustomInPOI() throws Exception {
 		XSSFWorkbook wb = new XSSFWorkbook();
 		XSSFSheet sheet = wb.createSheet();
-		sheet.getDataValidations();	//<-- works
+		List<XSSFDataValidation> dataValidations = sheet.getDataValidations();	//<-- works
+		assertEquals(0, dataValidations.size());
 		
 		//create the cell that will have the validation applied
-		sheet.createRow(0).createCell(0);
-		sheet.getRow(0).getCell(0);
+		sheet.createRow(0).createCell(0);		
 		
 		DataValidationHelper dataValidationHelper = sheet.getDataValidationHelper();
 		DataValidationConstraint constraint = dataValidationHelper.createCustomConstraint("SUM($A$1:$A$1) <= 3500");
 		CellRangeAddressList addressList = new CellRangeAddressList(0, 0, 0, 0);
 		DataValidation validation = dataValidationHelper.createValidation(constraint, addressList);
-		sheet.addValidationData(validation);	
+		sheet.addValidationData(validation);					
         		
-		sheet.getDataValidations();	//<-- raised XmlValueOutOfRangeException	
+		dataValidations = sheet.getDataValidations();	//<-- raised XmlValueOutOfRangeException	
+		assertEquals(1, dataValidations.size());
 	}
 	
 	
