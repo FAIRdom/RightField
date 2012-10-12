@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.OWLOntology;
 
+import uk.ac.manchester.cs.owl.semspreadsheets.listeners.AbstractEntitySelectionModelListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.listeners.CellSelectionListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.listeners.OntologyManagerListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidation;
@@ -55,6 +56,15 @@ public class ValidationTypeSelectorPanel extends JPanel {
 		setupListeners();
         
         workbookManager.getSelectionModel().addCellSelectionListener(cellSelectionListener);
+        workbookManager.getEntitySelectionModel().addListener(new AbstractEntitySelectionModelListener() {
+
+			@Override
+			public void validationTypeChanged(ValidationType type) {
+				setSelectedType(type);
+			}
+		});
+			
+			
         refreshTypeList();
     }        
 
@@ -118,12 +128,11 @@ public class ValidationTypeSelectorPanel extends JPanel {
         }
         else if(containingValidations.size() == 1) {
             OntologyTermValidation validation = containingValidations.iterator().next();
-            setSelectedType(validation);            
+            setSelectedType(validation.getValidationDescriptor().getType());            
         }                       
     }
-
-    private void setSelectedType(OntologyTermValidation validation) {    	
-        ValidationType type = validation.getValidationDescriptor().getType();
+    
+    private void setSelectedType(ValidationType type) {    	        
         logger.debug("Setting selected type to "+type);
         comboBox.setSelectedItem(type);        		
     }
