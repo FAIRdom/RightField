@@ -84,9 +84,20 @@
 			<version>2.9.0-incubating</version>
 		</dependency>
 		<dependency>
-			<groupId>org.apache.poi</groupId>
+			<groupId>org.sysmo-db</groupId>
 			<artifactId>poi-ooxml</artifactId>
-			<version>3.8</version>
+			<version>3.9-beta1-20121011</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.poi</groupId>
+					<artifactId>poi</artifactId>					
+					</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.sysmo-db</groupId>
+			<artifactId>poi-ooxml-schemas</artifactId>
+			<version>3.9-beta1-20121011</version>
 			<exclusions>
 				<exclusion>
 					<groupId>org.apache.poi</groupId>

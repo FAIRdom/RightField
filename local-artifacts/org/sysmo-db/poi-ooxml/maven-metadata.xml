@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>org.sysmo-db</groupId>
+  <artifactId>poi-ooxml</artifactId>
+  <version>3.9-beta1-20121011</version>
+  <versioning>
+    <versions>
+      <version>3.9-beta1-20121011</version>
+    </versions>
+    <lastUpdated>20121012143331</lastUpdated>
+  </versioning>
+</metadata>
