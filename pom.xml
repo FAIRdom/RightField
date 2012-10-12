@@ -77,34 +77,63 @@
 			<groupId>org.sysmo-db</groupId>
 			<artifactId>rightfield-poi</artifactId>
 			<version>3.8</version>
-		</dependency>		
+		</dependency>			
+		
+		<!-- release poi-ooxml 
 		<dependency>
-			<groupId>org.apache.jena</groupId>
-			<artifactId>jena-arq</artifactId>
-			<version>2.9.0-incubating</version>
-		</dependency>
-		<dependency>
-			<groupId>org.sysmo-db</groupId>
+			<groupId>org.apache.poi</groupId>
 			<artifactId>poi-ooxml</artifactId>
-			<version>3.9-beta1-20121011</version>
+			<version>3.8</version>
 			<exclusions>
 				<exclusion>
 					<groupId>org.apache.poi</groupId>
 					<artifactId>poi</artifactId>					
 					</exclusion>
+				<exclusion>
+					<artifactId>xml-apis</artifactId>
+					<groupId>xml-apis</groupId>
+				</exclusion>
 			</exclusions>
+		</dependency>		
+		 end released poi-ooxml -->
+		
+		<dependency>
+			<groupId>org.apache.jena</groupId>
+			<artifactId>jena-arq</artifactId>
+			<version>2.9.0-incubating</version>			
+		</dependency>
+				
+		
+		
+		<!--  required for nightly poi-ooxml -->  
+		<dependency>
+			<groupId>org.sysmo-db</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>3.9-beta1-20121011</version>			
 		</dependency>
 		<dependency>
 			<groupId>org.sysmo-db</groupId>
 			<artifactId>poi-ooxml-schemas</artifactId>
-			<version>3.9-beta1-20121011</version>
-			<exclusions>
+			<version>3.9-beta1-20121011</version>			
+		</dependency>		
+		<dependency>
+			<groupId>dom4j</groupId>
+			<artifactId>dom4j</artifactId>
+			<version>1.6.1</version>
+			<exclusions>				
 				<exclusion>
-					<groupId>org.apache.poi</groupId>
-					<artifactId>poi</artifactId>					
-					</exclusion>
-			</exclusions>
+					<artifactId>xml-apis</artifactId>
+					<groupId>xml-apis</groupId>
+				</exclusion>
+			</exclusions>					
+		</dependency>				
+		<dependency>
+			<groupId>org.apache.xmlbeans</groupId>
+			<artifactId>xmlbeans</artifactId>
+			<version>2.3.0</version>			
 		</dependency>
+		<!--  end of required for poi-ooxml -->		
+		
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
