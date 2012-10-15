@@ -211,9 +211,11 @@ public class WorkbookManager {
     }
 
     public void previewValidation() {
-    	IRI iri = entitySelectionModel.getSelectedEntity().getIRI();
-    	ValidationType type = entitySelectionModel.getValidationType();
-    	OWLPropertyItem owlPropertyItem = entitySelectionModel.getOWLPropertyItem();
+    	IRI iri = getEntitySelectionModel().getSelectedEntity().getIRI();
+    	logger.debug("Entity IRI for preview: "+iri.toString());
+    	ValidationType type = getEntitySelectionModel().getValidationType();
+    	logger.debug("Type for preview: "+type.getEntityType());
+    	OWLPropertyItem owlPropertyItem = getEntitySelectionModel().getOWLPropertyItem();
     	Range range = new Range(workbook.getSheet(0));
     	getOntologyManager().getOntologyTermValidationManager().previewValidation(range,type, iri,owlPropertyItem);
 	}	

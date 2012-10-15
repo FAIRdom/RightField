@@ -55,7 +55,7 @@ public class ClassHierarchyTree extends JTree {
             }
         });
                 
-        setCellRenderer(new OntologyCellRenderer(workbookManager.getOntologyManager()));        
+        setCellRenderer(new OntologyCellRenderer(workbookManager.getOntologyManager()));         
     }
     
     public OWLOntology getOntology() {
@@ -64,14 +64,12 @@ public class ClassHierarchyTree extends JTree {
     
     public ClassHierarchyTreeModel getClassHierarchyTreeModel() {
         return (ClassHierarchyTreeModel) super.getModel();
-    }        
-
-	private void previewSelectedClass() {
-		logger.debug("In previewSelectedClass");
-				
+    } 
+    
+    public OWLEntity getSelectedEntity() {
 		TreePath[] selectedPaths = getSelectionPaths();
 		if (selectedPaths == null) {
-			return;
+			return null;
 		}
 		Set<OWLEntity> selectedEntities = new HashSet<OWLEntity>();
 		
@@ -88,11 +86,20 @@ public class ClassHierarchyTree extends JTree {
 			}
 		}
 		OWLEntity selectedEntity = selectedEntities.iterator().next();
-		if (!workbookManager.getEntitySelectionModel().getSelectedEntity().equals(selectedEntity)) {
-			workbookManager.getEntitySelectionModel().setSelectedEntity(selectedEntity);
-		}			
-		workbookManager.previewValidation();		
-	}    
+		return selectedEntity;
+	}
+
+	public void previewSelectedClass() {
+		logger.debug("In previewSelectedClass");
+		
+		OWLEntity selectedEntity = getSelectedEntity();
+		if (selectedEntity!=null) {
+			if (!workbookManager.getEntitySelectionModel().getSelectedEntity().equals(selectedEntity)) {
+				workbookManager.getEntitySelectionModel().setSelectedEntity(selectedEntity);
+			}			
+			workbookManager.previewValidation();
+		}					
+	}    		
 
     public boolean containsClass(OWLClass cls) {
     	return !getClassHierarchyTreeModel().getTreePathsForEntity(cls).isEmpty();

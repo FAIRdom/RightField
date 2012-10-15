@@ -33,7 +33,7 @@ public class LoadOntologyFromURITask extends AbstractTask<OWLOntology, OWLOntolo
     		return getOntologyManager().loadOntology(IRI.create(uri));
     	}
     	catch(OWLOntologyCreationException e) {    		
-    		ErrorHandler.getErrorHandler().handleError(e);
+    		ErrorHandler.getErrorHandler().handleError(e,IRI.create(uri));
     		throw e;
     	}
     }

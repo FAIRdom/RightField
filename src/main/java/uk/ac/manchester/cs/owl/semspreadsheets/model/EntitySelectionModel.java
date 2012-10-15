@@ -23,8 +23,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.listeners.EntitySelectionModelLis
  * @author Stuart Owen
  */
 public class EntitySelectionModel {
-	
-	@SuppressWarnings("unused")
+		
 	private static final Logger logger = Logger.getLogger(EntitySelectionModel.class);
 
     private OWLEntity defaultSelection;
@@ -42,20 +41,10 @@ public class EntitySelectionModel {
     public EntitySelectionModel(OWLEntity defaultSelection) {
         this.defaultSelection = defaultSelection;
         selectedEntity = defaultSelection;        
-    }
-
-    /**
-     * clears the selection back to the defaultSelection, no property and free text
-     */
-    public synchronized void clear() {    	
-    	allowSelectionEvents=false;
-		setValidationType(ValidationType.FREETEXT);
-		setOWLPropertyItem(null);
-		setSelectedEntity(null);
-		allowSelectionEvents=true;		
-    }
+    }    
     
-    public void setSelectedEntity(OWLEntity entity) {
+    public void setSelectedEntity(OWLEntity entity) {    	
+    	
     	OWLEntity oldEntity = this.selectedEntity;
         if(entity == null) {
             this.selectedEntity = defaultSelection;            
@@ -63,6 +52,7 @@ public class EntitySelectionModel {
         else {
             this.selectedEntity = entity;            
         }
+        logger.debug("Set selected entity to "+selectedEntity.getIRI().toString());
         if (oldEntity==null ? selectedEntity!=null : !oldEntity.equals(selectedEntity)) {
         	fireSelectedEntityChanged();        	        
         }        
@@ -75,6 +65,7 @@ public class EntitySelectionModel {
 	public void setValidationType(ValidationType validationType) {
 		ValidationType oldType = this.validationType;
 		this.validationType = validationType;
+		logger.debug("Setting validation type to :"+validationType);
 		if (oldType==null ? this.validationType!=null : !oldType.equals(this.validationType)) {
 			fireValidationTypeChanged();			
 		}		
@@ -93,8 +84,8 @@ public class EntitySelectionModel {
 	}
     
     public void clearSelection() {
-        selectedEntity = defaultSelection;
-        fireSelectedEntityChanged();
+    	logger.debug("Clearing selected Entity");
+        setSelectedEntity(defaultSelection);
     }
 
     public OWLEntity getSelectedEntity() {
