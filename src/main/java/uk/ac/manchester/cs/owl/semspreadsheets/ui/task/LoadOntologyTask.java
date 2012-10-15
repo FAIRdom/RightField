@@ -31,7 +31,7 @@ public class LoadOntologyTask extends AbstractTask<OWLOntology, OWLOntologyCreat
     		return getOntologyManager().loadOntology(IRI.create(file));
     	}
     	catch(OWLOntologyCreationException e) {    		
-    		ErrorHandler.getErrorHandler().handleError(e);
+    		ErrorHandler.getErrorHandler().handleError(e,IRI.create(file));
     		throw e;
     	}
     }

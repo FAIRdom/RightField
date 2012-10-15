@@ -15,6 +15,7 @@ import javax.swing.JOptionPane;
 import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.io.OWLOntologyCreationIOException;
 import org.semanticweb.owlapi.io.UnparsableOntologyException;
+import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.InvalidWorkbookFormatException;
@@ -39,21 +40,27 @@ public class ErrorHandler {
         return instance;
     }
 
-    public void handleError(Throwable throwable) {
-    	logger.debug("Error being handled",throwable);
-        if(throwable instanceof OWLOntologyCreationException) {        	
-            if(throwable instanceof OWLOntologyCreationIOException) {
-                OWLOntologyCreationIOException e = (OWLOntologyCreationIOException) throwable;
-                reportError("An error occurred trying to open the onology:"+e.getCause().getMessage(), "Could not open ontology",throwable);
-            }
-            else if(throwable instanceof UnparsableOntologyException) {
-            	reportError("The ontology document appears to be in an unsupported format or contains syntax errors", "Could not load ontology",throwable);
+    public void handleError(OWLOntologyCreationException throwable, IRI iri) {
+    	logger.debug("Error being handled whilst ",throwable);
+    	if(throwable instanceof OWLOntologyCreationIOException) {            
+            if (throwable.getCause() instanceof UnknownHostException) {
+            	reportError("There was a network error occurred trying to open the ontology for "+iri.toString()+", it appears you are not connected to the internet", "Could not open ontology",throwable.getCause());
             }
             else {
-            	reportError(throwable.getMessage(), "Could not load ontology",throwable);
-            }
+            	reportError("There was a network error occurred trying to open the ontology for "+iri.toString()+", maybe there is a problem with your internet connection, or the resource is currently unavailable", "Could not open ontology",throwable.getCause());
+            }            
         }
-        else if(throwable instanceof UnknownHostException) {
+        else if(throwable instanceof UnparsableOntologyException) {
+        	reportError("The ontology document for " + iri.toString() + " appears to be in an unsupported format or contains syntax errors", "Could not load ontology",throwable.getCause());
+        }
+        else {
+        	reportError("There was an error trying to open the ontology at "+iri.toString()+" : " + throwable.getMessage(), "Could not load ontology",throwable);
+        }
+    }
+    
+    public void handleError(Throwable throwable) {
+    	logger.debug("Error being handled",throwable);
+        if(throwable instanceof UnknownHostException) {
         	reportError("You are not connected to the internet.  Please check your network connection.", "Not connected to network",throwable);
         }        
         else if (throwable instanceof BioPortalAccessDeniedException) {
@@ -72,6 +79,9 @@ public class ErrorHandler {
     }
     
     private void reportError(String message, String title,Throwable exception) {
+    	if (exception != null) {
+    		title=title+" ("+exception.getClass().getSimpleName()+")";
+    	}
     	JOptionPane.showMessageDialog(null, message,title,JOptionPane.ERROR_MESSAGE);
     }
 }

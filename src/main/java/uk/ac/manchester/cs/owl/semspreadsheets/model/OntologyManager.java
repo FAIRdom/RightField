@@ -241,8 +241,8 @@ public class OntologyManager {
             if(!owlManager.contains(iri)) {
                 try {
                 	loadOntology(iri);
-				} catch (OWLOntologyCreationException e) {
-					logger.error("Error loading ontology for embedded term.",e);
+				} catch (OWLOntologyCreationException e) {					
+					ErrorHandler.getErrorHandler().handleError(e,iri);
 				}
             }
         }        
