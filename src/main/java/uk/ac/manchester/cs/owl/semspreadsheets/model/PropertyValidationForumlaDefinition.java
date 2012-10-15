@@ -45,7 +45,7 @@ public class PropertyValidationForumlaDefinition {
 			}
 			else {
 				//FIXME: should raise exception rather than just return null
-				logger.error("Unexpected number of elements in encoded property "+formula);
+				logger.warn("Unexpected number of elements in encoded property "+formula);
 			}  
 		}
 		else {

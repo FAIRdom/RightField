@@ -12,6 +12,7 @@ import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.DocumentsCatalogue;
@@ -23,6 +24,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.impl.GeneralWorkbookTests;
 public class WorkbookXSSFImplTest extends GeneralWorkbookTests {
 		
 	@Test
+	@Ignore("No longer needed as we found a workaround, but kept test to check if its fixed in POI in the future")
 	public void testColumnWidthPOI() throws Exception {
 		XSSFWorkbook workbook = new XSSFWorkbook();
 		XSSFSheet sheet = workbook.createSheet();

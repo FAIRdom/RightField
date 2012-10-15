@@ -11,6 +11,7 @@ import java.util.List;
 
 import org.junit.Test;
 
+import uk.ac.manchester.cs.owl.semspreadsheets.model.PropertyValidationForumlaDefinition;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Validation;
@@ -56,7 +57,8 @@ public abstract class GeneralSheetTests {
 		Validation validation = sheet.getValidations().iterator().next();
 		assertTrue(validation.isLiteralValidation());
 		assertFalse(validation.isDataValidation());
-		assertEquals("propliteral^wksowlv0",validation.getFormula());
+		assertTrue("propliteral^wksowlv0",validation.getFormula().contains("propliteral^wksowlv0"));
+		assertEquals("wksowlv0",PropertyValidationForumlaDefinition.decode(validation.getFormula()));
 		assertEquals(new Range(sheet,2,3,3,4),validation.getRange());
 	}
 	
