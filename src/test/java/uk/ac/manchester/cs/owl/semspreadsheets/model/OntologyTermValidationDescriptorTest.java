@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.reasoner.impl.NodeFactory;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.DocumentsCatalogue;
 
@@ -17,7 +18,27 @@ public class OntologyTermValidationDescriptorTest {
 		WorkbookManager manager = new WorkbookManager();
 		ontManager = manager.getOntologyManager();
 		ontManager.loadOntology(DocumentsCatalogue.jermOntologyURI().toURL().toURI());
-		ontManager.loadOntology(DocumentsCatalogue.aminoAcidOntologyURI());
+		ontManager.loadOntology(DocumentsCatalogue.aminoAcidOntologyURI());		
+	}
+	
+	@Test
+	public void testOntologyIRIsWithOWLThing() throws Exception {		
+		IRI owlThingEntity = NodeFactory.getOWLClassTopNode().getEntities().iterator().next().getIRI();
+		OntologyTermValidationDescriptor descriptor = new OntologyTermValidationDescriptor(ValidationType.SUBCLASSES,owlThingEntity,null,ontManager);
+		assertEquals(3,descriptor.getOntologyIRIs().size());
+		assertTrue(descriptor.getOntologyIRIs().contains(IRI.create("http://www.mygrid.org.uk/ontology/JERMOntology")));
+		assertTrue(descriptor.getOntologyIRIs().contains(IRI.create("http://www.co-ode.org/ontologies/meta/2005/06/15/meta.owl")));
+		assertTrue(descriptor.getOntologyIRIs().contains(IRI.create("http://www.co-ode.org/ontologies/amino-acid/2005/10/11/amino-acid.owl")));
+	}
+	
+	@Test
+	public void testOntologyIRIsWithOWLThingAndRDFS() throws Exception {
+		OntologyManager man = new WorkbookManager().getOntologyManager();
+		man.loadOntology(DocumentsCatalogue.rdfSchemaOntologyURI());
+		IRI owlThingEntity = NodeFactory.getOWLClassTopNode().getEntities().iterator().next().getIRI();
+		OntologyTermValidationDescriptor descriptor = new OntologyTermValidationDescriptor(ValidationType.SUBCLASSES,owlThingEntity,null,man);
+		assertEquals(1,descriptor.getOntologyIRIs().size());
+		assertTrue(descriptor.getOntologyIRIs().contains(IRI.create(DocumentsCatalogue.rdfSchemaOntologyURI())));		
 	}
 
 	@Test
