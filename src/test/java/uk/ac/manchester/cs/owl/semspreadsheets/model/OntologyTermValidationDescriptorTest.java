@@ -29,7 +29,7 @@ public class OntologyTermValidationDescriptorTest {
 		assertTrue(descriptor.getOntologyIRIs().contains(IRI.create("http://www.mygrid.org.uk/ontology/JERMOntology")));
 		assertTrue(descriptor.getOntologyIRIs().contains(IRI.create("http://www.co-ode.org/ontologies/meta/2005/06/15/meta.owl")));
 		assertTrue(descriptor.getOntologyIRIs().contains(IRI.create("http://www.co-ode.org/ontologies/amino-acid/2005/10/11/amino-acid.owl")));
-	}
+	}		
 	
 	@Test
 	public void testOntologyIRIsWithOWLThingAndRDFS() throws Exception {
