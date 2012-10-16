@@ -80,6 +80,18 @@ public class OntologyManagerTest {
 	}
 	
 	@Test
+	public void testOpenRDFSchema() throws Exception {
+		OWLOntology ontology = ontologyManager.loadOntology(DocumentsCatalogue.rdfSchemaOntologyURI());
+		assertNotNull(ontology.getOntologyID().getOntologyIRI());
+		assertTrue(ontologyManager.getLoadedOntologies().contains(ontology));
+		assertEquals(1,ontologyManager.getLoadedOntologies().size());
+		assertTrue(ontologyManager.getAllOntologies().contains(ontology));		
+		
+		assertTrue(testListener.isOntologiesChangedFired());
+		
+	}
+	
+	@Test
 	public void testOntologySelectedFired() throws Exception {
 		OWLOntology o = ontologyManager.loadOntology(DocumentsCatalogue.jermOntologyURI());
 		assertNull(testListener.getOntologySelected());
@@ -125,7 +137,7 @@ public class OntologyManagerTest {
 		assertEquals(1,ontologyManager.getLoadedOntologies().size());
 		assertTrue(ontologyManager.getAllOntologies().contains(ontology));		
 		
-		assertTrue(testListener.isOntologiesChanedFired());				
+		assertTrue(testListener.isOntologiesChangedFired());				
 	}
 	
 	@Test

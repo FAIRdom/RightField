@@ -23,10 +23,6 @@ import uk.ac.manchester.cs.owl.semspreadsheets.ui.ProgressDialog;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookFrame;
 
 /**
- * Author: Matthew Horridge, Stuart Owen<br>
- * The University of Manchester<br>
- * Information Management Group<br>
- * Date: 03-Feb-2010
  * 
  * @author Matthew Horridge
  * @author Stuart Owen
@@ -210,6 +206,10 @@ public class TaskManager implements TaskListener {
             V retVal;
             try {
                 retVal = task.runTask();
+            }  
+            catch(Exception e) {
+            	logger.error("Error running task",e);
+            	retVal=null;
             }
             finally {
                 task.removeTaskListener(TaskManager.this);
@@ -221,37 +221,6 @@ public class TaskManager implements TaskListener {
             }
             return retVal;
         }
-    }
-
-    private static int count;
-
-    public static void main(String[] args) {
-        final ExecutorService executor = Executors.newSingleThreadExecutor();
-        Thread starter = new Thread(new Runnable() {
-            public void run() {
-                for(int i = 0; i < 10; i++) {
-                    logger.debug("Schduling " + count);
-                    executor.execute(new Runnable() {
-
-
-                        public void run() {
-                            count++;
-                            logger.debug("Thread " + count + " starting");
-                            try {
-                                Thread.sleep(500);
-                            }
-                            catch (InterruptedException e) {
-                                logger.error("Thread Interruption Error",e);
-                            }
-                            logger.debug("\tThread " + count + " finished");
-                        }
-                    });
-            }
-
-        }
-        });
-        starter.start();
-
-    }
+    }       
 }
 
