@@ -206,11 +206,7 @@ public class TaskManager implements TaskListener {
             V retVal;
             try {
                 retVal = task.runTask();
-            }  
-            catch(Exception e) {
-            	logger.error("Error running task",e);
-            	retVal=null;
-            }
+            }              
             finally {
                 task.removeTaskListener(TaskManager.this);
                 // Hide the dialog if we have finished.
