@@ -18,9 +18,9 @@ import org.xml.sax.helpers.DefaultHandler;
  * @author Stuart Owen
  * @author Matthew Horridge
  */
-public class OntologyListHandler extends DefaultHandler {
+public class BioPortalOntologyListHandler extends DefaultHandler {
 	
-	private static Logger logger = Logger.getLogger(OntologyListHandler.class);
+	private static Logger logger = Logger.getLogger(BioPortalOntologyListHandler.class);
 
     public static final String ONTOLOGY_ID_ELEMENT_NAME = "ontologyId";
 
@@ -50,7 +50,7 @@ public class OntologyListHandler extends DefaultHandler {
     
     private BioPortalRepositoryItemHandler itemHandler;
 
-    public OntologyListHandler(BioPortalRepositoryItemHandler itemHandler) {
+    public BioPortalOntologyListHandler(BioPortalRepositoryItemHandler itemHandler) {
         this.itemHandler = itemHandler;
     }
 

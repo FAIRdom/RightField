@@ -6,7 +6,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.listeners.OntologyManagerListener
 
 public class DummyOntologyManagerListener implements OntologyManagerListener {
 	
-	public boolean ontologiesChanedFired = false;
+	public boolean ontologiesChangedFired = false;
 	public OWLOntology ontologySelected = null;
 	
 	public DummyOntologyManagerListener() {
@@ -14,11 +14,11 @@ public class DummyOntologyManagerListener implements OntologyManagerListener {
 	}	
 	
 	public void reset() {
-		ontologiesChanedFired = false;
+		ontologiesChangedFired = false;
 	}
 	
-	public boolean isOntologiesChanedFired() {
-		return ontologiesChanedFired;
+	public boolean isOntologiesChangedFired() {
+		return ontologiesChangedFired;
 	}
 	
 	public OWLOntology getOntologySelected() {
@@ -27,7 +27,7 @@ public class DummyOntologyManagerListener implements OntologyManagerListener {
 	
 	@Override
 	public void ontologiesChanged() {
-		ontologiesChanedFired=true;
+		ontologiesChangedFired=true;
 	}
 
 	@Override

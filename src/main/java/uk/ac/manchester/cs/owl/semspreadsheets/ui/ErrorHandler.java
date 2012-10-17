@@ -20,6 +20,7 @@ import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.InvalidWorkbookFormatException;
 import uk.ac.manchester.cs.owl.semspreadsheets.repository.bioportal.BioPortalAccessDeniedException;
+import uk.ac.manchester.cs.owl.semspreadsheets.repository.bioportal.BioPortalRepository;
 
 /**
  * Author: Matthew Horridge<br>
@@ -41,13 +42,14 @@ public class ErrorHandler {
     }
 
     public void handleError(OWLOntologyCreationException throwable, IRI iri) {
+    	iri = BioPortalRepository.removeBioPortalAPIKey(iri);
     	logger.debug("Error being handled whilst ",throwable);
     	if(throwable instanceof OWLOntologyCreationIOException) {            
             if (throwable.getCause() instanceof UnknownHostException) {
-            	reportError("There was a network error occurred trying to open the ontology for "+iri.toString()+", it appears you are not connected to the internet", "Could not open ontology",throwable.getCause());
+            	reportError("Unable to determine the address whilst trying to open the ontology for "+iri.toString()+", it appears you are not connected to the internet", "Could not open ontology",throwable.getCause());
             }
             else {
-            	reportError("There was a network error occurred trying to open the ontology for "+iri.toString()+", maybe there is a problem with your internet connection, or the resource is currently unavailable", "Could not open ontology",throwable.getCause());
+            	reportError("There was a network related error trying to open the ontology for "+iri.toString()+", the resource you are trying to connect to may not be available or accessible", "Could not open ontology",throwable.getCause());
             }            
         }
         else if(throwable instanceof UnparsableOntologyException) {

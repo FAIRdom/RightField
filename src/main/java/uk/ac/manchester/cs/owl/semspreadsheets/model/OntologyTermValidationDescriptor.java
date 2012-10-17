@@ -86,19 +86,26 @@ public class OntologyTermValidationDescriptor implements Serializable {
 
 	private void resolveOntologyIRIMap(IRI entityIRI,
 			OWLPropertyItem propertyItem, OntologyManager ontologyManager) {
-		for (OWLOntology ont : ontologyManager.getAllOntologies()) {
-			if (ont.containsEntityInSignature(entityIRI)
-					|| (propertyItem != null && ont
-							.containsEntityInSignature(propertyItem.getIRI()))) {
+		for (OWLOntology ontology : ontologyManager.getAllOntologies()) {						
+			if (includeOntologyInIRIMap(ontology,entityIRI,propertyItem)) {
 				IRI documentIRI = ontologyManager.getOWLOntologyManager()
-						.getOntologyDocumentIRI(ont);
+						.getOntologyDocumentIRI(ontology);
 				documentIRI = BioPortalRepository
 						.removeBioPortalAPIKey(documentIRI);
-				ontologyIRI2PhysicalIRIMap.put(ont.getOntologyID()
+				ontologyIRI2PhysicalIRIMap.put(ontology.getOntologyID()
 						.getOntologyIRI(), documentIRI);
 			}
 
 		}
+	}
+	
+	private boolean includeOntologyInIRIMap(OWLOntology ontology,IRI entityIRI,OWLPropertyItem propertyItem) {
+		//always include the ontology if the entity is owl#Thing
+		return entityIRI.toString().equals("http://www.w3.org/2002/07/owl#Thing") || 
+				ontology.containsEntityInSignature(entityIRI) || 
+				(propertyItem != null && 
+					ontology.containsEntityInSignature(propertyItem.getIRI())
+				);
 	}
     
     /**

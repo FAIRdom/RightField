@@ -19,7 +19,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookFrame;
 @SuppressWarnings("serial")
 public class OnlineHelpAction extends WorkbookFrameAction {
 
-	private String HELP_URI="http://rightfield.org.uk/guide";
+	private String HELP_URI="http://www.rightfield.org.uk/guide";
 	
 	private static Logger logger = Logger.getLogger(OnlineHelpAction.class);
 	
