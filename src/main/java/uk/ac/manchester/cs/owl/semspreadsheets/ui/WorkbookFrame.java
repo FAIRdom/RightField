@@ -367,7 +367,13 @@ public class WorkbookFrame extends JFrame {
 			if (item == null) {
 				return;
 			}
-			taskManager.runTask(new LoadRepositoryItemTask(item));
+			try {
+				taskManager.runTask(new LoadRepositoryItemTask(item));
+			}
+			catch(OWLOntologyCreationException ex) {
+				ErrorHandler.getErrorHandler().handleError(ex, item.getPhysicalIRI());
+			}
+			
 		}
 	}
 

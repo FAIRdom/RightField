@@ -25,7 +25,7 @@ public class OntologyListHandlerTest {
 	@Test
 	public void testListHandling() throws Exception {
         final Collection<RepositoryItem> collection = new ArrayList<RepositoryItem>();
-		OntologyListHandler handler = new OntologyListHandler(new BioPortalRepositoryItemHandler() {
+		BioPortalOntologyListHandler handler = new BioPortalOntologyListHandler(new BioPortalRepositoryItemHandler() {
             public void handleItem(RepositoryItem handler) {        
             	collection.add(handler);
             }
@@ -52,7 +52,7 @@ public class OntologyListHandlerTest {
 	@Test
 	public void testFormatFiltering() throws Exception {
 		final Collection<RepositoryItem> collection = new ArrayList<RepositoryItem>();
-		OntologyListHandler handler = new OntologyListHandler(new BioPortalRepositoryItemHandler() {
+		BioPortalOntologyListHandler handler = new BioPortalOntologyListHandler(new BioPortalRepositoryItemHandler() {
             public void handleItem(RepositoryItem handler) {        
             	collection.add(handler);
             }
@@ -72,7 +72,7 @@ public class OntologyListHandlerTest {
 	@Test
 	public void testSkipsNonNumericIDsFiltering() throws Exception {
 		final Collection<RepositoryItem> collection = new ArrayList<RepositoryItem>();
-		OntologyListHandler handler = new OntologyListHandler(new BioPortalRepositoryItemHandler() {
+		BioPortalOntologyListHandler handler = new BioPortalOntologyListHandler(new BioPortalRepositoryItemHandler() {
             public void handleItem(RepositoryItem handler) {        
             	collection.add(handler);
             }

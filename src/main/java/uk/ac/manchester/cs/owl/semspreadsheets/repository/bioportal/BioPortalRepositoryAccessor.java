@@ -61,7 +61,7 @@ public class BioPortalRepositoryAccessor implements RepositoryAccessor {
             
             logger.info("Contacting BioPortal REST API at: "+url.toExternalForm());
             
-            OntologyListHandler handler = new OntologyListHandler(new BioPortalRepositoryItemHandler() {
+            BioPortalOntologyListHandler handler = new BioPortalOntologyListHandler(new BioPortalRepositoryItemHandler() {
                 public void handleItem(RepositoryItem item) {
                     logger.debug("Found BioportalRepositoryItem handler: " + item);
                     items.add(item);

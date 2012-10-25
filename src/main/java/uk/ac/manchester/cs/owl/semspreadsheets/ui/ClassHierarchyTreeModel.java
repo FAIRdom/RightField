@@ -20,6 +20,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
+import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
@@ -46,7 +47,9 @@ public class ClassHierarchyTreeModel implements TreeModel {
 
 	private final OWLOntology ontology;
 
-	private final OntologyManager ontologyManager;    
+	private final OntologyManager ontologyManager;  
+	
+	private static final Logger logger = Logger.getLogger(ClassHierarchyNode.class);
 
 	public ClassHierarchyTreeModel(OntologyManager ontologyManager, OWLOntology ontology) {
         this.ontologyManager = ontologyManager;		
@@ -88,6 +91,7 @@ public class ClassHierarchyTreeModel implements TreeModel {
     }
 
     private void buildChildren(ClassHierarchyNode node) {
+    	logger.debug("Building class hierarchy tree");
         Set<OWLClass> clses = node.getOWLClasses();
         OWLClass representative = clses.iterator().next();
         NodeSet<OWLClass> subs = getReasoner().getSubClasses(representative, true);
@@ -99,6 +103,7 @@ public class ClassHierarchyTreeModel implements TreeModel {
                 node.add(childNode);
                 for (OWLClass cls : sub) {
                     put(cls, childNode);
+                    logger.debug("Adding subclass: "+cls);
                 }
                 buildChildren(childNode);
             }

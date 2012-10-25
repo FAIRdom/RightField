@@ -23,6 +23,10 @@ public class DocumentsCatalogue {
 		return uriForResourceName("amino-acid.owl");
 	}
 	
+	public static URI rdfSchemaOntologyURI() throws Exception {
+		return uriForResourceName("dwcterms_v2011-10-26.rdf");
+	}
+	
 	public static URI scoroOntologyURI() throws Exception {
 		return uriForResourceName("scoro.owl");
 	}
