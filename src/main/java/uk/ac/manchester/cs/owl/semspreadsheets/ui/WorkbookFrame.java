@@ -377,7 +377,7 @@ public class WorkbookFrame extends JFrame {
 		}
 	}
 
-	public void saveWorkbook() throws IOException {
+	public void saveWorkbook() throws Exception {
 		URI workbookURI = workbookManager.getWorkbookURI();
 		if (workbookURI == null) {
 			saveWorkbookAs();
@@ -402,7 +402,7 @@ public class WorkbookFrame extends JFrame {
 		}		
 	}
 
-	public void saveWorkbookAs() throws IOException {
+	public void saveWorkbookAs() throws Exception {
 		File file = browseForFile("Save spreadsheet as", FileDialog.SAVE,
 				"Excel spreadsheet", WORKBOOK_EXT);		
 		if (file != null) {
