@@ -241,8 +241,8 @@ public class OntologyManager {
             if(!owlManager.contains(iri)) {
                 try {
                 	loadOntology(iri);
-				} catch (OWLOntologyCreationException e) {
-					logger.error("Error loading ontology for embedded term.",e);
+				} catch (OWLOntologyCreationException e) {					
+					ErrorHandler.getErrorHandler().handleError(e,iri);
 				}
             }
         }        
@@ -269,7 +269,11 @@ public class OntologyManager {
         OWLOntology ontology = processOntologyDocumentSourceWithTimeout(source, 30);        
     	
     	logIRI = ontology.getOntologyID().getOntologyIRI();
-    	//Create a new ID and use the physical IRI as a version ID        
+    	if (logIRI==null) {
+    		logger.debug("No logical IRI, so using physical IRI:"+physicalIRI);
+    		logIRI=physicalIRI;
+    	}
+    	//Create a new ID and use the physical IRI as a version ID      	
         newID = new OWLOntologyID(logIRI,physicalIRI);        
         getOWLOntologyManager().applyChange(new SetOntologyID(ontology, newID));              
         

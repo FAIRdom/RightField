@@ -9,8 +9,6 @@ package uk.ac.manchester.cs.owl.semspreadsheets.model;
 import java.awt.Color;
 import java.awt.Font;
 
-import javax.swing.text.Style;
-
 /**
  * @author Matthew Horridge
  * @author Stuart Owen
@@ -45,9 +43,7 @@ public interface Cell {
 
     void setBold(boolean b);
     
-    void setBackgroundFill(Color colour);
-
-    Style getStyle();
+    void setBackgroundFill(Color colour);    
 
     String getValidationListName();
 

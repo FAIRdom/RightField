@@ -166,7 +166,7 @@ public class WorkbookManager {
         return workbook;
     }
 
-    public Workbook loadWorkbook(URI uri) throws IOException {
+    public Workbook loadWorkbook(URI uri) throws IOException,InvalidWorkbookFormatException {
         try {
         	//need to preserve the listeners on the workbook
         	List<WorkbookChangeListener> existingListeners = workbook.getAllChangeListeners();
@@ -189,7 +189,7 @@ public class WorkbookManager {
         }
     }    
 
-    public void loadWorkbook(File file) throws IOException {
+    public void loadWorkbook(File file) throws IOException,InvalidWorkbookFormatException {
         loadWorkbook(file.toURI());
     }
 
@@ -211,9 +211,11 @@ public class WorkbookManager {
     }
 
     public void previewValidation() {
-    	IRI iri = entitySelectionModel.getSelectedEntity().getIRI();
-    	ValidationType type = entitySelectionModel.getValidationType();
-    	OWLPropertyItem owlPropertyItem = entitySelectionModel.getOWLPropertyItem();
+    	IRI iri = getEntitySelectionModel().getSelectedEntity().getIRI();
+    	logger.debug("Entity IRI for preview: "+iri.toString());
+    	ValidationType type = getEntitySelectionModel().getValidationType();
+    	logger.debug("Type for preview: "+type.getEntityType());
+    	OWLPropertyItem owlPropertyItem = getEntitySelectionModel().getOWLPropertyItem();
     	Range range = new Range(workbook.getSheet(0));
     	getOntologyManager().getOntologyTermValidationManager().previewValidation(range,type, iri,owlPropertyItem);
 	}	

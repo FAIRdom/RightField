@@ -83,12 +83,12 @@ public class ClassHierarchyTabbedPane extends JTabbedPane {
 		addChangeListener(new ChangeListener() {			
 			@Override
 			public void stateChanged(ChangeEvent e) {
-				if (e.getSource() instanceof ClassHierarchyTabbedPane) {
-					getWorkbookManager().getEntitySelectionModel().clear();					
-					ClassHierarchyTree selectedHierarchyTree = ((ClassHierarchyTabbedPane)e.getSource()).getSelectedHierarchyTree();
-					if (selectedHierarchyTree!=null) {
+				if (e.getSource() instanceof ClassHierarchyTabbedPane) {				
+					ClassHierarchyTree selectedHierarchyTree = ((ClassHierarchyTabbedPane)e.getSource()).getSelectedHierarchyTree();					
+					if (selectedHierarchyTree!=null) {						
 						OWLOntology ontology = selectedHierarchyTree.getOntology();
-						fireOntologySelected(ontology);						
+						fireOntologySelected(ontology);
+						selectedHierarchyTree.previewSelectedClass();
 					}
 					else {
 						logger.debug("Selected hierarchy tree is NULL when stateChanged");

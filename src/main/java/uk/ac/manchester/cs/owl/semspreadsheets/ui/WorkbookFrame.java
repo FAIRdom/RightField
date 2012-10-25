@@ -44,6 +44,7 @@ import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.listeners.AbstractWorkbookManagerListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.listeners.OntologyManagerListener;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.InvalidWorkbookFormatException;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.KnownOntologies;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
@@ -366,7 +367,13 @@ public class WorkbookFrame extends JFrame {
 			if (item == null) {
 				return;
 			}
-			taskManager.runTask(new LoadRepositoryItemTask(item));
+			try {
+				taskManager.runTask(new LoadRepositoryItemTask(item));
+			}
+			catch(OWLOntologyCreationException ex) {
+				ErrorHandler.getErrorHandler().handleError(ex, item.getPhysicalIRI());
+			}
+			
 		}
 	}
 
@@ -387,6 +394,8 @@ public class WorkbookFrame extends JFrame {
 				try {
 					workbookManager.loadWorkbook(file);
 				} catch (IOException e) {
+					ErrorHandler.getErrorHandler().handleError(e);
+				} catch (InvalidWorkbookFormatException e) {
 					ErrorHandler.getErrorHandler().handleError(e);
 				}
 			}

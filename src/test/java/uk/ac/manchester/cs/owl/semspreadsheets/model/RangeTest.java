@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.DocumentsCatalogue;
 import uk.ac.manchester.cs.owl.semspreadsheets.SpreadsheetTestHelper;
-import uk.ac.manchester.cs.owl.semspreadsheets.impl.SheetHSSFImpl;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.hssf.impl.SheetHSSFImpl;
 
 public class RangeTest {
 	

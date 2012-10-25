@@ -15,16 +15,16 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.util.Collection;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.semanticweb.owlapi.model.IRI;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.DocumentsCatalogue;
-import uk.ac.manchester.cs.owl.semspreadsheets.impl.DummyWorkbookChangeListener;
-import uk.ac.manchester.cs.owl.semspreadsheets.impl.DummyWorkbookManagerListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.listeners.WorkbookChangeListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OWLPropertyType;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidation;
@@ -32,14 +32,17 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidationDescr
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Workbook;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.hssf.impl.DummyWorkbookChangeListener;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.hssf.impl.DummyWorkbookManagerListener;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.hssf.impl.WorkbookHSSFImpl;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.xssf.impl.WorkbookXSSFImpl;
 
 public class WorkbookManagerTest {
 	
 	WorkbookManager manager;
 	DummyWorkbookManagerListener testListener;
 	DummyWorkbookChangeListener testChangeListener;
-	
-	
+		
 	@Before
 	public void setUp() {
 		manager = new WorkbookManager();		
@@ -77,6 +80,25 @@ public class WorkbookManagerTest {
 		assertEquals(uri,manager.getWorkbookURI());
 		assertTrue(tmpfile.exists());
 		assertTrue(testListener.isWorkbookSavedFired());
+	}	
+	
+	@Test(expected=InvalidWorkbookFormatException.class)
+	public void testLoadNonSpreadsheetFormatHandled() throws Exception {
+		URI uri = DocumentsCatalogue.jermOntologyURI();		
+		manager.loadWorkbook(uri);
+	}
+	
+	@Test(expected=InvalidWorkbookFormatException.class)
+	public void testLoadInvalidFormatHandled() throws Exception {
+		URI uri = DocumentsCatalogue.simpleExcel2007WorkbookURI();		
+		manager.loadWorkbook(uri);		
+	}
+
+	
+	@Test(expected=IOException.class)
+	public void testNonExistantFormatHandled() throws Exception {
+		URI uri = DocumentsCatalogue.nonExistantFileURI();
+		manager.loadWorkbook(uri);		
 	}
 	
 	@Test
@@ -84,18 +106,47 @@ public class WorkbookManagerTest {
 		URI uri = DocumentsCatalogue.simpleAnnotatedworkbookURI();
 		manager.getWorkbookState().changesUnsaved();
 		Workbook book = manager.loadWorkbook(uri);
+		assertTrue(book instanceof WorkbookHSSFImpl);
 		assertNotNull(book);
 		assertTrue(manager.getWorkbookState().isChangesSaved());
 		assertSame(book, manager.getWorkbook());
 		assertNotNull(manager.getWorkbookURI());
 		assertEquals(uri,manager.getWorkbookURI());
 		assertTrue(testListener.isWorkbookLoadedFired());				
-	}
+	}	
 	
 	@Test
 	//checks the ontologyIRIs that are imported from the spreadsheet. This case there are 2 ontologies, and the protege imported ontology should be ignored
 	public void testLoadWorkbook2() throws Exception {		
 		URI uri = DocumentsCatalogue.populatedJermWorkbookURI();
+		manager.loadWorkbook(uri);
+		assertEquals(2,manager.getOntologyManager().getOntologyIRIs().size());
+		assertTrue(manager.getOntologyManager().getOntologyIRIs().contains(IRI.create("http://www.mygrid.org.uk/ontology/JERMOntology")));
+		assertTrue(manager.getOntologyManager().getOntologyIRIs().contains(IRI.create("http://mged.sourceforge.net/ontologies/MGEDOntology.owl")));
+		
+		assertEquals(9,manager.getOntologyManager().getOntologyTermValidations().size());
+	}
+	
+	@Test
+	@Ignore("Ignoring XLSX tests until XLSX support is renabled (see xlsx2 branch)")
+	public void testLoadXLSXWorkbook() throws Exception {
+		URI uri = DocumentsCatalogue.simpleAnnotatedXLSXWorkbookURI();
+		manager.getWorkbookState().changesUnsaved();
+		Workbook book = manager.loadWorkbook(uri);
+		assertTrue(book instanceof WorkbookXSSFImpl);
+		assertNotNull(book);
+		assertTrue(manager.getWorkbookState().isChangesSaved());
+		assertSame(book, manager.getWorkbook());
+		assertNotNull(manager.getWorkbookURI());
+		assertEquals(uri,manager.getWorkbookURI());
+		assertTrue(testListener.isWorkbookLoadedFired());
+	}
+	
+	@Test
+	@Ignore("Ignoring XLSX tests until XLSX support is renabled (see xlsx2 branch)")
+	//checks the ontologyIRIs that are imported from the spreadsheet. This case there are 2 ontologies, and the protege imported ontology should be ignored
+	public void testLoadWorkbookXLSX2() throws Exception {		
+		URI uri = DocumentsCatalogue.populatedJermWorkbookXLSXURI();
 		manager.loadWorkbook(uri);
 		assertEquals(2,manager.getOntologyManager().getOntologyIRIs().size());
 		assertTrue(manager.getOntologyManager().getOntologyIRIs().contains(IRI.create("http://www.mygrid.org.uk/ontology/JERMOntology")));

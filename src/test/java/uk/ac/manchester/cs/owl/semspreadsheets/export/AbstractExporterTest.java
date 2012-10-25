@@ -27,6 +27,7 @@ import org.junit.Test;
 import org.semanticweb.owlapi.model.IRI;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.DocumentsCatalogue;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.InvalidWorkbookFormatException;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OWLPropertyType;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidation;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.ValidationType;
@@ -207,11 +208,11 @@ public class AbstractExporterTest {
 			super(manager);			
 		}
 
-		public AbstractExporterTestImpl(File workbookFile) throws IOException {
+		public AbstractExporterTestImpl(File workbookFile) throws IOException,InvalidWorkbookFormatException {
 			super(workbookFile);			
 		}
 		
-		public AbstractExporterTestImpl(URI uri) throws IOException {
+		public AbstractExporterTestImpl(URI uri) throws IOException,InvalidWorkbookFormatException {
 			super(uri);			
 		}
 
