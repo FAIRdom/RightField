@@ -26,6 +26,8 @@ import javax.swing.JSeparator;
 
 import org.apache.log4j.Logger;
 
+import uk.org.rightfield.RightField;
+
 
 @SuppressWarnings("serial")
 public class AboutBoxPanel extends JPanel {
@@ -38,7 +40,7 @@ public class AboutBoxPanel extends JPanel {
 						
 		add(rightFieldLogo());
 		
-		JLabel version = new JLabel("Version "+applicationVersion());
+		JLabel version = new JLabel("Version "+RightField.getApplicationVersion());
 		version.setAlignmentX(CENTER_ALIGNMENT);
 		version.setFont(version.getFont().deriveFont(14f));
 		add(new JLabel(" "));
@@ -86,13 +88,7 @@ public class AboutBoxPanel extends JPanel {
 		return result;
 	}
 	
-	private String applicationVersion() {
-		String v = AboutBoxPanel.class.getPackage().getImplementationVersion();
-		if (v==null) {
-			v="Unknown";
-		}
-		return v;
-	}	
+		
 	
 	public static void main(String[] args) {
 		AboutBoxPanel panel = new AboutBoxPanel();

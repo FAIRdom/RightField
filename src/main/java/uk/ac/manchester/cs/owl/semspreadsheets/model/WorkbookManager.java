@@ -194,7 +194,7 @@ public class WorkbookManager {
 
     public void saveWorkbook(URI uri) throws Exception {
         // Insert validation    	
-    	getOntologyManager().getOntologyTermValidationManager().writeValidationToWorkbook();
+    	getOntologyManager().getOntologyTermValidationManager().writeValidationToWorkbook();    	
         workbook.saveAs(uri);        
         OntologyTermValidationWorkbookParser workbookParser = new OntologyTermValidationWorkbookParser(this);
         workbookParser.clearOntologyTermValidations();
@@ -202,7 +202,7 @@ public class WorkbookManager {
             workbookURI = uri;
         }
         fireWorkbookSaved();
-        getWorkbookState().changesSaved();
+        getWorkbookState().changesSaved();        
     }
 
     public void previewValidation() {
