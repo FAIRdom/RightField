@@ -20,6 +20,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.export.CSVExporter;
 import uk.ac.manchester.cs.owl.semspreadsheets.export.Exporter;
 import uk.ac.manchester.cs.owl.semspreadsheets.export.RDFExporter;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
+import uk.ac.manchester.cs.owl.semspreadsheets.ui.AboutBoxPanel;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookFrame;
 
 /**
@@ -49,6 +50,14 @@ public class RightField {
     	if (cont) {
     		startUp();
     	}
+    }
+    
+    public static String getApplicationVersion() {    
+		String v = AboutBoxPanel.class.getPackage().getImplementationVersion();
+		if (v==null) {
+			v="Unknown";
+		}
+		return v;    	
     }
     
     private boolean handleArguments(String [] args) {

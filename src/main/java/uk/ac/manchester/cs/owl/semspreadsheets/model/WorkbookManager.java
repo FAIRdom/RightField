@@ -117,12 +117,7 @@ public class WorkbookManager {
     
     private void fireWorkbookSaved() {    	
         for (WorkbookManagerListener listener : getCopyOfListeners()) {
-            try {
-                listener.workbookSaved();
-            }
-            catch (Throwable e) {
-                ErrorHandler.getErrorHandler().handleError(e);
-            }
+            listener.workbookSaved();            
         }
     }
     
@@ -197,9 +192,9 @@ public class WorkbookManager {
         return workbookURI;
     }
 
-    public void saveWorkbook(URI uri) throws IOException {
-        // Insert validation
-    	getOntologyManager().getOntologyTermValidationManager().writeValidationToWorkbook();
+    public void saveWorkbook(URI uri) throws Exception {
+        // Insert validation    	
+    	getOntologyManager().getOntologyTermValidationManager().writeValidationToWorkbook();    	
         workbook.saveAs(uri);        
         OntologyTermValidationWorkbookParser workbookParser = new OntologyTermValidationWorkbookParser(this);
         workbookParser.clearOntologyTermValidations();
@@ -207,7 +202,7 @@ public class WorkbookManager {
             workbookURI = uri;
         }
         fireWorkbookSaved();
-        getWorkbookState().changesSaved();
+        getWorkbookState().changesSaved();        
     }
 
     public void previewValidation() {
