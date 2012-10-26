@@ -13,5 +13,14 @@ public class CSVExporterXLSXTest extends GeneralCSVExporterTests {
 	protected URI twoOntologiesWorkbookURI() throws Exception {
 		return DocumentsCatalogue.twoOntologiesWorkbookXLSXURI();
 	}
+	
+	@Override
+	protected URI bookWithPropertiesURI() throws Exception {
+		return DocumentsCatalogue.bookWithPropertiesXLSXURI();
+	}
 
+	@Override
+	protected URI bookWithLiteralsURI() throws Exception {
+		return DocumentsCatalogue.simpleWorkbookWithLiteralsOverRangeXLSXURI();
+	}
 }

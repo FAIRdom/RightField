@@ -56,6 +56,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.ClearOntologyValuesActi
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.CloseSelectedOntologyAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.CloseWorkbookAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.ExitAction;
+import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.ExportCSVAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.ExportRDFAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.InsertSheetAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.OnlineHelpAction;
@@ -207,6 +208,7 @@ public class WorkbookFrame extends JFrame {
 		fileMenu.add(new SaveAsAction(this));
 		fileMenu.add(new JSeparator());
 		fileMenu.add(new ExportRDFAction(this));
+		fileMenu.add(new ExportCSVAction(this));
 		fileMenu.add(new JSeparator());
 		fileMenu.add(new ExitAction(this));
 		

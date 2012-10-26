@@ -21,6 +21,7 @@ import org.semanticweb.owlapi.model.IRI;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.export.Exporter;
 import uk.ac.manchester.cs.owl.semspreadsheets.export.RDFExporter;
+import uk.ac.manchester.cs.owl.semspreadsheets.ui.ErrorHandler;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.RDFExportResultPanel;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookFrame;
 
@@ -36,14 +37,19 @@ public class ExportRDFAction extends WorkbookFrameAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		IRI iris[]=determineRootAndPropertyIDs();
-		IRI rootID=iris[0];
-		IRI propertyID=iris[1]!=null ? iris[1] : IRI.create(RDFExporter.DEFAULT_PROPERTY_URI);
-		if (rootID!=null) {			
-			Exporter exporter = new RDFExporter(getWorkbookManager(), rootID,propertyID);
-			String rdf = exporter.export();
-			
-			RDFExportResultPanel.showDialog(getWorkbookFrame(), rdf);
+		try {
+			IRI iris[]=determineRootAndPropertyIDs();
+			IRI rootID=iris[0];
+			IRI propertyID=iris[1]!=null ? iris[1] : IRI.create(RDFExporter.DEFAULT_PROPERTY_URI);
+			if (rootID!=null) {			
+				Exporter exporter = new RDFExporter(getWorkbookManager(), rootID,propertyID);
+				String rdf = exporter.export();
+				
+				RDFExportResultPanel.showDialog(getWorkbookFrame(), rdf);
+			}
+		}
+		catch(Exception ex) {
+			ErrorHandler.getErrorHandler().handleError(ex);
 		}
 	}
 	

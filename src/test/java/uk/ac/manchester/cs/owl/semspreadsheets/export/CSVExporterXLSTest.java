@@ -10,5 +10,15 @@ public class CSVExporterXLSTest extends GeneralCSVExporterTests {
 	protected URI twoOntologiesWorkbookURI() throws Exception {
 		return DocumentsCatalogue.twoOntologiesWorkbookURI();
 	}
+	
+	@Override
+	protected URI bookWithPropertiesURI() throws Exception {
+		return DocumentsCatalogue.bookWithPropertiesURI();
+	}
+	
+	@Override
+	protected URI bookWithLiteralsURI() throws Exception {
+		return DocumentsCatalogue.simpleWorkbookWithLiteralsOverRangeURI();
+	}
 
 }
