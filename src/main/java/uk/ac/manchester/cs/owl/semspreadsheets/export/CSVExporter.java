@@ -53,7 +53,7 @@ public class CSVExporter extends AbstractExporter {
 	}
 	
 	private void writeHeader(PrintWriter writer) {
-		writer.write("text, col, row, sheet, term uri, type, entity uri, ontology uri, ontology source, property uri\n");
+		writer.write("text, col, row, sheet, term uri, type, entity uri, property uri, ontology uri, ontology source\n");
 	}
 	
 	private String cellToCSV(PopulatedValidatedCellDetails cellDetails) {
@@ -70,13 +70,14 @@ public class CSVExporter extends AbstractExporter {
 		
 		csv += cellDetails.getValidation().getValidationDescriptor().getType().toString()+",";
 		csv += "\""+cellDetails.getEntityIRI().toString()+"\",";
-		csv += "\""+cellDetails.getOntologyIRIs().iterator().next().toString()+"\",";
-		csv += "\""+cellDetails.getPhysicalIRIs().iterator().next().toString()+"\",";
 		String propertyStr = "None";
 		if (cellDetails.getOWLPropertyItem()!=null) {
 			propertyStr=cellDetails.getOWLPropertyItem().getIRI().toString();
 		}
-		csv += "\"" + propertyStr + "\"";
+		csv += "\"" + propertyStr + "\",";
+		csv += "\""+cellDetails.getOntologyIRIs().iterator().next().toString()+"\",";
+		csv += "\""+cellDetails.getPhysicalIRIs().iterator().next().toString()+"\"";
+		
 		return csv;		
 	}
 
