@@ -29,6 +29,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.change.WorkbookChange;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.CellSelectionModel;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.ErrorHandler;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookState;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.xssf.impl.WorkbookXSSFImpl;
 
 /** 
  * @author Stuart Owen
@@ -351,5 +352,14 @@ public class WorkbookManager {
 			sheet.setName(newName);
 		}
 	}	
+	
+	public String getWorkbookFileExtension() {
+		if (getWorkbook() instanceof WorkbookXSSFImpl) {
+			return "xlsx";
+		}		
+		else {
+			return "xls";
+		}
+	}
 
 }

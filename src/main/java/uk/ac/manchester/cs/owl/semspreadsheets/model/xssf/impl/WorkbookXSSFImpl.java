@@ -54,11 +54,6 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.change.WorkbookChangeVisito
  */
 
 /**
- * Author: Matthew Horridge, Stuart Owen<br>
- * The University of Manchester<br>
- * Information Management Group<br>
- * Date: 20-Sep-2009
- * 
  * @author Stuart Owen
  * @author Matthew Horridge
  */

@@ -14,7 +14,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FilenameFilter;
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -44,7 +43,6 @@ import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.listeners.AbstractWorkbookManagerListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.listeners.OntologyManagerListener;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.InvalidWorkbookFormatException;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.KnownOntologies;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
@@ -102,8 +100,11 @@ public class WorkbookFrame extends JFrame {
 
 	private CloseSelectedOntologyMenuItem removeOntologyMenuItem;
 
+	private FileHandling fileHandling;
+
 	public WorkbookFrame(WorkbookManager manager) {
 		this.workbookManager = manager;
+		fileHandling = new FileHandling(this, manager, taskManager);
 		setTitle("RightField");
 		List<Image> iconImages = createIconImages();
 		setIconImages(iconImages);		
@@ -338,13 +339,7 @@ public class WorkbookFrame extends JFrame {
 	}
 
 	public void loadOntology() throws OWLOntologyCreationException {
-
-		File file = browseForFile("Load ontology", FileDialog.LOAD, "Ontology",
-				ONTOLOGY_EXT);
-		if (file == null) {
-			return;
-		}
-		taskManager.runTask(new LoadOntologyTask(file));					
+		fileHandling.loadOntology();
 	}
 	
 	public void loadOntologyFromURL() throws OWLOntologyCreationException {
@@ -380,43 +375,18 @@ public class WorkbookFrame extends JFrame {
 	}
 
 	public void saveWorkbook() throws Exception {
-		URI workbookURI = workbookManager.getWorkbookURI();
-		if (workbookURI == null) {
-			saveWorkbookAs();
-		} else {
-			workbookManager.saveWorkbook(workbookURI);
-		}
+		fileHandling.saveWorkbook();
 	}
 
 	public void openWorkbook()  {
 		if (checkSavedState("Open a new workbook")) {
-			File file = browseForFile("Open spreadsheet", FileDialog.LOAD, "Excel spreadsheet",
-					WORKBOOK_EXT);
-			if (file != null) {
-				try {
-					workbookManager.loadWorkbook(file);
-				} catch (IOException e) {
-					ErrorHandler.getErrorHandler().handleError(e);
-				} catch (InvalidWorkbookFormatException e) {
-					ErrorHandler.getErrorHandler().handleError(e);
-				}
-			}
+			fileHandling.openWorkbook();
 		}		
 	}
 
 	public void saveWorkbookAs() throws Exception {
-		File file = browseForFile("Save spreadsheet as", FileDialog.SAVE,
-				"Excel spreadsheet", WORKBOOK_EXT);		
-		if (file != null) {
-			file = checkForDefaultExtension(file);
-			workbookManager.saveWorkbook(file.toURI());
-		}
-	}
-	
-	
-	private File checkForDefaultExtension(File file) {
-		return checkForDefaultExtension(file,".xls");
-	}
+		fileHandling.saveWorkbookAs();
+	}		
 
 	public File checkForDefaultExtension(File file,String defaultExtension) {
 		String filename = file.getName();
