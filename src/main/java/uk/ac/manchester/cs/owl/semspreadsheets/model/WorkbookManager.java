@@ -28,6 +28,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.change.SetCellValue;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.change.WorkbookChange;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.CellSelectionModel;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.ErrorHandler;
+import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookFormat;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookState;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.xssf.impl.WorkbookXSSFImpl;
 
@@ -146,12 +147,16 @@ public class WorkbookManager {
     public Workbook getWorkbook() {
         return workbook;
     }
-
+    
     public Workbook createNewWorkbook() {
+    	return createNewWorkbook(WorkbookFormat.EXCEL97);
+    }
+
+    public Workbook createNewWorkbook(WorkbookFormat format) {
     	List<WorkbookChangeListener> existingListeners = workbook.getAllChangeListeners();
     	workbook.clearChangeListeners();
     	getOntologyManager().clearOntologyTermValidations();
-        workbook = WorkbookFactory.createWorkbook();  
+        workbook = WorkbookFactory.createWorkbook(format);  
         for (WorkbookChangeListener l : existingListeners) {
         	workbook.addChangeListener(l);
         }

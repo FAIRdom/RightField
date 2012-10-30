@@ -35,6 +35,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.Workbook;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.hssf.impl.WorkbookHSSFImpl;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.xssf.impl.WorkbookXSSFImpl;
+import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookFormat;
 
 public class WorkbookManagerTest {
 	
@@ -68,6 +69,15 @@ public class WorkbookManagerTest {
 		manager.loadWorkbook(uri);
 		manager.createNewWorkbook();
 		assertNull(manager.getWorkbookURI());
+	}
+	
+	@Test
+	public void testCreateNewWorkbookByFormat() {
+		Workbook book = manager.createNewWorkbook(WorkbookFormat.EXCEL97);
+		assertTrue(book instanceof WorkbookHSSFImpl);
+		
+		book = manager.createNewWorkbook(WorkbookFormat.EXCEL2007);
+		assertTrue(book instanceof WorkbookXSSFImpl);
 	}
 	
 	@Test

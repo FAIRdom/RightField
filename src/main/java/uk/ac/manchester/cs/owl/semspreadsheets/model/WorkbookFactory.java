@@ -10,28 +10,50 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 
+import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.hssf.impl.WorkbookHSSFImpl;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.xssf.impl.WorkbookXSSFImpl;
+import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookFormat;
 
 /**
- * Author: Matthew Horridge<br>
- * The University of Manchester<br>
- * Information Management Group<br>
- * Date: 18-Sep-2009
+ * @author Stuart Owen
+ * @author Matthew Horridge
  */
 public class WorkbookFactory {
+	
+	private static final Logger logger = Logger.getLogger(WorkbookFactory.class);
 
     /**
-     * Creates an empty workbook
+     * Creates an empty workbook, defaulting to Excel 97 (HSSF) format
      * @return The workbook
      */
     public static Workbook createWorkbook() {
-        return new WorkbookHSSFImpl();
+        return createWorkbook(WorkbookFormat.EXCEL97);
     }       
+    
+    /**
+     * Creates either an Excel 97 (HSSF) or Excel 2007 (XSSF) workbook according to the format passed in
+     * 
+     */
+    public static Workbook createWorkbook(WorkbookFormat format) {
+    	logger.debug("Format requested: "+format);
+    	if (format.equals(WorkbookFormat.EXCEL97)) {
+    		logger.debug("Creating HSSF Workbook");
+    		return new WorkbookHSSFImpl();
+    	}
+    	else if (format.equals(WorkbookFormat.EXCEL2007)) {
+    		logger.debug("Creating XSSF Workbook");
+    		return new WorkbookXSSFImpl();
+    	}
+    	else {
+    		logger.debug("Unexpected format: "+format+" default to Excel 97");
+    		return new WorkbookHSSFImpl();
+    	}
+    }
 
     /**
      * Creates a workbook by parsing an Excel document at a given URI

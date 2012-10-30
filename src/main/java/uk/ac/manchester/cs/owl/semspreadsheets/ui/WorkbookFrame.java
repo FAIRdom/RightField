@@ -189,6 +189,9 @@ public class WorkbookFrame extends JFrame {
 		if (ret==JOptionPane.YES_OPTION) {
 			openWorkbook();
 		}
+		else {
+			createNewWorkbook();
+		}
 	}
 
 	private void setupMenuItems() {
@@ -247,8 +250,17 @@ public class WorkbookFrame extends JFrame {
 	
 	public void closeWorkbook() {
 		if (checkSavedState("Close the workbook")) {
-			getWorkbookManager().createNewWorkbook();
+			createNewWorkbook();
 		}
+	}
+	
+	private void createNewWorkbook() {
+		String question = "Please select the Excel format of the new workbook";
+		WorkbookFormat selectedFormat = (WorkbookFormat) JOptionPane
+				.showInputDialog(this, "What Excel format?", question,
+						JOptionPane.QUESTION_MESSAGE, null,
+						WorkbookFormat.getFormats(), WorkbookFormat.EXCEL97);
+		getWorkbookManager().createNewWorkbook(selectedFormat);
 	}
 
 	public TaskManager getTaskManager() {

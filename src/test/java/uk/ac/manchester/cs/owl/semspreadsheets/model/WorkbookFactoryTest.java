@@ -7,6 +7,7 @@ import org.junit.Test;
 import uk.ac.manchester.cs.owl.semspreadsheets.DocumentsCatalogue;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.hssf.impl.WorkbookHSSFImpl;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.xssf.impl.WorkbookXSSFImpl;
+import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookFormat;
 
 public class WorkbookFactoryTest {
 	
@@ -14,6 +15,17 @@ public class WorkbookFactoryTest {
 	public void testCreateWorkbook() {
 		Workbook book = WorkbookFactory.createWorkbook();
 		assertTrue(book instanceof WorkbookHSSFImpl);
+		assertEquals(1,book.getSheets().size());
+	}
+	
+	@Test
+	public void testCreateWorkbookbyFormat() {
+		Workbook book = WorkbookFactory.createWorkbook(WorkbookFormat.EXCEL97);
+		assertTrue(book instanceof WorkbookHSSFImpl);
+		assertEquals(1,book.getSheets().size());
+		
+		book = WorkbookFactory.createWorkbook(WorkbookFormat.EXCEL2007);
+		assertTrue(book instanceof WorkbookXSSFImpl);
 		assertEquals(1,book.getSheets().size());
 	}
 	
