@@ -188,8 +188,7 @@ public class AbstractExporterTest {
 		val = list.get(8);
 		assertEquals("Metadata Template!P28:P37",val.getRange().toString());
 		assertEquals("http://www.mygrid.org.uk/ontology/JERMOntology#organism",val.getValidationDescriptor().getEntityIRI().toString());
-		assertEquals("Bacillus subtilis",val.getValidationDescriptor().getTerms().iterator().next().getFormattedName());
-		
+		assertEquals("Bacillus subtilis",val.getValidationDescriptor().getTerms().iterator().next().getFormattedName());		
 	}
 	
 	@Test

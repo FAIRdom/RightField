@@ -8,7 +8,6 @@ package uk.ac.manchester.cs.owl.semspreadsheets.ui.action;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.io.IOException;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.ErrorHandler;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookFrame;
@@ -34,7 +33,7 @@ public class SaveAction extends WorkbookFrameAction {
         try {
             getWorkbookFrame().saveWorkbook();
         }
-        catch (IOException e1) {
+        catch (Exception e1) {
             ErrorHandler.getErrorHandler().handleError(e1);
         }
     }
