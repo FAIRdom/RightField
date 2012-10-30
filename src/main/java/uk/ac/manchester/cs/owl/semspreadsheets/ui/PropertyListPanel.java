@@ -45,8 +45,7 @@ public class PropertyListPanel extends JPanel {
 	private static final Logger logger = Logger
 			.getLogger(PropertyListPanel.class);
 	private JComboBox comboBox;
-	private JCheckBox checkBox;
-	private JTextArea propertyFullNameText;
+	private JCheckBox checkBox;	
 	private OWLOntology selectedOntology;
 	private DefaultComboBoxModel propertyListModel;
 
@@ -57,24 +56,11 @@ public class PropertyListPanel extends JPanel {
 		
 		addCheckBox();
 				
-		addDropDownBox();
-
-		addPropertyFullNameText();
+		addDropDownBox();	
 		
 		setupListeners();
 		setSelectedStatus(false);
-	}
-
-	private void addPropertyFullNameText() {
-		propertyFullNameText = new JTextArea();
-		propertyFullNameText.setOpaque(false);
-		propertyFullNameText.setEditable(false);
-		propertyFullNameText.setFocusable(false);
-		propertyFullNameText.setRows(2);
-		propertyFullNameText.setLineWrap(true);
-		propertyFullNameText.setWrapStyleWord(false);
-		add(propertyFullNameText, BorderLayout.SOUTH);
-	}
+	}	
 
 	private void addDropDownBox() {
 		comboBox = new JComboBox();
@@ -118,7 +104,7 @@ public class PropertyListPanel extends JPanel {
 			public void itemStateChanged(ItemEvent event) {
 				if (event.getStateChange() == ItemEvent.SELECTED) {
 					updateEntityModel();
-					updatePropertyDetails();
+					updatePropertyDetailsToolTip();
 				}
 			}
 		});
@@ -144,11 +130,11 @@ public class PropertyListPanel extends JPanel {
 		});
 	}
 
-	private void updatePropertyDetails() {
+	private void updatePropertyDetailsToolTip() {
 		OWLPropertyItem item = (OWLPropertyItem) propertyListModel
 				.getSelectedItem();
-		String txt = item.getIRI().toString();
-		propertyFullNameText.setText(txt);
+		String txt = item.getIRI().toString();		
+		comboBox.setToolTipText(txt);
 	}
 
 	private void updatePropertySelectionFromModel(Range range) {
@@ -260,8 +246,7 @@ public class PropertyListPanel extends JPanel {
 		} else {
 			checkBox.setEnabled(true);
 			comboBox.setEnabled(checkBox.isSelected());
-		}
-		propertyFullNameText.setEnabled(comboBox.isEnabled());
+		}		
 		checkBox.setSelected(checkBox.isSelected() && comboBox.isEnabled());
 	}
 
