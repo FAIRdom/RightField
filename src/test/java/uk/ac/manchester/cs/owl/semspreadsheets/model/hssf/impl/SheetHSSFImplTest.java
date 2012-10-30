@@ -38,7 +38,7 @@ public class SheetHSSFImplTest extends GeneralSheetTests {
 	}
 		
 	public Sheet getTestSheetWithProperties() throws Exception {
-		return SpreadsheetTestHelper.getWorkbookSheet(DocumentsCatalogue.bookWithPropertiesURI(),0);
+		return SpreadsheetTestHelper.getWorkbookSheetHSSF(DocumentsCatalogue.bookWithPropertiesURI(),0);
 	}
 	
 	
@@ -47,7 +47,7 @@ public class SheetHSSFImplTest extends GeneralSheetTests {
 	}
 	
 	protected Sheet getTestSheet() throws Exception {
-		return SpreadsheetTestHelper.getWorkbookSheet(DocumentsCatalogue.simpleAnnotatedworkbookURI(),0);
+		return SpreadsheetTestHelper.getWorkbookSheetHSSF(DocumentsCatalogue.simpleAnnotatedworkbookURI(),0);
 	}
 	
 	protected Workbook getBlankWorkbook() throws Exception {

@@ -24,6 +24,8 @@ import org.junit.Test;
 import org.semanticweb.owlapi.model.IRI;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.DocumentsCatalogue;
+import uk.ac.manchester.cs.owl.semspreadsheets.DummyWorkbookChangeListener;
+import uk.ac.manchester.cs.owl.semspreadsheets.DummyWorkbookManagerListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.listeners.WorkbookChangeListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OWLPropertyType;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidation;
@@ -31,8 +33,6 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidationDescr
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Workbook;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.hssf.impl.DummyWorkbookChangeListener;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.hssf.impl.DummyWorkbookManagerListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.hssf.impl.WorkbookHSSFImpl;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.xssf.impl.WorkbookXSSFImpl;
 

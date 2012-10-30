@@ -17,7 +17,7 @@ public class OntologyTermValidationSheetParserTest {
 	@Test
 	public void testValidationDescriptor() throws Exception {
 		WorkbookManager manager = new WorkbookManager();
-		SheetHSSFImpl sheet = SpreadsheetTestHelper.getWorkbookSheet(DocumentsCatalogue.bookWithPropertiesURI(),1);		
+		SheetHSSFImpl sheet = SpreadsheetTestHelper.getWorkbookSheetHSSF(DocumentsCatalogue.bookWithPropertiesURI(),1);		
 		OntologyTermValidationSheetParser parser = new OntologyTermValidationSheetParser(manager, sheet);
 		OntologyTermValidationDescriptor validationDescriptor = parser.parseValidationDescriptor();
 		assertNotNull(validationDescriptor);
@@ -36,7 +36,7 @@ public class OntologyTermValidationSheetParserTest {
 	@Test
 	public void testValidationDescriptorNoProperty() throws Exception {
 		WorkbookManager manager = new WorkbookManager();
-		SheetHSSFImpl sheet = SpreadsheetTestHelper.getWorkbookSheet(DocumentsCatalogue.twoOntologiesWorkbookURI(),1);		
+		SheetHSSFImpl sheet = SpreadsheetTestHelper.getWorkbookSheetHSSF(DocumentsCatalogue.twoOntologiesWorkbookURI(),1);		
 		OntologyTermValidationSheetParser parser = new OntologyTermValidationSheetParser(manager, sheet);
 		OntologyTermValidationDescriptor validationDescriptor = parser.parseValidationDescriptor();
 		assertNotNull(validationDescriptor);
@@ -50,7 +50,7 @@ public class OntologyTermValidationSheetParserTest {
 	@Test
 	public void testValidationDescriptorFreeTextWithProperty() throws Exception {
 		WorkbookManager manager = new WorkbookManager();
-		SheetHSSFImpl sheet = SpreadsheetTestHelper.getWorkbookSheet(DocumentsCatalogue.simpleWorkbookWithLiteralsOverRangeURI(),1);	
+		SheetHSSFImpl sheet = SpreadsheetTestHelper.getWorkbookSheetHSSF(DocumentsCatalogue.simpleWorkbookWithLiteralsOverRangeURI(),1);	
 		OntologyTermValidationSheetParser parser = new OntologyTermValidationSheetParser(manager, sheet);
 		OntologyTermValidationDescriptor validationDescriptor = parser.parseValidationDescriptor();
 		assertNotNull(validationDescriptor);

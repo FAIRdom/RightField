@@ -31,7 +31,7 @@ public class SpreadsheetTestHelper {
 		return new WorkbookXSSFImpl();
 	}
 	
-	public static SheetHSSFImpl getWorkbookSheet(URI resourceURI, int index) throws Exception {
+	public static SheetHSSFImpl getWorkbookSheetHSSF(URI resourceURI, int index) throws Exception {
 		WorkbookHSSFImpl book = openWorkbookHSSF(resourceURI);
 		return (SheetHSSFImpl)book.getSheet(index);
 	}

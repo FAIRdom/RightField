@@ -19,7 +19,7 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.reasoner.NodeSet;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.DocumentsCatalogue;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.hssf.impl.DummyOntologyManagerListener;
+import uk.ac.manchester.cs.owl.semspreadsheets.DummyOntologyManagerListener;
 
 public class OntologyManagerTest {
 	
