@@ -34,17 +34,30 @@ public abstract class GeneralSheetTests {
 	}
 	
 	@Test
+	public void testClearDataValidationsOnBlankSheet() throws Exception {
+		Sheet sheet = getBlankSheet();
+		assertEquals(0,sheet.getValidations().size());
+		sheet.clearValidationData();
+		assertEquals(0,sheet.getValidations().size());
+		sheet.clearValidationData();
+	}
+	
+	@Test
 	public void testClearDataValidations() throws Exception {
 		Sheet sheet = getTestSheet();				
 		assertEquals(1,sheet.getValidations().size());
 		sheet.clearValidationData();		
-		assertEquals(0,sheet.getValidations().size());		
+		assertEquals(0,sheet.getValidations().size());	
+		sheet.clearValidationData();
+		assertEquals(0,sheet.getValidations().size());
 	}
 	
 	@Test
 	public void testClearDataValidationsInSheetWithProperties() throws Exception {
 		Sheet sheet = getTestSheetWithProperties();
 		assertEquals(2,sheet.getValidations().size());
+		sheet.clearValidationData();
+		assertEquals(0,sheet.getValidations().size());
 		sheet.clearValidationData();
 		assertEquals(0,sheet.getValidations().size());
 	}

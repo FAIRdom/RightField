@@ -30,7 +30,7 @@ public class WorkbookFactory {
      * @return The workbook
      */
     public static Workbook createWorkbook() {
-        return new WorkbookXSSFImpl();
+        return new WorkbookHSSFImpl();
     }       
 
     /**

@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.DataValidation;
 import org.apache.poi.ss.usermodel.DataValidationConstraint;
 import org.apache.poi.ss.usermodel.Row;
@@ -25,10 +26,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.Workbook;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.impl.ValidationImpl;
 
 /**
- * Author: Matthew Horridge<br>
- * The University of Manchester<br>
- * Information Management Group<br>
- * Date: 18-Sep-2009
+ * @author Stuart Owen
  */
 public class SheetXSSFImpl implements Sheet {
 
@@ -41,6 +39,8 @@ public class SheetXSSFImpl implements Sheet {
     private static final short MAX_ROWS = Short.MAX_VALUE;
 
     private static final int MAX_COLUMNS = 256;
+    
+    private static final Logger logger = Logger.getLogger(SheetXSSFImpl.class);
 
 
     public SheetXSSFImpl(WorkbookXSSFImpl workbook, XSSFSheet hssfSheet) {
@@ -222,9 +222,16 @@ public class SheetXSSFImpl implements Sheet {
     }    
     
     public void clearValidationData() {    	
-    	if (sheet.getCTWorksheet().getDataValidations() != null) {
-	    	for (int i=0;i<sheet.getCTWorksheet().getDataValidations().getCount();i++) {	    		
-	    		sheet.getCTWorksheet().getDataValidations().removeDataValidation(0);	    		
+    	if (sheet.getCTWorksheet().getDataValidations() != null) {    		
+	    	for (int i=0;i<sheet.getCTWorksheet().getDataValidations().getCount();i++) {
+	    		try {
+	    			sheet.getCTWorksheet().getDataValidations().removeDataValidation(0);
+	    		}
+	    		catch(IndexOutOfBoundsException e) {
+	    			//FIXME: currently, getCount seems to return 1 when there are no validation, or 1 when there is 1 validation, and so far haven't found
+	    			//a way of distinguishing.
+	    			logger.debug("Index out of bounds removing validation (probably caused by getCount returning 1 when there are zero");
+	    		}
 	    	}        
     	}
     }
