@@ -36,16 +36,7 @@ public class SheetXSSFImplTest extends GeneralSheetTests {
 		assertEquals(11,rangeAddresses.getFirstRow());
 		assertEquals(11,rangeAddresses.getLastRow());
 	}
-	
-	@Test
-	public void testClearValidationData() throws Exception {
-		SheetXSSFImpl sheet = (SheetXSSFImpl)getTestSheet();
-		List<XSSFDataValidation> validationData = sheet.getValidationData();
-		assertEquals(1,validationData.size());
-		sheet.clearValidationData();
-		validationData = sheet.getValidationData();
-		assertEquals(0,validationData.size());		
-	}
+		
 	
 	@Test
 	public void testGettingValidationsAfterAddingCustomInPOI() throws Exception {
@@ -84,6 +75,12 @@ public class SheetXSSFImplTest extends GeneralSheetTests {
 	
 	protected Sheet getBlankSheet() throws Exception {
 		return SpreadsheetTestHelper.getBlankXSSFWorkbook().createSheet();
+	}
+
+
+	@Override
+	protected Sheet getTestSheetWithProperties() throws Exception {
+		return SpreadsheetTestHelper.getWorkbookSheetXSSF(DocumentsCatalogue.bookWithPropertiesXLSXURI(), 0);
 	}
 	
 }

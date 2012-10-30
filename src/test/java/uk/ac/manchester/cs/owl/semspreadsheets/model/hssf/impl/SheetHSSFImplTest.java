@@ -36,16 +36,10 @@ public class SheetHSSFImplTest extends GeneralSheetTests {
 		assertEquals(11,rangeAddresses.getFirstRow());
 		assertEquals(11,rangeAddresses.getLastRow());
 	}
-	
-	@Test
-	public void testClearValidationData() throws Exception {
-		SheetHSSFImpl sheet = (SheetHSSFImpl)getTestSheet();
-		List<HSSFDataValidation> validationData = sheet.getValidationData();
-		assertEquals(1,validationData.size());
-		sheet.clearValidationData();
-		validationData = sheet.getValidationData();
-		assertEquals(0,validationData.size());		
-	}		
+		
+	public Sheet getTestSheetWithProperties() throws Exception {
+		return SpreadsheetTestHelper.getWorkbookSheet(DocumentsCatalogue.bookWithPropertiesURI(),0);
+	}
 	
 	
 	protected Workbook getTestWorkbook() throws Exception {

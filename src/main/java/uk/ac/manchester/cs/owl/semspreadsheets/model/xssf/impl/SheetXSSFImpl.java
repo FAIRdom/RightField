@@ -223,8 +223,8 @@ public class SheetXSSFImpl implements Sheet {
     
     public void clearValidationData() {    	
     	if (sheet.getCTWorksheet().getDataValidations() != null) {
-	    	for (int i=0;i<sheet.getCTWorksheet().getDataValidations().getCount();i++) {
-	    		sheet.getCTWorksheet().getDataValidations().removeDataValidation(0);	    	
+	    	for (int i=0;i<sheet.getCTWorksheet().getDataValidations().getCount();i++) {	    		
+	    		sheet.getCTWorksheet().getDataValidations().removeDataValidation(0);	    		
 	    	}        
     	}
     }

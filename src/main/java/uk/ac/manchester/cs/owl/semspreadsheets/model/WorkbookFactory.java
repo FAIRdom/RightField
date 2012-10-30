@@ -30,8 +30,8 @@ public class WorkbookFactory {
      * @return The workbook
      */
     public static Workbook createWorkbook() {
-        return new WorkbookHSSFImpl();
-    }
+        return new WorkbookXSSFImpl();
+    }       
 
     /**
      * Creates a workbook by parsing an Excel document at a given URI

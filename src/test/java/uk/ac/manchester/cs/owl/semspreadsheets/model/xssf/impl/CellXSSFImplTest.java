@@ -18,5 +18,9 @@ public class CellXSSFImplTest extends GeneralCellTests {
 	protected Cell getTestCell() throws Exception {
 		return SpreadsheetTestHelper.openWorkbookXSSF(DocumentsCatalogue.workbookWithColoursXLSXURI()).getSheet(0).getCellAt(0, 0);
 	}
+	
+	protected Cell getTestCell2() throws Exception {
+		return SpreadsheetTestHelper.openWorkbookXSSF(DocumentsCatalogue.populatedJermWorkbookXLSXURI()).getSheet(0).getCellAt(0, 0);
+	}
 
 }

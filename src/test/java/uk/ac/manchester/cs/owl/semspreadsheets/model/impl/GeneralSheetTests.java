@@ -34,6 +34,22 @@ public abstract class GeneralSheetTests {
 	}
 	
 	@Test
+	public void testClearDataValidations() throws Exception {
+		Sheet sheet = getTestSheet();				
+		assertEquals(1,sheet.getValidations().size());
+		sheet.clearValidationData();		
+		assertEquals(0,sheet.getValidations().size());		
+	}
+	
+	@Test
+	public void testClearDataValidationsInSheetWithProperties() throws Exception {
+		Sheet sheet = getTestSheetWithProperties();
+		assertEquals(2,sheet.getValidations().size());
+		sheet.clearValidationData();
+		assertEquals(0,sheet.getValidations().size());
+	}
+	
+	@Test
 	public void testIndex() throws Exception {
 		Workbook wb = getBlankWorkbook();
 		Sheet sheet = wb.getSheet(0); 
@@ -203,6 +219,7 @@ public abstract class GeneralSheetTests {
 	protected abstract Sheet getTestSheet() throws Exception;
 	protected abstract Sheet getBlankSheet() throws Exception;
 	protected abstract Workbook getBlankWorkbook() throws Exception;
+	protected abstract Sheet getTestSheetWithProperties() throws Exception;
 	
 
 }

@@ -30,6 +30,17 @@ public abstract class GeneralCellTests {
 			assertEquals(((CellHSSFImpl)cellA).getInnards().getCellStyle(), ((CellHSSFImpl)cellB).getInnards().getCellStyle());
 		}
 	}
+	
+	@Test
+	public void setBackgroundFill() throws Exception {
+		Workbook workbook = getTestWorkbook();
+		Cell cellA = workbook.getSheet(0).addCellAt(1, 1);
+		cellA.setBackgroundFill(Color.BLUE);
+		Cell cellB = workbook.getSheet(0).getCellAt(1, 1);
+		assertEquals(Color.BLUE, cellB.getBackgroundFill());
+	}
+	
+	
 
 	@Test
 	public void testEquals() throws Exception {
@@ -81,6 +92,15 @@ public abstract class GeneralCellTests {
 		Color col = cell.getForeground();
 		assertEquals(Color.RED,col);
 	}
+	
+	@Test
+	//a specific test related to a null error when opening this spreadsheet and reading the cell colour
+	public void testForegroundColour2() throws Exception {
+		Cell cell = getTestCell2();				
+		Color col = cell.getForeground();
+		assertEquals(Color.BLACK,col);
+	}
+	
 	@Test
 	public void testGetValue() throws Exception {
 		Cell cell = getTestCell();
@@ -95,6 +115,7 @@ public abstract class GeneralCellTests {
 	}
 	
 	protected abstract Cell getTestCell() throws Exception;
+	protected abstract Cell getTestCell2() throws Exception;
 	protected abstract Workbook getTestWorkbook() throws Exception;
 
 }

@@ -79,7 +79,7 @@
 			<version>3.8</version>
 		</dependency>			
 		
-		<!-- release poi-ooxml 
+		<!-- release poi-ooxml  
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi-ooxml</artifactId>
@@ -105,7 +105,7 @@
 				
 		
 		
-		<!--  required for nightly poi-ooxml -->  
+		<!--  required for nightly poi-ooxml -->   
 		<dependency>
 			<groupId>org.sysmo-db</groupId>
 			<artifactId>poi-ooxml</artifactId>

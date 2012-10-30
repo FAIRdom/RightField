@@ -225,7 +225,12 @@ public class CellXSSFImpl implements Cell {
     public Color getForeground() {
         if (foreground == null) {
         	XSSFColor colour = theCell.getCellStyle().getFont().getXSSFColor();
-        	return translateRGB(colour.getRgb());
+        	if (colour!=null) {
+        		foreground = translateRGB(colour.getRgb());
+        	}        	
+        	else {
+        		foreground = Color.BLACK;
+        	}
         }
         return foreground;
     }    
