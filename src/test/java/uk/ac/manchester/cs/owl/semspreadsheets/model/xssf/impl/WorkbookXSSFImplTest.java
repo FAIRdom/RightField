@@ -50,6 +50,7 @@ public class WorkbookXSSFImplTest extends GeneralWorkbookTests {
         workbook.getSheetAt(0).getColumnHelper().getColumn(0, false);
 		assertEquals(2048,workbook.getSheetAt(0).getColumnWidth(0));        
 	}
+		
 	
 	protected Workbook getEmptyWorkbook() throws Exception {
 		return SpreadsheetTestHelper.getBlankXSSFWorkbook();

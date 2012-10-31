@@ -76,7 +76,24 @@ public class WorkbookXSSFImpl implements MutableWorkbook, WorkbookChangeVisitor 
     }
 
     public WorkbookXSSFImpl(URI uri) throws IOException {
-        InputStream inputStream = uri.toURL().openStream();
+    	readWorkbook(uri);
+    }
+    
+    public void saveAs(URI uri) throws IOException {
+        File file = new File(uri);
+        BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(file));        
+        workbook.write(stream);        
+        stream.close();
+        
+        //this is a work-around to avoid https://issues.apache.org/bugzilla/show_bug.cgi?id=52233
+//        for (int i=0; i<workbook.getNumberOfSheets();i++) {
+//        	workbook.getSheetAt(i).getColumnHelper().cleanColumns();
+//        }
+        readWorkbook(uri);
+    } 
+    
+    private void readWorkbook(URI uri) throws IOException {
+    	InputStream inputStream = uri.toURL().openStream();
         workbook = new XSSFWorkbook(new BufferedInputStream(inputStream));
     }
 
@@ -222,19 +239,7 @@ public class WorkbookXSSFImpl implements MutableWorkbook, WorkbookChangeVisitor 
         else {
             return new SheetXSSFImpl(this, xssfSheet);
         }
-    }
-
-    public void saveAs(URI uri) throws IOException {
-        File file = new File(uri);
-        BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(file));        
-        workbook.write(stream);        
-        stream.close();
-        
-        //this is a work-around to avoid https://issues.apache.org/bugzilla/show_bug.cgi?id=52233
-        for (int i=0; i<workbook.getNumberOfSheets();i++) {
-        	workbook.getSheetAt(i).getColumnHelper().cleanColumns();
-        }
-    }        
+    }          
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////
 

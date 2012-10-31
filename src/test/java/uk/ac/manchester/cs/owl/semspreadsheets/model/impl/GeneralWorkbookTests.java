@@ -60,6 +60,8 @@ public abstract class GeneralWorkbookTests {
 		assertEquals(0,book.getAllChangeListeners().size());
 	}
 	
+	
+	
 	@Test
 	public void testContainsSheet() throws Exception {
 		Workbook book = getEmptyWorkbook();
@@ -156,7 +158,8 @@ public abstract class GeneralWorkbookTests {
 		assertFalse(f.exists());
 		wb.saveAs(f.toURI());
 		assertTrue(f.exists());
-		assertNotNull(WorkbookFactory.createWorkbook(f.toURI()));
+		wb = WorkbookFactory.createWorkbook(f.toURI());
+		assertNotNull(wb);
 		
 		//this is to test a weird problem with the sheet column widths becoming corrupt after a save
 		sheet = wb.getSheet(0);
@@ -164,6 +167,52 @@ public abstract class GeneralWorkbookTests {
 		Cell cell = sheet.getCellAt(3, 11);
 		assertEquals("Experimental Design",cell.getValue());
 		
+	}
+	
+	@Test
+	public void testSaveWorkbookTwice() throws Exception {
+		//there was a particular problem with XSSF where after the 2nd save the workbook became corrupted
+		Workbook wb = getTestWorkbook();
+		assertEquals(1,wb.getSheet(0).getValidations().size());
+		File f = SpreadsheetTestHelper.getTempFile(getExtension());			
+		
+		assertFalse(f.exists());
+		wb.saveAs(f.toURI());
+		assertTrue(f.exists());
+		wb.saveAs(f.toURI());
+		
+		wb = WorkbookFactory.createWorkbook(f.toURI());
+		assertNotNull(wb);
+		
+		//this is to test a weird problem with the sheet column widths becoming corrupt after a save
+		Sheet sheet = wb.getSheet(0);
+		
+		Cell cell = sheet.getCellAt(3, 11);
+		assertEquals("Experimental Design",cell.getValue());
+		assertEquals(1,wb.getSheet(0).getValidations().size());
+	}
+	
+	@Test
+	public void testSaveWorkbookTwice2() throws Exception {
+		//related to testSaveWorkbookTwice, but a slightly different error due to the content (but probably the same root cause)
+		Workbook wb = getTestWorkbook();
+		Sheet sheet = wb.getSheet(0);
+		Cell cell = sheet.addCellAt(0, 0);
+		cell.setValue("Fred");
+		File f = SpreadsheetTestHelper.getTempFile(getExtension());		
+		
+		assertFalse(f.exists());
+		wb.saveAs(f.toURI());
+		assertTrue(f.exists());
+		wb.saveAs(f.toURI());
+		
+		assertNotNull(WorkbookFactory.createWorkbook(f.toURI()));
+		
+		//this is to test a weird problem with the sheet column widths becoming corrupt after a save
+		sheet = wb.getSheet(0);
+		
+		cell = sheet.getCellAt(0, 0);
+		assertEquals("Fred",cell.getValue());		
 	}
 	
 	
