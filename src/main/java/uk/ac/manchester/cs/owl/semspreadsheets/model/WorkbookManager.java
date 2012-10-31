@@ -156,14 +156,19 @@ public class WorkbookManager {
     	List<WorkbookChangeListener> existingListeners = workbook.getAllChangeListeners();
     	workbook.clearChangeListeners();
     	getOntologyManager().clearOntologyTermValidations();
-        workbook = WorkbookFactory.createWorkbook(format);  
-        for (WorkbookChangeListener l : existingListeners) {
-        	workbook.addChangeListener(l);
-        }
-        workbookURI=null;
+    	try {
+    		workbook = WorkbookFactory.createWorkbook(format);  
+    		for (WorkbookChangeListener l : existingListeners) {
+    			workbook.addChangeListener(l);
+    		}
+    		workbookURI=null;
         
-        fireWorkbookCreated();
-        getWorkbookState().changesSaved();
+    		fireWorkbookCreated();
+    	}
+    	catch(Exception e) {
+    		ErrorHandler.getErrorHandler().handleError(e);
+    	}
+    	getWorkbookState().changesSaved();
         return workbook;
     }
 

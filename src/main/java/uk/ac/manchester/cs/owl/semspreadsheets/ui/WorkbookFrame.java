@@ -72,7 +72,6 @@ import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.SheetCellCutAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.SheetCellPasteAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.task.FetchBioportalOntologyListTask;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.task.LoadOntologyFromURITask;
-import uk.ac.manchester.cs.owl.semspreadsheets.ui.task.LoadOntologyTask;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.task.LoadRepositoryItemTask;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.task.TaskManager;
 
@@ -84,10 +83,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.ui.task.TaskManager;
 public class WorkbookFrame extends JFrame {
 	
 	private static final long serialVersionUID = 8991252467294969145L; 
-	
-	private static final String[] WORKBOOK_EXT = new String[] { "xls" };
-	private static final String[] ONTOLOGY_EXT = new String[] { "obo", "owl",
-			"rdf", "rrf" };
+		
 	private static final String [] APPLICATION_LOGO_FILENAMES = {"/rightfield-logo.png","/rightfield-logo-16x16.png"};
 
 	private static final Logger logger = Logger.getLogger(WorkbookFrame.class);			
@@ -255,12 +251,16 @@ public class WorkbookFrame extends JFrame {
 	}
 	
 	private void createNewWorkbook() {
-		String question = "Please select the Excel format of the new workbook";
-		WorkbookFormat selectedFormat = (WorkbookFormat) JOptionPane
-				.showInputDialog(this, "What Excel format?", question,
-						JOptionPane.QUESTION_MESSAGE, null,
-						WorkbookFormat.getFormats(), WorkbookFormat.EXCEL97);
+		WorkbookFormat selectedFormat = null;
+		while (selectedFormat == null) {
+			String question = "Please select the Excel format of the new workbook";
+			 selectedFormat = (WorkbookFormat) JOptionPane
+					.showInputDialog(this, question, "Select Excel format",
+							JOptionPane.QUESTION_MESSAGE, null,
+							WorkbookFormat.getFormats(), WorkbookFormat.EXCEL97);			
+		}
 		getWorkbookManager().createNewWorkbook(selectedFormat);
+		
 	}
 
 	public TaskManager getTaskManager() {

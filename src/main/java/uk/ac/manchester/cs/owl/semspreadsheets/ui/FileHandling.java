@@ -14,7 +14,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -52,7 +51,7 @@ public class FileHandling {
 	
 	public void loadOntology() throws OWLOntologyCreationException {
 		File file = browseForFile("Load ontology", FileDialog.LOAD,
-				ONTOLOGY_EXT);
+				ONTOLOGY_EXT,ONTOLOGY_EXT.keySet().iterator().next());
 		if (file != null) {
 			taskManager.runTask(new LoadOntologyTask(file));
 		}						
@@ -69,12 +68,19 @@ public class FileHandling {
 	
 	public void saveWorkbookAs() throws Exception {
 		Map<String,List<String>> validExtensions = new HashMap<String,List<String>>();
+		
 		for (String key : WORKBOOK_EXT.keySet()) {
 			if (WORKBOOK_EXT.get(key).contains(workbookManager.getWorkbookFileExtension())) {
-				validExtensions.put(key,WORKBOOK_EXT.get(key));
-			}
+				validExtensions.put(key,WORKBOOK_EXT.get(key));				
+			}			
 		}
-		File requestedFile = browseForFile("Save spreadsheet as", FileDialog.SAVE,validExtensions);		
+		
+		String defaultFileType=null;
+		if (validExtensions.size()>0) {
+			defaultFileType=validExtensions.keySet().iterator().next();
+		}
+		
+		File requestedFile = browseForFile("Save spreadsheet as", FileDialog.SAVE,validExtensions,defaultFileType);		
 			
 		if (requestedFile != null) {
 			File file = checkForDefaultExtension(requestedFile);			
@@ -84,7 +90,7 @@ public class FileHandling {
 
 	public void openWorkbook()  {
 		File file = browseForFile("Open spreadsheet", FileDialog.LOAD,
-				WORKBOOK_EXT);
+				WORKBOOK_EXT,"Excel 97-2003");
 		if (file != null) {
 			try {
 				workbookManager.loadWorkbook(file);
@@ -104,17 +110,29 @@ public class FileHandling {
 		return file;
 	}		
 	
-	private File browseForFile(String title, int mode,Map<String,List<String>> filetypesAndExtensions) {
+	private File browseForFile(String title, int mode,Map<String,List<String>> filetypesAndExtensions,String defaultFileType) {
 		logger.debug("About to browse for file with title: "+title+", and extensions: "+filetypesAndExtensions);
-//		return browseForFileWithFileDialog(title, mode, filetypesAndExtensions);
 		JFileChooser chooser = new JFileChooser(title);
-		for (String key : filetypesAndExtensions.keySet()) {
-			chooser.setFileFilter(new ExtensionFileFilter(key, filetypesAndExtensions.get(key)));
+		FileFilter defaultFilter = null;
+		for (String key : filetypesAndExtensions.keySet()) {			
+			ExtensionFileFilter filter = new ExtensionFileFilter(key, filetypesAndExtensions.get(key));
+			chooser.addChoosableFileFilter(filter);
+			logger.debug("Adding filter: "+filter);
+			if (key.equals(defaultFileType)) {
+				defaultFilter=filter;
+			}
+		}
+		
+		if (defaultFilter!=null) {
+			logger.debug("Setting filter to "+defaultFilter);
+			chooser.setFileFilter(defaultFilter);
+		}
+		else {
+			chooser.setAcceptAllFileFilterUsed(true);
 		}
 
 		int retVal;
-		if (mode == FileDialog.LOAD) {
-			chooser.setAcceptAllFileFilterUsed(true);
+		if (mode == FileDialog.LOAD) {			
 			retVal = chooser.showOpenDialog(frame);
 		} else {
 			chooser.setAcceptAllFileFilterUsed(false);
@@ -127,29 +145,29 @@ public class FileHandling {
 		}
 	}
 
-	private File browseForFileWithFileDialog(String title, int mode, Map<String,List<String>> filetypesAndExtensions) {		
-		FileDialog fileDialog = new FileDialog(frame, title, mode);
-
-		Set<String> allExtensions = new HashSet<String>();
-		for (String key : filetypesAndExtensions.keySet()) {
-			for (String ext : filetypesAndExtensions.get(key)) {
-				allExtensions.add(ext);
-			}
-		}	
-		fileDialog.setFilenameFilter(new ExtensionsFilenameFilter(allExtensions));		
-		fileDialog.setVisible(true);
-		String name = fileDialog.getFile();
-		if (name == null) {
-			return null;
-		}
-		String directory = fileDialog.getDirectory();		
-		return new File(directory + name);
-	}
+//	private File browseForFileWithFileDialog(String title, int mode, Map<String,List<String>> filetypesAndExtensions) {		
+//		FileDialog fileDialog = new FileDialog(frame, title, mode);
+//
+//		Set<String> allExtensions = new HashSet<String>();
+//		for (String key : filetypesAndExtensions.keySet()) {
+//			for (String ext : filetypesAndExtensions.get(key)) {
+//				allExtensions.add(ext);
+//			}
+//		}	
+//		fileDialog.setFilenameFilter(new ExtensionsFilenameFilter(allExtensions));		
+//		fileDialog.setVisible(true);
+//		String name = fileDialog.getFile();
+//		if (name == null) {
+//			return null;
+//		}
+//		String directory = fileDialog.getDirectory();		
+//		return new File(directory + name);
+//	}
 	
 	/** Defines and populates the extensions and filetypes for WORKBOOK_EXT and ONTOLOGY_EXT **/
 	private void defineExtensions() {
-		WORKBOOK_EXT.put("Excel 97/2000", Arrays.asList(new String[]{"xls"}));
 		WORKBOOK_EXT.put("Excel 2007", Arrays.asList(new String[]{"xlsx"}));
+		WORKBOOK_EXT.put("Excel 97-2003", Arrays.asList(new String[]{"xls"}));		
 		ONTOLOGY_EXT.put("Ontology",Arrays.asList(new String[] { "obo", "owl","rdf", "rrf" }));
 	}
 	
@@ -174,10 +192,6 @@ public class FileHandling {
 			return this.description;
 		}
 		
-		public String getExtension() {
-			return extensions.get(0);
-		}
-		
 		private String getExtension(File f) {
 			if (f != null) {
 				String filename = f.getName();
@@ -193,12 +207,17 @@ public class FileHandling {
 			String str="";
 			Iterator<String> it = extensions.iterator();
 			while (it.hasNext()) {
-				str+=it.next();
+				str+="*."+it.next();
 				if (it.hasNext()) {
 					str+=", ";
 				}
 			}
 			return str;
+		}
+		
+		@Override
+		public String toString() {
+			return description;
 		}
 	}
 
