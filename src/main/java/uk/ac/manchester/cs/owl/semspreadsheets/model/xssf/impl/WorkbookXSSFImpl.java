@@ -90,7 +90,7 @@ public class WorkbookXSSFImpl implements MutableWorkbook, WorkbookChangeVisitor 
         	workbook.getSheetAt(i).getColumnHelper().cleanColumns();
         }
         
-        readWorkbook(uri);
+        //readWorkbook(uri);
     } 
     
     private void readWorkbook(URI uri) throws IOException {

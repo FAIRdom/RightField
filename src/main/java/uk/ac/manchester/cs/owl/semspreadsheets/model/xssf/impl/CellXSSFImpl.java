@@ -44,19 +44,16 @@ public class CellXSSFImpl implements Cell {
     }
 
     public Font getDefaultFont() {
-        XSSFFont font = workbook.getFontAt((short) 0);
-        if (font == null) {
-            return DEFAULT_FONT;
-        }
-        return getFont(font);
+//        XSSFFont font = workbook.getFontAt((short) 0);
+//        if (font == null) {
+//            return DEFAULT_FONT;
+//        }
+//        return getFont(font);
+    	return DEFAULT_FONT;
     }        
     
     public XSSFWorkbook getWorkbook() {
     	return workbook;
-    }
-
-    public Style getStyle() {
-        return null;
     }
 
     public int getRow() {
@@ -68,29 +65,29 @@ public class CellXSSFImpl implements Cell {
     }
 
     public String getComment() {
-        XSSFComment hssfComment = theCell.getCellComment();
-        if (hssfComment == null) {
+        XSSFComment xssfComment = theCell.getCellComment();
+        if (xssfComment == null) {
             return null;
         }
         else {
-            return hssfComment.toString();
+            return xssfComment.toString();
         }
 
     }
 
     public boolean isStrikeThrough() {
-        XSSFFont hssfFont = theCell.getCellStyle().getFont();
-        return hssfFont.getStrikeout();
+        XSSFFont xssfFont = theCell.getCellStyle().getFont();
+        return xssfFont.getStrikeout();
     }
 
     public boolean isUnderline() {
-    	XSSFFont hssfFont = theCell.getCellStyle().getFont();
-        return hssfFont.getUnderline() != 0;
+    	XSSFFont xssfFont = theCell.getCellStyle().getFont();
+        return xssfFont.getUnderline() != 0;
     }
 
     public boolean isItalic() {
-    	XSSFFont hssfFont = theCell.getCellStyle().getFont();
-        return hssfFont.getItalic();
+    	XSSFFont xssfFont = theCell.getCellStyle().getFont();
+        return xssfFont.getItalic();
     }
 
     public String getValue() {
@@ -160,48 +157,58 @@ public class CellXSSFImpl implements Cell {
     }
 
     public Font getFont() {
-        XSSFCellStyle cellStyle = theCell.getCellStyle();
-        if (cellStyle == null) {
-            return getDefaultFont();
-        }
-        XSSFFont hssfFont = cellStyle.getFont();
-        return getFont(hssfFont);
+    	return getDefaultFont();
+//        XSSFCellStyle cellStyle = theCell.getCellStyle();
+//        if (cellStyle == null) {
+//            return getDefaultFont();
+//        }
+//        XSSFFont xssfFont = cellStyle.getFont();
+//        return getFont(xssfFont);
     }
 
-    private Font getFont(XSSFFont hssfFont) {
-        Font font = fontCache.get(hssfFont);
+    private Font getFont(XSSFFont xssfFont) {
+        Font font = null;//fontCache.get(xssfFont);
         if (font == null) {
-            String name = hssfFont.getFontName();
-            int size = hssfFont.getFontHeightInPoints();
+            String name = xssfFont.getFontName();
+            int size = xssfFont.getFontHeightInPoints();
             int style = Font.PLAIN;
-            if (hssfFont.getBoldweight() == XSSFFont.BOLDWEIGHT_BOLD) {
+            if (xssfFont.getBoldweight() == XSSFFont.BOLDWEIGHT_BOLD) {
                 style = Font.BOLD;
-                if (hssfFont.getItalic()) {
+                if (xssfFont.getItalic()) {
                     style = style | Font.ITALIC;
                 }
             }
-            else if (hssfFont.getItalic()) {
+            else if (xssfFont.getItalic()) {
                 style = Font.ITALIC;
             }
             font = new Font(name, style, size);
-            fontCache.put(hssfFont, font);
+            fontCache.put(xssfFont, font);
         }
         return font;
 
     }
     
     @Override
-	public Color getBackgroundFill() {		
-    	XSSFCellStyle cellStyle = theCell.getCellStyle();
-        if (cellStyle == null) {
-            return Color.WHITE;
-        }        
-		XSSFColor colour = cellStyle.getFillForegroundXSSFColor();
-		if (colour == null) {
-			return Color.WHITE;
-		}
-		
-		return translateRGB(colour.getRgb());
+	public Color getBackgroundFill() {
+//    	Color colour = null;
+//    	XSSFCellStyle cellStyle = theCell.getCellStyle();
+//        if (cellStyle == null) {
+//            colour = Color.WHITE;
+//        }        
+//        else {
+//        	XSSFColor xssfColour = cellStyle.getFillForegroundXSSFColor();
+//    		if (xssfColour == null) {
+//    			colour = Color.WHITE;
+//    		}
+//    		else {
+//    			colour = translateRGB(xssfColour.getRgb());
+//    		}
+//        }
+//		
+//        logger.debug("Background fill colour read as: "+colour);
+//		
+//		return colour;
+    	return Color.WHITE;
 	}
 
     private Color translateRGB(byte[] rgb) {
@@ -219,14 +226,14 @@ public class CellXSSFImpl implements Cell {
 
 	@Override
 	public void setBackgroundFill(Color colour) {
-		XSSFCellStyle style = getFillStyleForColour(colour);
-								
-		try {
-			theCell.setCellStyle(style);
-		}
-		catch(Exception e) {
-			logger.error("Error setting cell style",e);
-		}
+//		XSSFCellStyle style = getFillStyleForColour(colour);
+//								
+//		try {
+//			theCell.setCellStyle(style);
+//		}
+//		catch(Exception e) {
+//			logger.error("Error setting cell style",e);
+//		}
 	}
 
 	private XSSFCellStyle getFillStyleForColour(Color colour) {
@@ -264,14 +271,14 @@ public class CellXSSFImpl implements Cell {
         if (cellStyle == null) {
             return SwingConstants.LEFT;
         }
-        short hssfAlignment = cellStyle.getAlignment();
-        if (hssfAlignment == XSSFCellStyle.ALIGN_LEFT) {
+        short xssfAlignment = cellStyle.getAlignment();
+        if (xssfAlignment == XSSFCellStyle.ALIGN_LEFT) {
             return SwingConstants.LEFT;
         }
-        else if (hssfAlignment == XSSFCellStyle.ALIGN_CENTER) {
+        else if (xssfAlignment == XSSFCellStyle.ALIGN_CENTER) {
             return SwingConstants.CENTER;
         }
-        else if (hssfAlignment == XSSFCellStyle.ALIGN_RIGHT) {
+        else if (xssfAlignment == XSSFCellStyle.ALIGN_RIGHT) {
             return SwingConstants.RIGHT;
         }
         else {

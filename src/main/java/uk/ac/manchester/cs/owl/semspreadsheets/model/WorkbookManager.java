@@ -208,22 +208,29 @@ public class WorkbookManager {
         // Insert validation    	
     	getOntologyManager().getOntologyTermValidationManager().writeValidationToWorkbook();    	
         workbook.saveAs(uri); 
+        logger.debug(getOntologyManager().getOntologyTermValidations().size()+" validation recorded");
         
         //to get round a bug in POI - https://issues.apache.org/bugzilla/show_bug.cgi?id=46662
         //the internal workbook state is reloaded after a save, which mean the validations need refreshing according to the workbook
         if (workbook instanceof WorkbookXSSFImpl) {
         	logger.debug("XSSF workbook, reloaded so re-reading validation");
-        	getOntologyManager().getOntologyTermValidationManager().readValidationFromWorkbook();
+        	OntologyTermValidationWorkbookParser workbookParser = new OntologyTermValidationWorkbookParser(this);
+           	workbookParser.clearOntologyTermValidations();
+        	loadWorkbook(uri);
+        	logger.debug(getOntologyManager().getOntologyTermValidations().size()+" validation read");
+        	workbookParser = new OntologyTermValidationWorkbookParser(this);
+           	workbookParser.clearOntologyTermValidations();
+        	
         }
-
-      	OntologyTermValidationWorkbookParser workbookParser = new OntologyTermValidationWorkbookParser(this);
-       	workbookParser.clearOntologyTermValidations();
-
-        if (workbookURI == null || !uri.equals(workbookURI)) {            
-            workbookURI = uri;
-        }
+        else {
+        	OntologyTermValidationWorkbookParser workbookParser = new OntologyTermValidationWorkbookParser(this);
+           	workbookParser.clearOntologyTermValidations();
+           	if (workbookURI == null || !uri.equals(workbookURI)) {            
+                workbookURI = uri;
+            }            
+        }    
         fireWorkbookSaved();
-        getWorkbookState().changesSaved();                 
+        getWorkbookState().changesSaved(); 
     }
 
     public void previewValidation() {

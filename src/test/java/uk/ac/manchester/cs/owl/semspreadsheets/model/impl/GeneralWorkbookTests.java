@@ -6,6 +6,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.awt.Color;
 import java.io.File;
 
 import org.junit.Test;
@@ -179,8 +180,7 @@ public abstract class GeneralWorkbookTests {
 		assertFalse(f.exists());
 		wb.saveAs(f.toURI());
 		assertTrue(f.exists());
-		wb.saveAs(f.toURI());
-		
+		wb.saveAs(f.toURI());		
 		wb = WorkbookFactory.createWorkbook(f.toURI());
 		assertNotNull(wb);
 		
@@ -189,6 +189,7 @@ public abstract class GeneralWorkbookTests {
 		
 		Cell cell = sheet.getCellAt(3, 11);
 		assertEquals("Experimental Design",cell.getValue());
+		assertEquals(Color.WHITE,cell.getBackgroundFill());
 		assertEquals(1,wb.getSheet(0).getValidations().size());
 	}
 	
