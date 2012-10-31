@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLEntity;
@@ -206,14 +207,23 @@ public class WorkbookManager {
     public void saveWorkbook(URI uri) throws Exception {
         // Insert validation    	
     	getOntologyManager().getOntologyTermValidationManager().writeValidationToWorkbook();    	
-        workbook.saveAs(uri);        
-        OntologyTermValidationWorkbookParser workbookParser = new OntologyTermValidationWorkbookParser(this);
-        workbookParser.clearOntologyTermValidations();
+        workbook.saveAs(uri); 
+        
+        //to get round a bug in POI - https://issues.apache.org/bugzilla/show_bug.cgi?id=46662
+        //the internal workbook state is reloaded after a save, which mean the validations need refreshing according to the workbook
+        if (workbook instanceof WorkbookXSSFImpl) {
+        	logger.debug("XSSF workbook, reloaded so re-reading validation");
+        	getOntologyManager().getOntologyTermValidationManager().readValidationFromWorkbook();
+        }
+
+      	OntologyTermValidationWorkbookParser workbookParser = new OntologyTermValidationWorkbookParser(this);
+       	workbookParser.clearOntologyTermValidations();
+
         if (workbookURI == null || !uri.equals(workbookURI)) {            
             workbookURI = uri;
         }
         fireWorkbookSaved();
-        getWorkbookState().changesSaved();        
+        getWorkbookState().changesSaved();                 
     }
 
     public void previewValidation() {

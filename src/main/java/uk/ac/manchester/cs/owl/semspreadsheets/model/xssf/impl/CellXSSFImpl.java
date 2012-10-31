@@ -49,7 +49,7 @@ public class CellXSSFImpl implements Cell {
             return DEFAULT_FONT;
         }
         return getFont(font);
-    }
+    }        
     
     public XSSFWorkbook getWorkbook() {
     	return workbook;

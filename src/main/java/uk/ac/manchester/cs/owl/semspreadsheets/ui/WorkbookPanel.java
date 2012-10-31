@@ -119,7 +119,9 @@ public class WorkbookPanel extends JPanel {
 	}
 
 	private void rebuildTabs() {
+		//FIMXE: why is this here?
 		manager.getWorkbook().addChangeListener(workbookChangeListener);
+		
 		rebuildingTabs = true;
 		for (int i = 0; i < tabbedPane.getTabCount(); i++) {
 			SheetPanel sheetPanel = (SheetPanel) tabbedPane.getComponentAt(i);
