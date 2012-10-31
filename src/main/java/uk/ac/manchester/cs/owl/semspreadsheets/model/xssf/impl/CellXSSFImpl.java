@@ -23,12 +23,14 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.Cell;
  * @author Stuart Owen
  */
 public class CellXSSFImpl implements Cell {
-	
+		
 	private static Logger logger = Logger.getLogger(CellXSSFImpl.class);
 
     public static final Font DEFAULT_FONT = new Font("verdana", Font.PLAIN, 10);
 
     private static Map<XSSFFont, Font> fontCache = new HashMap<XSSFFont, Font>();
+    
+    private static Map<XSSFWorkbook,Map<Color,XSSFCellStyle>> colourStylesForWorkbook = new HashMap<XSSFWorkbook, Map<Color,XSSFCellStyle>>();
 
     private XSSFCell theCell;
 
@@ -47,6 +49,10 @@ public class CellXSSFImpl implements Cell {
             return DEFAULT_FONT;
         }
         return getFont(font);
+    }
+    
+    public XSSFWorkbook getWorkbook() {
+    	return workbook;
     }
 
     public Style getStyle() {
@@ -213,16 +219,33 @@ public class CellXSSFImpl implements Cell {
 
 	@Override
 	public void setBackgroundFill(Color colour) {
-		XSSFColor col = new XSSFColor(colour);
-		
-		XSSFCellStyle cellStyle = workbook.createCellStyle();
-		cellStyle.setFillPattern(XSSFCellStyle.SOLID_FOREGROUND );
-		cellStyle.setFillForegroundColor(col);
-		
-		theCell.setCellStyle(cellStyle);
-		logger.debug("Cell colour changed to #"+col.getARGBHex());	
+		XSSFCellStyle style = getFillStyleForColour(colour);
+								
+		try {
+			theCell.setCellStyle(style);
+		}
+		catch(Exception e) {
+			logger.error("Error setting cell style",e);
+		}
 	}
 
+	private XSSFCellStyle getFillStyleForColour(Color colour) {
+		Map<Color,XSSFCellStyle> styles = colourStylesForWorkbook.get(getWorkbook());
+    	if (styles == null) {
+    		styles = new HashMap<Color,XSSFCellStyle>();
+    		colourStylesForWorkbook.put(getWorkbook(), styles);
+    	}
+    	XSSFCellStyle style = styles.get(colour);
+    	if (style==null) {
+    		style = getWorkbook().createCellStyle();
+    		XSSFColor col = new XSSFColor(colour);
+    		style.setFillPattern(XSSFCellStyle.SOLID_FOREGROUND );
+    		style.setFillForegroundColor(col);
+    		styles.put(colour,style);
+    	}
+    	return style;
+	}
+	
     public Color getForeground() {
         if (foreground == null) {
         	XSSFColor colour = theCell.getCellStyle().getFont().getXSSFColor();
