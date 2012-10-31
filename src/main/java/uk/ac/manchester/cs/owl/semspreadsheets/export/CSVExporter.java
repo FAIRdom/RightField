@@ -53,13 +53,13 @@ public class CSVExporter extends AbstractExporter {
 	}
 	
 	private void writeHeader(PrintWriter writer) {
-		writer.write("text, col, row, sheet, term uri, type, entity uri, property uri, ontology uri, ontology source\n");
+		writer.write("text,col,row,sheet,term uri,type,entity uri,property uri,ontology uri,ontology source\n");
 	}
 	
 	private String cellToCSV(PopulatedValidatedCellDetails cellDetails) {
 		String csv = "\"" + cellDetails.getTextValue() + "\",";
-		csv += cellDetails.getCell().getRow()+",";
 		csv += cellDetails.getCell().getColumn()+",";
+		csv += cellDetails.getCell().getRow()+",";		
 		csv += "\""+cellDetails.getSheet().getName()+"\",";
 		
 		String termStr = "None";
