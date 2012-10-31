@@ -217,9 +217,10 @@ public class CellXSSFImpl implements Cell {
 		
 		XSSFCellStyle cellStyle = workbook.createCellStyle();
 		cellStyle.setFillPattern(XSSFCellStyle.SOLID_FOREGROUND );
-		cellStyle.setFillForegroundColor(col.getIndexed());			
+		cellStyle.setFillForegroundColor(col);
+		
 		theCell.setCellStyle(cellStyle);
-		logger.debug("Cell colour changed to "+col.toString());	
+		logger.debug("Cell colour changed to #"+col.getARGBHex());	
 	}
 
     public Color getForeground() {
