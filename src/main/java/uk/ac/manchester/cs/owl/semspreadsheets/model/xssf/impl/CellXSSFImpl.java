@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.SwingConstants;
-import javax.swing.text.Style;
 
 import org.apache.log4j.Logger;
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -28,7 +27,7 @@ public class CellXSSFImpl implements Cell {
 
     public static final Font DEFAULT_FONT = new Font("verdana", Font.PLAIN, 10);
 
-    private static Map<XSSFFont, Font> fontCache = new HashMap<XSSFFont, Font>();
+    private static Map<XSSFWorkbook,Map<XSSFFont, Font>> fontCache = new HashMap<XSSFWorkbook,Map<XSSFFont, Font>>();
     
     private static Map<XSSFWorkbook,Map<Color,XSSFCellStyle>> colourStylesForWorkbook = new HashMap<XSSFWorkbook, Map<Color,XSSFCellStyle>>();
 
@@ -44,12 +43,11 @@ public class CellXSSFImpl implements Cell {
     }
 
     public Font getDefaultFont() {
-//        XSSFFont font = workbook.getFontAt((short) 0);
-//        if (font == null) {
-//            return DEFAULT_FONT;
-//        }
-//        return getFont(font);
-    	return DEFAULT_FONT;
+        XSSFFont font = workbook.getFontAt((short) 0);
+        if (font == null) {
+            return DEFAULT_FONT;
+        }
+        return getFont(font);    	
     }        
     
     public XSSFWorkbook getWorkbook() {
@@ -156,18 +154,18 @@ public class CellXSSFImpl implements Cell {
         fontCache.clear();
     }
 
-    public Font getFont() {
-    	return getDefaultFont();
-//        XSSFCellStyle cellStyle = theCell.getCellStyle();
-//        if (cellStyle == null) {
-//            return getDefaultFont();
-//        }
-//        XSSFFont xssfFont = cellStyle.getFont();
-//        return getFont(xssfFont);
+    public Font getFont() {    	
+        XSSFCellStyle cellStyle = theCell.getCellStyle();
+        if (cellStyle == null) {
+            return getDefaultFont();
+        }
+        XSSFFont xssfFont = cellStyle.getFont();
+        return getFont(xssfFont);
     }
 
     private Font getFont(XSSFFont xssfFont) {
-        Font font = null;//fontCache.get(xssfFont);
+    	
+        Font font = getFontFromCache(xssfFont);
         if (font == null) {
             String name = xssfFont.getFontName();
             int size = xssfFont.getFontHeightInPoints();
@@ -181,34 +179,52 @@ public class CellXSSFImpl implements Cell {
             else if (xssfFont.getItalic()) {
                 style = Font.ITALIC;
             }
-            font = new Font(name, style, size);
-            fontCache.put(xssfFont, font);
+            font = new Font(name, style, size);            
+            putFontInCache(xssfFont, font);
         }
         return font;
 
     }
     
+    private Font getFontFromCache(XSSFFont xssfFont) {
+    	Map<XSSFFont,Font> cache = fontCache.get(getWorkbook());
+    	if (cache==null) {
+    		cache = new HashMap<XSSFFont,Font>();
+    		fontCache.put(getWorkbook(), cache);
+    	}
+    	return cache.get(xssfFont);
+    }
+    
+    private void putFontInCache(XSSFFont xssfFont,Font font) {
+    	Map<XSSFFont,Font> cache = fontCache.get(getWorkbook());
+    	if (cache==null) {
+    		cache = new HashMap<XSSFFont,Font>();
+    		fontCache.put(getWorkbook(), cache);
+    	}
+    	cache.put(xssfFont, font);
+    }
+    
     @Override
 	public Color getBackgroundFill() {
-//    	Color colour = null;
-//    	XSSFCellStyle cellStyle = theCell.getCellStyle();
-//        if (cellStyle == null) {
-//            colour = Color.WHITE;
-//        }        
-//        else {
-//        	XSSFColor xssfColour = cellStyle.getFillForegroundXSSFColor();
-//    		if (xssfColour == null) {
-//    			colour = Color.WHITE;
-//    		}
-//    		else {
-//    			colour = translateRGB(xssfColour.getRgb());
-//    		}
-//        }
-//		
-//        logger.debug("Background fill colour read as: "+colour);
-//		
-//		return colour;
-    	return Color.WHITE;
+    	Color colour = null;
+    	XSSFCellStyle cellStyle = theCell.getCellStyle();
+        if (cellStyle == null) {
+            colour = Color.WHITE;
+        }        
+        else {
+        	XSSFColor xssfColour = cellStyle.getFillForegroundXSSFColor();
+    		if (xssfColour == null) {
+    			colour = Color.WHITE;
+    		}
+    		else {
+    			colour = translateRGB(xssfColour.getRgb());
+    		}
+        }
+		
+        logger.debug("Background fill colour read as: "+colour);
+		
+		return colour;
+    	//return Color.WHITE;
 	}
 
     private Color translateRGB(byte[] rgb) {
@@ -226,14 +242,14 @@ public class CellXSSFImpl implements Cell {
 
 	@Override
 	public void setBackgroundFill(Color colour) {
-//		XSSFCellStyle style = getFillStyleForColour(colour);
-//								
-//		try {
-//			theCell.setCellStyle(style);
-//		}
-//		catch(Exception e) {
-//			logger.error("Error setting cell style",e);
-//		}
+		XSSFCellStyle style = getFillStyleForColour(colour);
+								
+		try {
+			theCell.setCellStyle(style);
+		}
+		catch(Exception e) {
+			logger.error("Error setting cell style",e);
+		}
 	}
 
 	private XSSFCellStyle getFillStyleForColour(Color colour) {

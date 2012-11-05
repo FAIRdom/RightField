@@ -5,16 +5,18 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
-import java.awt.Color;
 import java.io.File;
 
+import org.apache.xmlbeans.impl.values.XmlValueDisconnectedException;
 import org.junit.Test;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.DummyWorkbookChangeListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.SpreadsheetTestHelper;
 import uk.ac.manchester.cs.owl.semspreadsheets.listeners.WorkbookChangeListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Cell;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.InvalidWorkbookFormatException;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Workbook;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookFactory;
@@ -172,7 +174,8 @@ public abstract class GeneralWorkbookTests {
 	
 	@Test
 	public void testSaveWorkbookTwice() throws Exception {
-		//there was a particular problem with XSSF where after the 2nd save the workbook became corrupted
+		//there was a particular problem with XSSF where after the 2nd save the workbook became corrupted due to bug https://issues.apache.org/bugzilla/show_bug.cgi?id=52233
+		//this test was originally to test a workaround, but the workaround has changed and is now here to spot flag if/when Apache POI is fixed.
 		Workbook wb = getTestWorkbook();
 		assertEquals(1,wb.getSheet(0).getValidations().size());
 		File f = SpreadsheetTestHelper.getTempFile(getExtension());			
@@ -180,22 +183,34 @@ public abstract class GeneralWorkbookTests {
 		assertFalse(f.exists());
 		wb.saveAs(f.toURI());
 		assertTrue(f.exists());
-		wb.saveAs(f.toURI());		
-		wb = WorkbookFactory.createWorkbook(f.toURI());
+		try {
+			wb.saveAs(f.toURI());
+			fail("GOOD News - its possible that this issue has been fixed by Apache POI");
+		}
+		catch(XmlValueDisconnectedException e) {
+			//expected due to bug
+		}
+		try {
+			wb = WorkbookFactory.createWorkbook(f.toURI());
+			fail("GOOD News - its possible that this issue has been fixed by Apache POI");
+		}
+		catch(InvalidWorkbookFormatException e) {
+			//expected due to bug
+		}
 		assertNotNull(wb);
 		
 		//this is to test a weird problem with the sheet column widths becoming corrupt after a save
 		Sheet sheet = wb.getSheet(0);
 		
 		Cell cell = sheet.getCellAt(3, 11);
-		assertEquals("Experimental Design",cell.getValue());
-		assertEquals(Color.WHITE,cell.getBackgroundFill());
+		assertEquals("Experimental Design",cell.getValue());		
 		assertEquals(1,wb.getSheet(0).getValidations().size());
 	}
 	
 	@Test
 	public void testSaveWorkbookTwice2() throws Exception {
 		//related to testSaveWorkbookTwice, but a slightly different error due to the content (but probably the same root cause)
+		//this test was originally to test a workaround, but the workaround has changed and is now here to spot flag if/when Apache POI is fixed.
 		Workbook wb = getTestWorkbook();
 		Sheet sheet = wb.getSheet(0);
 		Cell cell = sheet.addCellAt(0, 0);

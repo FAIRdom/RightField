@@ -39,8 +39,6 @@ public abstract class GeneralCellTests {
 		Cell cellB = workbook.getSheet(0).getCellAt(1, 1);
 		assertEquals(Color.BLUE, cellB.getBackgroundFill());
 	}
-	
-	
 
 	@Test
 	public void testEquals() throws Exception {

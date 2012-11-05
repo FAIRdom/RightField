@@ -47,7 +47,8 @@ public class OntologyTermValidationManager {
     }
 
     protected void readValidationFromWorkbook() {
-        OntologyTermValidationWorkbookParser parser = new OntologyTermValidationWorkbookParser(getWorkbookManager());        
+        OntologyTermValidationWorkbookParser parser = new OntologyTermValidationWorkbookParser(getWorkbookManager());
+        clearValidations();  
         ontologyTermValidations.addAll(parser.readOntologyTermValidations());        
         parser.clearOntologyTermValidations();
         fireValidationsChanged();
@@ -63,10 +64,12 @@ public class OntologyTermValidationManager {
     }
 
     public void clearValidations() {
+    	logger.debug("About to clear "+ontologyTermValidations.size()+" validations");
         if (!ontologyTermValidations.isEmpty()) {
             ontologyTermValidations.clear();
             fireValidationsChanged();
         }
+        logger.debug("Validations cleared");
     }
 
     public void clearValidation(Range range) {

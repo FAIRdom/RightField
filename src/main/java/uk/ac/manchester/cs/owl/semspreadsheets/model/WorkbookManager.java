@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLEntity;
@@ -27,11 +26,11 @@ import uk.ac.manchester.cs.owl.semspreadsheets.listeners.WorkbookChangeListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.listeners.WorkbookManagerListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.change.SetCellValue;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.change.WorkbookChange;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.xssf.impl.WorkbookXSSFImpl;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.CellSelectionModel;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.ErrorHandler;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookFormat;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookState;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.xssf.impl.WorkbookXSSFImpl;
 
 /** 
  * @author Stuart Owen
@@ -179,6 +178,7 @@ public class WorkbookManager {
         	List<WorkbookChangeListener> existingListeners = workbook.getAllChangeListeners();
         	workbook.clearChangeListeners(); //to free it and allow it to be garbage collected
             workbook = WorkbookFactory.createWorkbook(uri);
+            logger.debug("Adding Workbook change listeners to new workbook instance");
             for (WorkbookChangeListener l : existingListeners) {
             	workbook.addChangeListener(l);
             }
@@ -186,7 +186,9 @@ public class WorkbookManager {
             workbookURI = uri;
             
             // Extract validation
+            logger.debug("About to read validations from workbook");
             getOntologyManager().getOntologyTermValidationManager().readValidationFromWorkbook();
+            logger.debug(getOntologyManager().getOntologyTermValidations().size()+" validations after read");
             fireWorkbookLoaded();
             getWorkbookState().changesSaved();
             return workbook;
@@ -213,14 +215,8 @@ public class WorkbookManager {
         //to get round a bug in POI - https://issues.apache.org/bugzilla/show_bug.cgi?id=46662
         //the internal workbook state is reloaded after a save, which mean the validations need refreshing according to the workbook
         if (workbook instanceof WorkbookXSSFImpl) {
-        	logger.debug("XSSF workbook, reloaded so re-reading validation");
-        	OntologyTermValidationWorkbookParser workbookParser = new OntologyTermValidationWorkbookParser(this);
-           	workbookParser.clearOntologyTermValidations();
-        	loadWorkbook(uri);
-        	logger.debug(getOntologyManager().getOntologyTermValidations().size()+" validation read");
-        	workbookParser = new OntologyTermValidationWorkbookParser(this);
-           	workbookParser.clearOntologyTermValidations();
-        	
+        	logger.debug("XSSF workbook, reloaded so re-reading validation");        	        	      
+        	loadWorkbook(uri);        	        
         }
         else {
         	OntologyTermValidationWorkbookParser workbookParser = new OntologyTermValidationWorkbookParser(this);
