@@ -34,6 +34,11 @@ public class OntologyTermValidationWorkbookParser {
     public OntologyTermValidationWorkbookParser(WorkbookManager workbookManager) {
         this.workbookManager = workbookManager;
     }      
+    
+    public static void clearOriginalColours() {
+    	logger.debug("Clearing original colours");
+    	originalColours.clear();
+    }
 
     public Collection<OntologyTermValidation> readOntologyTermValidations() {
     	logger.debug("Reading validations from workbook");
@@ -139,7 +144,7 @@ public class OntologyTermValidationWorkbookParser {
     }
     
     private void restoreCellBackgroundColours() {
-    	for (Cell cell : originalColours.keySet()) {
+    	for (Cell cell : originalColours.keySet()) {    		
     		cell.setBackgroundFill(originalColours.get(cell));
     	}
     	originalColours.clear();

@@ -164,6 +164,7 @@ public class WorkbookManager {
     	List<WorkbookChangeListener> existingListeners = workbook.getAllChangeListeners();
     	workbook.clearChangeListeners();
     	getOntologyManager().clearOntologyTermValidations();
+    	OntologyTermValidationWorkbookParser.clearOriginalColours();
     	try {
     		workbook = WorkbookFactory.createWorkbook(format);  
     		for (WorkbookChangeListener l : existingListeners) {
@@ -185,6 +186,7 @@ public class WorkbookManager {
         	//need to preserve the listeners on the workbook
         	List<WorkbookChangeListener> existingListeners = workbook.getAllChangeListeners();
         	workbook.clearChangeListeners(); //to free it and allow it to be garbage collected
+        	OntologyTermValidationWorkbookParser.clearOriginalColours();
             workbook = WorkbookFactory.createWorkbook(uri);
             logger.debug("Adding Workbook "+existingListeners.size()+" change listeners to new workbook instance");
             for (WorkbookChangeListener l : existingListeners) {
