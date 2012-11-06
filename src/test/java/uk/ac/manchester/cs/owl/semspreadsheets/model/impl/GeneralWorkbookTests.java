@@ -5,18 +5,15 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.io.File;
 
-import org.apache.xmlbeans.impl.values.XmlValueDisconnectedException;
 import org.junit.Test;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.DummyWorkbookChangeListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.SpreadsheetTestHelper;
 import uk.ac.manchester.cs.owl.semspreadsheets.listeners.WorkbookChangeListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Cell;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.InvalidWorkbookFormatException;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Workbook;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookFactory;
@@ -27,7 +24,6 @@ public abstract class GeneralWorkbookTests {
 	@Test
 	public void testVisibleSheets() throws Exception {
 		Workbook book = getTestWorkbook();
-
 		assertEquals(3,book.getSheets().size());
 		assertEquals(1,book.getVisibleSheets().size());
 		assertTrue(book.getVisibleSheets().contains(book.getSheet(0)));	
