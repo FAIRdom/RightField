@@ -3,14 +3,14 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.sysmo-db</groupId>
 	<artifactId>rightfield</artifactId>
-	<version>0.19-SNAPSHOT</version>
+	<version>0.21-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>RightField</name>
 	<description>
 	RightField is an open-source tool for adding ontology term selection to Excel spreadsheets. 
 	For each annotation field, RightField can specify a range of allowed terms from a chosen ontology (subclasses, individuals or combinations). 
 	The resulting spreadsheet presents these terms to the users as a simple drop-down list. 
-	This reduces the adoption barrier for using community ontologies as the annotation is made by the scientist that generated the data rather than a third party, and the annotation is collected at the time of data collection.
+	This reduces the adoption barrier for using community ontologies as the annotation is made by the scientist that generated the data rather than a third party, and the annotation is collected at the time of data collection.	
 	</description>
 	<url>http://www.rightfield.org.uk</url>
 	<licenses>
