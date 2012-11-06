@@ -66,13 +66,15 @@ public abstract class GeneralCellTests {
 		assertFalse(cellA.hashCode()==cellB.hashCode());
 		assertFalse(cellA.hashCode()==cellC.hashCode());
 		assertFalse(cellA.hashCode()==cellD.hashCode());		
-	}
+	}		
 	
 	@Test
-	public void testBackgroundColour() throws Exception {
-		Cell cell = getTestCell();				
-		Color col = cell.getBackgroundFill();
-		assertEquals(Color.BLUE,col);
+	public void setBackgroundFill() throws Exception {
+		Workbook workbook = getTestWorkbook();
+		Cell cell = workbook.getSheet(0).addCellAt(1, 1);
+		cell.setBackgroundFill(Color.BLUE);
+		cell = workbook.getSheet(0).getCellAt(1, 1);
+		assertEquals(Color.BLUE, cell.getBackgroundFill());
 	}
 	
 	@Test
