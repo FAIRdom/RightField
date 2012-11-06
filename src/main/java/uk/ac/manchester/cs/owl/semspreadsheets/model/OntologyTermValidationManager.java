@@ -49,7 +49,8 @@ public class OntologyTermValidationManager {
     protected void readValidationFromWorkbook() {
         OntologyTermValidationWorkbookParser parser = new OntologyTermValidationWorkbookParser(getWorkbookManager());
         clearValidations();  
-        ontologyTermValidations.addAll(parser.readOntologyTermValidations());        
+        Collection<OntologyTermValidation> validations = parser.readOntologyTermValidations();        
+        ontologyTermValidations.addAll(validations);        
         parser.clearOntologyTermValidations();
         fireValidationsChanged();
     }
@@ -95,7 +96,9 @@ public class OntologyTermValidationManager {
     }
 
     public void setValidation(Range range, ValidationType type, IRI entityIRI, OWLPropertyItem property) {
-    	logger.debug("Setting validation at "+range.toFixedAddress()+" type:"+type.toString()+", IRI:"+entityIRI+", property:"+property);
+    	if (logger.isDebugEnabled()) {
+    		logger.debug("Setting validation at "+range.toFixedAddress()+" type:"+type.toString()+", IRI:"+entityIRI+", property:"+property);
+    	}
     	
         Collection<OntologyTermValidation> intersectingValidations = getIntersectingValidations(range);
         ontologyTermValidations.removeAll(intersectingValidations);
@@ -177,6 +180,7 @@ public class OntologyTermValidationManager {
     }
 
     protected void fireValidationsChanged() {
+    	logger.debug("firing validations changed to "+listeners.size()+" listeners");
         for(OntologyTermValidationListener listener : new ArrayList<OntologyTermValidationListener>(listeners)) {
             try {
                 listener.validationsChanged();

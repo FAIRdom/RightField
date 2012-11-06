@@ -81,14 +81,43 @@ public class WorkbookManagerTest {
 	}
 	
 	@Test
-	public void testWorkbookSaved() throws Exception {		
+	public void testSaveWorkbook() throws Exception {		
 		assertNull(manager.getWorkbookURI());
 		File tmpfile = File.createTempFile("rf-test-", ".xls");
 		URI uri = tmpfile.toURI();
+		assertEquals(1,manager.getWorkbook().getAllChangeListeners().size());
+		assertTrue(manager.getWorkbook().getAllChangeListeners().contains(testChangeListener));
+		
 		manager.saveWorkbook(uri);
 		assertEquals(uri,manager.getWorkbookURI());
 		assertTrue(tmpfile.exists());
 		assertTrue(testListener.isWorkbookSavedFired());
+		assertEquals(1,manager.getWorkbook().getAllChangeListeners().size());
+		assertTrue(manager.getWorkbook().getAllChangeListeners().contains(testChangeListener));
+	}	
+	
+	@Test
+	public void testSaveWorkbookXLSX() throws Exception {		
+		manager.createNewWorkbook(WorkbookFormat.EXCEL2007);
+		assertEquals("xlsx",manager.getWorkbookFileExtension());
+		assertNull(manager.getWorkbookURI());
+		File tmpfile = File.createTempFile("rf-test-", ".xlsx");
+		URI uri = tmpfile.toURI();
+		assertEquals(1,manager.getWorkbook().getAllChangeListeners().size());
+		assertTrue(manager.getWorkbook().getAllChangeListeners().contains(testChangeListener));
+		
+		manager.saveWorkbook(uri);
+		assertEquals(uri,manager.getWorkbookURI());
+		assertTrue(tmpfile.exists());
+		assertTrue(testListener.isWorkbookSavedFired());
+		assertEquals(1,manager.getWorkbook().getAllChangeListeners().size());
+		assertTrue(manager.getWorkbook().getAllChangeListeners().contains(testChangeListener));
+		
+		//save again, as there was an issue with listeners growing in size
+		manager.saveWorkbook(uri);
+		
+		assertEquals(1,manager.getWorkbook().getAllChangeListeners().size());
+		assertTrue(manager.getWorkbook().getAllChangeListeners().contains(testChangeListener));
 	}	
 	
 	@Test(expected=InvalidWorkbookFormatException.class)
@@ -107,6 +136,8 @@ public class WorkbookManagerTest {
 	public void testLoadWorkbook() throws Exception {
 		URI uri = DocumentsCatalogue.simpleAnnotatedworkbookURI();
 		manager.getWorkbookState().changesUnsaved();
+		assertEquals(1,manager.getWorkbook().getAllChangeListeners().size());
+		
 		Workbook book = manager.loadWorkbook(uri);
 		assertTrue(book instanceof WorkbookHSSFImpl);
 		assertNotNull(book);
@@ -114,7 +145,9 @@ public class WorkbookManagerTest {
 		assertSame(book, manager.getWorkbook());
 		assertNotNull(manager.getWorkbookURI());
 		assertEquals(uri,manager.getWorkbookURI());
-		assertTrue(testListener.isWorkbookLoadedFired());				
+		assertTrue(testListener.isWorkbookLoadedFired());
+		assertEquals(1,manager.getWorkbook().getAllChangeListeners().size());
+		assertTrue(manager.getWorkbook().getAllChangeListeners().contains(testChangeListener));
 	}	
 	
 	@Test
@@ -133,6 +166,8 @@ public class WorkbookManagerTest {
 	public void testLoadXLSXWorkbook() throws Exception {
 		URI uri = DocumentsCatalogue.simpleAnnotatedXLSXWorkbookURI();
 		manager.getWorkbookState().changesUnsaved();
+		assertEquals(1,manager.getWorkbook().getAllChangeListeners().size());		
+		
 		Workbook book = manager.loadWorkbook(uri);
 		assertTrue(book instanceof WorkbookXSSFImpl);
 		assertNotNull(book);
@@ -141,6 +176,8 @@ public class WorkbookManagerTest {
 		assertNotNull(manager.getWorkbookURI());
 		assertEquals(uri,manager.getWorkbookURI());
 		assertTrue(testListener.isWorkbookLoadedFired());
+		assertEquals(1,manager.getWorkbook().getAllChangeListeners().size());
+		assertTrue(manager.getWorkbook().getAllChangeListeners().contains(testChangeListener));
 	}
 	
 	@Test
@@ -153,7 +190,7 @@ public class WorkbookManagerTest {
 		assertTrue(manager.getOntologyManager().getOntologyIRIs().contains(IRI.create("http://mged.sourceforge.net/ontologies/MGEDOntology.owl")));
 		
 		assertEquals(9,manager.getOntologyManager().getOntologyTermValidations().size());
-	}
+	}		
 	
 	@Test
 	public void testInsertSheet() throws Exception {

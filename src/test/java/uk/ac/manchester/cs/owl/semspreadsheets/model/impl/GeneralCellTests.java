@@ -34,10 +34,10 @@ public abstract class GeneralCellTests {
 	@Test
 	public void setBackgroundFill() throws Exception {
 		Workbook workbook = getTestWorkbook();
-		Cell cellA = workbook.getSheet(0).addCellAt(1, 1);
-		cellA.setBackgroundFill(Color.BLUE);
-		Cell cellB = workbook.getSheet(0).getCellAt(1, 1);
-		assertEquals(Color.BLUE, cellB.getBackgroundFill());
+		Cell cell = workbook.getSheet(0).addCellAt(1, 1);
+		cell.setBackgroundFill(Color.BLUE);
+		cell = workbook.getSheet(0).getCellAt(1, 1);
+		assertEquals(Color.BLUE, cell.getBackgroundFill());
 	}
 
 	@Test

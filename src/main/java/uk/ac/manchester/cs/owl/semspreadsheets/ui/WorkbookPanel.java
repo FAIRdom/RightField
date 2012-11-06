@@ -79,6 +79,7 @@ public class WorkbookPanel extends JPanel {
 	private boolean updatingSelectionFromModel = false;
 
 	private boolean rebuildingTabs = false;
+	
 	private WorkbookChangeListener workbookChangeListener;
 
 	public Map<String, SheetPanel> sheetPanels = new HashMap<String, SheetPanel>();
@@ -118,9 +119,7 @@ public class WorkbookPanel extends JPanel {
 		});
 	}
 
-	private void rebuildTabs() {
-		//FIMXE: why is this here?
-		manager.getWorkbook().addChangeListener(workbookChangeListener);
+	private void rebuildTabs() {		
 		
 		rebuildingTabs = true;
 		for (int i = 0; i < tabbedPane.getTabCount(); i++) {

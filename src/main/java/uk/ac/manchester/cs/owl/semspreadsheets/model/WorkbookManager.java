@@ -106,8 +106,10 @@ public class WorkbookManager {
         getEntitySelectionModel().setSelectedEntity(selEnt);
     }
 
-    private void fireWorkbookCreated() {       
-        for (WorkbookManagerListener listener : getCopyOfListeners()) {
+    private void fireWorkbookCreated() {  
+    	List<WorkbookManagerListener> listeners = getCopyOfListeners();
+    	logger.debug("firing workbookCreated to "+listeners.size()+" listeners");
+        for (WorkbookManagerListener listener : listeners) {
             try {
                 listener.workbookCreated();
             }
@@ -117,20 +119,26 @@ public class WorkbookManager {
         }
     }
     
-    private void fireWorkbookSaved() {    	
-        for (WorkbookManagerListener listener : getCopyOfListeners()) {
+    private void fireWorkbookSaved() { 
+    	List<WorkbookManagerListener> listeners = getCopyOfListeners();
+    	logger.debug("firing workbookSaved to "+listeners.size()+" listeners");
+        for (WorkbookManagerListener listener : listeners) {
             listener.workbookSaved();            
         }
     }
     
     private void fireValidationAppliedOrCancelled() {
-    	for (WorkbookManagerListener listener : getCopyOfListeners()) {            
+    	List<WorkbookManagerListener> listeners = getCopyOfListeners();
+    	logger.debug("firing validationAppliedOrCancelled to "+listeners.size()+" listeners");
+    	for (WorkbookManagerListener listener : listeners) {            
                 listener.validationAppliedOrCancelled();            
         }
     }
 
     private void fireWorkbookLoaded() {        
-        for (WorkbookManagerListener listener : getCopyOfListeners()) {
+    	List<WorkbookManagerListener> listeners = getCopyOfListeners();
+    	logger.debug("firing workbookLoaded to "+listeners.size()+" listeners");
+        for (WorkbookManagerListener listener : listeners) {
             try {
                 listener.workbookLoaded();
             }
@@ -178,7 +186,7 @@ public class WorkbookManager {
         	List<WorkbookChangeListener> existingListeners = workbook.getAllChangeListeners();
         	workbook.clearChangeListeners(); //to free it and allow it to be garbage collected
             workbook = WorkbookFactory.createWorkbook(uri);
-            logger.debug("Adding Workbook change listeners to new workbook instance");
+            logger.debug("Adding Workbook "+existingListeners.size()+" change listeners to new workbook instance");
             for (WorkbookChangeListener l : existingListeners) {
             	workbook.addChangeListener(l);
             }
@@ -188,9 +196,9 @@ public class WorkbookManager {
             // Extract validation
             logger.debug("About to read validations from workbook");
             getOntologyManager().getOntologyTermValidationManager().readValidationFromWorkbook();
-            logger.debug(getOntologyManager().getOntologyTermValidations().size()+" validations after read");
-            fireWorkbookLoaded();
-            getWorkbookState().changesSaved();
+            logger.debug(getOntologyManager().getOntologyTermValidations().size()+" validations after read");            
+            fireWorkbookLoaded();            
+            getWorkbookState().changesSaved();            
             return workbook;
         }
         catch (IOException e) {
