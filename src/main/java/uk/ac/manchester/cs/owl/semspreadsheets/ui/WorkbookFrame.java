@@ -246,22 +246,28 @@ public class WorkbookFrame extends JFrame {
 	}
 	
 	public void closeWorkbook() {
-		if (checkSavedState("Close the workbook")) {
+		if (checkSavedState("Close the spreadsheet")) {
 			createNewWorkbook();
 		}
 	}
 	
 	private void createNewWorkbook() {
-		WorkbookFormat selectedFormat = null;
-		while (selectedFormat == null) {
-			String question = "Please select the Excel format of the new workbook";
-			 selectedFormat = (WorkbookFormat) JOptionPane
-					.showInputDialog(this, question, "Select Excel format",
+		int index=-1;
+		WorkbookFormat[] formats = WorkbookFormat.getFormats();
+		while(index<0) {
+			String question = "Please select the Excel format of the new spreadsheet";
+			
+			List<String>options = new ArrayList<String>();
+			for (WorkbookFormat format : formats) {
+				options.add(format.toString());
+			}
+			index = JOptionPane
+					.showOptionDialog(this, question, "Select Excel format",JOptionPane.YES_NO_OPTION,
 							JOptionPane.QUESTION_MESSAGE, null,
-							WorkbookFormat.getFormats(), WorkbookFormat.EXCEL97);			
+							options.toArray(), null);
 		}
-		getWorkbookManager().createNewWorkbook(selectedFormat);
-		
+						
+		getWorkbookManager().createNewWorkbook(formats[index]);		
 	}
 
 	public TaskManager getTaskManager() {

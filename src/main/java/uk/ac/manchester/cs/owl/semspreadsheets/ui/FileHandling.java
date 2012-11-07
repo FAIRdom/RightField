@@ -144,25 +144,6 @@ public class FileHandling {
 			return null;
 		}
 	}
-
-//	private File browseForFileWithFileDialog(String title, int mode, Map<String,List<String>> filetypesAndExtensions) {		
-//		FileDialog fileDialog = new FileDialog(frame, title, mode);
-//
-//		Set<String> allExtensions = new HashSet<String>();
-//		for (String key : filetypesAndExtensions.keySet()) {
-//			for (String ext : filetypesAndExtensions.get(key)) {
-//				allExtensions.add(ext);
-//			}
-//		}	
-//		fileDialog.setFilenameFilter(new ExtensionsFilenameFilter(allExtensions));		
-//		fileDialog.setVisible(true);
-//		String name = fileDialog.getFile();
-//		if (name == null) {
-//			return null;
-//		}
-//		String directory = fileDialog.getDirectory();		
-//		return new File(directory + name);
-//	}
 	
 	/** Defines and populates the extensions and filetypes for WORKBOOK_EXT and ONTOLOGY_EXT **/
 	private void defineExtensions() {
@@ -171,7 +152,7 @@ public class FileHandling {
 		ONTOLOGY_EXT.put("Ontology",Arrays.asList(new String[] { "obo", "owl","rdf", "rrf" }));
 	}
 	
-	class ExtensionFileFilter extends FileFilter {
+	private class ExtensionFileFilter extends FileFilter {
 
 		private final String description;
 		private final List<String> extensions;
