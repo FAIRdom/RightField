@@ -181,11 +181,12 @@ public class WorkbookFrame extends JFrame {
 	}	
 
 	private void suggestOpeningWorkbook() {
-		String message = "<html><center><p>Would you like to start by opening an existing spreadsheet you have already created?</p>" +
-						 "<p></p>" +
-						 "<p>If not, you will begin by editing a new spreadsheet which you can save as a new file.</p></center></html>";
-		int ret=JOptionPane.showOptionDialog(this, message, "Open spreadsheet?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,null,null,null);
-		if (ret==JOptionPane.YES_OPTION) {
+		String message = "You may open an existing spreadsheet, or start with a fresh empty spreadsheet";
+		String [] options = new String[]{"Open a spreadsheet","Start with an empty spreadsheet"};
+		int ret=JOptionPane.showOptionDialog(this, 
+				message, "Open spreadsheet?", 
+				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,null,options,null);		
+		if (ret==0) {
 			openWorkbook();
 		}
 	}
@@ -560,6 +561,5 @@ public class WorkbookFrame extends JFrame {
 		if (res == JOptionPane.YES_OPTION) {			
 			getWorkbookManager().getOntologyManager().removeOntology(ontology);			
 		}
-	}
-
+	}	
 }
