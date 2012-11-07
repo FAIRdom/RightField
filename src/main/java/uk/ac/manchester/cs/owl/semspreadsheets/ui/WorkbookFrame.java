@@ -58,7 +58,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.CloseWorkbookAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.ExitAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.ExportCSVAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.ExportRDFAction;
-import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.InsertSheetAction;
+import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.AddSheetAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.OnlineHelpAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.OpenFromBioPortalAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.OpenOntologyAction;
@@ -227,7 +227,7 @@ public class WorkbookFrame extends JFrame {
 
 		JMenu sheetMenu = menuBar.add(new JMenu("Sheet"));
 		sheetMenu.setMnemonic(KeyEvent.VK_S);
-		sheetMenu.add(new InsertSheetAction(workbookManager, this));
+		sheetMenu.add(new AddSheetAction(workbookManager, this));
 		sheetMenu.add(new RemoveSheetAction(this));
 		sheetMenu.add(new RenameSheetAction(this));			
 				
