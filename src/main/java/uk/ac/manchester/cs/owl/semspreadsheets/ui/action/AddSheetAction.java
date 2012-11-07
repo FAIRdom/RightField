@@ -17,10 +17,10 @@ import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookFrame;
  * @author Matthew Horridge
  */
 @SuppressWarnings("serial")
-public class InsertSheetAction extends SpreadSheetAction {
+public class AddSheetAction extends SpreadSheetAction {
 
-    public InsertSheetAction(WorkbookManager workbookManager, WorkbookFrame workbookFrame) {
-        super("Insert", workbookManager, workbookFrame);        
+    public AddSheetAction(WorkbookManager workbookManager, WorkbookFrame workbookFrame) {
+        super("Add", workbookManager, workbookFrame);        
     }
 
     /**
