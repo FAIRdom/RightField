@@ -193,9 +193,11 @@ public class CellHSSFImpl implements Cell {
 	public Color getBackgroundFill() {		
     	HSSFCellStyle cellStyle = theCell.getCellStyle();
         if (cellStyle == null) {
+        	logger.debug("Cell style not found, so using background colour of WHITE");
             return Color.WHITE;
         }
-		short colorIndex=cellStyle.getFillBackgroundColor();
+		short colorIndex=cellStyle.getFillForegroundColor();
+		logger.debug("Background fill colour index found as "+colorIndex);
 		return translateColour(colorIndex);
 	}
 
@@ -207,7 +209,9 @@ public class CellHSSFImpl implements Cell {
 		}
 		else {						
 			theCell.setCellStyle(getFillStyleForColour(colour));
-			logger.debug("Cell colour changed to "+col.toString());
+			if (logger.isDebugEnabled()) {
+				logger.debug("Cell colour changed to "+col.getHexString()+"with index: "+col.getIndex());
+			}
 		}
 	}
     
