@@ -25,18 +25,18 @@ public abstract class GeneralWorkbookTests {
 	public void testVisibleSheets() throws Exception {
 		Workbook book = getTestWorkbook();
 
-		assertEquals(3,book.getSheets().size());
-		assertEquals(1,book.getVisibleSheets().size());
+		assertEquals(4,book.getSheets().size());
+		assertEquals(2,book.getVisibleSheets().size());
 		assertTrue(book.getVisibleSheets().contains(book.getSheet(0)));	
 	}	
 	
 	@Test
 	public void testDeleteSheet() throws Exception {
 		Workbook workbook = getTestWorkbook();
-		assertEquals(3, workbook.getSheets().size());
+		assertEquals(4, workbook.getSheets().size());
 		assertNotNull(workbook.getSheet("Sheet0"));
 		workbook.deleteSheet("Sheet0");
-		assertEquals(2, workbook.getSheets().size());
+		assertEquals(3, workbook.getSheets().size());
 		assertNull(workbook.getSheet("Sheet0"));			
 	}
 	

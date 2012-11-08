@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 
@@ -24,6 +26,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyManager;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidation;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidationDescriptor;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Term;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Workbook;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
@@ -34,6 +37,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
  * together with information about where that term came from.
  * 
  * @author Stuart Owen
+ * 
  * @see PopulatedValidatedCellDetails
  */
 public abstract class AbstractExporter implements Exporter {
@@ -66,7 +70,24 @@ public abstract class AbstractExporter implements Exporter {
 		return outStream.toString();
 	}
 	
-	public Collection<PopulatedValidatedCellDetails> getPopulatedValidatedCellDetails() {
+	protected List<Cell> getPoplulatedNonValidatedCells() {
+		List<Cell> nonValidatedCells = new ArrayList<Cell>();
+		Iterator<PopulatedValidatedCellDetails> iterator = getPopulatedValidatedCellDetails().iterator();
+		List<Cell> validatedCells = new ArrayList<Cell>();
+		while (iterator.hasNext()) {
+			validatedCells.add(iterator.next().getCell());
+		}
+		for (Sheet sheet : getWorkbook().getVisibleSheets()) {
+			for (Cell cell : sheet.getCellsWithContent()) {
+				if (!validatedCells.contains(cell)) {
+					nonValidatedCells.add(cell);
+				}
+			}
+		}
+		return nonValidatedCells;
+	}
+	
+	protected List<PopulatedValidatedCellDetails> getPopulatedValidatedCellDetails() {
 		ArrayList<PopulatedValidatedCellDetails> result = new ArrayList<PopulatedValidatedCellDetails>();
 		for (OntologyTermValidation validation : getValidations()) {
 			

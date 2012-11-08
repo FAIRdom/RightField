@@ -15,6 +15,7 @@ import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFComment;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFRichTextString;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Cell;
@@ -38,7 +39,7 @@ public class CellXSSFImpl implements Cell {
 
     public CellXSSFImpl(XSSFWorkbook workbook, XSSFCell theCell) {
         this.workbook = workbook;
-        this.theCell = theCell;
+        this.theCell = theCell;        
     }
 
     public Font getDefaultFont() {
@@ -256,11 +257,7 @@ public class CellXSSFImpl implements Cell {
 
     public boolean isEmpty() {
         return false;
-    }
-
-    public boolean isDataValidation() {
-        return false;
-    }
+    }    
     
     @Override
 	public int hashCode() {
@@ -281,6 +278,17 @@ public class CellXSSFImpl implements Cell {
     public XSSFCell getInnards() {
     	return theCell;
     }
+
+	@Override
+	public String getSheetName() {
+		return workbook.getSheetName(getSheetIndex());
+	}
+
+	@Override
+	public int getSheetIndex() {
+		XSSFSheet sheet = theCell.getSheet();
+		return workbook.getSheetIndex(sheet);
+	}
 
 	
 
