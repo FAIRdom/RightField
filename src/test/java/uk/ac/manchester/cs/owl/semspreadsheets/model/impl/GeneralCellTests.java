@@ -2,9 +2,12 @@ package uk.ac.manchester.cs.owl.semspreadsheets.model.impl;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
+import java.awt.Font;
 
 import org.junit.Test;
 
@@ -29,6 +32,22 @@ public abstract class GeneralCellTests {
 		else {			
 			assertEquals(((CellHSSFImpl)cellA).getInnards().getCellStyle(), ((CellHSSFImpl)cellB).getInnards().getCellStyle());
 		}
+	}
+	
+	@Test
+	public void getFont() throws Exception {
+		Workbook workbook = getTestWorkbook();
+		Cell cell = workbook.getSheet(0).addCellAt(1, 1);
+		Font font = cell.getFont();		
+		assertEquals(Font.PLAIN,font.getStyle());
+		//test it is cached
+		assertSame(font,cell.getFont());
+		
+		//try again with a new workbook, to test caching
+		workbook = getTestWorkbook();
+		cell = workbook.getSheet(0).addCellAt(1, 1);		
+		assertEquals(Font.PLAIN,cell.getFont().getStyle());
+		assertNotSame(font,cell.getFont());
 	}
 	
 	@Test
@@ -95,6 +114,15 @@ public abstract class GeneralCellTests {
 		Color col = cell.getForeground();
 		assertEquals(Color.RED,col);
 	}
+	
+	@Test
+	//a specific test related to a null error when opening this spreadsheet and reading the cell colour
+	public void testForegroundColour2() throws Exception {
+		Cell cell = getTestCell2();				
+		Color col = cell.getForeground();
+		assertEquals(Color.BLACK,col);
+	}
+	
 	@Test
 	public void testGetValue() throws Exception {
 		Cell cell = getTestCell();

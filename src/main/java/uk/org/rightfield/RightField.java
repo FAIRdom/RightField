@@ -12,6 +12,8 @@ import java.io.File;
 import java.util.prefs.Preferences;
 
 import javax.swing.JFrame;
+import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
 
 import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.IRI;
@@ -99,6 +101,7 @@ public class RightField {
     
     private void startUp() {
     	logger.debug("Starting Up UI");
+    	setupLookAndFeel();
     	WorkbookManager manager = new WorkbookManager();    	
         final WorkbookFrame frame = new WorkbookFrame(manager);
         Preferences preferences = Preferences.userNodeForPackage(RightField.class);
@@ -128,5 +131,29 @@ public class RightField {
 				}                
             }
         });
+    }
+    
+    private void setupLookAndFeel() {
+    	String os = System.getProperty("os.name");	
+    	logger.debug("OS detected as: " + os);
+    	if (os.toLowerCase().indexOf("win") > -1 ||	os.toLowerCase().indexOf("mac") > -1) {
+    		try {
+				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			} catch (Exception e) {
+				logger.error("Error setting look and feel",e);
+			} 
+    	}
+    	else {
+    		for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+    	        if ("Nimbus".equals(info.getName())) {
+    	            try {
+						UIManager.setLookAndFeel(info.getClassName());
+					} catch (Exception e) {
+						logger.error("Error setting look and feel",e);
+					} 
+    	            break;
+    	        }
+    	    }
+    	}
     }
 }

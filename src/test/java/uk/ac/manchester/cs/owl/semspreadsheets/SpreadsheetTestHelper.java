@@ -12,6 +12,7 @@ import java.util.UUID;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.hssf.impl.SheetHSSFImpl;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.hssf.impl.WorkbookHSSFImpl;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.xssf.impl.SheetXSSFImpl;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.xssf.impl.WorkbookXSSFImpl;
 
 /**
@@ -30,9 +31,14 @@ public class SpreadsheetTestHelper {
 		return new WorkbookXSSFImpl();
 	}
 	
-	public static SheetHSSFImpl getWorkbookSheet(URI resourceURI, int index) throws Exception {
+	public static SheetHSSFImpl getWorkbookSheetHSSF(URI resourceURI, int index) throws Exception {
 		WorkbookHSSFImpl book = openWorkbookHSSF(resourceURI);
 		return (SheetHSSFImpl)book.getSheet(index);
+	}
+	
+	public static SheetXSSFImpl getWorkbookSheetXSSF(URI resourceURI, int index) throws Exception {
+		WorkbookXSSFImpl book = openWorkbookXSSF(resourceURI);
+		return (SheetXSSFImpl)book.getSheet(index);
 	}
 	
 	public static WorkbookHSSFImpl openWorkbookHSSF(URI uri) throws Exception 

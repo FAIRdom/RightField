@@ -11,6 +11,7 @@ import java.util.List;
 
 import org.junit.Test;
 
+import uk.ac.manchester.cs.owl.semspreadsheets.model.PropertyValidationForumlaDefinition;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Cell;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
@@ -33,6 +34,35 @@ public abstract class GeneralSheetTests {
 		assertEquals(256,sheet.getMaxColumns());
 	}
 	
+	@Test
+	public void testClearDataValidationsOnBlankSheet() throws Exception {
+		Sheet sheet = getBlankSheet();
+		assertEquals(0,sheet.getValidations().size());
+		sheet.clearValidationData();
+		assertEquals(0,sheet.getValidations().size());
+		sheet.clearValidationData();
+	}
+	
+	@Test
+	public void testClearDataValidations() throws Exception {
+		Sheet sheet = getTestSheet();				
+		assertEquals(1,sheet.getValidations().size());
+		sheet.clearValidationData();		
+		assertEquals(0,sheet.getValidations().size());	
+		sheet.clearValidationData();
+		assertEquals(0,sheet.getValidations().size());
+	}
+	
+	@Test
+	public void testClearDataValidationsInSheetWithProperties() throws Exception {
+		Sheet sheet = getTestSheetWithProperties();
+		assertEquals(2,sheet.getValidations().size());
+		sheet.clearValidationData();
+		assertEquals(0,sheet.getValidations().size());
+		sheet.clearValidationData();
+		assertEquals(0,sheet.getValidations().size());
+	}
+
 	@Test
 	public void testCellsWithContent() throws Exception {
 		Workbook wb = getTestWorkbook();
@@ -84,7 +114,8 @@ public abstract class GeneralSheetTests {
 		Validation validation = sheet.getValidations().iterator().next();
 		assertTrue(validation.isLiteralValidation());
 		assertFalse(validation.isDataValidation());
-		assertEquals("propliteral^wksowlv0",validation.getFormula());
+		assertTrue("propliteral^wksowlv0",validation.getFormula().contains("propliteral^wksowlv0"));
+		assertEquals("wksowlv0",PropertyValidationForumlaDefinition.decode(validation.getFormula()));
 		assertEquals(new Range(sheet,2,3,3,4),validation.getRange());
 	}
 	
@@ -228,7 +259,8 @@ public abstract class GeneralSheetTests {
 	protected abstract Workbook getTestWorkbook() throws Exception;
 	protected abstract Sheet getTestSheet() throws Exception;
 	protected abstract Sheet getBlankSheet() throws Exception;
-	protected abstract Workbook getBlankWorkbook() throws Exception;	
+	protected abstract Workbook getBlankWorkbook() throws Exception;
+	protected abstract Sheet getTestSheetWithProperties() throws Exception;
 	
 
 }

@@ -19,6 +19,9 @@ import javax.swing.JTable;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
+import org.apache.log4j.Logger;
+import org.apache.xmlbeans.impl.values.XmlValueDisconnectedException;
+
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidation;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidationDescriptor;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
@@ -31,6 +34,8 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
  */
 @SuppressWarnings("serial")
 public class SheetTable extends JTable {
+	
+	private static Logger logger = Logger.getLogger(SheetTable.class);
     
     private Sheet sheet;
 
@@ -82,7 +87,12 @@ public class SheetTable extends JTable {
     private Color emptyValidationColour = Color.DARK_GRAY;
 
     protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
+    	try {
+    		super.paintComponent(g);
+    	}
+    	catch(XmlValueDisconnectedException e) {
+    		logger.warn("XmlValueDisconnectedException whilst repainting table");
+    	}
         Color oldColor = g.getColor();
         Graphics2D g2 = (Graphics2D) g;
         Stroke oldStroke = g2.getStroke();

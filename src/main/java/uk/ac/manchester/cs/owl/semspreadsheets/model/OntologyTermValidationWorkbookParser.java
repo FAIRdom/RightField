@@ -34,8 +34,14 @@ public class OntologyTermValidationWorkbookParser {
     public OntologyTermValidationWorkbookParser(WorkbookManager workbookManager) {
         this.workbookManager = workbookManager;
     }      
+    
+    public static void clearOriginalColours() {
+    	logger.debug("Clearing original colours");
+    	originalColours.clear();
+    }
 
     public Collection<OntologyTermValidation> readOntologyTermValidations() {
+    	logger.debug("Reading validations from workbook");
         Set<OntologyTermValidation> validations = new HashSet<OntologyTermValidation>();
         Workbook workbook = getWorkbookManager().getWorkbook();
         Map<String,Validation> literalValidations = collectLiteralValidations(workbook);
@@ -61,6 +67,7 @@ public class OntologyTermValidationWorkbookParser {
             	}                                                               
             }
         }
+        logger.debug("Finished reading validations, "+validations.size()+" found.");
         return validations;
     }
     
@@ -79,10 +86,12 @@ public class OntologyTermValidationWorkbookParser {
     }
 
     public void clearOntologyTermValidations() {
+    	logger.debug("Clearing validations from workbook");
         Workbook workbook = getWorkbookManager().getWorkbook();
         Collection<Sheet> validationSheets = new ArrayList<Sheet>();
         restoreCellBackgroundColours();
         for (Sheet sheet : workbook.getSheets()) {
+        	logger.debug("Clearing validations for sheet:"+sheet.getName());
             OntologyTermValidationSheetParser parser = new OntologyTermValidationSheetParser(getWorkbookManager(), sheet);
             if (parser.isValidationSheet()) {
                 validationSheets.add(sheet);
@@ -91,13 +100,20 @@ public class OntologyTermValidationWorkbookParser {
                     workbook.removeName(namedRange.getName());
                 }
             }
+            logger.debug("Finished clearing validations for sheet:"+sheet.getName());
         }
-        for (Sheet sheet2 : workbook.getSheets()) {
-            sheet2.clearValidationData();
+        for (Sheet sheet : workbook.getSheets()) {
+        	logger.debug("Clearing validation data for sheet "+sheet.getName());
+            sheet.clearValidationData();
+            logger.debug("Finished clearing validation data for sheet "+sheet.getName());
         }
         for (Sheet sheet : validationSheets) {
+        	String name = sheet.getName();
+        	logger.debug("Deleting validation sheet "+name);
             workbook.deleteSheet(sheet.getName());
+            logger.debug("Finished deleting validation sheet "+name);
         }
+        logger.debug("Finished clearing validations from workbook");
     }
 
     public void writeOntologyTermValidations(Collection<OntologyTermValidation> ontologyTermValidations) {
@@ -128,7 +144,7 @@ public class OntologyTermValidationWorkbookParser {
     }
     
     private void restoreCellBackgroundColours() {
-    	for (Cell cell : originalColours.keySet()) {
+    	for (Cell cell : originalColours.keySet()) {    		
     		cell.setBackgroundFill(originalColours.get(cell));
     	}
     	originalColours.clear();

@@ -30,10 +30,10 @@ public class InvalidWorkbookFormatException extends Exception {
 
 	@Override
 	public String getMessage() {
-		return "The format of the file " + getFilename() + " is not supported by RightField.\nCurrently only Microsoft Excel 97-2003 (XLS) documents are supported";			
+		return "The format of the file " + getFilename() + " is not supported by RightField.\nCurrently Microsoft Excel 97-2003 (XLS) and Excel 2007+ (XLSX) are supported";			
 	}
 	
-	protected String getFilename() {
+	private String getFilename() {
 		if (getFileURI().getScheme().equals("file")) {
 			return getFileURI().getPath();			
 		} else {

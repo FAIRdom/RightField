@@ -47,8 +47,10 @@ public class OntologyTermValidationManager {
     }
 
     protected void readValidationFromWorkbook() {
-        OntologyTermValidationWorkbookParser parser = new OntologyTermValidationWorkbookParser(getWorkbookManager());        
-        ontologyTermValidations.addAll(parser.readOntologyTermValidations());        
+        OntologyTermValidationWorkbookParser parser = new OntologyTermValidationWorkbookParser(getWorkbookManager());
+        clearValidations();  
+        Collection<OntologyTermValidation> validations = parser.readOntologyTermValidations();        
+        ontologyTermValidations.addAll(validations);        
         parser.clearOntologyTermValidations();
         fireValidationsChanged();
     }
@@ -63,10 +65,12 @@ public class OntologyTermValidationManager {
     }
 
     public void clearValidations() {
+    	logger.debug("About to clear "+ontologyTermValidations.size()+" validations");
         if (!ontologyTermValidations.isEmpty()) {
             ontologyTermValidations.clear();
             fireValidationsChanged();
         }
+        logger.debug("Validations cleared");
     }
 
     public void clearValidation(Range range) {
@@ -92,7 +96,9 @@ public class OntologyTermValidationManager {
     }
 
     public void setValidation(Range range, ValidationType type, IRI entityIRI, OWLPropertyItem property) {
-    	logger.debug("Setting validation at "+range.toFixedAddress()+" type:"+type.toString()+", IRI:"+entityIRI+", property:"+property);
+    	if (logger.isDebugEnabled()) {
+    		logger.debug("Setting validation at "+range.toFixedAddress()+" type:"+type.toString()+", IRI:"+entityIRI+", property:"+property);
+    	}
     	
         Collection<OntologyTermValidation> intersectingValidations = getIntersectingValidations(range);
         ontologyTermValidations.removeAll(intersectingValidations);
@@ -174,6 +180,7 @@ public class OntologyTermValidationManager {
     }
 
     protected void fireValidationsChanged() {
+    	logger.debug("firing validations changed to "+listeners.size()+" listeners");
         for(OntologyTermValidationListener listener : new ArrayList<OntologyTermValidationListener>(listeners)) {
             try {
                 listener.validationsChanged();

@@ -17,7 +17,7 @@ public class RangeTest {
 
 	@Before
 	public void setup() throws Exception {
-		sheet = SpreadsheetTestHelper.getWorkbookSheet(DocumentsCatalogue.simpleWorkbookURI(),0);
+		sheet = SpreadsheetTestHelper.getWorkbookSheetHSSF(DocumentsCatalogue.simpleWorkbookURI(),0);
 	}
 
 	@Test

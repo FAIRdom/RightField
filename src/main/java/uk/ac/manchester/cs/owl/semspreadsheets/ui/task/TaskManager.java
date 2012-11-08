@@ -29,7 +29,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookFrame;
  */
 public class TaskManager implements TaskListener {
 
-    public static final long TIME_UNTIL_PROGRESS = 1;
+    public static final long TIME_UNTIL_PROGRESS = 500;
     
     private static final Logger logger = Logger.getLogger(TaskManager.class);
 
@@ -82,7 +82,6 @@ public class TaskManager implements TaskListener {
                     else {
                         throw (E) e.getCause();
                     }
-
                 }
                 catch (TimeoutException e) {
                     // Time to show the progress dialog.  Since this is the event dispatch thread,

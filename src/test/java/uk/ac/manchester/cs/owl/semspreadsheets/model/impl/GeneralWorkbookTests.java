@@ -10,13 +10,13 @@ import java.io.File;
 
 import org.junit.Test;
 
+import uk.ac.manchester.cs.owl.semspreadsheets.DummyWorkbookChangeListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.SpreadsheetTestHelper;
 import uk.ac.manchester.cs.owl.semspreadsheets.listeners.WorkbookChangeListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Cell;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Workbook;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookFactory;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.hssf.impl.DummyWorkbookChangeListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.hssf.impl.WorkbookHSSFImpl;
 
 public abstract class GeneralWorkbookTests {
@@ -156,7 +156,8 @@ public abstract class GeneralWorkbookTests {
 		assertFalse(f.exists());
 		wb.saveAs(f.toURI());
 		assertTrue(f.exists());
-		assertNotNull(WorkbookFactory.createWorkbook(f.toURI()));
+		wb = WorkbookFactory.createWorkbook(f.toURI());
+		assertNotNull(wb);
 		
 		//this is to test a weird problem with the sheet column widths becoming corrupt after a save
 		sheet = wb.getSheet(0);
@@ -164,8 +165,7 @@ public abstract class GeneralWorkbookTests {
 		Cell cell = sheet.getCellAt(3, 11);
 		assertEquals("Experimental Design",cell.getValue());
 		
-	}
-	
+	}			
 	
 	@Test
 	public void testColumnWidthAfterSave() throws Exception {
@@ -199,7 +199,7 @@ public abstract class GeneralWorkbookTests {
 			expectedWidth = 66;
 		}
 		else {
-			expectedWidth = 60;
+			expectedWidth = 48;
 		}
 		assertEquals(expectedWidth,book.getSheet(0).getColumnWidth(0));
 	}

@@ -54,11 +54,6 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.change.WorkbookChangeVisito
  */
 
 /**
- * Author: Matthew Horridge, Stuart Owen<br>
- * The University of Manchester<br>
- * Information Management Group<br>
- * Date: 20-Sep-2009
- * 
  * @author Stuart Owen
  * @author Matthew Horridge
  */
@@ -81,7 +76,23 @@ public class WorkbookXSSFImpl implements MutableWorkbook, WorkbookChangeVisitor 
     }
 
     public WorkbookXSSFImpl(URI uri) throws IOException {
-        InputStream inputStream = uri.toURL().openStream();
+    	readWorkbook(uri);
+    }
+    
+    public void saveAs(URI uri) throws IOException {
+        File file = new File(uri);
+        BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(file));        
+        workbook.write(stream);        
+        stream.close();
+        
+        //this is a work-around to avoid https://issues.apache.org/bugzilla/show_bug.cgi?id=52233
+        for (int i=0; i<workbook.getNumberOfSheets();i++) {
+        	workbook.getSheetAt(i).getColumnHelper().cleanColumns();
+        }                
+    } 
+    
+    private void readWorkbook(URI uri) throws IOException {
+    	InputStream inputStream = uri.toURL().openStream();
         workbook = new XSSFWorkbook(new BufferedInputStream(inputStream));
     }
 
@@ -114,7 +125,7 @@ public class WorkbookXSSFImpl implements MutableWorkbook, WorkbookChangeVisitor 
         return result;
     }
 
-    public void addChangeListener(WorkbookChangeListener changeListener) {
+    public void addChangeListener(WorkbookChangeListener changeListener) {    	
         changeListeners.add(changeListener);
     }
 
@@ -127,16 +138,22 @@ public class WorkbookXSSFImpl implements MutableWorkbook, WorkbookChangeVisitor 
     }
 
     public void deleteSheet(String name) {
+    	logger.debug("Deleting sheet "+name);
         int index = workbook.getSheetIndex(name);
         if (index != -1) {
             workbook.removeSheetAt(index);
+            logger.debug("Sheet removed with index "+index);
         }
-        for(WorkbookChangeListener listener : new ArrayList<WorkbookChangeListener>(changeListeners)) {
+        else {
+        	logger.debug("Sheet not found");
+        }
+        
+        for(WorkbookChangeListener listener : new ArrayList<WorkbookChangeListener>(changeListeners)) {        	
             try {
                 listener.sheetRemoved();
             }
             catch (Exception e) {
-            	logger.error("Error removing a sheet",e);
+            	logger.error("Error firing listener for removing a sheet",e);
             }
         }
     }
@@ -227,19 +244,7 @@ public class WorkbookXSSFImpl implements MutableWorkbook, WorkbookChangeVisitor 
         else {
             return new SheetXSSFImpl(this, xssfSheet);
         }
-    }
-
-    public void saveAs(URI uri) throws IOException {
-        File file = new File(uri);
-        BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(file));        
-        workbook.write(stream);        
-        stream.close();
-        
-        //this is a work-around to avoid https://issues.apache.org/bugzilla/show_bug.cgi?id=52233
-        for (int i=0; i<workbook.getNumberOfSheets();i++) {
-        	workbook.getSheetAt(i).getColumnHelper().cleanColumns();
-        }
-    }        
+    }          
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -278,8 +283,8 @@ public class WorkbookXSSFImpl implements MutableWorkbook, WorkbookChangeVisitor 
 	}
 
 	@Override
-	public void clearChangeListeners() {
-		changeListeners.clear();
+	public void clearChangeListeners() {		
+		changeListeners.clear();		
 	}
 
 }

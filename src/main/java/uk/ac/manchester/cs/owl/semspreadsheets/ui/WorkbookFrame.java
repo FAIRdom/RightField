@@ -14,7 +14,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FilenameFilter;
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -44,7 +43,6 @@ import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.listeners.AbstractWorkbookManagerListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.listeners.OntologyManagerListener;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.InvalidWorkbookFormatException;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.KnownOntologies;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
@@ -74,7 +72,6 @@ import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.SheetCellCutAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.SheetCellPasteAction;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.task.FetchBioportalOntologyListTask;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.task.LoadOntologyFromURITask;
-import uk.ac.manchester.cs.owl.semspreadsheets.ui.task.LoadOntologyTask;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.task.LoadRepositoryItemTask;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.task.TaskManager;
 
@@ -86,10 +83,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.ui.task.TaskManager;
 public class WorkbookFrame extends JFrame {
 	
 	private static final long serialVersionUID = 8991252467294969145L; 
-	
-	private static final String[] WORKBOOK_EXT = new String[] { "xls" };
-	private static final String[] ONTOLOGY_EXT = new String[] { "obo", "owl",
-			"rdf", "rrf" };
+		
 	private static final String [] APPLICATION_LOGO_FILENAMES = {"/rightfield-logo.png","/rightfield-logo-16x16.png"};
 
 	private static final Logger logger = Logger.getLogger(WorkbookFrame.class);			
@@ -102,8 +96,11 @@ public class WorkbookFrame extends JFrame {
 
 	private CloseSelectedOntologyMenuItem removeOntologyMenuItem;
 
+	private FileHandling fileHandling;
+
 	public WorkbookFrame(WorkbookManager manager) {
 		this.workbookManager = manager;
+		fileHandling = new FileHandling(this, manager, taskManager);
 		setTitle("RightField");
 		List<Image> iconImages = createIconImages();
 		setIconImages(iconImages);		
@@ -189,6 +186,9 @@ public class WorkbookFrame extends JFrame {
 		if (ret==0) {
 			openWorkbook();
 		}
+		else {
+			createNewWorkbook();
+		}
 	}
 
 	private void setupMenuItems() {
@@ -246,9 +246,28 @@ public class WorkbookFrame extends JFrame {
 	}
 	
 	public void closeWorkbook() {
-		if (checkSavedState("Close the workbook")) {
-			getWorkbookManager().createNewWorkbook();
+		if (checkSavedState("Close the spreadsheet")) {
+			createNewWorkbook();
 		}
+	}
+	
+	private void createNewWorkbook() {
+		int index=-1;
+		WorkbookFormat[] formats = WorkbookFormat.getFormats();
+		while(index<0) {
+			String question = "Please select the Excel format of the new spreadsheet";
+			
+			List<String>options = new ArrayList<String>();
+			for (WorkbookFormat format : formats) {
+				options.add(format.toString());
+			}
+			index = JOptionPane
+					.showOptionDialog(this, question, "Select Excel format",JOptionPane.YES_NO_OPTION,
+							JOptionPane.QUESTION_MESSAGE, null,
+							options.toArray(), null);
+		}
+						
+		getWorkbookManager().createNewWorkbook(formats[index]);		
 	}
 
 	public TaskManager getTaskManager() {
@@ -339,13 +358,7 @@ public class WorkbookFrame extends JFrame {
 	}
 
 	public void loadOntology() throws OWLOntologyCreationException {
-
-		File file = browseForFile("Load ontology", FileDialog.LOAD, "Ontology",
-				ONTOLOGY_EXT);
-		if (file == null) {
-			return;
-		}
-		taskManager.runTask(new LoadOntologyTask(file));					
+		fileHandling.loadOntology();
 	}
 	
 	public void loadOntologyFromURL() throws OWLOntologyCreationException {
@@ -381,43 +394,18 @@ public class WorkbookFrame extends JFrame {
 	}
 
 	public void saveWorkbook() throws Exception {
-		URI workbookURI = workbookManager.getWorkbookURI();
-		if (workbookURI == null) {
-			saveWorkbookAs();
-		} else {
-			workbookManager.saveWorkbook(workbookURI);
-		}
+		fileHandling.saveWorkbook();
 	}
 
 	public void openWorkbook()  {
 		if (checkSavedState("Open a new workbook")) {
-			File file = browseForFile("Open spreadsheet", FileDialog.LOAD, "Excel spreadsheet",
-					WORKBOOK_EXT);
-			if (file != null) {
-				try {
-					workbookManager.loadWorkbook(file);
-				} catch (IOException e) {
-					ErrorHandler.getErrorHandler().handleError(e);
-				} catch (InvalidWorkbookFormatException e) {
-					ErrorHandler.getErrorHandler().handleError(e);
-				}
-			}
+			fileHandling.openWorkbook();
 		}		
 	}
 
 	public void saveWorkbookAs() throws Exception {
-		File file = browseForFile("Save spreadsheet as", FileDialog.SAVE,
-				"Excel spreadsheet", WORKBOOK_EXT);		
-		if (file != null) {
-			file = checkForDefaultExtension(file);
-			workbookManager.saveWorkbook(file.toURI());
-		}
-	}
-	
-	
-	private File checkForDefaultExtension(File file) {
-		return checkForDefaultExtension(file,".xls");
-	}
+		fileHandling.saveWorkbookAs();
+	}		
 
 	public File checkForDefaultExtension(File file,String defaultExtension) {
 		String filename = file.getName();

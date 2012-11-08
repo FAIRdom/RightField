@@ -26,8 +26,10 @@ import uk.ac.manchester.cs.owl.semspreadsheets.listeners.WorkbookChangeListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.listeners.WorkbookManagerListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.change.SetCellValue;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.change.WorkbookChange;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.xssf.impl.WorkbookXSSFImpl;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.CellSelectionModel;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.ErrorHandler;
+import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookFormat;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookState;
 
 /** 
@@ -104,8 +106,10 @@ public class WorkbookManager {
         getEntitySelectionModel().setSelectedEntity(selEnt);
     }
 
-    private void fireWorkbookCreated() {       
-        for (WorkbookManagerListener listener : getCopyOfListeners()) {
+    private void fireWorkbookCreated() {  
+    	List<WorkbookManagerListener> listeners = getCopyOfListeners();
+    	logger.debug("firing workbookCreated to "+listeners.size()+" listeners");
+        for (WorkbookManagerListener listener : listeners) {
             try {
                 listener.workbookCreated();
             }
@@ -115,20 +119,26 @@ public class WorkbookManager {
         }
     }
     
-    private void fireWorkbookSaved() {    	
-        for (WorkbookManagerListener listener : getCopyOfListeners()) {
+    private void fireWorkbookSaved() { 
+    	List<WorkbookManagerListener> listeners = getCopyOfListeners();
+    	logger.debug("firing workbookSaved to "+listeners.size()+" listeners");
+        for (WorkbookManagerListener listener : listeners) {
             listener.workbookSaved();            
         }
     }
     
     private void fireValidationAppliedOrCancelled() {
-    	for (WorkbookManagerListener listener : getCopyOfListeners()) {            
+    	List<WorkbookManagerListener> listeners = getCopyOfListeners();
+    	logger.debug("firing validationAppliedOrCancelled to "+listeners.size()+" listeners");
+    	for (WorkbookManagerListener listener : listeners) {            
                 listener.validationAppliedOrCancelled();            
         }
     }
 
     private void fireWorkbookLoaded() {        
-        for (WorkbookManagerListener listener : getCopyOfListeners()) {
+    	List<WorkbookManagerListener> listeners = getCopyOfListeners();
+    	logger.debug("firing workbookLoaded to "+listeners.size()+" listeners");
+        for (WorkbookManagerListener listener : listeners) {
             try {
                 listener.workbookLoaded();
             }
@@ -145,19 +155,29 @@ public class WorkbookManager {
     public Workbook getWorkbook() {
         return workbook;
     }
-
+    
     public Workbook createNewWorkbook() {
+    	return createNewWorkbook(WorkbookFormat.EXCEL97);
+    }
+
+    public Workbook createNewWorkbook(WorkbookFormat format) {
     	List<WorkbookChangeListener> existingListeners = workbook.getAllChangeListeners();
     	workbook.clearChangeListeners();
     	getOntologyManager().clearOntologyTermValidations();
-        workbook = WorkbookFactory.createWorkbook();  
-        for (WorkbookChangeListener l : existingListeners) {
-        	workbook.addChangeListener(l);
-        }
-        workbookURI=null;
+    	OntologyTermValidationWorkbookParser.clearOriginalColours();
+    	try {
+    		workbook = WorkbookFactory.createWorkbook(format);  
+    		for (WorkbookChangeListener l : existingListeners) {
+    			workbook.addChangeListener(l);
+    		}
+    		workbookURI=null;
         
-        fireWorkbookCreated();
-        getWorkbookState().changesSaved();
+    		fireWorkbookCreated();
+    	}
+    	catch(Exception e) {
+    		ErrorHandler.getErrorHandler().handleError(e);
+    	}
+    	getWorkbookState().changesSaved();
         return workbook;
     }
 
@@ -166,7 +186,9 @@ public class WorkbookManager {
         	//need to preserve the listeners on the workbook
         	List<WorkbookChangeListener> existingListeners = workbook.getAllChangeListeners();
         	workbook.clearChangeListeners(); //to free it and allow it to be garbage collected
+        	OntologyTermValidationWorkbookParser.clearOriginalColours();
             workbook = WorkbookFactory.createWorkbook(uri);
+            logger.debug("Adding Workbook "+existingListeners.size()+" change listeners to new workbook instance");
             for (WorkbookChangeListener l : existingListeners) {
             	workbook.addChangeListener(l);
             }
@@ -174,9 +196,11 @@ public class WorkbookManager {
             workbookURI = uri;
             
             // Extract validation
+            logger.debug("About to read validations from workbook");
             getOntologyManager().getOntologyTermValidationManager().readValidationFromWorkbook();
-            fireWorkbookLoaded();
-            getWorkbookState().changesSaved();
+            logger.debug(getOntologyManager().getOntologyTermValidations().size()+" validations after read");            
+            fireWorkbookLoaded();            
+            getWorkbookState().changesSaved();            
             return workbook;
         }
         catch (IOException e) {
@@ -195,14 +219,24 @@ public class WorkbookManager {
     public void saveWorkbook(URI uri) throws Exception {
         // Insert validation    	
     	getOntologyManager().getOntologyTermValidationManager().writeValidationToWorkbook();    	
-        workbook.saveAs(uri);        
-        OntologyTermValidationWorkbookParser workbookParser = new OntologyTermValidationWorkbookParser(this);
-        workbookParser.clearOntologyTermValidations();
-        if (workbookURI == null || !uri.equals(workbookURI)) {            
-            workbookURI = uri;
+        workbook.saveAs(uri); 
+        logger.debug(getOntologyManager().getOntologyTermValidations().size()+" validation recorded");
+        
+        //to get round a bug in POI - https://issues.apache.org/bugzilla/show_bug.cgi?id=46662
+        //the internal workbook state is reloaded after a save, which mean the validations need refreshing according to the workbook
+        if (workbook instanceof WorkbookXSSFImpl) {
+        	logger.debug("XSSF workbook, reloaded so re-reading validation");        	        	      
+        	loadWorkbook(uri);        	        
         }
+        else {
+        	OntologyTermValidationWorkbookParser workbookParser = new OntologyTermValidationWorkbookParser(this);
+           	workbookParser.clearOntologyTermValidations();
+           	if (workbookURI == null || !uri.equals(workbookURI)) {            
+                workbookURI = uri;
+            }            
+        }    
         fireWorkbookSaved();
-        getWorkbookState().changesSaved();        
+        getWorkbookState().changesSaved(); 
     }
 
     public void previewValidation() {
@@ -351,5 +385,14 @@ public class WorkbookManager {
 			sheet.setName(newName);
 		}
 	}	
+	
+	public String getWorkbookFileExtension() {
+		if (getWorkbook() instanceof WorkbookXSSFImpl) {
+			return "xlsx";
+		}		
+		else {
+			return "xls";
+		}
+	}
 
 }
