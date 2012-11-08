@@ -30,6 +30,18 @@ public abstract class GeneralCellTests {
 			assertEquals(((CellHSSFImpl)cellA).getInnards().getCellStyle(), ((CellHSSFImpl)cellB).getInnards().getCellStyle());
 		}
 	}
+	
+	@Test
+	public void testGetSheetName() throws Exception {
+		Cell cell = getTestCell2();
+		assertEquals("Sheet1",cell.getSheetName());
+	}
+	
+	@Test
+	public void testGetSheetIndex() throws Exception {
+		Cell cell = getTestCell2();
+		assertEquals(3,cell.getSheetIndex());
+	}
 
 	@Test
 	public void testEquals() throws Exception {
@@ -97,6 +109,7 @@ public abstract class GeneralCellTests {
 	}
 	
 	protected abstract Cell getTestCell() throws Exception;
+	protected abstract Cell getTestCell2() throws Exception;
 	protected abstract Workbook getTestWorkbook() throws Exception;
 
 }

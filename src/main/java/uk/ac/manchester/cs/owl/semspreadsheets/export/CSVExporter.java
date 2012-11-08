@@ -14,6 +14,7 @@ import java.io.PrintWriter;
 import java.net.URI;
 import java.util.Iterator;
 
+import uk.ac.manchester.cs.owl.semspreadsheets.model.Cell;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.InvalidWorkbookFormatException;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 /**
@@ -41,44 +42,76 @@ public class CSVExporter extends AbstractExporter {
 		PrintWriter writer = new PrintWriter(outStream);
 		writeHeader(writer);				
 		Iterator<PopulatedValidatedCellDetails> iterator = getPopulatedValidatedCellDetails().iterator();
+		Iterator<Cell> cellIterator = getPoplulatedNonValidatedCells().iterator();
+		
 		while(iterator.hasNext()) {		
 			PopulatedValidatedCellDetails cellDetails = iterator.next();
 			String csv = cellToCSV(cellDetails);
 			writer.write(csv);
-			if (iterator.hasNext()) {
+			if (cellIterator.hasNext() || iterator.hasNext()) {
 				writer.write("\n");
 			}			
 		}
+		
+		while(cellIterator.hasNext()) {
+			Cell cell = cellIterator.next();
+			String csv = cellToCSV(cell);
+			writer.write(csv);
+			if (cellIterator.hasNext()) {
+				writer.write("\n");
+			}			
+		}
+		
 		writer.flush();
-	}
+	}		
 	
 	private void writeHeader(PrintWriter writer) {
 		writer.write("text,col,row,sheet,term uri,type,entity uri,property uri,ontology uri,ontology source\n");
+	}
+	
+	private String cellToCSV(Cell cell) {
+		String notDefinedString = notDefinedString();
+		String csv = "\""+handleQuotes(cell.getValue())+"\",";
+		csv += cell.getColumn()+",";
+		csv += cell.getRow()+",";		
+		csv += "\""+handleQuotes(cell.getSheetName())+"\",";
+		csv += notDefinedString+",Text,"+notDefinedString+","+notDefinedString+","+notDefinedString+","+notDefinedString;
+		
+		return csv;
 	}
 	
 	private String cellToCSV(PopulatedValidatedCellDetails cellDetails) {
 		String csv = "\"" + cellDetails.getTextValue() + "\",";
 		csv += cellDetails.getCell().getColumn()+",";
 		csv += cellDetails.getCell().getRow()+",";		
-		csv += "\""+cellDetails.getSheet().getName()+"\",";
+		csv += "\""+handleQuotes(cellDetails.getSheet().getName())+"\",";
 		
-		String termStr = "None";
+		String termStr = notDefinedString();
 		if (cellDetails.getTerm()!=null) {
-			termStr = cellDetails.getTerm().getIRI().toString();
+			termStr = handleQuotes(cellDetails.getTerm().getIRI().toString());
 		}
 		csv += "\""+termStr+"\",";
 		
-		csv += cellDetails.getValidation().getValidationDescriptor().getType().toString()+",";
-		csv += "\""+cellDetails.getEntityIRI().toString()+"\",";
-		String propertyStr = "None";
+		csv += handleQuotes(cellDetails.getValidation().getValidationDescriptor().getType().toString())+",";
+		csv += "\""+handleQuotes(cellDetails.getEntityIRI().toString())+"\",";
+		String propertyStr = notDefinedString();
 		if (cellDetails.getOWLPropertyItem()!=null) {
 			propertyStr=cellDetails.getOWLPropertyItem().getIRI().toString();
 		}
-		csv += "\"" + propertyStr + "\",";
-		csv += "\""+cellDetails.getOntologyIRIs().iterator().next().toString()+"\",";
-		csv += "\""+cellDetails.getPhysicalIRIs().iterator().next().toString()+"\"";
+		csv += "\"" + handleQuotes(propertyStr) + "\",";
+		csv += "\""+handleQuotes(cellDetails.getOntologyIRIs().iterator().next().toString())+"\",";
+		csv += "\""+handleQuotes(cellDetails.getPhysicalIRIs().iterator().next().toString())+"\"";
 		
 		return csv;		
+	}
+	
+	//quotes should be doubled
+	private String handleQuotes(String original) {
+		return original.replaceAll("\"","\"\"");
+	}
+	
+	protected String notDefinedString() {
+		return "None";
 	}
 
 }

@@ -46,8 +46,10 @@ public interface Cell {
     void setBackgroundFill(Color colour);    
 
     String getValidationListName();
+    
+    String getSheetName();
+    
+    int getSheetIndex();
 
-    boolean isEmpty();
-
-    boolean isDataValidation();
+    boolean isEmpty();    
 }
