@@ -54,11 +54,21 @@ public abstract class GeneralCSVExporterTests {
 		assertEquals(expectedCSV3(),csv);
 	}
 	
+	@Test
+	public void testQuotesCommasAndSpaces() throws Exception {
+		URI uri = bookWithQuotesAndCommasURI();
+		Exporter exporter = new CSVExporter(uri);
+		String csv = exporter.export();		
+		assertEquals(expectedCSV4(),csv);
+	}
+	
 	protected abstract URI twoOntologiesWorkbookURI() throws Exception;
 	
 	protected abstract URI bookWithPropertiesURI() throws Exception;
 	
 	protected abstract URI bookWithLiteralsURI() throws Exception;
+	
+	protected abstract URI bookWithQuotesAndCommasURI() throws Exception;
 	
 	private String expectedCSV() {
 		String expected = "text,col,row,sheet,term uri,type,entity uri,property uri,ontology uri,ontology source\n";
@@ -83,6 +93,15 @@ public abstract class GeneralCSVExporterTests {
 		expected += "\"hello\",2,1,\"Sheet0\",\"None\",Free text,\"http://www.w3.org/2002/07/owl#Nothing\",\"http://www.mygrid.org.uk/ontology/JERMOntology#ECNumber\",\"http://www.mygrid.org.uk/ontology/JERMOntology\",\"http://rest.bioontology.org/bioportal/virtual/download/1488\"\n";
 		expected += "\"world\",3,4,\"Sheet0\",\"None\",Free text,\"http://www.w3.org/2002/07/owl#Nothing\",\"http://www.mygrid.org.uk/ontology/JERMOntology#ECNumber\",\"http://www.mygrid.org.uk/ontology/JERMOntology\",\"http://rest.bioontology.org/bioportal/virtual/download/1488\"";
 		
+		return expected;
+	}
+	
+	private String expectedCSV4() {
+		String expected = "text,col,row,sheet,term uri,type,entity uri,property uri,ontology uri,ontology source\n";
+		expected+="\"ScaRAB\",0,0,\"Sheet0\",\"http://www.mygrid.org.uk/ontology/JERMOntology#ScaRAB\",Instances,\"http://www.mygrid.org.uk/ontology/JERMOntology#Project\",\"http://www.mygrid.org.uk/ontology/JERMOntology#isAssociatedWith\",\"http://www.mygrid.org.uk/ontology/JERMOntology\",\"http://rest.bioontology.org/bioportal/virtual/download/1488\"\n";
+		expected+="\" m \",3,2,\"Sheet0\",None,Text,None,None,None,None\n";
+		expected+="\"a\"\"b\",1,3,\"Sheet0\",None,Text,None,None,None,None\n";
+		expected+="\"a,b,c\",2,8,\"Sheet0\",None,Text,None,None,None,None";
 		return expected;
 	}
 
