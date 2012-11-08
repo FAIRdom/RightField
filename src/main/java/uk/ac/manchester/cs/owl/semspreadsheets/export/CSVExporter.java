@@ -66,7 +66,7 @@ public class CSVExporter extends AbstractExporter {
 	}		
 	
 	private void writeHeader(PrintWriter writer) {
-		writer.write("text,col,row,sheet,term uri,type,entity uri,property uri,ontology uri,ontology source\n");
+		writer.write("text,col,row,sheet,type,term uri,entity uri,property uri,ontology uri,ontology source\n");
 	}
 	
 	private String cellToCSV(Cell cell) {
@@ -75,7 +75,7 @@ public class CSVExporter extends AbstractExporter {
 		csv += cell.getColumn()+",";
 		csv += cell.getRow()+",";		
 		csv += "\""+handleQuotes(cell.getSheetName())+"\",";
-		csv += notDefinedString+",Text,"+notDefinedString+","+notDefinedString+","+notDefinedString+","+notDefinedString;
+		csv += "Text,"+notDefinedString+","+notDefinedString+","+notDefinedString+","+notDefinedString+","+notDefinedString;
 		
 		return csv;
 	}
@@ -86,13 +86,15 @@ public class CSVExporter extends AbstractExporter {
 		csv += cellDetails.getCell().getRow()+",";		
 		csv += "\""+handleQuotes(cellDetails.getSheet().getName())+"\",";
 		
+		csv += handleQuotes(cellDetails.getValidation().getValidationDescriptor().getType().toString())+",";
+		
 		String termStr = notDefinedString();
 		if (cellDetails.getTerm()!=null) {
 			termStr = handleQuotes(cellDetails.getTerm().getIRI().toString());
 		}
 		csv += "\""+termStr+"\",";
 		
-		csv += handleQuotes(cellDetails.getValidation().getValidationDescriptor().getType().toString())+",";
+		
 		csv += "\""+handleQuotes(cellDetails.getEntityIRI().toString())+"\",";
 		String propertyStr = notDefinedString();
 		if (cellDetails.getOWLPropertyItem()!=null) {
