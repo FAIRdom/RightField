@@ -29,7 +29,19 @@ public abstract class GeneralCellTests {
 		else {			
 			assertEquals(((CellHSSFImpl)cellA).getInnards().getCellStyle(), ((CellHSSFImpl)cellB).getInnards().getCellStyle());
 		}
-	}		
+	}
+	
+	@Test
+	public void testGetSheetName() throws Exception {
+		Cell cell = getTestCell2();
+		assertEquals("Sheet1",cell.getSheetName());
+	}
+	
+	@Test
+	public void testGetSheetIndex() throws Exception {
+		Cell cell = getTestCell2();
+		assertEquals(3,cell.getSheetIndex());
+	}
 
 	@Test
 	public void testEquals() throws Exception {

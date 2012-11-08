@@ -7,6 +7,7 @@
 package uk.ac.manchester.cs.owl.semspreadsheets.model;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * @author Matthew Horridge
@@ -43,6 +44,8 @@ public interface Sheet {
     Cell addCellAt(int col, int row);
 
     void clearCellAt(int col, int row);
+    
+    List<Cell> getCellsWithContent();
 
     /**
      * Creates a validation with a named range, to created a restricted drop down list

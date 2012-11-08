@@ -49,11 +49,31 @@ public class SheetHSSFImpl implements Sheet {
     public SheetHSSFImpl(WorkbookHSSFImpl workbook, HSSFSheet hssfSheet) {
         this.workbook = workbook;
         this.hssfWorkbook = workbook.getHSSFWorkbook();
-        this.sheet = hssfSheet;
+        this.sheet = hssfSheet;          
     }
 
     public Workbook getWorkbook() {
         return workbook;
+    }
+    
+    public List<Cell> getCellsWithContent() {
+    	List<Cell> cells = new ArrayList<Cell>();
+    	int firstRow = sheet.getFirstRowNum();
+    	int lastRow = sheet.getLastRowNum();
+    	for (int rowIndex = firstRow ; rowIndex <= lastRow; rowIndex++) {
+    		HSSFRow row = sheet.getRow(rowIndex);
+    		if (row!=null) {
+    			int firstCell = row.getFirstCellNum();
+        		int lastCell = row.getLastCellNum();
+        		for (int cellIndex = firstCell ; cellIndex <= lastCell;cellIndex++) {
+        			HSSFCell cell = row.getCell(cellIndex);
+        			if (cell!=null && !cell.getStringCellValue().isEmpty()) {
+        				cells.add(new CellHSSFImpl(hssfWorkbook, cell));
+        			}
+        		} 
+    		}    		    		
+    	}
+    	return cells;
     }
     
     public int getIndex() {

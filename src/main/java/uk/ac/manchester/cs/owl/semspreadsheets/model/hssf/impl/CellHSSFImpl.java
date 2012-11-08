@@ -20,6 +20,7 @@ import org.apache.poi.hssf.usermodel.HSSFComment;
 import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFPalette;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 
@@ -300,11 +301,7 @@ public class CellHSSFImpl implements Cell {
 
     public boolean isEmpty() {
         return false;
-    }
-
-    public boolean isDataValidation() {
-        return false;
-    }
+    }    
 
 	@Override
 	public int hashCode() {
@@ -332,5 +329,16 @@ public class CellHSSFImpl implements Cell {
 
 	public HSSFWorkbook getWorkbook() {
 		return workbook;
+	}
+
+	@Override
+	public String getSheetName() {
+		return workbook.getSheetName(getSheetIndex());
+	}
+
+	@Override
+	public int getSheetIndex() {
+		HSSFSheet sheet = theCell.getSheet();
+		return workbook.getSheetIndex(sheet);
 	}	
 }

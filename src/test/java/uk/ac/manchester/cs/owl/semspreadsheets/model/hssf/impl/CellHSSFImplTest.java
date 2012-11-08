@@ -46,7 +46,7 @@ public class CellHSSFImplTest extends GeneralCellTests {
 	}
 	
 	protected Cell getTestCell2() throws Exception {
-		return SpreadsheetTestHelper.openWorkbookHSSF(DocumentsCatalogue.populatedJermWorkbookURI()).getSheet(0).getCellAt(0, 0);
+		return SpreadsheetTestHelper.openWorkbookHSSF(DocumentsCatalogue.simpleAnnotatedworkbookURI()).getSheet(3).getCellAt(4,5);
 	}
 
 }

@@ -52,6 +52,26 @@ public class SheetXSSFImpl implements Sheet {
     public Workbook getWorkbook() {
         return workbook;
     }
+    
+    public List<Cell> getCellsWithContent() {
+    	List<Cell> cells = new ArrayList<Cell>();
+    	int firstRow = sheet.getFirstRowNum();
+    	int lastRow = sheet.getLastRowNum();
+    	for (int rowIndex = firstRow ; rowIndex <= lastRow; rowIndex++) {
+    		XSSFRow row = sheet.getRow(rowIndex);
+    		if (row!=null) {
+    			int firstCell = row.getFirstCellNum();
+        		int lastCell = row.getLastCellNum();
+        		for (int cellIndex = firstCell ; cellIndex <= lastCell;cellIndex++) {
+        			XSSFCell cell = row.getCell(cellIndex);
+        			if (cell!=null) {
+        				cells.add(new CellXSSFImpl(hssfWorkbook, cell));
+        			}
+        		} 
+    		}    		    		
+    	}
+    	return cells;
+    }
 
     public void setName(String name) {
         String oldName = sheet.getSheetName();

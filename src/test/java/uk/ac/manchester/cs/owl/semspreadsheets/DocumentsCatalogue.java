@@ -31,6 +31,16 @@ public class DocumentsCatalogue {
 		return uriForResourceName("scoro.owl");
 	}
 	
+	//a simple workbook that contains cells with quotes and commas
+	public static URI simpleWorkbookForCSVURI() throws Exception {
+		return uriForResourceName("workbookForCSVTest.xls");
+	}
+	
+	//a simple xlsx workbook that contains cells with quotes and commas
+	public static URI simpleXLSXWorkbookForCSVURI() throws Exception {
+		return uriForResourceName("workbookForCSVTest.xlsx");
+	}
+	
 	//A workbook with the cells B2:D5 applied with FreeText and property http://www.mygrid.org.uk/ontology/JERMOntology#ECNumber
 	public static URI simpleWorkbookWithLiteralsOverRangeURI() throws Exception {
 		return uriForResourceName("literals_only_over_range.xls");

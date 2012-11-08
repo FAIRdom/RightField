@@ -12,6 +12,7 @@ import java.util.List;
 import org.junit.Test;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.PropertyValidationForumlaDefinition;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.Cell;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Validation;
@@ -61,6 +62,33 @@ public abstract class GeneralSheetTests {
 		sheet.clearValidationData();
 		assertEquals(0,sheet.getValidations().size());
 	}
+
+	@Test
+	public void testCellsWithContent() throws Exception {
+		Workbook wb = getTestWorkbook();
+		List<Sheet> visibleSheets = wb.getVisibleSheets();
+		assertEquals(2,visibleSheets.size());
+		Sheet sheet = visibleSheets.get(0);
+		List<Cell> cells = sheet.getCellsWithContent();
+		assertEquals(3,cells.size());
+		Cell cell = cells.get(0);
+		assertEquals("Simple Annotated Book",cell.getValue());
+		assertEquals(2,cell.getRow());
+		assertEquals(1,cell.getColumn());
+		
+		cell = cells.get(1);
+		assertEquals("Experimental Design",cell.getValue());
+		assertEquals(11,cell.getRow());
+		assertEquals(3,cell.getColumn());
+		
+		sheet = visibleSheets.get(1);
+		cells = sheet.getCellsWithContent();
+		assertEquals(1,cells.size());
+		cell = cells.get(0);
+		assertEquals("Some content on sheet 2",cell.getValue());
+		assertEquals(5,cell.getRow());
+		assertEquals(4,cell.getColumn());
+	}
 	
 	@Test
 	public void testIndex() throws Exception {
@@ -74,7 +102,7 @@ public abstract class GeneralSheetTests {
 		sheet = wb.getSheet(2);
 		assertEquals(2,sheet.getIndex());
 		sheet = wb.addSheet();
-		assertEquals(3,sheet.getIndex());
+		assertEquals(4,sheet.getIndex());
 	}
 	
 	@Test
@@ -171,13 +199,13 @@ public abstract class GeneralSheetTests {
 		assertEquals(1,list.size());
 		Validation val = list.get(0);
 		assertEquals("wksowlv0",val.getFormula());
-		assertEquals("Sheet1!B2:C3",val.getRange().toString());
+		assertEquals("Sheet2!B2:C3",val.getRange().toString());
 	}
 	
 	@Test
 	public void testHiddenSheets() throws Exception {
 		Workbook book = getTestWorkbook();
-		assertEquals(3,book.getSheets().size());
+		assertEquals(4,book.getSheets().size());
 		Sheet sheet = book.getSheet(1);
 		assertEquals("HiddenSheet",sheet.getName());
 		assertTrue(sheet.isHidden());

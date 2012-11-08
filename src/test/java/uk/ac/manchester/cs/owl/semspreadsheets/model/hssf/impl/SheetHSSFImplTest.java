@@ -56,6 +56,6 @@ public class SheetHSSFImplTest extends GeneralSheetTests {
 	
 	protected Sheet getBlankSheet() throws Exception {
 		return SpreadsheetTestHelper.getBlankWorkbook().createSheet();
-	}
+	}	
 	
 }

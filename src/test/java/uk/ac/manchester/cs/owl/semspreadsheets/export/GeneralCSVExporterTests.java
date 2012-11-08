@@ -33,7 +33,7 @@ public abstract class GeneralCSVExporterTests {
 	public void testExportString() throws Exception {	
 		URI uri =  twoOntologiesWorkbookURI();
 		Exporter exporter = new CSVExporter(uri);
-		String csv = exporter.export();		
+		String csv = exporter.export();			
 		assertEquals(expectedCSV(),csv);
 	}
 	
@@ -41,7 +41,7 @@ public abstract class GeneralCSVExporterTests {
 	public void testExportWithProperties() throws Exception {
 		URI uri = bookWithPropertiesURI();
 		Exporter exporter = new CSVExporter(uri);
-		String csv = exporter.export();				
+		String csv = exporter.export();			
 		assertEquals(expectedCSV2(),csv);
 		
 	}
@@ -54,25 +54,37 @@ public abstract class GeneralCSVExporterTests {
 		assertEquals(expectedCSV3(),csv);
 	}
 	
+	@Test
+	public void testQuotesCommasAndSpaces() throws Exception {
+		URI uri = bookWithQuotesAndCommasURI();
+		Exporter exporter = new CSVExporter(uri);
+		String csv = exporter.export();		
+		assertEquals(expectedCSV4(),csv);
+	}
+	
 	protected abstract URI twoOntologiesWorkbookURI() throws Exception;
 	
 	protected abstract URI bookWithPropertiesURI() throws Exception;
 	
 	protected abstract URI bookWithLiteralsURI() throws Exception;
 	
+	protected abstract URI bookWithQuotesAndCommasURI() throws Exception;
+	
 	private String expectedCSV() {
 		String expected = "text,col,row,sheet,term uri,type,entity uri,property uri,ontology uri,ontology source\n";
 		expected+="\"COSMIC\",2,3,\"Sheet0\",\"http://www.mygrid.org.uk/ontology/JERMOntology#COSMIC\",Direct instances,\"http://www.mygrid.org.uk/ontology/JERMOntology#Project\",\"None\",\"http://www.mygrid.org.uk/ontology/JERMOntology\",\"http://rest.bioontology.org/bioportal/virtual/download/1488\"\n";
-		expected+="\"mean and p values\",1,6,\"Sheet0\",\"http://mged.sourceforge.net/ontologies/MGEDOntology.owl#mean_and_p_values\",Instances,\"http://mged.sourceforge.net/ontologies/MGEDOntology.owl#DerivedBioAssayType\",\"None\",\"http://mged.sourceforge.net/ontologies/MGEDOntology.owl\",\"http://rest.bioontology.org/bioportal/virtual/download/1131\"";
-		
+		expected+="\"mean and p values\",1,6,\"Sheet0\",\"http://mged.sourceforge.net/ontologies/MGEDOntology.owl#mean_and_p_values\",Instances,\"http://mged.sourceforge.net/ontologies/MGEDOntology.owl#DerivedBioAssayType\",\"None\",\"http://mged.sourceforge.net/ontologies/MGEDOntology.owl\",\"http://rest.bioontology.org/bioportal/virtual/download/1131\"\n";
+		expected+="\"<- JERM\",3,3,\"Sheet0\",None,Text,None,None,None,None\n";
+		expected+="\"<-MGED\",2,6,\"Sheet0\",None,Text,None,None,None,None";
 		return expected;					
 	}
 	
 	private String expectedCSV2() {
 		String expected = "text,col,row,sheet,term uri,type,entity uri,property uri,ontology uri,ontology source\n";
 		expected += "\"13C radiolabelling\",4,9,\"Sheet0\",\"http://www.mygrid.org.uk/ontology/JERMOntology#13C_radiolabelling\",Subclasses,\"http://www.mygrid.org.uk/ontology/JERMOntology#TechnologyType\",\"http://www.mygrid.org.uk/ontology/JERMOntology#hasType\",\"http://www.mygrid.org.uk/ontology/JERMOntology\",\"http://www.mygrid.org.uk/ontology/JERMOntology\"\n";
-		expected += "\"COSMIC\",4,7,\"Sheet0\",\"http://www.mygrid.org.uk/ontology/JERMOntology#COSMIC\",Instances,\"http://www.mygrid.org.uk/ontology/JERMOntology#Project\",\"http://www.mygrid.org.uk/ontology/JERMOntology#isAssociatedWith\",\"http://www.mygrid.org.uk/ontology/JERMOntology\",\"http://www.mygrid.org.uk/ontology/JERMOntology\"";
-		
+		expected += "\"COSMIC\",4,7,\"Sheet0\",\"http://www.mygrid.org.uk/ontology/JERMOntology#COSMIC\",Instances,\"http://www.mygrid.org.uk/ontology/JERMOntology#Project\",\"http://www.mygrid.org.uk/ontology/JERMOntology#isAssociatedWith\",\"http://www.mygrid.org.uk/ontology/JERMOntology\",\"http://www.mygrid.org.uk/ontology/JERMOntology\"\n";
+		expected+="\"Project\",3,7,\"Sheet0\",None,Text,None,None,None,None\n";
+		expected+="\"Techo Type\",3,9,\"Sheet0\",None,Text,None,None,None,None";
 		return expected;
 	}
 	
@@ -81,6 +93,15 @@ public abstract class GeneralCSVExporterTests {
 		expected += "\"hello\",2,1,\"Sheet0\",\"None\",Free text,\"http://www.w3.org/2002/07/owl#Nothing\",\"http://www.mygrid.org.uk/ontology/JERMOntology#ECNumber\",\"http://www.mygrid.org.uk/ontology/JERMOntology\",\"http://rest.bioontology.org/bioportal/virtual/download/1488\"\n";
 		expected += "\"world\",3,4,\"Sheet0\",\"None\",Free text,\"http://www.w3.org/2002/07/owl#Nothing\",\"http://www.mygrid.org.uk/ontology/JERMOntology#ECNumber\",\"http://www.mygrid.org.uk/ontology/JERMOntology\",\"http://rest.bioontology.org/bioportal/virtual/download/1488\"";
 		
+		return expected;
+	}
+	
+	private String expectedCSV4() {
+		String expected = "text,col,row,sheet,term uri,type,entity uri,property uri,ontology uri,ontology source\n";
+		expected+="\"ScaRAB\",0,0,\"Sheet0\",\"http://www.mygrid.org.uk/ontology/JERMOntology#ScaRAB\",Instances,\"http://www.mygrid.org.uk/ontology/JERMOntology#Project\",\"http://www.mygrid.org.uk/ontology/JERMOntology#isAssociatedWith\",\"http://www.mygrid.org.uk/ontology/JERMOntology\",\"http://rest.bioontology.org/bioportal/virtual/download/1488\"\n";
+		expected+="\" m \",3,2,\"Sheet0\",None,Text,None,None,None,None\n";
+		expected+="\"a\"\"b\",1,3,\"Sheet0\",None,Text,None,None,None,None\n";
+		expected+="\"a,b,c\",2,8,\"Sheet0\",None,Text,None,None,None,None";
 		return expected;
 	}
 
