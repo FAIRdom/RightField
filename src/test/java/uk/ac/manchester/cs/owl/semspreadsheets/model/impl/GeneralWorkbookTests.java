@@ -199,7 +199,7 @@ public abstract class GeneralWorkbookTests {
 			expectedWidth = 66;
 		}
 		else {
-			expectedWidth = 60;
+			expectedWidth = 48;
 		}
 		assertEquals(expectedWidth,book.getSheet(0).getColumnWidth(0));
 	}

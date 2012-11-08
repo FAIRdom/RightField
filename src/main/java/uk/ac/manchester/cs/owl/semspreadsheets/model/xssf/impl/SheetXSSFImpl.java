@@ -64,7 +64,7 @@ public class SheetXSSFImpl implements Sheet {
         		int lastCell = row.getLastCellNum();
         		for (int cellIndex = firstCell ; cellIndex <= lastCell;cellIndex++) {
         			XSSFCell cell = row.getCell(cellIndex);
-        			if (cell!=null) {
+        			if (cell!=null && !cell.getStringCellValue().isEmpty()) {
         				cells.add(new CellXSSFImpl(hssfWorkbook, cell));
         			}
         		} 
