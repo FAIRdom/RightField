@@ -67,8 +67,8 @@ public class RDFExportResultPanel extends JPanel {
 		});
 		saveButton.setText("Save");
 		closeButton.setText("Close");
-		buttonPanel.add(closeButton);
 		buttonPanel.add(saveButton);
+		buttonPanel.add(closeButton);		
 		add(buttonPanel,BorderLayout.SOUTH);				
 	}
 	
