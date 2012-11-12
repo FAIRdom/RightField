@@ -52,7 +52,7 @@ public class RDFExportResultPanel extends JPanel {
 		
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
-		JButton cancelButton = new JButton(new AbstractAction() {			
+		JButton closeButton = new JButton(new AbstractAction() {			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				close();				
@@ -66,8 +66,8 @@ public class RDFExportResultPanel extends JPanel {
 			}
 		});
 		saveButton.setText("Save");
-		cancelButton.setText("Cancel");
-		buttonPanel.add(cancelButton);
+		closeButton.setText("Close");
+		buttonPanel.add(closeButton);
 		buttonPanel.add(saveButton);
 		add(buttonPanel,BorderLayout.SOUTH);				
 	}
@@ -85,16 +85,17 @@ public class RDFExportResultPanel extends JPanel {
 		//to another class in the xlsx branch.
 		File file = getWorkbookFrame().browseForFile("Save RDF as", FileDialog.SAVE,
 				"RDF File",new String [] {"rdf"});	
-		file = getWorkbookFrame().checkForDefaultExtension(file, ".rdf");
-		PrintWriter writer;
-		try {
-			writer = new PrintWriter(file);
-			writer.write(rdf);
-			writer.close();
-		} catch (FileNotFoundException e) {
-			ErrorHandler.getErrorHandler().handleError(e);
-		}
-		close();		
+		if (file!=null) {
+			file = getWorkbookFrame().checkForDefaultExtension(file, ".rdf");
+			PrintWriter writer;
+			try {
+				writer = new PrintWriter(file);
+				writer.write(rdf);
+				writer.close();
+			} catch (FileNotFoundException e) {
+				ErrorHandler.getErrorHandler().handleError(e);
+			}
+		}					
 	}
 	
 	public static void showDialog(WorkbookFrame frame,String rdf) {

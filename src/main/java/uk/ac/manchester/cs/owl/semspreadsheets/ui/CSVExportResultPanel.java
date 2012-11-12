@@ -29,6 +29,7 @@ public class CSVExportResultPanel extends JPanel {
 
 	private final JDialog parent;
 
+	//FIXME: this is almost identical to RDFExportResultPanel - maybe they could be generalised and consolidated
 	public CSVExportResultPanel(JDialog parent,WorkbookFrame workbookFrame,final String csv) {
 		super();
 		this.parent = parent;
@@ -46,7 +47,7 @@ public class CSVExportResultPanel extends JPanel {
 		
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
-		JButton cancelButton = new JButton(new AbstractAction() {			
+		JButton closeButton = new JButton(new AbstractAction() {			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				close();				
@@ -60,8 +61,8 @@ public class CSVExportResultPanel extends JPanel {
 			}
 		});
 		saveButton.setText("Save");
-		cancelButton.setText("Cancel");
-		buttonPanel.add(cancelButton);
+		closeButton.setText("Close");
+		buttonPanel.add(closeButton);
 		buttonPanel.add(saveButton);
 		add(buttonPanel,BorderLayout.SOUTH);				
 	}
@@ -78,17 +79,18 @@ public class CSVExportResultPanel extends JPanel {
 		//FIXME: workbookFrame is not a suitable place for these file based methods, but have already been refactored
 		//to another class in the xlsx branch.
 		File file = getWorkbookFrame().browseForFile("Save CSV as", FileDialog.SAVE,
-				"CSV File",new String [] {"csv"});	
-		file = getWorkbookFrame().checkForDefaultExtension(file, ".csv");
-		PrintWriter writer;
-		try {
-			writer = new PrintWriter(file);
-			writer.write(csv);
-			writer.close();
-		} catch (FileNotFoundException e) {
-			ErrorHandler.getErrorHandler().handleError(e);
-		}
-		close();		
+				"CSV File",new String [] {"csv"});
+		if (file!=null) {
+			file = getWorkbookFrame().checkForDefaultExtension(file, ".csv");
+			PrintWriter writer;
+			try {
+				writer = new PrintWriter(file);
+				writer.write(csv);
+				writer.close();
+			} catch (FileNotFoundException e) {
+				ErrorHandler.getErrorHandler().handleError(e);
+			}
+		}				
 	}
 	
 	public static void showDialog(WorkbookFrame frame,String csv) {
