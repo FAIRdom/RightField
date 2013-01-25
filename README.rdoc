@@ -8,6 +8,10 @@ Copyright::  (c) 2009-2013 The University of Manchester, UK
 Website::    http://www.rightfield.org.uk
 Google+::    https://plus.google.com/115015865438051713723/posts
 
+== Support our development
+
+RightField is open source and free to use, and will remain so. To help support RightField, and its future development, please take a moment to register your interest or use of it at http://www.rightfield.org.uk/registration
+
 == Description
 
 RightField is an open-source tool for adding ontology term selection to Excel spreadsheets. For each annotation field, RightField can specify a range of allowed terms from a chosen ontology (subclasses, individuals or combinations). The resulting spreadsheet presents these terms to the users as a simple drop-down list. This reduces the adoption barrier for using community ontologies as the annotation is made by the scientist that generated the data rather than a third party, and the annotation is collected at the time of data collection.
