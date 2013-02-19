@@ -68,8 +68,7 @@ public abstract class GeneralCSVExporterTests {
 	public void testNumericAndStrings() throws Exception {
 		URI uri = bookWithNumericsAndStringsURI();
 		Exporter exporter = new CSVExporter(uri);
-		String csv = exporter.export();
-		System.out.println(csv);
+		String csv = exporter.export();		
 		assertTrue(csv.contains("\"7.0\",4,1,\"Sheet0\",Text,None"));
 		assertTrue(csv.contains("\"Policy\",0,0,\"Sheet0\",Text,None"));
 		assertFalse("Shouldn't contain anything for the empty cell",csv.contains("0,1"));

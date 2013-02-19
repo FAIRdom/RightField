@@ -173,6 +173,24 @@ public class OntologyTermValidationWorkbookParserTest {
 		assertTrue(v.getValidationDescriptor().getOntologyIRIs().contains(IRI.create("http://www.mygrid.org.uk/ontology/JERMOntology")));
 	}
 	
+	@Test //covers an error when trying to read the data validations, where it detects a formula but it is blank. Possibly caused by macros.
+	public void testParseValidationsWithBlankFormulaXLS() throws Exception {
+		Workbook book = manager.loadWorkbook(DocumentsCatalogue.prideTemplateEmptyWorkbookURI());		
+		assertEquals(15,book.getSheets().size());
+		assertEquals("Introduction",book.getSheet(0).getName());
+		Collection<OntologyTermValidation> validations = parser.readOntologyTermValidations();
+		assertEquals(0,validations.size());
+	}
+	
+	@Test //same as test above but for xlsx
+	public void testParseValidationsWithBlankFormulaXLSX() throws Exception {
+		Workbook book = manager.loadWorkbook(DocumentsCatalogue.prideTemplateEmptyWorkbookXLSXURI());		
+		assertEquals(15,book.getSheets().size());
+		assertEquals("Introduction",book.getSheet(0).getName());
+		Collection<OntologyTermValidation> validations = parser.readOntologyTermValidations();
+		assertEquals(0,validations.size());
+	}
+	
 	@Test
 	public void testParseFreeTextPropertyValidationFromFile() throws Exception {
 		WorkbookManager manager = new WorkbookManager();

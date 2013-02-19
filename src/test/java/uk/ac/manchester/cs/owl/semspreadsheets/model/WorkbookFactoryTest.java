@@ -43,6 +43,6 @@ public class WorkbookFactoryTest {
 		assertTrue(book instanceof WorkbookXSSFImpl);
 		assertEquals(11,book.getSheets().size());
 		assertEquals("Metadata Template",book.getSheet(0).getName());
-	}
+	}		
 
 }

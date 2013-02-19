@@ -84,13 +84,16 @@ public class PatchedPoi {
 								f1.getTokens(), workbook);
 						String formula2 = getStringFromPtgTokens(
 								f2.getTokens(), workbook);
-						int comparison = dvRecord.getConditionOperator();
-						DVConstraint dvConstraint = DVConstraint
-								.createNumericConstraint(validationType,
-										comparison, formula1, formula2);
-						HSSFDataValidation validation = new HSSFDataValidation(
-								cellRangeAddressList, dvConstraint);
-						dataValidation.add(validation);
+						if (!formula2.isEmpty()) { //potentially caused by macros, which leads to a error when attempting to create the constraint
+							int comparison = dvRecord.getConditionOperator();
+							DVConstraint dvConstraint = DVConstraint
+									.createNumericConstraint(validationType,
+											comparison, formula1, formula2);
+							HSSFDataValidation validation = new HSSFDataValidation(
+									cellRangeAddressList, dvConstraint);
+							dataValidation.add(validation);
+						}
+						
 					} else if (validationType == DVConstraint.ValidationType.FORMULA) {
 						Formula f1 = dvRecord.getFormula1();
 						

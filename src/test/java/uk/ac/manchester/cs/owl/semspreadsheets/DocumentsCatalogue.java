@@ -131,8 +131,15 @@ public class DocumentsCatalogue {
 	}
 
 	public static URI bookWithNumericsAndStringsXLSXURI() throws Exception {
-		return uriForResourceName("csv_problem_numerics.xlsx");
-		
+		return uriForResourceName("csv_problem_numerics.xlsx");		
+	}
+
+	public static URI prideTemplateEmptyWorkbookURI() throws Exception {
+		return uriForResourceName("pride_template_empty.xls");		
+	}
+	
+	public static URI prideTemplateEmptyWorkbookXLSXURI() throws Exception {
+		return uriForResourceName("pride_template_empty.xlsm");
 	}
 
 }
