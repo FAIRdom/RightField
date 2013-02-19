@@ -91,6 +91,17 @@ public abstract class GeneralSheetTests {
 	}
 	
 	@Test
+	public void testCellsWithContentWithNumerics() throws Exception {
+		Sheet sheet = getTestSheetWithNumerics();
+		List<Cell> cells = sheet.getCellsWithContent();
+		assertEquals(9,cells.size());
+		Cell cell = cells.get(8);
+		assertEquals("7.0",cell.getValue());
+		cell = cells.get(0);
+		assertEquals("Policy",cell.getValue());
+	}
+	
+	@Test
 	public void testIndex() throws Exception {
 		Workbook wb = getBlankWorkbook();
 		Sheet sheet = wb.getSheet(0); 
@@ -256,6 +267,7 @@ public abstract class GeneralSheetTests {
 		assertFalse(sheet.isVeryHidden());		
 	}	
 	
+	protected abstract Sheet getTestSheetWithNumerics() throws Exception;
 	protected abstract Workbook getTestWorkbook() throws Exception;
 	protected abstract Sheet getTestSheet() throws Exception;
 	protected abstract Sheet getBlankSheet() throws Exception;

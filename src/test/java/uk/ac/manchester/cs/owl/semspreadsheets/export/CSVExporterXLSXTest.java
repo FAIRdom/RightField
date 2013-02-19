@@ -25,4 +25,9 @@ public class CSVExporterXLSXTest extends GeneralCSVExporterTests {
 	protected URI bookWithQuotesAndCommasURI() throws Exception {
 		return DocumentsCatalogue.simpleXLSXWorkbookForCSVURI();
 	}
+
+	@Override
+	protected URI bookWithNumericsAndStringsURI() throws Exception {
+		return DocumentsCatalogue.bookWithNumericsAndStringsXLSXURI();
+	}
 }

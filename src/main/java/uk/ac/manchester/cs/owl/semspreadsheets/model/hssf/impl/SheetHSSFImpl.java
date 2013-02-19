@@ -67,7 +67,8 @@ public class SheetHSSFImpl implements Sheet {
         		int lastCell = row.getLastCellNum();
         		for (int cellIndex = firstCell ; cellIndex <= lastCell;cellIndex++) {
         			HSSFCell cell = row.getCell(cellIndex);
-        			if (cell!=null && !cell.getStringCellValue().isEmpty()) {
+        			boolean skip = cell==null || cell.getCellType()==HSSFCell.CELL_TYPE_BLANK || (cell.getCellType()==HSSFCell.CELL_TYPE_STRING && cell.getStringCellValue().isEmpty());        			
+        			if (!skip) {
         				cells.add(new CellHSSFImpl(hssfWorkbook, cell));
         			}
         		} 

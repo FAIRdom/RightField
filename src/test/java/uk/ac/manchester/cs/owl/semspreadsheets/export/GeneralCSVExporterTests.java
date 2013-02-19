@@ -8,6 +8,8 @@
 package uk.ac.manchester.cs.owl.semspreadsheets.export;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayOutputStream;
 import java.net.URI;
@@ -61,6 +63,19 @@ public abstract class GeneralCSVExporterTests {
 		String csv = exporter.export();		
 		assertEquals(expectedCSV4(),csv);
 	}
+	
+	@Test
+	public void testNumericAndStrings() throws Exception {
+		URI uri = bookWithNumericsAndStringsURI();
+		Exporter exporter = new CSVExporter(uri);
+		String csv = exporter.export();
+		System.out.println(csv);
+		assertTrue(csv.contains("\"7.0\",4,1,\"Sheet0\",Text,None"));
+		assertTrue(csv.contains("\"Policy\",0,0,\"Sheet0\",Text,None"));
+		assertFalse("Shouldn't contain anything for the empty cell",csv.contains("0,1"));
+	}
+	
+	protected abstract URI bookWithNumericsAndStringsURI() throws Exception;
 	
 	protected abstract URI twoOntologiesWorkbookURI() throws Exception;
 	

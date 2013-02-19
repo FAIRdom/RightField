@@ -39,8 +39,7 @@ public class SheetHSSFImplTest extends GeneralSheetTests {
 		
 	public Sheet getTestSheetWithProperties() throws Exception {
 		return SpreadsheetTestHelper.getWorkbookSheetHSSF(DocumentsCatalogue.bookWithPropertiesURI(),0);
-	}
-	
+	}	
 	
 	protected Workbook getTestWorkbook() throws Exception {
 		return SpreadsheetTestHelper.openWorkbookHSSF(DocumentsCatalogue.simpleAnnotatedworkbookURI());
@@ -56,6 +55,11 @@ public class SheetHSSFImplTest extends GeneralSheetTests {
 	
 	protected Sheet getBlankSheet() throws Exception {
 		return SpreadsheetTestHelper.getBlankWorkbook().createSheet();
+	}
+
+	@Override
+	protected Sheet getTestSheetWithNumerics() throws Exception {
+		return SpreadsheetTestHelper.getWorkbookSheetHSSF(DocumentsCatalogue.bookWithNumericsAndStringsURI(), 0);
 	}	
 	
 }

@@ -126,4 +126,13 @@ public class DocumentsCatalogue {
 		return new File(filename);
 	}
 
+	public static URI bookWithNumericsAndStringsURI() throws Exception {
+		return uriForResourceName("csv_problem_numerics.xls");
+	}
+
+	public static URI bookWithNumericsAndStringsXLSXURI() throws Exception {
+		return uriForResourceName("csv_problem_numerics.xlsx");
+		
+	}
+
 }

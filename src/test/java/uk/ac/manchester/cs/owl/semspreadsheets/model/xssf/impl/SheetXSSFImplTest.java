@@ -82,5 +82,11 @@ public class SheetXSSFImplTest extends GeneralSheetTests {
 	protected Sheet getTestSheetWithProperties() throws Exception {
 		return SpreadsheetTestHelper.getWorkbookSheetXSSF(DocumentsCatalogue.bookWithPropertiesXLSXURI(), 0);
 	}
+
+
+	@Override
+	protected Sheet getTestSheetWithNumerics() throws Exception {
+		return SpreadsheetTestHelper.getWorkbookSheetXSSF(DocumentsCatalogue.bookWithNumericsAndStringsXLSXURI(),0);
+	}
 	
 }
