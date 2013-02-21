@@ -273,6 +273,7 @@ public class OntologyManager {
     		logger.debug("No logical IRI, so using physical IRI:"+physicalIRI);
     		logIRI=physicalIRI;
     	}
+    	
     	//Create a new ID and use the physical IRI as a version ID      	
         newID = new OWLOntologyID(logIRI,physicalIRI);        
         getOWLOntologyManager().applyChange(new SetOntologyID(ontology, newID));              
