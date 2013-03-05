@@ -216,6 +216,7 @@ public class SheetXSSFImpl implements Sheet {
         CellRangeAddressList addressList = new CellRangeAddressList(firstRow, lastRow, firstCol, lastCol);        
         DataValidationConstraint constraint = sheet.getDataValidationHelper().createFormulaListConstraint(namedRange);
         DataValidation dataValidation = sheet.getDataValidationHelper().createValidation(constraint, addressList);
+        dataValidation.setShowErrorBox(true);
         sheet.addValidationData(dataValidation);
     }
 
