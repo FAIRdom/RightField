@@ -30,6 +30,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.InvalidWorkbookFormatExcept
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.task.LoadOntologyTask;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.task.TaskManager;
+import uk.org.rightfield.UserPrefs;
 
 public class FileHandling {
 		
@@ -50,10 +51,13 @@ public class FileHandling {
 	}	
 	
 	public void loadOntology() throws OWLOntologyCreationException {
+		String location = UserPrefs.getLastFileLocation();
 		File file = browseForFile("Load ontology", FileDialog.LOAD,
-				ONTOLOGY_EXT,ONTOLOGY_EXT.keySet().iterator().next());
+				ONTOLOGY_EXT,ONTOLOGY_EXT.keySet().iterator().next(),location);
+		
 		if (file != null) {
-			taskManager.runTask(new LoadOntologyTask(file));
+			UserPrefs.setLastFileLocation(file);
+			taskManager.runTask(new LoadOntologyTask(file));			
 		}						
 	}
 
@@ -79,21 +83,24 @@ public class FileHandling {
 		if (validExtensions.size()>0) {
 			defaultFileType=validExtensions.keySet().iterator().next();
 		}
-		
-		File requestedFile = browseForFile("Save spreadsheet as", FileDialog.SAVE,validExtensions,defaultFileType);		
+		String lastLocation = UserPrefs.getLastFileLocation();
+		File requestedFile = browseForFile("Save spreadsheet as", FileDialog.SAVE,validExtensions,defaultFileType,lastLocation);		
 			
 		if (requestedFile != null) {
-			File file = checkForDefaultExtension(requestedFile);			
-			workbookManager.saveWorkbook(file.toURI());
+			File file = checkForDefaultExtension(requestedFile);
+			UserPrefs.setLastFileLocation(file);
+			workbookManager.saveWorkbook(file.toURI());						
 		}
 	}
 
 	public void openWorkbook()  {
+		String lastLocation = UserPrefs.getLastFileLocation();
 		File file = browseForFile("Open spreadsheet", FileDialog.LOAD,
-				WORKBOOK_EXT,"Excel 97-2003");
+				WORKBOOK_EXT,"Excel 97-2003",lastLocation);
 		if (file != null) {
 			try {
-				workbookManager.loadWorkbook(file);
+				UserPrefs.setLastFileLocation(file);
+				workbookManager.loadWorkbook(file);							
 			} catch (IOException e) {
 				ErrorHandler.getErrorHandler().handleError(e);
 			} catch (InvalidWorkbookFormatException e) {
@@ -110,9 +117,9 @@ public class FileHandling {
 		return file;
 	}		
 	
-	private File browseForFile(String title, int mode,Map<String,List<String>> filetypesAndExtensions,String defaultFileType) {
-		logger.debug("About to browse for file with title: "+title+", and extensions: "+filetypesAndExtensions);
-		JFileChooser chooser = new JFileChooser(title);
+	private File browseForFile(String title, int mode,Map<String,List<String>> filetypesAndExtensions,String defaultFileType,String location) {
+		
+		JFileChooser chooser = new JFileChooser(location);		
 		FileFilter defaultFilter = null;
 		for (String key : filetypesAndExtensions.keySet()) {			
 			ExtensionFileFilter filter = new ExtensionFileFilter(key, filetypesAndExtensions.get(key));
