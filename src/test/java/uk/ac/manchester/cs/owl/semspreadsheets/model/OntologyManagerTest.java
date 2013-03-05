@@ -67,7 +67,7 @@ public class OntologyManagerTest {
 		
 		loadedOntologies = ontologyManager.getLoadedOntologies();
 		assertEquals(1,loadedOntologies.size());
-		assertEquals(2,ontologyManager.getAllOntologies().size());
+		assertEquals(3,ontologyManager.getAllOntologies().size());
 		ontology = loadedOntologies.iterator().next();
 		assertNotNull(ontology);
 		assertNotNull(ontology.getOntologyID());		
@@ -380,7 +380,7 @@ public class OntologyManagerTest {
 		assertTrue(ontologyManager.getOntologyIRIs().contains(IRI.create("http://mged.sourceforge.net/ontologies/MGEDOntology.owl")));
 		ontologyManager.loadEmbeddedTermOntologies();
 		assertEquals(2, ontologyManager.getLoadedOntologies().size());
-		assertEquals(3, ontologyManager.getAllOntologies().size());
+		assertEquals(4, ontologyManager.getAllOntologies().size());
 		
 		//now with just properties over free text		
 		WorkbookManager manager = new WorkbookManager();
