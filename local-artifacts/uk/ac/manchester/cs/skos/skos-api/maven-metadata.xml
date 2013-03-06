@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>uk.ac.manchester.cs.skos</groupId>
+  <artifactId>skos-api</artifactId>
+  <version>3.0.1</version>
+  <versioning>
+    <versions>
+      <version>3.0.1</version>
+    </versions>
+    <lastUpdated>20130306161408</lastUpdated>
+  </versioning>
+</metadata>
