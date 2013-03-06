@@ -1,0 +1,4767 @@
+<?xml version="1.0"?>
+
+
+<!DOCTYPE Ontology [
+    <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
+    <!ENTITY xml "http://www.w3.org/XML/1998/namespace" >
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+    <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+]>
+
+
+<Ontology xmlns="http://www.w3.org/2002/07/owl#"
+     xml:base="http://www.mygrid.org.uk/ontology/JERMOntology"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     ontologyIRI="http://www.mygrid.org.uk/ontology/JERMOntology">
+    <Prefix name="JERMOntology3" IRI="http://www.mygrid.org.uk/ontology/JERMOntology#2"/>
+    <Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#"/>
+    <Prefix name="owl2xml" IRI="http://www.w3.org/2006/12/owl2-xml#"/>
+    <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#"/>
+    <Prefix name="JERMOntology" IRI="http://www.mygrid.org.uk/ontology/JERMOntology#"/>
+    <Prefix name="JERMOntology4" IRI="http://www.mygrid.org.uk/ontology/JERMOntology#2-"/>
+    <Prefix name="JERMOntology2" IRI="http://www.mygrid.org.uk/ontology/JERMOntology#13"/>
+    <Prefix name="" IRI="http://www.mygrid.org.uk/ontology/JERMOntology#"/>
+    <Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <Prefix name="dc" IRI="http://purl.org/dc/elements/1.1/"/>
+    <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#"/>
+    <Declaration>
+        <Class IRI="#13C_radiolabelling"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#2-hybrid_system"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#2D_gel_electrophoresis"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Accelerator_Mass_Spectrometry"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Algebraic_equation"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Assay"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#AssayType"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Asset"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Batch"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#BioMaterial"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Buffer"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#CellML"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#ChIP-on-chip"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Chemostat"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Chip-Seq"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#CollisionCell"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Comparative_genomic_hybridization"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#CultureGrowthType"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#DNA_Methylation"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#DNA_sequencing"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Data"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#DataFileFormat"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Detectors"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#ElectrosprayIonisation"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#EnzymeReactionAssay"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#EnzymeReactionData"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Equipment"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Exon_array"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#ExperimentDescription"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#ExperimentalAssayType"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#ExperimentalDesignType"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#ExperimentalFactorType"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#ExperimentalFactors"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#ExpressionValueMeasurementType"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Extracellular_Metabolite_concentration"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#FACS"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#FRAP"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#FT-ICR"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#FactorsStudied"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Format"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Gas_Chromatography_Mass_Spectrometry"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#HPLC"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Hybridization"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Inductively_Coupled_Plasma_Mass_Spectrometry"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Instrument"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Intracellular_Metabolite_Concentration"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Investigation"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#IonOptics"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#IonTrap"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Ion_Mobility_Spectrometry_Mass_Spectrometry"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#IonizationSource"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Isotope_Ratio_Mass_Spectrometry"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Label"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Linear_equation"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Liquid_chromatography_Mass_Spectrometry"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#MAGE-TAB"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#MAGEML"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#MALDI"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#MALDI_TOF"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#MESH_term"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#MIRIAMCompliant"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#MassSpecAssay"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#MassSpecFileFormat"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#MassSpecProteomicsData"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#MeasuredItem"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Metabolite_concentration"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#MicroarrayAssay"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#MicroarrayData"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#MicroarrayFactors"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#MicroarrayFileFormat"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Model"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#ModelAnalysisType"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#ModelExecutionEnvironment"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#ModelFormat"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#NMR"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#NatureProtocols"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Next_Generation_Sequencing"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Next_Generation_sequencing_analysis"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#NormalizationMethod"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Ordinary_differential_equation"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#PCR"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Partial_differential_equation"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Person"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#PostSourceComponent"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Project"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#ProteomicsFactors"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#ProteomicsFileFormat"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Publication"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#QualityControlType"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Quantitation"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#RNA-Seq"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#RNA-seq_profiling"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#RNAi"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#ReplicateType"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#SBML_format"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#SBML_model"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#SDS_PAGE"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#SELDI_TOF"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#SNP_array"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#SNP_detection"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#SOP"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#SOPFileFormat"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Sample"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Sample_preparation_SOP"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Sex/Gender"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#SpectrumGeneration"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#SpectrumInterpretation"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#StrendaFileFormat"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Study"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Substrate_utilization"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Tandem_Mass_Spectrometry"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#TechnologyType"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#TimeOfFlightDriftTube"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#UPLC"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#activity"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#affinity_chromatography"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#amplification"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#bait_protein_tagging"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#binding"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#bioinformatics_analysis"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#biological_entity"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#by-product_formation"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#capillary_electrophoresis"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#catabolic_response"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#cellAssay"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#cell_cycle"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#cell_growth_optimisation"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#cell_size"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#cell_type"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#characteristic_for_specimen_or_sample"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#cheminformatics_analysis"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#chemostat_measurements"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#chromatography"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#community_standard_specification"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#comparative_genomics"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#compound"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#concentration"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#continuousEnzymatic"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#custom_Array"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#deletion"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#developmentalStage"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#diploid"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#discontinuousEnzymatic"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#dry_biomass"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#electrophoresis"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#enzymaticAssay"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#enzymatic_activity_measurements"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#enzyme"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#enzymeActivity"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#enzymology"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#explantation"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#expression"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#extracellular_concentration"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#flow_cytometry"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#flux_balance_analysis"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#fluxomics"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#functionalEntity"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#gas_chromatography"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#gas_flow"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#gel_electrophoresis"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#gel_filtration"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#gene"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#gene_expression"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#gene_expression_profiling"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#gene_regulatory_network"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#genome"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#genome-scale_enzyme_activity_profiling"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#genome_scale"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#genomics"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#genotype"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#genotyping"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#glucose_pulse"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#growth_medium"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#haploid"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#hexaploid"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#imaging"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#immune_precipitation"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#informaticsAnalysisType"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#initial_rate_experiment"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#insertion"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#interactomics"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#intracellular_concentration"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#limited_media_growth"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#liquid_chromatography-tandem_mass_spectrometry"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#mass"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#mass_Spectrometry"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#materialEntity"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#material_type"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#mathematical_modelType"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#metabolic_network"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#metabolism"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#metabolite"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#metabolite_profiling"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#metabolomics"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#metabonomics"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#methylation_profiling"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#miRNA_microarray"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#microRNA_profiling"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#microarray"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#molecule_labelling"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#mutationType"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#optical_density"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#optical_density_600"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#organism"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#organism_or_strain_characterisation"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#organism_part"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#pH"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#pathway"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#peptide"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#phenotype"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#physical_file_format"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#ploidy"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#post-translational_modification"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#pressure"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#primer_design"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#progressive_curve_experiment"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#protein"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#protein-protein_interaction"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#protein-protein_interaction_profiling"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#protein_expression_profiling"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#protein_identification"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#protein_purification"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#protein_structural_analysis"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#proteomics"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#qPCR"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#qRT-PCR"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#radioactive_labelling"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#reactomics"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#sequencing"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#signal_transduction"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#single_cell"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#small-molecule_microarray"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#small_molecule_microarray"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#software"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#specific_concentration"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#specimen"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#specimen_preparation_SOP"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#strain"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#structural_methods"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#surface_plasmon_resonance"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#temperature"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#tiling_array"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#tiling_path"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#tissue_type"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#transcriptional_profiling"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#transcriptomics"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#translation"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#translational_profiling"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#turbidostat"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#volume"/>
+    </Declaration>
+    <Declaration>
+        <Class abbreviatedIRI="owl:Thing"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#hasCharacteristics"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#hasContributor"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#hasFormat"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#hasItem"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#hasPart"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#hasType"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#investigates"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#isAssociatedWith"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#isContributorOf"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#isDerivedFrom"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#isFormatOf"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#isPartOf"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#isTypeOf"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#is_investigated_by"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#isconstructedFrom"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#itemProducedBy"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#technologyUsedIn"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#usesTechnology"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#ECNumber"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#External_supplier_ID"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#Lab_internal_ID"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#NCBI_ID"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#SEEKID"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#WebLink"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#age_of_specimen/culture"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#date_of_death"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#description"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#identifiers"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#instrument_model"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#manufacturer"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#reactionCatalyst"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#sequence_accession"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#termsofDistribution"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#timepoint"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#title"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#units"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#version"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#Excel"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual IRI="#image"/>
+    </Declaration>
+    <Declaration>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+    </Declaration>
+    <Declaration>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+    </Declaration>
+    <EquivalentClasses>
+        <Class IRI="#Assay"/>
+        <ObjectIntersectionOf>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty IRI="#hasPart"/>
+                <Class IRI="#Asset"/>
+            </ObjectSomeValuesFrom>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty IRI="#hasType"/>
+                <Class IRI="#AssayType"/>
+            </ObjectSomeValuesFrom>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty IRI="#hasType"/>
+                <Class IRI="#TechnologyType"/>
+            </ObjectSomeValuesFrom>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty IRI="#isPartOf"/>
+                <Class IRI="#Study"/>
+            </ObjectSomeValuesFrom>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class IRI="#Asset"/>
+        <ObjectIntersectionOf>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty IRI="#hasContributor"/>
+                <Class IRI="#Person"/>
+            </ObjectSomeValuesFrom>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty IRI="#isPartOf"/>
+                <Class IRI="#Assay"/>
+            </ObjectSomeValuesFrom>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty IRI="#itemProducedBy"/>
+                <Class IRI="#Project"/>
+            </ObjectSomeValuesFrom>
+            <DataSomeValuesFrom>
+                <DataProperty IRI="#SEEKID"/>
+                <Datatype abbreviatedIRI="xsd:string"/>
+            </DataSomeValuesFrom>
+            <DataSomeValuesFrom>
+                <DataProperty IRI="#description"/>
+                <Datatype abbreviatedIRI="xsd:string"/>
+            </DataSomeValuesFrom>
+            <DataSomeValuesFrom>
+                <DataProperty IRI="#title"/>
+                <Datatype abbreviatedIRI="xsd:string"/>
+            </DataSomeValuesFrom>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class IRI="#Data"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#hasFormat"/>
+            <Class IRI="#physical_file_format"/>
+        </ObjectSomeValuesFrom>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class IRI="#Investigation"/>
+        <ObjectIntersectionOf>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty IRI="#hasPart"/>
+                <Class IRI="#Study"/>
+            </ObjectSomeValuesFrom>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty IRI="#itemProducedBy"/>
+                <Class IRI="#Project"/>
+            </ObjectSomeValuesFrom>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class IRI="#MassSpecAssay"/>
+        <ObjectIntersectionOf>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty IRI="#hasType"/>
+                <Class IRI="#mass_Spectrometry"/>
+            </ObjectSomeValuesFrom>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty IRI="#hasType"/>
+                <Class IRI="#proteomics"/>
+            </ObjectSomeValuesFrom>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class IRI="#MicroarrayAssay"/>
+        <ObjectIntersectionOf>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty IRI="#hasType"/>
+                <Class IRI="#microarray"/>
+            </ObjectSomeValuesFrom>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty IRI="#hasType"/>
+                <Class IRI="#transcriptomics"/>
+            </ObjectSomeValuesFrom>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class IRI="#Model"/>
+        <ObjectIntersectionOf>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty IRI="#hasFormat"/>
+                <Class IRI="#ModelExecutionEnvironment"/>
+            </ObjectSomeValuesFrom>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty IRI="#hasFormat"/>
+                <Class IRI="#ModelFormat"/>
+            </ObjectSomeValuesFrom>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class IRI="#NMR"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#technologyUsedIn"/>
+            <Class IRI="#protein_structural_analysis"/>
+        </ObjectSomeValuesFrom>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class IRI="#Project"/>
+        <ObjectIntersectionOf>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty IRI="#hasItem"/>
+                <Class IRI="#Asset"/>
+            </ObjectSomeValuesFrom>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty IRI="#hasItem"/>
+                <Class IRI="#ExperimentDescription"/>
+            </ObjectSomeValuesFrom>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty IRI="#investigates"/>
+                <Class IRI="#organism"/>
+            </ObjectSomeValuesFrom>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class IRI="#SOP"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#hasFormat"/>
+            <Class IRI="#SOPFileFormat"/>
+        </ObjectSomeValuesFrom>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class IRI="#Study"/>
+        <ObjectIntersectionOf>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty IRI="#hasPart"/>
+                <Class IRI="#Assay"/>
+            </ObjectSomeValuesFrom>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty IRI="#isPartOf"/>
+                <Class IRI="#Investigation"/>
+            </ObjectSomeValuesFrom>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class IRI="#methylation_profiling"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#usesTechnology"/>
+            <Class IRI="#DNA_Methylation"/>
+        </ObjectSomeValuesFrom>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class IRI="#microRNA_profiling"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#usesTechnology"/>
+            <Class IRI="#miRNA_microarray"/>
+        </ObjectSomeValuesFrom>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class IRI="#protein_purification"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#usesTechnology"/>
+            <Class IRI="#HPLC"/>
+        </ObjectSomeValuesFrom>
+    </EquivalentClasses>
+    <SubClassOf>
+        <Class IRI="#13C_radiolabelling"/>
+        <Class IRI="#radioactive_labelling"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#2-hybrid_system"/>
+        <Class IRI="#binding"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#2D_gel_electrophoresis"/>
+        <Class IRI="#gel_electrophoresis"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Accelerator_Mass_Spectrometry"/>
+        <Class IRI="#mass_Spectrometry"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Algebraic_equation"/>
+        <Class IRI="#mathematical_modelType"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Assay"/>
+        <Class IRI="#ExperimentDescription"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Assay"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#investigates"/>
+            <Class IRI="#organism"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Assay"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#isAssociatedWith"/>
+            <Class IRI="#Sample"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#AssayType"/>
+        <Class IRI="#ExperimentalFactors"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Batch"/>
+        <Class IRI="#CultureGrowthType"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#BioMaterial"/>
+        <Class IRI="#ExperimentalFactors"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Buffer"/>
+        <Class IRI="#FactorsStudied"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#CellML"/>
+        <Class IRI="#ModelFormat"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#ChIP-on-chip"/>
+        <Class IRI="#microarray"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Chemostat"/>
+        <Class IRI="#CultureGrowthType"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Chip-Seq"/>
+        <Class IRI="#sequencing"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#CollisionCell"/>
+        <Class IRI="#PostSourceComponent"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Comparative_genomic_hybridization"/>
+        <Class IRI="#transcriptomics"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#CultureGrowthType"/>
+        <Class IRI="#characteristic_for_specimen_or_sample"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#DNA_Methylation"/>
+        <Class IRI="#microarray"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#DNA_sequencing"/>
+        <Class IRI="#genomics"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Data"/>
+        <Class IRI="#Asset"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Data"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#hasPart"/>
+            <Class IRI="#FactorsStudied"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Data"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#isAssociatedWith"/>
+            <Class IRI="#Sample"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#DataFileFormat"/>
+        <Class IRI="#Format"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Detectors"/>
+        <Class IRI="#PostSourceComponent"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#ElectrosprayIonisation"/>
+        <Class IRI="#IonizationSource"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#EnzymeReactionAssay"/>
+        <Class IRI="#Assay"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#EnzymeReactionAssay"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#hasType"/>
+            <Class IRI="#enzymaticAssay"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#EnzymeReactionData"/>
+        <Class IRI="#Data"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#EnzymeReactionData"/>
+        <DataSomeValuesFrom>
+            <DataProperty IRI="#ECNumber"/>
+            <Datatype abbreviatedIRI="xsd:string"/>
+        </DataSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#EnzymeReactionData"/>
+        <DataSomeValuesFrom>
+            <DataProperty IRI="#sequence_accession"/>
+            <Datatype abbreviatedIRI="xsd:string"/>
+        </DataSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Equipment"/>
+        <Class abbreviatedIRI="owl:Thing"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Exon_array"/>
+        <Class IRI="#microarray"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#ExperimentDescription"/>
+        <DataSomeValuesFrom>
+            <DataProperty IRI="#SEEKID"/>
+            <Datatype abbreviatedIRI="xsd:string"/>
+        </DataSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#ExperimentDescription"/>
+        <DataSomeValuesFrom>
+            <DataProperty IRI="#description"/>
+            <Datatype abbreviatedIRI="xsd:string"/>
+        </DataSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#ExperimentDescription"/>
+        <DataSomeValuesFrom>
+            <DataProperty IRI="#title"/>
+            <Datatype abbreviatedIRI="xsd:string"/>
+        </DataSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#ExperimentalAssayType"/>
+        <Class IRI="#AssayType"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#ExperimentalDesignType"/>
+        <Class IRI="#MicroarrayFactors"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#ExperimentalFactorType"/>
+        <Class IRI="#MicroarrayFactors"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#ExpressionValueMeasurementType"/>
+        <Class IRI="#MicroarrayFactors"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Extracellular_Metabolite_concentration"/>
+        <Class IRI="#Metabolite_concentration"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#FACS"/>
+        <Class IRI="#flow_cytometry"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#FRAP"/>
+        <Class IRI="#imaging"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#FT-ICR"/>
+        <Class IRI="#PostSourceComponent"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#FactorsStudied"/>
+        <Class IRI="#ExperimentalFactors"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#FactorsStudied"/>
+        <ObjectUnionOf>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty IRI="#isPartOf"/>
+                <Class IRI="#Data"/>
+            </ObjectSomeValuesFrom>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty IRI="#isPartOf"/>
+                <Class IRI="#SOP"/>
+            </ObjectSomeValuesFrom>
+        </ObjectUnionOf>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#FactorsStudied"/>
+        <DataSomeValuesFrom>
+            <DataProperty IRI="#timepoint"/>
+            <Datatype abbreviatedIRI="xsd:integer"/>
+        </DataSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#FactorsStudied"/>
+        <DataSomeValuesFrom>
+            <DataProperty IRI="#units"/>
+            <Datatype abbreviatedIRI="xsd:string"/>
+        </DataSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Format"/>
+        <Class abbreviatedIRI="owl:Thing"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Gas_Chromatography_Mass_Spectrometry"/>
+        <Class IRI="#mass_Spectrometry"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#HPLC"/>
+        <Class IRI="#chromatography"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Hybridization"/>
+        <Class IRI="#MicroarrayFactors"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Inductively_Coupled_Plasma_Mass_Spectrometry"/>
+        <Class IRI="#mass_Spectrometry"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Instrument"/>
+        <Class IRI="#Equipment"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Instrument"/>
+        <DataSomeValuesFrom>
+            <DataProperty IRI="#instrument_model"/>
+            <Datatype abbreviatedIRI="xsd:string"/>
+        </DataSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Instrument"/>
+        <DataSomeValuesFrom>
+            <DataProperty IRI="#manufacturer"/>
+            <Datatype abbreviatedIRI="xsd:string"/>
+        </DataSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Intracellular_Metabolite_Concentration"/>
+        <Class IRI="#Metabolite_concentration"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Investigation"/>
+        <Class IRI="#ExperimentDescription"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#IonOptics"/>
+        <Class IRI="#PostSourceComponent"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#IonTrap"/>
+        <Class IRI="#PostSourceComponent"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Ion_Mobility_Spectrometry_Mass_Spectrometry"/>
+        <Class IRI="#mass_Spectrometry"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#IonizationSource"/>
+        <Class IRI="#ProteomicsFactors"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Isotope_Ratio_Mass_Spectrometry"/>
+        <Class IRI="#mass_Spectrometry"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Label"/>
+        <Class IRI="#MicroarrayFactors"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Linear_equation"/>
+        <Class IRI="#mathematical_modelType"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Liquid_chromatography_Mass_Spectrometry"/>
+        <Class IRI="#mass_Spectrometry"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#MAGE-TAB"/>
+        <Class IRI="#MicroarrayFileFormat"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#MAGEML"/>
+        <Class IRI="#MicroarrayFileFormat"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#MALDI"/>
+        <Class IRI="#IonizationSource"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#MALDI_TOF"/>
+        <Class IRI="#mass_Spectrometry"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#MESH_term"/>
+        <Class IRI="#characteristic_for_specimen_or_sample"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#MIRIAMCompliant"/>
+        <Class IRI="#ModelFormat"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#MassSpecAssay"/>
+        <Class IRI="#Assay"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#MassSpecAssay"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#hasPart"/>
+            <Class IRI="#Instrument"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#MassSpecAssay"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#hasPart"/>
+            <Class IRI="#PostSourceComponent"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#MassSpecAssay"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#hasPart"/>
+            <Class IRI="#Quantitation"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#MassSpecAssay"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#hasPart"/>
+            <Class IRI="#software"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#MassSpecAssay"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#hasType"/>
+            <Class IRI="#IonizationSource"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#MassSpecFileFormat"/>
+        <Class IRI="#ProteomicsFileFormat"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#MassSpecProteomicsData"/>
+        <Class IRI="#Data"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#MassSpecProteomicsData"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#hasPart"/>
+            <Class IRI="#ProteomicsFactors"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#MeasuredItem"/>
+        <Class IRI="#ExperimentalFactors"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Metabolite_concentration"/>
+        <Class IRI="#metabolite_profiling"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#MicroarrayAssay"/>
+        <Class IRI="#Assay"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#MicroarrayAssay"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#hasPart"/>
+            <Class IRI="#Hybridization"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#MicroarrayAssay"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#hasPart"/>
+            <Class IRI="#Label"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#MicroarrayAssay"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#hasPart"/>
+            <Class IRI="#NormalizationMethod"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#MicroarrayAssay"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#hasPart"/>
+            <Class IRI="#QualityControlType"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#MicroarrayAssay"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#hasPart"/>
+            <Class IRI="#ReplicateType"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#MicroarrayAssay"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#hasPart"/>
+            <Class IRI="#expression"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#MicroarrayData"/>
+        <Class IRI="#Data"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#MicroarrayData"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#hasPart"/>
+            <Class IRI="#MicroarrayFactors"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#MicroarrayFactors"/>
+        <Class IRI="#ExperimentalFactors"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#MicroarrayFileFormat"/>
+        <Class IRI="#community_standard_specification"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Model"/>
+        <Class IRI="#Asset"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Model"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#isconstructedFrom"/>
+            <Class IRI="#Data"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Model"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#isconstructedFrom"/>
+            <Class IRI="#Publication"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Model"/>
+        <DataSomeValuesFrom>
+            <DataProperty IRI="#termsofDistribution"/>
+            <Datatype abbreviatedIRI="xsd:string"/>
+        </DataSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#ModelAnalysisType"/>
+        <Class IRI="#AssayType"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#ModelExecutionEnvironment"/>
+        <Class IRI="#Format"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#ModelFormat"/>
+        <Class IRI="#Format"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#NMR"/>
+        <Class IRI="#structural_methods"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#NatureProtocols"/>
+        <Class IRI="#SOPFileFormat"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Next_Generation_Sequencing"/>
+        <Class IRI="#sequencing"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Next_Generation_sequencing_analysis"/>
+        <Class IRI="#genomics"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#NormalizationMethod"/>
+        <Class IRI="#ProteomicsFactors"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Ordinary_differential_equation"/>
+        <Class IRI="#mathematical_modelType"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#PCR"/>
+        <Class IRI="#TechnologyType"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Partial_differential_equation"/>
+        <Class IRI="#mathematical_modelType"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Person"/>
+        <Class abbreviatedIRI="owl:Thing"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#PostSourceComponent"/>
+        <Class IRI="#ProteomicsFactors"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Project"/>
+        <DataSomeValuesFrom>
+            <DataProperty IRI="#WebLink"/>
+            <Datatype abbreviatedIRI="xsd:anyURI"/>
+        </DataSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#ProteomicsFactors"/>
+        <Class IRI="#ExperimentalFactors"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#ProteomicsFileFormat"/>
+        <Class IRI="#community_standard_specification"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Publication"/>
+        <Class IRI="#Asset"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#QualityControlType"/>
+        <Class IRI="#MicroarrayFactors"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Quantitation"/>
+        <Class IRI="#ProteomicsFactors"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#RNA-Seq"/>
+        <Class IRI="#sequencing"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#RNA-seq_profiling"/>
+        <Class IRI="#transcriptomics"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#RNAi"/>
+        <Class IRI="#transcriptomics"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#ReplicateType"/>
+        <Class IRI="#MicroarrayFactors"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#SBML_format"/>
+        <Class IRI="#ModelFormat"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#SBML_model"/>
+        <Class IRI="#Model"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#SDS_PAGE"/>
+        <Class IRI="#gel_electrophoresis"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#SELDI_TOF"/>
+        <Class IRI="#mass_Spectrometry"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#SNP_array"/>
+        <Class IRI="#microarray"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#SNP_detection"/>
+        <Class IRI="#genomics"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#SOP"/>
+        <Class IRI="#Asset"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#SOP"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#hasPart"/>
+            <Class IRI="#FactorsStudied"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#SOPFileFormat"/>
+        <Class IRI="#Format"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Sample"/>
+        <Class IRI="#BioMaterial"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Sample"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#isAssociatedWith"/>
+            <Class IRI="#Assay"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Sample"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#isAssociatedWith"/>
+            <Class IRI="#Data"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Sample"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#isDerivedFrom"/>
+            <Class IRI="#specimen"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Sample"/>
+        <DataSomeValuesFrom>
+            <DataProperty IRI="#SEEKID"/>
+            <Datatype abbreviatedIRI="xsd:string"/>
+        </DataSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Sample_preparation_SOP"/>
+        <Class IRI="#SOP"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Sample_preparation_SOP"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#isAssociatedWith"/>
+            <Class IRI="#Sample"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Sex/Gender"/>
+        <Class IRI="#characteristic_for_specimen_or_sample"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#SpectrumGeneration"/>
+        <Class IRI="#ProteomicsFactors"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#SpectrumInterpretation"/>
+        <Class IRI="#ProteomicsFactors"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#StrendaFileFormat"/>
+        <Class IRI="#DataFileFormat"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Study"/>
+        <Class IRI="#ExperimentDescription"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Substrate_utilization"/>
+        <Class IRI="#organism_or_strain_characterisation"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Tandem_Mass_Spectrometry"/>
+        <Class IRI="#mass_Spectrometry"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#TechnologyType"/>
+        <Class IRI="#ExperimentalFactors"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#TimeOfFlightDriftTube"/>
+        <Class IRI="#PostSourceComponent"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#UPLC"/>
+        <Class IRI="#chromatography"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#activity"/>
+        <Class IRI="#FactorsStudied"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#affinity_chromatography"/>
+        <Class IRI="#chromatography"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#amplification"/>
+        <Class IRI="#genomics"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#bait_protein_tagging"/>
+        <Class IRI="#molecule_labelling"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#binding"/>
+        <Class IRI="#TechnologyType"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#bioinformatics_analysis"/>
+        <Class IRI="#informaticsAnalysisType"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#biological_entity"/>
+        <Class IRI="#MeasuredItem"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#by-product_formation"/>
+        <Class IRI="#organism_or_strain_characterisation"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#capillary_electrophoresis"/>
+        <Class IRI="#electrophoresis"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#catabolic_response"/>
+        <Class IRI="#metabolite_profiling"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#cellAssay"/>
+        <Class IRI="#Assay"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#cell_cycle"/>
+        <Class IRI="#ModelAnalysisType"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#cell_growth_optimisation"/>
+        <Class IRI="#organism_or_strain_characterisation"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#cell_size"/>
+        <Class IRI="#organism_or_strain_characterisation"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#cell_type"/>
+        <Class IRI="#characteristic_for_specimen_or_sample"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#characteristic_for_specimen_or_sample"/>
+        <Class IRI="#ExperimentalFactors"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#cheminformatics_analysis"/>
+        <Class IRI="#informaticsAnalysisType"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#chemostat_measurements"/>
+        <Class IRI="#TechnologyType"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#chromatography"/>
+        <Class IRI="#TechnologyType"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#community_standard_specification"/>
+        <Class IRI="#DataFileFormat"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#comparative_genomics"/>
+        <Class IRI="#genomics"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#compound"/>
+        <Class IRI="#materialEntity"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#concentration"/>
+        <Class IRI="#FactorsStudied"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#continuousEnzymatic"/>
+        <Class IRI="#enzymaticAssay"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#custom_Array"/>
+        <Class IRI="#microarray"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#deletion"/>
+        <Class IRI="#mutationType"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#developmentalStage"/>
+        <Class IRI="#characteristic_for_specimen_or_sample"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#diploid"/>
+        <Class IRI="#ploidy"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#discontinuousEnzymatic"/>
+        <Class IRI="#enzymaticAssay"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#dry_biomass"/>
+        <Class IRI="#mass"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#electrophoresis"/>
+        <Class IRI="#TechnologyType"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#enzymaticAssay"/>
+        <Class IRI="#reactomics"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#enzymatic_activity_measurements"/>
+        <Class IRI="#TechnologyType"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#enzyme"/>
+        <Class IRI="#protein"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#enzymeActivity"/>
+        <Class IRI="#activity"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#enzymology"/>
+        <Class IRI="#ModelAnalysisType"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#explantation"/>
+        <Class IRI="#characteristic_for_specimen_or_sample"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#expression"/>
+        <Class IRI="#FactorsStudied"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#extracellular_concentration"/>
+        <Class IRI="#concentration"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#flow_cytometry"/>
+        <Class IRI="#TechnologyType"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#flux_balance_analysis"/>
+        <Class IRI="#fluxomics"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#flux_balance_analysis"/>
+        <Class IRI="#metabolite_profiling"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#fluxomics"/>
+        <Class IRI="#ExperimentalAssayType"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#functionalEntity"/>
+        <Class IRI="#biological_entity"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#gas_chromatography"/>
+        <Class IRI="#chromatography"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#gas_flow"/>
+        <Class IRI="#FactorsStudied"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#gel_electrophoresis"/>
+        <Class IRI="#electrophoresis"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#gel_filtration"/>
+        <Class IRI="#chromatography"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#gene"/>
+        <Class IRI="#materialEntity"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#gene_expression"/>
+        <Class IRI="#ModelAnalysisType"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#gene_expression_profiling"/>
+        <Class IRI="#transcriptomics"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#gene_regulatory_network"/>
+        <Class IRI="#ModelAnalysisType"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#genome"/>
+        <Class IRI="#materialEntity"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#genome-scale_enzyme_activity_profiling"/>
+        <Class IRI="#reactomics"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#genome_scale"/>
+        <Class IRI="#ModelAnalysisType"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#genomics"/>
+        <Class IRI="#ExperimentalAssayType"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#genotype"/>
+        <Class IRI="#functionalEntity"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#genotyping"/>
+        <Class IRI="#genomics"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#glucose_pulse"/>
+        <Class IRI="#metabolite_profiling"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#growth_medium"/>
+        <Class IRI="#FactorsStudied"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#haploid"/>
+        <Class IRI="#ploidy"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#hexaploid"/>
+        <Class IRI="#ploidy"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#imaging"/>
+        <Class IRI="#TechnologyType"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#immune_precipitation"/>
+        <Class IRI="#proteomics"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#informaticsAnalysisType"/>
+        <Class IRI="#AssayType"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#initial_rate_experiment"/>
+        <Class IRI="#enzymatic_activity_measurements"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#insertion"/>
+        <Class IRI="#mutationType"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#interactomics"/>
+        <Class IRI="#ExperimentalAssayType"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#intracellular_concentration"/>
+        <Class IRI="#concentration"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#limited_media_growth"/>
+        <Class IRI="#organism_or_strain_characterisation"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#liquid_chromatography-tandem_mass_spectrometry"/>
+        <Class IRI="#mass_Spectrometry"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#mass"/>
+        <Class IRI="#FactorsStudied"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#mass_Spectrometry"/>
+        <Class IRI="#TechnologyType"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#materialEntity"/>
+        <Class IRI="#biological_entity"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#material_type"/>
+        <Class IRI="#characteristic_for_specimen_or_sample"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#mathematical_modelType"/>
+        <Class IRI="#TechnologyType"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#metabolic_network"/>
+        <Class IRI="#ModelAnalysisType"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#metabolism"/>
+        <Class IRI="#ModelAnalysisType"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#metabolite"/>
+        <Class IRI="#compound"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#metabolite_profiling"/>
+        <Class IRI="#metabolomics"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#metabolomics"/>
+        <Class IRI="#ExperimentalAssayType"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#metabonomics"/>
+        <Class IRI="#metabolomics"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#methylation_profiling"/>
+        <Class IRI="#transcriptomics"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#miRNA_microarray"/>
+        <Class IRI="#microarray"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#microRNA_profiling"/>
+        <Class IRI="#transcriptomics"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#microarray"/>
+        <Class IRI="#TechnologyType"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#molecule_labelling"/>
+        <Class IRI="#TechnologyType"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#mutationType"/>
+        <Class IRI="#characteristic_for_specimen_or_sample"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#optical_density"/>
+        <Class IRI="#FactorsStudied"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#optical_density_600"/>
+        <Class IRI="#optical_density"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#organism"/>
+        <Class IRI="#materialEntity"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#organism"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#is_investigated_by"/>
+            <Class IRI="#Assay"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#organism"/>
+        <DataSomeValuesFrom>
+            <DataProperty IRI="#NCBI_ID"/>
+            <Datatype abbreviatedIRI="xsd:string"/>
+        </DataSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#organism_or_strain_characterisation"/>
+        <Class IRI="#ExperimentalAssayType"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#organism_part"/>
+        <Class IRI="#characteristic_for_specimen_or_sample"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#pH"/>
+        <Class IRI="#FactorsStudied"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#pathway"/>
+        <Class IRI="#functionalEntity"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#peptide"/>
+        <Class IRI="#protein"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#phenotype"/>
+        <Class IRI="#functionalEntity"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#physical_file_format"/>
+        <Class IRI="#DataFileFormat"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#ploidy"/>
+        <Class IRI="#characteristic_for_specimen_or_sample"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#post-translational_modification"/>
+        <Class IRI="#proteomics"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#pressure"/>
+        <Class IRI="#FactorsStudied"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#primer_design"/>
+        <Class IRI="#genomics"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#progressive_curve_experiment"/>
+        <Class IRI="#enzymatic_activity_measurements"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#protein"/>
+        <Class IRI="#materialEntity"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#protein-protein_interaction"/>
+        <Class IRI="#proteomics"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#protein-protein_interaction_profiling"/>
+        <Class IRI="#interactomics"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#protein_expression_profiling"/>
+        <Class IRI="#proteomics"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#protein_identification"/>
+        <Class IRI="#proteomics"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#protein_purification"/>
+        <Class IRI="#protein_identification"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#protein_structural_analysis"/>
+        <Class IRI="#proteomics"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#proteomics"/>
+        <Class IRI="#ExperimentalAssayType"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#qPCR"/>
+        <Class IRI="#PCR"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#qRT-PCR"/>
+        <Class IRI="#PCR"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#radioactive_labelling"/>
+        <Class IRI="#molecule_labelling"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#reactomics"/>
+        <Class IRI="#ExperimentalAssayType"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#sequencing"/>
+        <Class IRI="#TechnologyType"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#signal_transduction"/>
+        <Class IRI="#ModelAnalysisType"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#single_cell"/>
+        <Class IRI="#ExperimentalAssayType"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#small-molecule_microarray"/>
+        <Class IRI="#genome-scale_enzyme_activity_profiling"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#small_molecule_microarray"/>
+        <Class IRI="#microarray"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#software"/>
+        <Class IRI="#Equipment"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#software"/>
+        <DataSomeValuesFrom>
+            <DataProperty IRI="#title"/>
+            <Datatype abbreviatedIRI="xsd:string"/>
+        </DataSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#software"/>
+        <DataSomeValuesFrom>
+            <DataProperty IRI="#version"/>
+            <Datatype abbreviatedIRI="xsd:string"/>
+        </DataSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#specific_concentration"/>
+        <Class IRI="#concentration"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#specimen"/>
+        <Class IRI="#BioMaterial"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#specimen"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#hasCharacteristics"/>
+            <Class IRI="#CultureGrowthType"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#specimen"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#hasCharacteristics"/>
+            <Class IRI="#characteristic_for_specimen_or_sample"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#specimen"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#isDerivedFrom"/>
+            <Class IRI="#strain"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#specimen"/>
+        <DataSomeValuesFrom>
+            <DataProperty IRI="#External_supplier_ID"/>
+            <Datatype abbreviatedIRI="xsd:string"/>
+        </DataSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#specimen"/>
+        <DataSomeValuesFrom>
+            <DataProperty IRI="#Lab_internal_ID"/>
+            <Datatype abbreviatedIRI="xsd:string"/>
+        </DataSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#specimen"/>
+        <DataSomeValuesFrom>
+            <DataProperty IRI="#age_of_specimen/culture"/>
+            <Datatype abbreviatedIRI="xsd:string"/>
+        </DataSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#specimen"/>
+        <DataSomeValuesFrom>
+            <DataProperty IRI="#date_of_death"/>
+            <Datatype abbreviatedIRI="xsd:string"/>
+        </DataSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#specimen"/>
+        <DataSomeValuesFrom>
+            <DataProperty IRI="#description"/>
+            <Datatype abbreviatedIRI="xsd:string"/>
+        </DataSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#specimen_preparation_SOP"/>
+        <Class IRI="#SOP"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#specimen_preparation_SOP"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#isAssociatedWith"/>
+            <Class IRI="#specimen"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#strain"/>
+        <Class IRI="#organism"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#strain"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#hasPart"/>
+            <Class IRI="#genotype"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#strain"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#hasPart"/>
+            <Class IRI="#phenotype"/>
+        </ObjectSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#strain"/>
+        <DataSomeValuesFrom>
+            <DataProperty IRI="#External_supplier_ID"/>
+            <Datatype abbreviatedIRI="xsd:string"/>
+        </DataSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#strain"/>
+        <DataSomeValuesFrom>
+            <DataProperty IRI="#Lab_internal_ID"/>
+            <Datatype abbreviatedIRI="xsd:string"/>
+        </DataSomeValuesFrom>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#structural_methods"/>
+        <Class IRI="#TechnologyType"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#surface_plasmon_resonance"/>
+        <Class IRI="#binding"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#temperature"/>
+        <Class IRI="#FactorsStudied"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#tiling_array"/>
+        <Class IRI="#microarray"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#tiling_path"/>
+        <Class IRI="#transcriptomics"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#tissue_type"/>
+        <Class IRI="#characteristic_for_specimen_or_sample"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#transcriptional_profiling"/>
+        <Class IRI="#gene_expression_profiling"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#transcriptomics"/>
+        <Class IRI="#ExperimentalAssayType"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#translation"/>
+        <Class IRI="#ModelAnalysisType"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#translational_profiling"/>
+        <Class IRI="#gene_expression_profiling"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#turbidostat"/>
+        <Class IRI="#CultureGrowthType"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#volume"/>
+        <Class IRI="#FactorsStudied"/>
+    </SubClassOf>
+    <DisjointClasses>
+        <Class IRI="#Assay"/>
+        <Class IRI="#Investigation"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#Assay"/>
+        <Class IRI="#Study"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#AssayType"/>
+        <Class IRI="#BioMaterial"/>
+        <Class IRI="#FactorsStudied"/>
+        <Class IRI="#MeasuredItem"/>
+        <Class IRI="#MicroarrayFactors"/>
+        <Class IRI="#ProteomicsFactors"/>
+        <Class IRI="#TechnologyType"/>
+        <Class IRI="#characteristic_for_specimen_or_sample"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#AssayType"/>
+        <Class IRI="#TechnologyType"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#Asset"/>
+        <Class IRI="#Equipment"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#Asset"/>
+        <Class IRI="#ExperimentDescription"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#Asset"/>
+        <Class IRI="#ExperimentalFactors"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#Asset"/>
+        <Class IRI="#Format"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#Asset"/>
+        <Class IRI="#Project"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#Batch"/>
+        <Class IRI="#Chemostat"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#Data"/>
+        <Class IRI="#Model"/>
+        <Class IRI="#Publication"/>
+        <Class IRI="#SOP"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#DataFileFormat"/>
+        <Class IRI="#ModelExecutionEnvironment"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#DataFileFormat"/>
+        <Class IRI="#ModelFormat"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#DataFileFormat"/>
+        <Class IRI="#SOPFileFormat"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#Equipment"/>
+        <Class IRI="#ExperimentDescription"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#Equipment"/>
+        <Class IRI="#ExperimentalFactors"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#Equipment"/>
+        <Class IRI="#Format"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#Equipment"/>
+        <Class IRI="#Person"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#Equipment"/>
+        <Class IRI="#Project"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#ExperimentDescription"/>
+        <Class IRI="#ExperimentalFactors"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#ExperimentDescription"/>
+        <Class IRI="#Format"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#ExperimentDescription"/>
+        <Class IRI="#Person"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#ExperimentDescription"/>
+        <Class IRI="#Project"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#ExperimentalAssayType"/>
+        <Class IRI="#ModelAnalysisType"/>
+        <Class IRI="#informaticsAnalysisType"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#ExperimentalFactors"/>
+        <Class IRI="#Format"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#ExperimentalFactors"/>
+        <Class IRI="#Person"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#ExperimentalFactors"/>
+        <Class IRI="#Project"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#Format"/>
+        <Class IRI="#Person"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#Format"/>
+        <Class IRI="#Project"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#Investigation"/>
+        <Class IRI="#Study"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#ModelExecutionEnvironment"/>
+        <Class IRI="#ModelFormat"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#ModelExecutionEnvironment"/>
+        <Class IRI="#SOPFileFormat"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#ModelFormat"/>
+        <Class IRI="#SOPFileFormat"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#Person"/>
+        <Class IRI="#Project"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#fluxomics"/>
+        <Class IRI="#genomics"/>
+        <Class IRI="#interactomics"/>
+        <Class IRI="#organism_or_strain_characterisation"/>
+        <Class IRI="#proteomics"/>
+        <Class IRI="#reactomics"/>
+        <Class IRI="#single_cell"/>
+        <Class IRI="#transcriptomics"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#functionalEntity"/>
+        <Class IRI="#materialEntity"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#gene"/>
+        <Class IRI="#organism"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#gene"/>
+        <Class IRI="#protein"/>
+    </DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#organism"/>
+        <Class IRI="#protein"/>
+    </DisjointClasses>
+    <ClassAssertion>
+        <Class IRI="#Project"/>
+        <NamedIndividual IRI="#BaCell"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class abbreviatedIRI="owl:Thing"/>
+        <NamedIndividual IRI="#BaCell"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#organism"/>
+        <NamedIndividual IRI="#Bacillus_subtilis"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class abbreviatedIRI="owl:Thing"/>
+        <NamedIndividual IRI="#Bacillus_subtilis"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Project"/>
+        <NamedIndividual IRI="#COSMIC"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class abbreviatedIRI="owl:Thing"/>
+        <NamedIndividual IRI="#COSMIC"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#organism"/>
+        <NamedIndividual IRI="#Clostridium_acetobutylicum"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class abbreviatedIRI="owl:Thing"/>
+        <NamedIndividual IRI="#Clostridium_acetobutylicum"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#organism"/>
+        <NamedIndividual IRI="#Enterococcus_faecalis"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class abbreviatedIRI="owl:Thing"/>
+        <NamedIndividual IRI="#Enterococcus_faecalis"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#organism"/>
+        <NamedIndividual IRI="#Escherichia_coli"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class abbreviatedIRI="owl:Thing"/>
+        <NamedIndividual IRI="#Escherichia_coli"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#physical_file_format"/>
+        <NamedIndividual IRI="#Excel"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Project"/>
+        <NamedIndividual IRI="#KOSMOBAC"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class abbreviatedIRI="owl:Thing"/>
+        <NamedIndividual IRI="#KOSMOBAC"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#organism"/>
+        <NamedIndividual IRI="#Lactococcus_lactis"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class abbreviatedIRI="owl:Thing"/>
+        <NamedIndividual IRI="#Lactococcus_lactis"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Project"/>
+        <NamedIndividual IRI="#MOSES"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class abbreviatedIRI="owl:Thing"/>
+        <NamedIndividual IRI="#MOSES"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Project"/>
+        <NamedIndividual IRI="#Noisy-Strep"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class abbreviatedIRI="owl:Thing"/>
+        <NamedIndividual IRI="#Noisy-Strep"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Project"/>
+        <NamedIndividual IRI="#PSYSMO"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class abbreviatedIRI="owl:Thing"/>
+        <NamedIndividual IRI="#PSYSMO"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#organism"/>
+        <NamedIndividual IRI="#Pseudomonas_fluorescens"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class abbreviatedIRI="owl:Thing"/>
+        <NamedIndividual IRI="#Pseudomonas_fluorescens"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#organism"/>
+        <NamedIndividual IRI="#Pseudomonas_putida"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class abbreviatedIRI="owl:Thing"/>
+        <NamedIndividual IRI="#Pseudomonas_putida"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Project"/>
+        <NamedIndividual IRI="#STREAM"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class abbreviatedIRI="owl:Thing"/>
+        <NamedIndividual IRI="#STREAM"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Project"/>
+        <NamedIndividual IRI="#SUMO"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class abbreviatedIRI="owl:Thing"/>
+        <NamedIndividual IRI="#SUMO"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#organism"/>
+        <NamedIndividual IRI="#Saccharomyces_cerevisiae"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class abbreviatedIRI="owl:Thing"/>
+        <NamedIndividual IRI="#Saccharomyces_cerevisiae"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Project"/>
+        <NamedIndividual IRI="#ScaRAB"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class abbreviatedIRI="owl:Thing"/>
+        <NamedIndividual IRI="#ScaRAB"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Project"/>
+        <NamedIndividual IRI="#SilicoTryp"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class abbreviatedIRI="owl:Thing"/>
+        <NamedIndividual IRI="#SilicoTryp"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#organism"/>
+        <NamedIndividual IRI="#Streptococcus_pneumoniae"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class abbreviatedIRI="owl:Thing"/>
+        <NamedIndividual IRI="#Streptococcus_pneumoniae"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#organism"/>
+        <NamedIndividual IRI="#Streptococcus_pyogenes"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class abbreviatedIRI="owl:Thing"/>
+        <NamedIndividual IRI="#Streptococcus_pyogenes"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#organism"/>
+        <NamedIndividual IRI="#Streptomyces_coelicolor"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class abbreviatedIRI="owl:Thing"/>
+        <NamedIndividual IRI="#Streptomyces_coelicolor"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Project"/>
+        <NamedIndividual IRI="#SulfoSys"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class abbreviatedIRI="owl:Thing"/>
+        <NamedIndividual IRI="#SulfoSys"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#organism"/>
+        <NamedIndividual IRI="#Sulfolobus_solfataricus"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class abbreviatedIRI="owl:Thing"/>
+        <NamedIndividual IRI="#Sulfolobus_solfataricus"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Project"/>
+        <NamedIndividual IRI="#SysmoLab"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class abbreviatedIRI="owl:Thing"/>
+        <NamedIndividual IRI="#SysmoLab"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#Project"/>
+        <NamedIndividual IRI="#Translucent"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class abbreviatedIRI="owl:Thing"/>
+        <NamedIndividual IRI="#Translucent"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#organism"/>
+        <NamedIndividual IRI="#Trypanosoma_brucei"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class abbreviatedIRI="owl:Thing"/>
+        <NamedIndividual IRI="#Trypanosoma_brucei"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class IRI="#physical_file_format"/>
+        <NamedIndividual IRI="#image"/>
+    </ClassAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#investigates"/>
+        <NamedIndividual IRI="#BaCell"/>
+        <NamedIndividual IRI="#Bacillus_subtilis"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#is_investigated_by"/>
+        <NamedIndividual IRI="#Bacillus_subtilis"/>
+        <NamedIndividual IRI="#BaCell"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#investigates"/>
+        <NamedIndividual IRI="#COSMIC"/>
+        <NamedIndividual IRI="#Clostridium_acetobutylicum"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#is_investigated_by"/>
+        <NamedIndividual IRI="#Clostridium_acetobutylicum"/>
+        <NamedIndividual IRI="#COSMIC"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#is_investigated_by"/>
+        <NamedIndividual IRI="#Enterococcus_faecalis"/>
+        <NamedIndividual IRI="#SysmoLab"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#is_investigated_by"/>
+        <NamedIndividual IRI="#Escherichia_coli"/>
+        <NamedIndividual IRI="#KOSMOBAC"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#is_investigated_by"/>
+        <NamedIndividual IRI="#Escherichia_coli"/>
+        <NamedIndividual IRI="#SUMO"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#investigates"/>
+        <NamedIndividual IRI="#MOSES"/>
+        <NamedIndividual IRI="#Saccharomyces_cerevisiae"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#investigates"/>
+        <NamedIndividual IRI="#PSYSMO"/>
+        <NamedIndividual IRI="#Pseudomonas_putida"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#is_investigated_by"/>
+        <NamedIndividual IRI="#Pseudomonas_fluorescens"/>
+        <NamedIndividual IRI="#ScaRAB"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#investigates"/>
+        <NamedIndividual IRI="#STREAM"/>
+        <NamedIndividual IRI="#Streptomyces_coelicolor"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#is_investigated_by"/>
+        <NamedIndividual IRI="#Streptococcus_pneumoniae"/>
+        <NamedIndividual IRI="#SilicoTryp"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#investigates"/>
+        <NamedIndividual IRI="#SulfoSys"/>
+        <NamedIndividual IRI="#Sulfolobus_solfataricus"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#investigates"/>
+        <NamedIndividual IRI="#SysmoLab"/>
+        <NamedIndividual IRI="#Enterococcus_faecalis"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#investigates"/>
+        <NamedIndividual IRI="#SysmoLab"/>
+        <NamedIndividual IRI="#Lactococcus_lactis"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#investigates"/>
+        <NamedIndividual IRI="#SysmoLab"/>
+        <NamedIndividual IRI="#Streptococcus_pyogenes"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#investigates"/>
+        <NamedIndividual IRI="#Translucent"/>
+        <NamedIndividual IRI="#Saccharomyces_cerevisiae"/>
+    </ObjectPropertyAssertion>
+    <ObjectPropertyAssertion>
+        <ObjectProperty IRI="#is_investigated_by"/>
+        <NamedIndividual IRI="#Trypanosoma_brucei"/>
+        <NamedIndividual IRI="#Noisy-Strep"/>
+    </ObjectPropertyAssertion>
+    <InverseObjectProperties>
+        <ObjectProperty IRI="#isContributorOf"/>
+        <ObjectProperty IRI="#hasContributor"/>
+    </InverseObjectProperties>
+    <InverseObjectProperties>
+        <ObjectProperty IRI="#isFormatOf"/>
+        <ObjectProperty IRI="#hasFormat"/>
+    </InverseObjectProperties>
+    <InverseObjectProperties>
+        <ObjectProperty IRI="#itemProducedBy"/>
+        <ObjectProperty IRI="#hasItem"/>
+    </InverseObjectProperties>
+    <InverseObjectProperties>
+        <ObjectProperty IRI="#isPartOf"/>
+        <ObjectProperty IRI="#hasPart"/>
+    </InverseObjectProperties>
+    <InverseObjectProperties>
+        <ObjectProperty IRI="#hasType"/>
+        <ObjectProperty IRI="#isTypeOf"/>
+    </InverseObjectProperties>
+    <InverseObjectProperties>
+        <ObjectProperty IRI="#investigates"/>
+        <ObjectProperty IRI="#is_investigated_by"/>
+    </InverseObjectProperties>
+    <InverseObjectProperties>
+        <ObjectProperty IRI="#technologyUsedIn"/>
+        <ObjectProperty IRI="#usesTechnology"/>
+    </InverseObjectProperties>
+    <TransitiveObjectProperty>
+        <ObjectProperty IRI="#hasPart"/>
+    </TransitiveObjectProperty>
+    <TransitiveObjectProperty>
+        <ObjectProperty IRI="#hasType"/>
+    </TransitiveObjectProperty>
+    <TransitiveObjectProperty>
+        <ObjectProperty IRI="#isPartOf"/>
+    </TransitiveObjectProperty>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#hasCharacteristics"/>
+        <Class IRI="#BioMaterial"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#hasContributor"/>
+        <ObjectUnionOf>
+            <Class IRI="#Asset"/>
+            <Class IRI="#ExperimentDescription"/>
+        </ObjectUnionOf>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#hasFormat"/>
+        <Class IRI="#Asset"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#hasItem"/>
+        <Class IRI="#Project"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#hasType"/>
+        <Class IRI="#Assay"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#investigates"/>
+        <ObjectUnionOf>
+            <Class IRI="#Assay"/>
+            <Class IRI="#Project"/>
+        </ObjectUnionOf>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#isContributorOf"/>
+        <Class IRI="#Person"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#isFormatOf"/>
+        <Class IRI="#Format"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#is_investigated_by"/>
+        <Class IRI="#organism"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#isconstructedFrom"/>
+        <Class IRI="#Model"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#itemProducedBy"/>
+        <ObjectUnionOf>
+            <Class IRI="#Asset"/>
+            <Class IRI="#ExperimentDescription"/>
+        </ObjectUnionOf>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#technologyUsedIn"/>
+        <Class IRI="#TechnologyType"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#usesTechnology"/>
+        <Class IRI="#AssayType"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#hasCharacteristics"/>
+        <Class IRI="#characteristic_for_specimen_or_sample"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#hasContributor"/>
+        <Class IRI="#Person"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#hasFormat"/>
+        <Class IRI="#Format"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#hasItem"/>
+        <ObjectUnionOf>
+            <Class IRI="#Asset"/>
+            <Class IRI="#ExperimentDescription"/>
+        </ObjectUnionOf>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#investigates"/>
+        <Class IRI="#organism"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#isContributorOf"/>
+        <ObjectUnionOf>
+            <Class IRI="#Asset"/>
+            <Class IRI="#ExperimentDescription"/>
+        </ObjectUnionOf>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#isFormatOf"/>
+        <Class IRI="#Asset"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#isTypeOf"/>
+        <Class IRI="#Assay"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#is_investigated_by"/>
+        <ObjectUnionOf>
+            <Class IRI="#Assay"/>
+            <Class IRI="#Project"/>
+        </ObjectUnionOf>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#isconstructedFrom"/>
+        <ObjectUnionOf>
+            <Class IRI="#Data"/>
+            <Class IRI="#Publication"/>
+        </ObjectUnionOf>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#itemProducedBy"/>
+        <Class IRI="#Project"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#technologyUsedIn"/>
+        <Class IRI="#AssayType"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#usesTechnology"/>
+        <Class IRI="#TechnologyType"/>
+    </ObjectPropertyRange>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#ECNumber"/>
+        <DataProperty IRI="#identifiers"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#External_supplier_ID"/>
+        <DataProperty IRI="#identifiers"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#Lab_internal_ID"/>
+        <DataProperty IRI="#identifiers"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#NCBI_ID"/>
+        <DataProperty IRI="#identifiers"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#SEEKID"/>
+        <DataProperty IRI="#identifiers"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#WebLink"/>
+        <DataProperty IRI="#identifiers"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#age_of_specimen/culture"/>
+        <DataProperty abbreviatedIRI="owl:topDataProperty"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#sequence_accession"/>
+        <DataProperty IRI="#identifiers"/>
+    </SubDataPropertyOf>
+    <DataPropertyDomain>
+        <DataProperty IRI="#manufacturer"/>
+        <Class IRI="#Instrument"/>
+    </DataPropertyDomain>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#13C_radiolabelling</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00137</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+        <IRI>#2-hybrid_system</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Two-hybrid screening (also known as yeast two-hybrid system or Y2H) is a molecular biology technique used to discover protein-protein interactions and protein-DNA interactions by testing for physical interactions</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#2-hybrid_system</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00106</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#2-hybrid_system</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">yeast 2 hybrid</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#2D_gel_electrophoresis</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00115</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#Accelerator_Mass_Spectrometry</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00120</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#Algebraic_equation</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00139</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+        <IRI>#Assay</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">descriptions of individual experiments</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#Assay</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00021</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+        <IRI>#AssayType</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">An assay type describes the type of experiment being performed</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#AssayType</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00024</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#AssayType</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">The assay_type hierarchy allows scientists to categorise their experimental assays, informatics analyses and computational models within SysMO</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+        <IRI>#Asset</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">all shareable entities in the SysMO SEEK are kinds of Assets</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#Asset</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00010</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+        <IRI>#Batch</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">A large-scale closed system culture in which cells are grown in a fixed volume of nutrient culture medium under specific environmental conditions</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#Batch</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:021</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#BioMaterial</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:67650</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#BioMaterial</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">This part of the ontology is still in development</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#Buffer</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:011</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#CellML</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:40020</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#ChIP-on-chip</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00130</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#ChIP-on-chip</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Chromatin Immunoprecipitation on Chip</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+        <IRI>#Chemostat</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">a bioreactor to which fresh medium is continuously added, while culture liquid is continuously removed to keep the culture volume constant.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#Chemostat</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:022</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#Chip-Seq</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:018</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#CollisionCell</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:50003</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#Comparative_genomic_hybridization</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00086</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+        <IRI>#CultureGrowthType</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">SysMO studies microorganisms. Each experiment is performed on cell cultures, so it is essential to record the type of culture in use each time</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#CultureGrowthType</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00026</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#DNA_Methylation</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00131</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#DNA_sequencing</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00058</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+        <IRI>#Data</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">SEEK data files</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#Data</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00011</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#DataFileFormat</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00038</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#Detectors</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:50004</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#ElectrosprayIonisation</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:50000</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#EnzymeReactionAssay</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:40006</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#EnzymeReactionData</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:40001</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+        <IRI>#Equipment</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">tools or machines used in the laboratory, or computer hardware or software used for data analysis</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#Equipment</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:90004</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#Exon_array</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:50015</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+        <IRI>#ExperimentDescription</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">the experimental context for any of the SEEK assets</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#ExperimentDescription</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00016</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#ExperimentalAssayType</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00043</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <IRI>#ExperimentalAssayType</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">An experimental assay is an assay carried out in a laboratory</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#ExperimentalDesignType</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:58493</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#ExperimentalFactorType</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:26754</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+        <IRI>#ExperimentalFactors</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">ExperimentalFactors are descriptors of the properties of the experiment. How the culture was prepared, what organism they are from, and what type of experiment was run</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#ExperimentalFactors</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00017</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#ExpressionValueMeasurementType</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:20946</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+        <IRI>#FACS</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Fluorescence Activated Cell Sorting</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#FACS</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:90002</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#FRAP</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00119</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#FRAP</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">fluorescence recovery after photobleaching</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#FT-ICR</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:50005</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+        <IRI>#FactorsStudied</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">factors studied describe what types of measurements were taken (i.e. what factors were expected to change during the experiment)</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#FactorsStudied</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00027</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#FactorsStudied</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">also known as ExperimentalConditions when used to set up initial conditions for an experiment/assay</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#Format</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00018</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#Gas_Chromatography_Mass_Spectrometry</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00121</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+        <IRI>#HPLC</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">High Performance Liquid Chromatography. 
+Liquid chromatography (LC) is a separation technique in which the mobile phase is a liquid</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#HPLC</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00108</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#HPLC</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">High Performance Liquid Chromatography</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#Hybridization</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:44538</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#Inductively_Coupled_Plasma_Mass_Spectrometry</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00122</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+        <IRI>#Instrument</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">machines or tools used in laboratory experiments</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#Instrument</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:40004</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+        <IRI>#Investigation</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">A high level description of the experimental work undertaken</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#Investigation</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00022</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#IonOptics</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:50006</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#IonTrap</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:50007</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#Ion_Mobility_Spectrometry_Mass_Spectrometry</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00123</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#IonizationSource</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:40009</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#Isotope_Ratio_Mass_Spectrometry</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00124</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#Label</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:24776</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#Linear_equation</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00140</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#Liquid_chromatography_Mass_Spectrometry</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00125</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#MAGE-TAB</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:91021</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#MAGEML</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:30184</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#MALDI</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:50001</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#MALDI_TOF</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00126</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#MIRIAMCompliant</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:50012</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+        <IRI>#MassSpecAssay</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">proteomicsAssay</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#MassSpecAssay</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:0007</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#MassSpecFileFormat</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:40018</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#MassSpecProteomicsData</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:40002</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+        <IRI>#MeasuredItem</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">the entity under investigation (e.g. glucose)</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#MeasuredItem</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00028</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#MeasuredItem</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">This part of the ontology is still in development</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#MicroarrayAssay</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:85192</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#MicroarrayData</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:82270</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#MicroarrayFactors</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:38539</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#MicroarrayFileFormat</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:37735</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+        <IRI>#Model</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">computational models developed by SEEK consortium members</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#Model</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00012</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+        <IRI>#ModelAnalysisType</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">a model analysis type is a model &quot;assay&quot; type to classify the information contained within the model. The categories correspond to the existing categories in JWS Onnline, a tool for model simmulation</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#ModelAnalysisType</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00044</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#ModelExecutionEnvironment</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00039</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#ModelFormat</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00040</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#NMR</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00138</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#NatureProtocols</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00042</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#Next_Generation_Sequencing</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:020</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#Next_Generation_sequencing_analysis</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:002</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#Noisy-Strep</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Noisy-Strep</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#NormalizationMethod</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:62033</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#Ordinary_differential_equation</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00141</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+        <IRI>#PCR</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">the polymerase chain reaction (PCR) is a technique to amplify a single or few copies of a piece of DNA across several orders of magnitude, generating thousands to millions of copies of a particular DNA sequence.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#PCR</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00093</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#Partial_differential_equation</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00142</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+        <IRI>#Person</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">a SEEK consortium member</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#Person</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00019</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#PostSourceComponent</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:50002</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+        <IRI>#Project</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">collaborative, funded scinetific investigations</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#Project</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00020</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#ProteomicsFactors</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:40008</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#ProteomicsFileFormat</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:40017</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+        <IRI>#Publication</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">publication abstracts relating to other SEEK assets</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#Publication</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00014</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#QualityControlType</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:87160</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#Quantitation</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:50009</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#RNA-Seq</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:019</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+        <IRI>#RNA-seq_profiling</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">RNA-SEQ, or Whole Transcriptome Shotgun Sequencing, allows the sequencing of cDNA in order to deterimine RNA content. RNA-Seq_analysis are experiments that make use of such data.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#RNA-seq_profiling</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:001</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+        <IRI>#RNAi</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">experiments involving RNA Interference</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#RNAi</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00087</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#ReplicateType</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:50925</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#SBML_format</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:40021</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#SBML_model</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:40003</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#SDS_PAGE</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00116</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#SDS_PAGE</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">sodium dodecyl sulfate polyacrylamide gel electrophoresis</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#SELDI_TOF</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00127</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#SNP_array</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:50017</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#SNP_detection</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00059</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+        <IRI>#SOP</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Standard operating procedures and protocols</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#SOP</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00015</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#SOPFileFormat</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00041</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#Sample</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:69863</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+        <IRI>#Sample_preparation_SOP</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">describes the treatments and conditions applied at the time of sampling</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#SilicoTryp</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">SilicoTryp</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#SpectrumGeneration</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:40010</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#SpectrumInterpretation</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:40011</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#StrendaFileFormat</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:40019</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#Streptococcus_pneumoniae</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Streptococcus_pneumoniae</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+        <IRI>#Study</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">a collection of experiments designed to answer a particular biological question</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#Study</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00023</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#Substrate_utilization</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:005</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#Tandem_Mass_Spectrometry</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00128</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+        <IRI>#TechnologyType</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">describes the technologies and/or techniques used in performing experiments</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#TechnologyType</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00025</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#TimeOfFlightDriftTube</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:50008</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#Trypanosoma_brucei</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Trypanosoma_brucei</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+        <IRI>#UPLC</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Ultra Performance Liquid Chromatography
+Liquid chromatography (LC) is a separation technique in which the mobile phase is a liquid</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#UPLC</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00109</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#UPLC</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Ultra Performance Liquid Chromatography</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#activity</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:110001</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#activity</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">activity</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+        <IRI>#affinity_chromatography</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Affinity chromatography is based on selective non-covalent interaction between an analyte and specific molecules.
+ It is often used in biochemistry in the purification of proteins bound to tags. These fusion proteins are labeled with compounds such as His-tags, biotin or antigens, which bind to the stationary phase specifically.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#affinity_chromatography</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00110</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#affinity_chromatography</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">affinity_purification</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+        <IRI>#amplification</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">e.g. RT_PCR to amplify DNA from RNA</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#amplification</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:000007</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#bait_protein_tagging</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00135</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+        <IRI>#binding</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">laboratory techniques which involve separation by binding the molecules of interest</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#binding</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00094</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+        <IRI>#bioinformatics_analysis</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">a bioinformatics analysis is an &quot;assay&quot; performed in silico, employing bioinformatics techniques to analyse biological data</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#bioinformatics_analysis</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00046</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#biological_entity</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:40012</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#by-product_formation</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:004</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#capillary_electrophoresis</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00113</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#catabolic_response</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00068</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+        <IRI>#cellAssay</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">cellAssay</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#cellAssay</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:40007</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#cell_cycle</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00048</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#cell_growth_optimisation</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00066</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#cell_size</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:006</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+        <IRI>#cheminformatics_analysis</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">a cheminformatics analysis is an &quot;assay&quot; performed in silico, employing cheminformatics techniques to analyse biological data</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#cheminformatics_analysis</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00047</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+        <IRI>#chromatography</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Chromatography is the collective term for a set of laboratory techniques for the separation of mixtures. It involves passing a mixture dissolved in a &quot;mobile phase&quot; through a stationary phase, which separates the analyte to be measured from other molecules in the mixture based on differential partitioning between the mobile and stationary phases.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#chromatography</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00095</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#comparative_genomics</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00060</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#compound</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:015</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#concentration</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00031</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#continuousEnzymatic</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:008</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#custom_Array</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00132</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#discontinuousEnzymatic</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:009</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#dry_biomass</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00037</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+        <IRI>#electrophoresis</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Electrophoresis is the motion of dispersed particles relative to a fluid under the influence of a spatially uniform electric field</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#electrophoresis</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00096</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#enzymaticAssay</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00083</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#enzymatic_activity_measurements</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00097</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#enzyme</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:501000</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#enzymeActivity</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:012</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#enzymeActivity</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">enzymeActivity</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#enzymology</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00049</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#expression</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00033</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#extracellular_concentration</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:000001</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#flow_cytometry</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:90003</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+        <IRI>#flux_balance_analysis</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">a method for analysing the flow of metabolites through metabolic networks </Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#flux_balance_analysis</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00069</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+        <IRI>#fluxomics</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">the dynamic changes of molecules within a cell over time</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#fluxomics</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00056</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#functionalEntity</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:40014</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+        <IRI>#gas_chromatography</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Gas chromatography (GC) is a separation technique in which the mobile phase is a gas</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#gas_chromatography</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00111</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#gas_flow</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:110002</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#gel_electrophoresis</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00114</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+        <IRI>#gel_filtration</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Size exclusion chromatography (SEC), also known as gel permeation chromatography or gel filtration chromatography, separates particles on the basis of size. It is generally a low resolution chromatography and thus it is often reserved for the final, &quot;polishing&quot; step of a purification. It is also useful for determining the tertiary structure and quaternary structure of purified proteins.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#gel_filtration</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00112</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#gel_filtration</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">size_exclusion_chromatography</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#gene</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:40015</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#gene_expression</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00050</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+        <IRI>#gene_expression_profiling</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">analysing the gene expression across an organism in particular environmental conditions</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#gene_expression_profiling</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00088</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#gene_regulatory_network</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00051</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#genome-scale_enzyme_activity_profiling</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00081</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#genome_scale</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:010</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+        <IRI>#genomics</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">the study of the genome of an organism</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#genomics</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00057</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+        <IRI>#genotype</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">A genotype is a variant genome, complete or incomplete - definition from the Sequence Ontology</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#genotyping</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00061</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#glucose_pulse</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00070</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#growth_medium</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:013</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#imaging</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00098</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#immune_precipitation</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00073</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+        <IRI>#informaticsAnalysisType</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">an informatics analysis is an &quot;assay&quot; performed in silico, employing informatics techniques to analyse data</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#informaticsAnalysisType</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00045</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#initial_rate_experiment</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00117</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#instrument_model</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">instrument_model</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+        <IRI>#interactomics</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">the study of the network of interactions between proteins, metabolites and other biological objects in the cell, and the consequences of those interactions</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#interactomics</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00063</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#intracellular_concentration</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:000002</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#limited_media_growth</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:007</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#liquid_chromatography-tandem_mass_spectrometry</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00129</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#manufacturer</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">manufacturer</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#mass</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00030</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+        <IRI>#mass_Spectrometry</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Mass spectrometry (MS) is an analytical technique for the determination of the elemental composition of a sample or molecule. It is used for elucidating the chemical structures of peptides and sometimes other chemical compounds</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#mass_Spectrometry</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00099</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#materialEntity</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:40013</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#material_type</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">links to CV in MGED and others
+</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#mathematical_modelType</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00103</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#metabolic_network</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00052</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#metabolism</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00054</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#metabolite</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:016</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#metabolite_profiling</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00067</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+        <IRI>#metabolomics</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">the analysis of metabolism and the dynamic changes in concentration of small molecules and metabolites in different conditions</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#metabolomics</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00065</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#metabonomics</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00071</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#metabonomics</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">quantitative metabolomics</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#methylation_profiling</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00091</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#miRNA_microarray</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00133</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#microRNA_profiling</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00092</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#microarray</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00100</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+        <IRI>#molecule_labelling</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">techniques for labelling molecules to allow them to be detected in laboratory analyses</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#molecule_labelling</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00101</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#mutationType</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">modifications </Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#optical_density</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00034</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#optical_density_600</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:014</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#organism</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00029</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+        <IRI>#organism_or_strain_characterisation</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">experiments to differentiate between different species or strains by their functional properties or genetic profiles</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#organism_or_strain_characterisation</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:003</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#organism_part</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">links to CV in MGED and others</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#pH</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00035</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#pathway</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:40016</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#peptide</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:50020</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#post-translational_modification</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00074</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#pressure</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:90001</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#pressure</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">pressure</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#primer_design</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00062</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#progressive_curve_experiment</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00118</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#protein</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:40017</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#protein-protein_interaction</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00075</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#protein-protein_interaction_profiling</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00064</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#protein_expression_profiling</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00076</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#protein_identification</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00077</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#protein_purification</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00078</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#protein_structural_analysis</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00079</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+        <IRI>#proteomics</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Proteomics is the study of the function and structure of proteins in an organism, predominantly using high-throughput techniques</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#proteomics</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00072</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+        <IRI>#qPCR</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">quantitative real time polymerase chain reaction (Q-PCR/qPCR) or kinetic polymerase chain reaction, is  based on PCR and is used to amplify and simultaneously quantify a targeted DNA molecule</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#qPCR</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00104</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#qPCR</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">also known as real-time PCR or quantative PCR</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+        <IRI>#qRT-PCR</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Reverse transcription polymerase chain reaction (RT-PCR) is a variant of polymerase chain reaction (PCR). In RT-PCR an RNA strand is first reverse transcribed into its DNA complement (complementary DNA, or cDNA) using the enzyme reverse transcriptase, and the resulting cDNA is amplified using traditional or real-time PCR.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#qRT-PCR</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00105</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#qRT-PCR</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">Real-time reverse-transcription PCR, qRT-PCR</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#radioactive_labelling</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00136</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+        <IRI>#reactomics</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">the study of biochemical reactions in the cell</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#reactomics</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00080</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#sequence_accession</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">sequence_accession</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+        <IRI>#sequencing</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">techniques for determining the DNA or protein sequence</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#sequencing</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:017</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#signal_transduction</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00053</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+        <IRI>#single_cell</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">analysing the response of single cells to stimuli and perturbations by fluorescence and imaging</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#single_cell</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00084</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#small-molecule_microarray</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00082</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#small_molecule_microarray</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00134</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+        <IRI>#software</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">computer programs used for data analysis or curation</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#software</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:40005</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#specific_concentration</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00032</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+        <IRI>#specimen</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">The biological entitiy under investigation, from which samples are taken. For eukaryotes, this may be a description of the whole organism (i.e. an individual mouse), or part of an organism (e.g. an organ, tissue or cell culture). For prokaryotes, this is a description of the originating cell culture (batch, chemostat etc)</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#specimen</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">This class is equivalent to the &#39;sample groups&#39; class in the EBI BioSamples data model</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+        <IRI>#specimen_preparation_SOP</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">describes the treatments and conditions of the specimen before samples are taken</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#structural_methods</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00102</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#surface_plasmon_resonance</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00107</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#temperature</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00036</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#termsofDistribution</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">termsofDistribution</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#tiling_array</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:50016</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#tiling_path</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00092</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#timepoint</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">timepoint</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+        <IRI>#transcriptional_profiling</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">also called cDNA Microarray</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#transcriptional_profiling</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00089</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+        <IRI>#transcriptomics</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">The study of the transcriptome, the complete set of RNA transcripts produced by the genome at any one time</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#transcriptomics</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00085</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#translation</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00055</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+        <IRI>#translational_profiling</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">The genome-wide measure of the nascent proteome</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#translational_profiling</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:00090</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+        <IRI>#turbidostat</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">a continuous culture device that has feedback between the turbidity of the culture vessel and the dilution rate</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#turbidostat</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:023</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#units</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">units</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:label"/>
+        <IRI>#version</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">version</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:identifier"/>
+        <IRI>#volume</IRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">JERM:110000</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="dc:description"/>
+        <AbbreviatedIRI>owl:Thing</AbbreviatedIRI>
+        <Literal datatypeIRI="&rdf;PlainLiteral">need to link to biological objects
+genes
+proteins
+enzyme reactions
+= GO
+
+pathways
+cells
+organisms
+
+
+we already have organisms
+
+once we can point to the species of reactions, we can model the SBO part more effectively
+
+Factors studied and experimental conditions make more sense seperately now we have more examples
+
+
+Can we import the entity part of the SBO? 
+The interaction between models and data is at the heart of SysMO, so the SBO should also be</Literal>
+    </AnnotationAssertion>
+</Ontology>
+
+
+
+<!-- Generated by the OWL API (version 3.2.3.1824) http://owlapi.sourceforge.net -->
+

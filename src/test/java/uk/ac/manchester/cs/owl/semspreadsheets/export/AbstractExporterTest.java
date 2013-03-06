@@ -114,7 +114,7 @@ public class AbstractExporterTest {
 	 */
 	@Test
 	public void getPopulatedValidatedCellDetails2() throws Exception {
-		URI uri = AbstractExporterTest.class.getResource("/partially_populated_mged_book.xls").toURI();
+		URI uri = DocumentsCatalogue.partiallyPopulatedMGEDWorkbookURI();
 		AbstractExporter exporter = new AbstractExporterTestImpl(uri);
 		assertEquals(3,exporter.getPopulatedValidatedCellDetails().size());
 		List<PopulatedValidatedCellDetails> list = new ArrayList<PopulatedValidatedCellDetails>(exporter.getPopulatedValidatedCellDetails());
@@ -146,7 +146,7 @@ public class AbstractExporterTest {
 	 */
 	@Test
 	public void getPopulatedValidatedCellDetails3() throws Exception {
-		URI uri = AbstractExporterTest.class.getResource("/two_ontologies.xls").toURI();
+		URI uri = DocumentsCatalogue.twoOntologiesWorkbookURI();
 		AbstractExporter exporter = new AbstractExporterTestImpl(uri);
 		assertEquals(2,exporter.getPopulatedValidatedCellDetails().size());
 		List<PopulatedValidatedCellDetails> list = new ArrayList<PopulatedValidatedCellDetails>(exporter.getPopulatedValidatedCellDetails());

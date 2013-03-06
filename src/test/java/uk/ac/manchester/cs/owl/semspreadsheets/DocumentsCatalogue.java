@@ -9,137 +9,150 @@ package uk.ac.manchester.cs.owl.semspreadsheets;
 import java.io.File;
 import java.net.URI;
 
+import uk.ac.manchester.cs.owl.semspreadsheets.export.AbstractExporterTest;
+
 public class DocumentsCatalogue {
-	
+
 	public static URI jermOntologyURI() throws Exception {
-		return uriForResourceName("JERM.owl");
+		return uriForResourceName("ontologies/JERM.owl");
 	}
-	
+
 	public static URI mgedOntologyURI() throws Exception {
-		return uriForResourceName("MGEDOntology.owl");
+		return uriForResourceName("ontologies/MGEDOntology.owl");
 	}
-	
+
 	public static URI aminoAcidOntologyURI() throws Exception {
-		return uriForResourceName("amino-acid.owl");
+		return uriForResourceName("ontologies/amino-acid.owl");
 	}
-	
+
 	public static URI rdfSchemaOntologyURI() throws Exception {
-		return uriForResourceName("dwcterms_v2011-10-26.rdf");
+		return uriForResourceName("ontologies/dwcterms_v2011-10-26.rdf");
 	}
-	
+
 	public static URI scoroOntologyURI() throws Exception {
-		return uriForResourceName("scoro.owl");
+		return uriForResourceName("ontologies/scoro.owl");
 	}
-	
-	//a simple workbook that contains cells with quotes and commas
+
+	// a simple workbook that contains cells with quotes and commas
 	public static URI simpleWorkbookForCSVURI() throws Exception {
-		return uriForResourceName("workbookForCSVTest.xls");
+		return uriForResourceName("workbooks/workbookForCSVTest.xls");
 	}
-	
-	//a simple xlsx workbook that contains cells with quotes and commas
+
+	// a simple xlsx workbook that contains cells with quotes and commas
 	public static URI simpleXLSXWorkbookForCSVURI() throws Exception {
-		return uriForResourceName("workbookForCSVTest.xlsx");
+		return uriForResourceName("workbooks/workbookForCSVTest.xlsx");
 	}
-	
-	//A workbook with the cells B2:D5 applied with FreeText and property http://www.mygrid.org.uk/ontology/JERMOntology#ECNumber
+
+	// A workbook with the cells B2:D5 applied with FreeText and property
+	// http://www.mygrid.org.uk/ontology/JERMOntology#ECNumber
 	public static URI simpleWorkbookWithLiteralsOverRangeURI() throws Exception {
-		return uriForResourceName("literals_only_over_range.xls");
+		return uriForResourceName("workbooks/literals_only_over_range.xls");
 	}
-	
-	//A workbook with the cells B2:D5 applied with FreeText and property http://www.mygrid.org.uk/ontology/JERMOntology#ECNumber
-		public static URI simpleWorkbookWithLiteralsOverRangeXLSXURI() throws Exception {
-			return uriForResourceName("literals_only_over_range.xlsx");
-		}
-	
+
+	// A workbook with the cells B2:D5 applied with FreeText and property
+	// http://www.mygrid.org.uk/ontology/JERMOntology#ECNumber
+	public static URI simpleWorkbookWithLiteralsOverRangeXLSXURI()
+			throws Exception {
+		return uriForResourceName("workbooks/literals_only_over_range.xlsx");
+	}
+
 	public static URI simpleAnnotatedworkbookURI() throws Exception {
-		return uriForResourceName("simple_annotated_book.xls");
+		return uriForResourceName("workbooks/simple_annotated_book.xls");
 	}
-	
+
 	public static URI simpleAnnotatedXLSXWorkbookURI() throws Exception {
-		return uriForResourceName("simple_annotated_book.xlsx");
+		return uriForResourceName("workbooks/simple_annotated_book.xlsx");
 	}
-	
+
 	public static URI simpleWorkbookURI() throws Exception {
-		return uriForResourceName("simple_book.xls");
+		return uriForResourceName("workbooks/simple_book.xls");
 	}
 	
+	
+
 	public static URI bookWithPropertiesURI() throws Exception {
-		return uriForResourceName("book_with_properties.xls");
+		return uriForResourceName("workbooks/book_with_properties.xls");
 	}
-	
+
 	public static URI bookWithPropertiesXLSXURI() throws Exception {
-		return uriForResourceName("book_with_properties.xlsx");
+		return uriForResourceName("workbooks/book_with_properties.xlsx");
 	}
-	
+
 	public static URI partiallyPopulatedWorkbookURI() throws Exception {
-		return uriForResourceName("partially_populated_JERM_template.xls");		
+		return uriForResourceName("workbooks/partially_populated_JERM_template.xls");
 	}
-	
+
 	public static File populatedJermWorkbookFile() throws Exception {
-		return fileForResourceName("populated_JERM_template.xls");
+		return fileForResourceName("workbooks/populated_JERM_template.xls");
 	}
-	
+
 	public static File populatedJermWorkbookXLSXFile() throws Exception {
-		return fileForResourceName("populated_JERM_template.xlsx");
+		return fileForResourceName("workbooks/populated_JERM_template.xlsx");
 	}
-	
+
 	public static URI populatedJermWorkbookURI() throws Exception {
-		return uriForResourceName("populated_JERM_template.xls");
-	}	
-	
+		return uriForResourceName("workbooks/populated_JERM_template.xls");
+	}
+
 	public static URI populatedJermWorkbookXLSXURI() throws Exception {
-		return uriForResourceName("populated_JERM_template.xlsx");
+		return uriForResourceName("workbooks/populated_JERM_template.xlsx");
 	}
-	
+
 	public static URI twoOntologiesWorkbookURI() throws Exception {
-		return uriForResourceName("two_ontologies.xls");
+		return uriForResourceName("workbooks/two_ontologies.xls");
 	}
-	
+
 	public static URI twoOntologiesWorkbookXLSXURI() throws Exception {
-		return uriForResourceName("two_ontologies.xlsx");
+		return uriForResourceName("workbooks/two_ontologies.xlsx");
 	}
-	
+
 	public static URI simpleExcel2007WorkbookURI() throws Exception {
-		return uriForResourceName("simple_excel2007.xlsx");
+		return uriForResourceName("workbooks/simple_excel2007.xlsx");
 	}
-	
+
 	public static URI nonExistantFileURI() throws Exception {
 		URI uri = DocumentsCatalogue.class.getResource("/").toURI();
-		return new URI(uri.toString()+"dont_exist.xls");
+		return new URI(uri.toString() + "dont_exist.xls");
 	}
-	
+
 	public static URI workbookWithColoursXLSXURI() throws Exception {
-		return uriForResourceName("spreadsheet_with_colours.xlsx");
+		return uriForResourceName("workbooks/spreadsheet_with_colours.xlsx");
 	}
-	
+
 	public static URI workbookWithColoursURI() throws Exception {
-		return uriForResourceName("spreadsheet_with_colours.xls");
-	}
-	
-	private static URI uriForResourceName(String resource) throws Exception {
-		return DocumentsCatalogue.class.getResource("/"+resource).toURI();
-	}
-		
-	
-	private static File fileForResourceName(String resource) throws Exception {
-		String filename = DocumentsCatalogue.class.getResource("/"+resource).getFile();
-		return new File(filename);
+		return uriForResourceName("workbooks/spreadsheet_with_colours.xls");
 	}
 
 	public static URI bookWithNumericsAndStringsURI() throws Exception {
-		return uriForResourceName("csv_problem_numerics.xls");
+		return uriForResourceName("workbooks/csv_problem_numerics.xls");
 	}
 
 	public static URI bookWithNumericsAndStringsXLSXURI() throws Exception {
-		return uriForResourceName("csv_problem_numerics.xlsx");		
+		return uriForResourceName("workbooks/csv_problem_numerics.xlsx");
 	}
 
 	public static URI prideTemplateEmptyWorkbookURI() throws Exception {
-		return uriForResourceName("pride_template_empty.xls");		
+		return uriForResourceName("workbooks/pride_template_empty.xls");
+	}
+
+	public static URI prideTemplateEmptyWorkbookXLSXURI() throws Exception {
+		return uriForResourceName("workbooks/pride_template_empty.xlsm");
 	}
 	
-	public static URI prideTemplateEmptyWorkbookXLSXURI() throws Exception {
-		return uriForResourceName("pride_template_empty.xlsm");
+	public static URI partiallyPopulatedMGEDWorkbookURI() throws Exception {
+		 return uriForResourceName("workbooks/partially_populated_mged_book.xls");
 	}
+
+	private static URI uriForResourceName(String resource) throws Exception {
+		return DocumentsCatalogue.class.getResource("/" + resource).toURI();
+	}
+
+	private static File fileForResourceName(String resource) throws Exception {
+		String filename = DocumentsCatalogue.class.getResource("/" + resource)
+				.getFile();
+		return new File(filename);
+	}
+
+	
 
 }
