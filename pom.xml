@@ -59,6 +59,11 @@
 	</build>
 	<dependencies>
 		<dependency>
+			<groupId>uk.ac.manchester.cs.skos</groupId>
+			<artifactId>skos-api</artifactId>
+			<version>3</version>
+		</dependency>
+		<dependency>
 			<groupId>net.sourceforge.owlapi</groupId>
 			<artifactId>owlapi-api</artifactId>
 			<version>3.4.3</version>
