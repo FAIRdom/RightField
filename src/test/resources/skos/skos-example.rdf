@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns:f="http://www.fluffyboards.com/vocabulary#"
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  xmlns:skos="http://www.w3.org/2004/02/skos/core#">
+  <skos:Concept rdf:about="http://www.fluffyboards.com/vocabulary#snowboard">
+    <skos:prefLabel>snowboard</skos:prefLabel>
+    <skos:altLabel>deck</skos:altLabel>
+    <skos:definition>Deck to be mounted with bindings for riding on snow.
+    </skos:definition>
+    <skos:broader>
+      <skos:Concept rdf:about="http://www.fluffyboards.com/vocabulary#product">
+        <skos:prefLabel>product</skos:prefLabel>
+        <skos:altLabel>merchandise item</skos:altLabel>
+        <skos:definition>Item developed for sale by Fluffy Boards.</skos:definition>
+      </skos:Concept>
+    </skos:broader>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://www.fluffyboards.com/vocabulary#endorsement">
+    <skos:prefLabel>endorsement</skos:prefLabel>
+    <skos:altLabel>formal thumbs-up</skos:altLabel>
+    <skos:definition>Formal statement of approval of the product.</skos:definition>
+    <skos:broader>
+      <skos:Concept rdf:about="http://www.fluffyboards.com/vocabulary#review">
+        <skos:prefLabel>review</skos:prefLabel>
+        <skos:altLabel>product opinion</skos:altLabel>
+        <skos:definition>Statement of opinion of a product.</skos:definition>
+      </skos:Concept>
+    </skos:broader>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://www.fluffyboards.com/vocabulary#customer">
+    <skos:prefLabel>customer</skos:prefLabel>
+    <skos:definition>Person or group engaged by Fluffy Boards in the purchase process.
+    </skos:definition>
+  </skos:Concept>
+</rdf:RDF>
