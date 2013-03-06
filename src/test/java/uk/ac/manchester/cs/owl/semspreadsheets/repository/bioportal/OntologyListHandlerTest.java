@@ -33,7 +33,7 @@ public class OntologyListHandlerTest {
 		
 		SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();		
         SAXParser saxParser = saxParserFactory.newSAXParser();        
-        BufferedInputStream bufferedInputStream = new BufferedInputStream(getDummyXMLStream("dummy_ontology_list.xml"));
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(getDummyXMLStream("bioportal_responses/dummy_ontology_list.xml"));
         saxParser.parse(bufferedInputStream, handler);
         bufferedInputStream.close();
         
@@ -60,7 +60,7 @@ public class OntologyListHandlerTest {
 		
 		SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
         SAXParser saxParser = saxParserFactory.newSAXParser();
-        BufferedInputStream bufferedInputStream = new BufferedInputStream(getDummyXMLStream("dummy_ontology_list_bad_formats.xml"));
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(getDummyXMLStream("bioportal_responses/dummy_ontology_list_bad_formats.xml"));
         saxParser.parse(bufferedInputStream, handler);
         bufferedInputStream.close();
         
@@ -80,7 +80,7 @@ public class OntologyListHandlerTest {
 		
 		SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
         SAXParser saxParser = saxParserFactory.newSAXParser();
-        BufferedInputStream bufferedInputStream = new BufferedInputStream(getDummyXMLStream("ontology_list_with_non_numeric_ids.xml"));
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(getDummyXMLStream("bioportal_responses/ontology_list_with_non_numeric_ids.xml"));
         saxParser.parse(bufferedInputStream, handler);
         bufferedInputStream.close();
         
