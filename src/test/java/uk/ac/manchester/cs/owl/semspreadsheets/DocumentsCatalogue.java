@@ -9,8 +9,6 @@ package uk.ac.manchester.cs.owl.semspreadsheets;
 import java.io.File;
 import java.net.URI;
 
-import uk.ac.manchester.cs.owl.semspreadsheets.export.AbstractExporterTest;
-
 public class DocumentsCatalogue {
 
 	public static URI jermOntologyURI() throws Exception {
