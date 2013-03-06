@@ -210,7 +210,7 @@ public class SheetHSSFImpl implements Sheet {
      */
     public void addValidation(String namedRange, int firstCol, int firstRow, int lastCol, int lastRow) {
     	DataValidationConstraint constraint=sheet.getDataValidationHelper().createFormulaListConstraint(namedRange);    	
-    	addConstraint(constraint, firstCol, firstRow, lastCol, lastRow);
+    	addConstraint(constraint, firstCol, firstRow, lastCol, lastRow,true);
     }
     
     /**
@@ -225,12 +225,13 @@ public class SheetHSSFImpl implements Sheet {
     	//the cell title A1 is irrelevant, when the sheet is saved it gets turned into the current cell.
     	String formula="AND(A1<>\""+encoded+"\")";
     	DataValidationConstraint constraint = sheet.getDataValidationHelper().createCustomConstraint(formula);
-    	addConstraint(constraint, firstCol, firstRow, lastCol, lastRow);
+    	addConstraint(constraint, firstCol, firstRow, lastCol, lastRow,false);
     }
     
-    protected void addConstraint(DataValidationConstraint constraint, int firstCol, int firstRow, int lastCol, int lastRow) {
+    protected void addConstraint(DataValidationConstraint constraint, int firstCol, int firstRow, int lastCol, int lastRow,boolean showErrorBox) {
     	CellRangeAddressList addressList = new CellRangeAddressList(firstRow, lastRow, firstCol, lastCol);    	
     	HSSFDataValidation dataValidation = new HSSFDataValidation(addressList, constraint);
+    	dataValidation.setShowErrorBox(showErrorBox);
     	sheet.addValidationData(dataValidation);
     }        
 
