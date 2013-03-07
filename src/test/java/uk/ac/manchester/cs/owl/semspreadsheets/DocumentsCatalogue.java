@@ -141,7 +141,7 @@ public class DocumentsCatalogue {
 		 return uriForResourceName("workbooks/partially_populated_mged_book.xls");
 	}
 
-	private static URI uriForResourceName(String resource) throws Exception {
+	public static URI uriForResourceName(String resource) throws Exception {
 		return DocumentsCatalogue.class.getResource("/" + resource).toURI();
 	}
 
