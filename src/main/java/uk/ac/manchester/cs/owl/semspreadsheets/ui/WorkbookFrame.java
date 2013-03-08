@@ -381,7 +381,7 @@ public class WorkbookFrame extends JFrame {
 	public void loadBioportalOntology() throws Exception {
 		Collection<RepositoryItem> ontologies = taskManager.runTask(new FetchBioportalOntologyListTask());
 		if (!ontologies.isEmpty()) {
-			RepositoryItem item = RepositoryPanel.showDialog(this,RepositoryManager.getInstance().getBioPortalRepositoryAccessor());
+			RepositoryItem item = RepositoryPanel.showDialog(this,RepositoryManager.getInstance().getBioPortalRepositoryAccessor().getRepository());
 			if (item == null) {
 				return;
 			}

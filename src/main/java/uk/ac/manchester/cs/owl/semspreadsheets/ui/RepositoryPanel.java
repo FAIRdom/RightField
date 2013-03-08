@@ -30,7 +30,6 @@ import javax.swing.SwingUtilities;
 import org.apache.log4j.Logger;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.repository.Repository;
-import uk.ac.manchester.cs.owl.semspreadsheets.repository.RepositoryAccessor;
 import uk.ac.manchester.cs.owl.semspreadsheets.repository.RepositoryItem;
 import uk.ac.manchester.cs.owl.semspreadsheets.repository.RepositoryItemComparator;
 
@@ -109,11 +108,11 @@ public class RepositoryPanel extends JPanel {
 	}
 
 	public static RepositoryItem showDialog(WorkbookFrame frame,
-			RepositoryAccessor repositoryAccessor) {
+			Repository repository) {
 		
 		final Logger logger = Logger.getLogger(RepositoryItem.class);
 		
-		final RepositoryPanel panel = new RepositoryPanel(repositoryAccessor.getRepository());
+		final RepositoryPanel panel = new RepositoryPanel(repository);
 		JOptionPane op = new JOptionPane(panel, JOptionPane.PLAIN_MESSAGE,
 				JOptionPane.OK_CANCEL_OPTION);
 		JDialog dlg = op.createDialog(frame, "Open from BioPortal repository");
