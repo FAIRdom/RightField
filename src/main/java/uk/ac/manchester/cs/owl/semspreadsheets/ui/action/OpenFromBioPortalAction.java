@@ -13,14 +13,6 @@ import uk.ac.manchester.cs.owl.semspreadsheets.ui.ErrorHandler;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookFrame;
 
 /**
- * Author: Matthew Horridge<br>
- * The University of Manchester<br>
- * Information Management Group<br>
- * Date: 11-Nov-2009
- * 
- * Author: Stuart Owen
- * Date: 15-June-2010
- * 
  * @author Stuart Owen
  * @author Matthew Horridge
  */
@@ -28,7 +20,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookFrame;
 public class OpenFromBioPortalAction extends WorkbookFrameAction {		
 
     public OpenFromBioPortalAction(WorkbookFrame workbookFrame) {
-        super("Open from BioPortal...", workbookFrame);
+        super("Open ontology from BioPortal...", workbookFrame);
         setAcceleratorKey(KeyEvent.VK_B,true,false);
     }
 
