@@ -7,14 +7,11 @@ import java.net.URI;
 import java.util.Set;
 
 import org.junit.Test;
-import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.skos.SKOSAnnotation;
 import org.semanticweb.skos.SKOSConcept;
 import org.semanticweb.skos.SKOSDataset;
-import org.semanticweb.skos.properties.SKOSTopConceptOfProperty;
 import org.semanticweb.skosapibinding.SKOSManager;
-import org.semanticweb.skosapibinding.SKOStoOWLConverter;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.DocumentsCatalogue;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyManager;
