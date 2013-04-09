@@ -19,7 +19,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyManager;
 /**
  * A simple reader to fetch the heirarchy of broader/narrower terms based upon the annotations.
  * This is a naive implementation reading the annotations directly, for use until problems getting the SKOSReasoner working
- * as expected are solved.
+ * as expected are solved, afterwhich the internals can be replaced to use the Reasoner without affecting the rest of the integration of SKOS
  * 
  * @author Stuart Owen
  *
@@ -29,12 +29,24 @@ public class SKOSHierarchyReader {
 	private SKOSManager skosManager;
 	private Map<URI,Set<SKOSConcept>> broader = new HashMap<URI, Set<SKOSConcept>>();
 	private Map<URI,Set<SKOSConcept>> narrower = new HashMap<URI, Set<SKOSConcept>>();
+	private final OWLOntology skosDocument;
 
 	//takes the ontology manager and OWLOntology holding the skos.
 	//although strictly speaking the SKOS isn't an OWL ontology, the SKOS api it built upon the OWL-API, and can be used together in this way
 	public SKOSHierarchyReader(OntologyManager ontologyManager, OWLOntology skosDocument) {		
+		this.skosDocument = skosDocument;
 		skosManager = new SKOSManager(ontologyManager.getOWLOntologyManager());	
 		buildGraph(skosDocument);
+	}
+	
+	public Set<SKOSConcept> getTopConcepts() {
+		Set<SKOSConcept> top = new SKOSHashSet();
+		for (SKOSConcept concept : selectDataset(skosDocument).getSKOSConcepts()) {
+			if (getBroaderThan(concept).isEmpty()) {
+				top.add(concept);
+			}
+		}
+		return top;
 	}
 	
 	public SKOSConcept getSKOSConcept(URI uri) {

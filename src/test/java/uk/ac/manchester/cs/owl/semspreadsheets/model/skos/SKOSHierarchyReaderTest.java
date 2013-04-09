@@ -29,6 +29,58 @@ public class SKOSHierarchyReaderTest {
 	}
 	
 	@Test
+	public void testGetTopConcepts() throws Exception {
+		OWLOntology ontology = ontologyManager.loadOntology(DocumentsCatalogue
+				.uriForResourceName("skos/skos-example.rdf"));
+		SKOSHierarchyReader reader = new SKOSHierarchyReader(ontologyManager,
+				ontology);
+		Set<SKOSConcept> concepts = reader.getTopConcepts();
+		assertEquals(3, concepts.size());
+		URI[] expected = new URI[] {
+				URI.create("http://www.fluffyboards.com/vocabulary#product"),
+				URI.create("http://www.fluffyboards.com/vocabulary#review"),
+				URI.create("http://www.fluffyboards.com/vocabulary#customer") };
+		for (URI exp : expected) {
+			boolean found = false;
+			for (SKOSConcept concept : concepts) {
+				if (concept.getURI().equals(exp)) {
+					found = true;
+					break;
+				}
+			}
+			assertTrue(found);
+		}
+	}
+	
+	@Test
+	public void testGetTopConceptsCAST() throws Exception {
+		OWLOntology ontology = ontologyManager.loadOntology(DocumentsCatalogue
+				.uriForResourceName("skos/CAST.rdf"));
+		SKOSHierarchyReader reader = new SKOSHierarchyReader(ontologyManager,
+				ontology);
+		Set<SKOSConcept> concepts = reader.getTopConcepts();
+		assertEquals(6, concepts.size());
+		URI[] expected = new URI[] {
+				URI.create("http://onto.nerc.ac.uk/CAST/1"),
+				URI.create("http://onto.nerc.ac.uk/CAST/2"),
+				URI.create("http://onto.nerc.ac.uk/CAST/3"),
+				URI.create("http://onto.nerc.ac.uk/CAST/4"),
+				URI.create("http://onto.nerc.ac.uk/CAST/5"),
+				URI.create("http://onto.nerc.ac.uk/CAST/6")						
+		};
+		for (URI exp : expected) {
+			boolean found = false;
+			for (SKOSConcept concept : concepts) {				
+				if (concept.getURI().equals(exp)) {
+					found = true;
+					break;
+				}
+			}
+			assertTrue("Didn't find "+exp,found);
+		}
+	}
+	
+	@Test
 	public void testGetSKOSConcept() throws Exception {
 		OWLOntology ontology = ontologyManager.loadOntology(DocumentsCatalogue.uriForResourceName("skos/skos-example.rdf"));		
 		SKOSHierarchyReader reader = new SKOSHierarchyReader(ontologyManager, ontology);		
