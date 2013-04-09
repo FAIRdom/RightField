@@ -107,10 +107,35 @@
 		</dependency>
 		
 		<dependency>
-			<groupId>hermit</groupId>
-			<artifactId>hermit</artifactId>
-			<version>1.3.7</version>
-		</dependency>		
+			<groupId>pellet</groupId>
+  			<artifactId>pellet-owlapiv3</artifactId>
+  			<version>2.2.2</version>
+		</dependency>
+		<dependency>
+			<groupId>pellet</groupId>
+  			<artifactId>pellet-core</artifactId>
+  			<version>2.2.2</version>
+		</dependency>
+		<dependency>
+			<groupId>pellet</groupId>
+  			<artifactId>pellet-rules</artifactId>
+  			<version>2.2.2</version>
+		</dependency>
+		<dependency>
+			<groupId>pellet</groupId>
+  			<artifactId>pellet-datatypes</artifactId>
+  			<version>2.2.2</version>
+		</dependency>
+		<dependency>
+			<groupId>pellet</groupId>
+  			<artifactId>pellet-el</artifactId>
+  			<version>2.2.2</version>
+		</dependency>
+		<dependency>
+			<groupId>aterm</groupId>
+  			<artifactId>aterm</artifactId>
+  			<version>1.6</version>
+		</dependency>
 		
 		
 		<dependency>
@@ -157,6 +182,10 @@
 			<releases>
 				<enabled>true</enabled>
 			</releases>
+		</repository>
+		<repository>
+			<id>biordf</id>
+			<url>http://code.berkeleybop.org/maven/repository</url>
 		</repository>
 	</repositories>
 </project>
