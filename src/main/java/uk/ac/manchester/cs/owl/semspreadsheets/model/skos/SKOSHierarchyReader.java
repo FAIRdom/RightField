@@ -135,6 +135,13 @@ public class SKOSHierarchyReader {
 	}
 		
 }
+
+/**
+ * Specialised HashSet, creating to specifically treat concepts with the same URI being regarded as equal
+ * 
+ * @author Stuart Owen
+ *
+ */
 class SKOSHashSet extends HashSet<SKOSConcept> {
 	
 	private static final long serialVersionUID = -1115862678232624477L;
