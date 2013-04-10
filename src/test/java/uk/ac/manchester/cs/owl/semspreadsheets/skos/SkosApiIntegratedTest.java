@@ -63,7 +63,7 @@ public class SkosApiIntegratedTest {
 		SKOSDataset dataset = (SKOSDataset)manager.getSKOSDataSets().toArray()[1];
 		Set<SKOSAnnotation> skosAnnotationsByURI = concept.getSKOSAnnotationsByURI(dataset, URI.create("http://www.w3.org/2004/02/skos/core#broader"));
 		assertEquals(1,skosAnnotationsByURI.size());
-		assertEquals("http://www.fluffyboards.com/vocabulary#product",skosAnnotationsByURI.iterator().next().getAnnotationValue().asSKOSConcept().getURI().toString());
+		assertEquals("http://www.fluffyboards.com/vocabulary#product",skosAnnotationsByURI.iterator().next().getAnnotationValue().getURI().toString());
 	}
 		
 }
