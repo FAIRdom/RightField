@@ -7,8 +7,6 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
 
-import org.semanticweb.skos.SKOSConcept;
-
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.Icons;
 
 public class SKOSTreeCellRenderer implements TreeCellRenderer {

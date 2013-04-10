@@ -38,6 +38,8 @@ public class Icons {
     private static Icon ANNOTATION_PROPERTY_ICON = new OWLAnnotationPropertyIcon();
 
     private static Icon DATATYPE_ICON = new OWLDatatypeIcon();
+    
+    private static Icon SKOS_CONCEPT_ICON = new SKOSConceptIcon();
 
     public static Icon getOWLEntityIcon(OWLEntity entity) {
         if (entity.isOWLClass()) {
@@ -64,7 +66,7 @@ public class Icons {
     }
     
     public static Icon getSKOSConceptIcon() {
-    	return OWLPROPERTY_ICON;
+    	return SKOS_CONCEPT_ICON;
     }
 
     @SuppressWarnings("rawtypes")
@@ -108,6 +110,55 @@ public class Icons {
         return OWLINDIVIDUAL_ICON;
     }
 
+    private static class SKOSConceptIcon implements Icon {
+    	public final static int DIMENSION = 18;
+
+        public final static Color COLOR = new Color(140, 140, 160);
+        public final static Color INSIDE_COLOR = new Color(180,180,200);
+
+        public final static Stroke STROKE = new BasicStroke(2.0f);
+        
+
+        /**
+         * Draw the icon at the specified location.  Icon implementations
+         * may use the Component argument to get properties useful for
+         * painting, e.g. the foreground or background color.
+         */
+        public void paintIcon(Component c, Graphics g, int x, int y) {
+            Color oldColor = g.getColor();
+            Graphics2D g2 = (Graphics2D) g;
+            g2.translate(x, y);
+            Stroke oldStroke = g2.getStroke();
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            
+            g2.setColor(COLOR);            
+            
+            g2.setStroke(STROKE);
+            
+            g2.fillOval(4, 4, DIMENSION - 8, DIMENSION - 8);
+            g2.setColor(INSIDE_COLOR);
+            g2.fillOval(6, 6, DIMENSION - 12, DIMENSION - 12);
+            g2.setColor(oldColor);
+            g2.setStroke(oldStroke);
+            g2.translate(-x, -y);
+        }       
+
+        /**
+         * Returns the icon's width.
+         * @return an int specifying the fixed width of the icon.
+         */
+        public int getIconWidth() {
+            return DIMENSION;
+        }
+
+        /**
+         * Returns the icon's height.
+         * @return an int specifying the fixed height of the icon.
+         */
+        public int getIconHeight() {
+            return DIMENSION;
+        }
+    }
 
     private static class OWLClassIcon implements Icon {
 
@@ -130,12 +181,7 @@ public class Icons {
             g2.translate(x, y);
             Stroke oldStroke = g2.getStroke();
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            if (satisfiable) {
-                g2.setColor(COLOR);
-            }
-            else {
-                g2.setColor(Color.RED);
-            }
+            g2.setColor(COLOR);            
             g2.setStroke(STROKE);
             g2.drawOval(4, 4, DIMENSION - 8, DIMENSION - 8);
             g2.setColor(oldColor);
