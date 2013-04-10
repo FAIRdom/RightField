@@ -14,6 +14,7 @@ import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
@@ -23,7 +24,11 @@ import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLOntology;
 
+import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyManager;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.skos.SKOSDetector;
+import uk.ac.manchester.cs.owl.semspreadsheets.ui.skos.SKOSHierarchyTreeModel;
+import uk.ac.manchester.cs.owl.semspreadsheets.ui.skos.SKOSTreeCellRenderer;
 
 /**
  * @author Matthew Horridge
@@ -40,12 +45,11 @@ public class ClassHierarchyTree extends JTree {
     private OWLOntology ontology;	
 
     public ClassHierarchyTree(final WorkbookManager manager, OWLOntology ontology) {
-        super(new ClassHierarchyTreeModel(manager.getOntologyManager(),ontology));
+        super(ClassHierarchyTree.selectTreeModel(manager.getOntologyManager(),ontology));
         
 		this.ontology = ontology;               
         this.workbookManager = manager;
         
-        setModel(new ClassHierarchyTreeModel(workbookManager.getOntologyManager(),ontology));
         getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
         
         addTreeSelectionListener(new TreeSelectionListener() {
@@ -54,8 +58,14 @@ public class ClassHierarchyTree extends JTree {
                 previewSelectedClass();
             }
         });
-                
-        setCellRenderer(new OntologyCellRenderer(workbookManager.getOntologyManager()));         
+         
+        if (SKOSDetector.isSKOS(ontology)) {
+        	setCellRenderer(new SKOSTreeCellRenderer());
+        }
+        else {
+        	setCellRenderer(new OntologyCellRenderer(workbookManager.getOntologyManager()));
+        }
+                 
     }
     
     public OWLOntology getOntology() {
@@ -114,4 +124,14 @@ public class ClassHierarchyTree extends JTree {
             scrollPathToVisible(path);        	
         }              
     }         
+    
+    private static TreeModel selectTreeModel(OntologyManager ontologyManager,OWLOntology ontology) {
+    	if (SKOSDetector.isSKOS(ontology)) {
+    		return new SKOSHierarchyTreeModel(ontologyManager, ontology);
+    	}
+    	else {
+    		return new ClassHierarchyTreeModel(ontologyManager,ontology);
+    	}
+    	
+    }
 }

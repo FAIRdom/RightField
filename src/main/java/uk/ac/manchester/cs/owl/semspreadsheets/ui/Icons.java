@@ -62,6 +62,10 @@ public class Icons {
             return null;
         }
     }
+    
+    public static Icon getSKOSConceptIcon() {
+    	return OWLPROPERTY_ICON;
+    }
 
     @SuppressWarnings("rawtypes")
 	public static Icon getOWLEntityIcon(EntityType entity) {

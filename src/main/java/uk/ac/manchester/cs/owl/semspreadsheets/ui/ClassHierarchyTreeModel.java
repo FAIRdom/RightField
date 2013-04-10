@@ -56,22 +56,26 @@ public class ClassHierarchyTreeModel implements TreeModel {
 		this.ontology = ontology;
         nodeContentComparator = new NodeContentComparator();
         if (ontologyManager.getLoadedOntologies().size() > 0) {
-            rootNode = new ClassHierarchyNode();
-            put(rootNode.getOWLClasses().iterator().next(), rootNode);
-            buildChildren(rootNode);
-        }
+            buildTreeModel();
+        }        
     }
 
-    private void put(OWLEntity cls, DefaultMutableTreeNode node) {    	
-        Collection<DefaultMutableTreeNode> nodes = cls2NodeMap.get(cls);
+	protected void buildTreeModel() {
+		rootNode = new ClassHierarchyNode();
+        put(rootNode.getOWLClasses().iterator().next(), rootNode);
+        buildChildren(rootNode);
+	}
+	
+    private void put(OWLEntity owlEntity, DefaultMutableTreeNode node) {    	
+        Collection<DefaultMutableTreeNode> nodes = cls2NodeMap.get(owlEntity);
         if (nodes == null) {
             nodes = new ArrayList<DefaultMutableTreeNode>();
-            cls2NodeMap.put(cls, nodes);
+            cls2NodeMap.put(owlEntity, nodes);
         }
         nodes.add(node);
     }
 
-    public Collection<DefaultMutableTreeNode> getNodesForEntity(OWLEntity entity) {
+    private Collection<DefaultMutableTreeNode> getNodesForEntity(OWLEntity entity) {
         Collection<DefaultMutableTreeNode> hierarchyNodes = cls2NodeMap.get(entity);
         if (hierarchyNodes == null) {
             return Collections.emptyList();
@@ -120,6 +124,7 @@ public class ClassHierarchyTreeModel implements TreeModel {
         }
     }        
 
+    @Override
     public Object getRoot() {
         return rootNode;
     }

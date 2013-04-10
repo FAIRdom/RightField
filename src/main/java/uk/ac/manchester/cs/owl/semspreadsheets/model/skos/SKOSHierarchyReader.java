@@ -41,7 +41,7 @@ public class SKOSHierarchyReader {
 	
 	public Set<SKOSConcept> getTopConcepts() {
 		Set<SKOSConcept> top = new SKOSHashSet();
-		for (SKOSConcept concept : selectDataset(skosDocument).getSKOSConcepts()) {
+		for (SKOSConcept concept : getDataset(skosDocument).getSKOSConcepts()) {
 			if (getBroaderThan(concept).isEmpty()) {
 				top.add(concept);
 			}
@@ -70,7 +70,7 @@ public class SKOSHierarchyReader {
 	}
 	
 	private void buildGraph(OWLOntology ontology) {
-		SKOSDataset dataset = selectDataset(ontology);
+		SKOSDataset dataset = getDataset(ontology);
 		for (SKOSConcept concept : dataset.getSKOSConcepts()) {
 			Set<SKOSConcept> narrower = parseNarrower(concept,dataset);
 			Set<SKOSConcept> broader = parseBroader(concept,dataset);
@@ -78,6 +78,17 @@ public class SKOSHierarchyReader {
 			addToBroader(concept.getURI(),broader);
 			addToNarrower(concept.getURI(),narrower);
 		}
+	}
+	
+	public SKOSDataset getDataset(OWLOntology ontology) {
+		SKOSDataset result = null;
+		for (SKOSDataset dataset : skosManager.getSKOSDataSets()) {
+			if (dataset.getURI().equals(ontology.getOntologyID().getOntologyIRI().toURI())) {
+				result = dataset;
+				break;
+			}
+		}
+		return result;
 	}
 	
 	private void addToNarrower(URI parentURI,Set<SKOSConcept> concepts) {
@@ -135,16 +146,7 @@ public class SKOSHierarchyReader {
 		return values;
 	}
 	
-	private SKOSDataset selectDataset(OWLOntology ontology) {
-		SKOSDataset result = null;
-		for (SKOSDataset dataset : skosManager.getSKOSDataSets()) {
-			if (dataset.getURI().equals(ontology.getOntologyID().getOntologyIRI().toURI())) {
-				result = dataset;
-				break;
-			}
-		}
-		return result;
-	}
+	
 		
 }
 

@@ -37,6 +37,7 @@ public class OntologyCellRenderer implements TreeCellRenderer, ListCellRenderer 
         this.ontologyManager = ontologyManager;
     }
 
+    @Override
     public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
         JLabel label = (JLabel) treeCellRendererDelegate.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
         if(value instanceof ClassHierarchyNode) {
@@ -50,6 +51,7 @@ public class OntologyCellRenderer implements TreeCellRenderer, ListCellRenderer 
         return label;
     }
 
+    @Override
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         JLabel label = (JLabel) listCellRendererDelegate.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
         setupRenderer(label, value);
@@ -60,7 +62,7 @@ public class OntologyCellRenderer implements TreeCellRenderer, ListCellRenderer 
         if(value instanceof OWLEntity) {
             label.setIcon(Icons.getOWLEntityIcon((OWLEntity) value));
             label.setText(ontologyManager.getRendering((OWLEntity) value));
-        }
+        }        
         else {
             label.setIcon(null);
         }
