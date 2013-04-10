@@ -26,9 +26,6 @@ import org.semanticweb.owlapi.model.OWLOntology;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyManager;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.skos.SKOSDetector;
-import uk.ac.manchester.cs.owl.semspreadsheets.ui.skos.SKOSHierarchyTreeModel;
-import uk.ac.manchester.cs.owl.semspreadsheets.ui.skos.SKOSTreeCellRenderer;
 
 /**
  * @author Matthew Horridge
@@ -45,7 +42,8 @@ public class ClassHierarchyTree extends JTree {
     private OWLOntology ontology;	
 
     public ClassHierarchyTree(final WorkbookManager manager, OWLOntology ontology) {
-        super(ClassHierarchyTree.selectTreeModel(manager.getOntologyManager(),ontology));
+        super();
+        setModel(createTreeModel(manager.getOntologyManager(),ontology));
         
 		this.ontology = ontology;               
         this.workbookManager = manager;
@@ -59,13 +57,16 @@ public class ClassHierarchyTree extends JTree {
             }
         });
          
-        if (SKOSDetector.isSKOS(ontology)) {
-        	setCellRenderer(new SKOSTreeCellRenderer());
-        }
-        else {
-        	setCellRenderer(new OntologyCellRenderer(workbookManager.getOntologyManager()));
-        }
+        setupCellRenderer();
                  
+    }
+    
+    protected void setupCellRenderer() {
+    	setCellRenderer(new OntologyCellRenderer(getWorkbookManager().getOntologyManager()));
+    }
+    
+    protected TreeModel createTreeModel(OntologyManager ontologyManager, OWLOntology ontology) {
+    	return new ClassHierarchyTreeModel(ontologyManager,ontology);
     }
     
     public OWLOntology getOntology() {
@@ -123,15 +124,9 @@ public class ClassHierarchyTree extends JTree {
         	addSelectionPath(path);
             scrollPathToVisible(path);        	
         }              
-    }         
+    }     
     
-    private static TreeModel selectTreeModel(OntologyManager ontologyManager,OWLOntology ontology) {
-    	if (SKOSDetector.isSKOS(ontology)) {
-    		return new SKOSHierarchyTreeModel(ontologyManager, ontology);
-    	}
-    	else {
-    		return new ClassHierarchyTreeModel(ontologyManager,ontology);
-    	}
-    	
-    }
+    protected WorkbookManager getWorkbookManager() {
+    	return workbookManager;
+    }    
 }

@@ -20,20 +20,12 @@ public interface CellContents {
     String getValue();
 
     void setValue(String s);
-
-//    void setValue(String s);
     
     Font getFont();
 
     Color getForeground();
 
     Color getBackground();
-
-
-
-//    CellContents deriveCellContents(String value);
-//
-//    CellContents deriveCellContents(Font font);
 
     int getAlignment();
 }

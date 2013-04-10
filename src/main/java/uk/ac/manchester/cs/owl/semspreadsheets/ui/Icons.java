@@ -166,9 +166,7 @@ public class Icons {
 
         public final static Color COLOR = new Color(120, 140, 160);
 
-        public final static Stroke STROKE = new BasicStroke(2.0f);
-
-        private boolean satisfiable = true;
+        public final static Stroke STROKE = new BasicStroke(2.0f);        
 
         /**
          * Draw the icon at the specified location.  Icon implementations

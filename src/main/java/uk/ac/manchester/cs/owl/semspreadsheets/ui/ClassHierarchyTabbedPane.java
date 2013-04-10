@@ -39,6 +39,8 @@ import uk.ac.manchester.cs.owl.semspreadsheets.listeners.OntologyManagerListener
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidation;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.skos.SKOSDetector;
+import uk.ac.manchester.cs.owl.semspreadsheets.ui.skos.SKOSHierarchyTree;
 
 /**
  * Pane that contains an individual tab for each Ontology. This class handles the displaying and creation of the tabs, and listens to events
@@ -252,7 +254,7 @@ public class ClassHierarchyTabbedPane extends JTabbedPane {
 	}
 
 	private void createTab(OWLOntology ontology) {
-		ClassHierarchyTree tree = new ClassHierarchyTree(getWorkbookManager(),ontology);
+		ClassHierarchyTree tree = createTree(ontology);
 		JScrollPane sp = new JScrollPane(tree);
 		tabToTreeMap.put(sp, tree);
 		sp.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
@@ -266,7 +268,16 @@ public class ClassHierarchyTabbedPane extends JTabbedPane {
 		else {
 			logger.warn("Attempting to create duplicate tab for ontology: "+ontology.getOntologyID().toString());
 		}				
-	}		
+	}
+	
+	private ClassHierarchyTree createTree(OWLOntology ontology) {
+		if (SKOSDetector.isSKOS(ontology)) {
+			return new SKOSHierarchyTree(getWorkbookManager(),ontology);
+		}
+		else {
+			return new ClassHierarchyTree(getWorkbookManager(), ontology);
+		}
+	}
 	
 	private void removeTab(OWLOntology ontology) {
 		int i = tabIndexForOntology(ontology);
