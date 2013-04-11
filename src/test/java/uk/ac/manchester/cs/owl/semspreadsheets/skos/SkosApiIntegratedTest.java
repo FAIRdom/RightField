@@ -47,7 +47,7 @@ public class SkosApiIntegratedTest {
 		assertEquals(257,dataset.getSKOSConcepts().size());		
 		SKOSConcept concept = manager.getSKOSDataFactory().getSKOSConcept(URI.create("http://onto.nerc.ac.uk/CAST/11"));
 		assertNotNull(concept);
-		assertEquals(12,concept.getSKOSAnnotations(dataset).size());
+		assertEquals(12,concept.getSKOSAnnotations(dataset).size());				
 	}
 	
 	@Test

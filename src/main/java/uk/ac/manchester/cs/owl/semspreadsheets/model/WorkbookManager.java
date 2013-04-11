@@ -246,6 +246,7 @@ public class WorkbookManager {
     	logger.debug("Type for preview: "+type.getEntityType());
     	OWLPropertyItem owlPropertyItem = getEntitySelectionModel().getOWLPropertyItem();
     	Range range = new Range(workbook.getSheet(0));
+    	
     	getOntologyManager().getOntologyTermValidationManager().previewValidation(range,type, iri,owlPropertyItem);
 	}	
     

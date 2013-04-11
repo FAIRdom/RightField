@@ -14,6 +14,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLDataProperty;
+import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.reasoner.NodeSet;
@@ -33,6 +35,42 @@ public class OntologyManagerTest {
 		ontologyManager = workbookManager.getOntologyManager();		
 		testListener=new DummyOntologyManagerListener();		
 		ontologyManager.addListener(testListener);
+	}
+	
+	@Test
+	public void testGetOntologiesForEntityIRI() throws Exception {
+		OWLOntology jermOnt = ontologyManager.loadOntology(DocumentsCatalogue.jermOntologyURI());		
+		OWLOntology skosOnt = ontologyManager.loadOntology(DocumentsCatalogue.uriForResourceName("skos/skos-example.rdf"));
+		
+		OWLEntity ent = jermOnt.getEntitiesInSignature(IRI.create("http://www.mygrid.org.uk/ontology/JERMOntology#affinity_chromatography")).iterator().next();
+		assertNotNull(ent);
+		
+		Set<OWLOntology> ontologies = ontologyManager.getOntologiesForEntityIRI(ent.getIRI());
+		assertEquals(1,ontologies.size());
+		assertTrue(ontologies.contains(jermOnt));
+		
+		ent = skosOnt.getEntitiesInSignature(IRI.create("http://www.fluffyboards.com/vocabulary#snowboard")).iterator().next();
+		assertNotNull(ent);
+		
+		ontologies = ontologyManager.getOntologiesForEntityIRI(ent.getIRI());
+		assertEquals(1,ontologies.size());
+		assertTrue(ontologies.contains(skosOnt));
+		
+		ontologies = ontologyManager.getOntologiesForEntityIRI(ent.getIRI(),null);
+		assertEquals(1,ontologies.size());
+		assertTrue(ontologies.contains(skosOnt));
+		
+		OWLDataProperty prop = jermOnt.getEntitiesInSignature(IRI.create("http://www.mygrid.org.uk/ontology/JERMOntology#External_supplier_ID")).iterator().next().asOWLDataProperty();		
+		ontologies = ontologyManager.getOntologiesForEntityIRI(ent.getIRI(),new OWLPropertyItem(prop));
+		assertEquals(2,ontologies.size());
+		assertTrue(ontologies.contains(jermOnt));
+		assertTrue(ontologies.contains(skosOnt));
+		
+		ent = jermOnt.getEntitiesInSignature(IRI.create("http://www.mygrid.org.uk/ontology/JERMOntology#affinity_chromatography")).iterator().next();
+		ontologies = ontologyManager.getOntologiesForEntityIRI(ent.getIRI());
+		assertEquals(1,ontologies.size());
+		assert(ontologies.contains(jermOnt));
+		
 	}
 
 	@Test

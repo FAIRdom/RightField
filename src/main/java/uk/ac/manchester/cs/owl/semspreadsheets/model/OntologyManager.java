@@ -182,6 +182,31 @@ public class OntologyManager {
 		return used;			
     }
     
+    public Set<OWLOntology> getOntologiesForEntityIRI(IRI entityIRI) {
+    	Set<OWLOntology> result = new HashSet<OWLOntology>();    	
+    	for (OWLOntology ontology : getAllOntologies()) {
+    		if (entityIRI.toString().equals("http://www.w3.org/2002/07/owl#Thing") || 
+			ontology.containsEntityInSignature(entityIRI)) {
+    			result.add(ontology);
+    		}
+    	}
+    	return result;
+    }
+    
+    public Set<OWLOntology> getOntologiesForEntityIRI(IRI entityIRI,OWLPropertyItem propertyItem) {
+    	Set<OWLOntology> result = getOntologiesForEntityIRI(entityIRI);
+    	if (propertyItem!=null) {
+    		IRI propertyIRI=propertyItem.getIRI();
+    		for (OWLOntology ontology : getAllOntologies()) {
+        		if (ontology.containsEntityInSignature(propertyIRI)) {
+        			result.add(ontology);
+        		}
+        	}
+    	}
+    	    	 
+    	return result;    	
+    }
+    
     public OntologyTermValidationManager getOntologyTermValidationManager() {
         return ontologyTermValidationManager;
     }

@@ -87,7 +87,7 @@ public class OntologyTermValidationManager {
         previewList.removeAll(intersectingValidations);
         
         if (!type.equals(ValidationType.FREETEXT)) {
-            // Add new validation
+            // Add new validation        	
             OntologyTermValidationDescriptor descriptor = new OntologyTermValidationDescriptor(type, entityIRI,property, getOntologyManager());
             OntologyTermValidation validation = new OntologyTermValidation(descriptor, range); 
             previewList.add(validation);

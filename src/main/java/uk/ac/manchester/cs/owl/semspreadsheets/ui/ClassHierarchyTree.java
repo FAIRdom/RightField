@@ -77,7 +77,7 @@ public class ClassHierarchyTree extends JTree {
         return (ClassHierarchyTreeModel) super.getModel();
     } 
     
-    public OWLEntity getSelectedEntity() {
+    protected OWLEntity getSelectedEntity() {
 		TreePath[] selectedPaths = getSelectionPaths();
 		if (selectedPaths == null) {
 			return null;
@@ -105,10 +105,11 @@ public class ClassHierarchyTree extends JTree {
 		
 		OWLEntity selectedEntity = getSelectedEntity();
 		if (selectedEntity!=null) {
-			if (!workbookManager.getEntitySelectionModel().getSelectedEntity().equals(selectedEntity)) {
-				workbookManager.getEntitySelectionModel().setSelectedEntity(selectedEntity);
+			if (!getWorkbookManager().getEntitySelectionModel().getSelectedEntity().equals(selectedEntity)) {
+				logger.debug("Setting selected entity to "+selectedEntity.getIRI().toString());
+				getWorkbookManager().getEntitySelectionModel().setSelectedEntity(selectedEntity);
 			}			
-			workbookManager.previewValidation();
+			getWorkbookManager().previewValidation();
 		}					
 	}    		
 

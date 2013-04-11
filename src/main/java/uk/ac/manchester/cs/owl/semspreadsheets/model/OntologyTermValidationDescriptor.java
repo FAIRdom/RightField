@@ -84,29 +84,20 @@ public class OntologyTermValidationDescriptor implements Serializable {
         Collections.sort(terms);
     }
 
-	private void resolveOntologyIRIMap(IRI entityIRI,
+    private void resolveOntologyIRIMap(IRI entityIRI,
 			OWLPropertyItem propertyItem, OntologyManager ontologyManager) {
-		for (OWLOntology ontology : ontologyManager.getAllOntologies()) {						
-			if (includeOntologyInIRIMap(ontology,entityIRI,propertyItem)) {
+		for (OWLOntology ontology : ontologyManager.getOntologiesForEntityIRI(entityIRI,propertyItem)) {						
+			
 				IRI documentIRI = ontologyManager.getOWLOntologyManager()
 						.getOntologyDocumentIRI(ontology);
 				documentIRI = BioPortalRepository
 						.removeBioPortalAPIKey(documentIRI);
 				ontologyIRI2PhysicalIRIMap.put(ontology.getOntologyID()
-						.getOntologyIRI(), documentIRI);
-			}
-
+						.getOntologyIRI(), documentIRI);			
 		}
+		
 	}
-	
-	private boolean includeOntologyInIRIMap(OWLOntology ontology,IRI entityIRI,OWLPropertyItem propertyItem) {
-		//always include the ontology if the entity is owl#Thing
-		return entityIRI.toString().equals("http://www.w3.org/2002/07/owl#Thing") || 
-				ontology.containsEntityInSignature(entityIRI) || 
-				(propertyItem != null && 
-					ontology.containsEntityInSignature(propertyItem.getIRI())
-				);
-	}
+    	
     
     /**
      * @return whether this validation defines a literal, i.e has a property but is FREETEXT
