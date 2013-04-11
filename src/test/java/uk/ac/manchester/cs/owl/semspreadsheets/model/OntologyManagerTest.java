@@ -69,8 +69,7 @@ public class OntologyManagerTest {
 		ent = jermOnt.getEntitiesInSignature(IRI.create("http://www.mygrid.org.uk/ontology/JERMOntology#affinity_chromatography")).iterator().next();
 		ontologies = ontologyManager.getOntologiesForEntityIRI(ent.getIRI());
 		assertEquals(1,ontologies.size());
-		assert(ontologies.contains(jermOnt));
-		
+		assertTrue(ontologies.contains(jermOnt));		
 	}
 
 	@Test
