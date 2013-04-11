@@ -8,12 +8,24 @@
 package uk.ac.manchester.cs.owl.semspreadsheets.model.skos;
 
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
+
+import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyManager;
 
 public class SKOSDetector {
 	
 	//determines whether the ontology passed is a SKOS document
 	public static boolean isSKOS(OWLOntology ontology) {
 		return ontology.containsClassInSignature(IRI.create("http://www.w3.org/2004/02/skos/core#Concept"));
+	}
+	
+	public static boolean isSKOSEntity(OWLEntity entity,OntologyManager ontologyManager) {
+		for (OWLOntology ontology : ontologyManager.getOntologiesForEntityIRI(entity.getIRI())) {
+			if (SKOSDetector.isSKOS(ontology)) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

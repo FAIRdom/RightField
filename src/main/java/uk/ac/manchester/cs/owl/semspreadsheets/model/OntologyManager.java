@@ -205,7 +205,7 @@ public class OntologyManager {
     	}
     	    	 
     	return result;    	
-    }
+    }        
     
     public OntologyTermValidationManager getOntologyTermValidationManager() {
         return ontologyTermValidationManager;
