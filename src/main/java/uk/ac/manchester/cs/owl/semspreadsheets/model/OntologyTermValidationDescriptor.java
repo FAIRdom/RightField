@@ -17,13 +17,8 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.IRI;
-import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.skos.SKOSConcept;
-import org.semanticweb.skosapibinding.SKOStoOWLConverter;
 
-import uk.ac.manchester.cs.owl.semspreadsheets.model.skos.SKOSDetector;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.skos.SKOSHierarchyReader;
 import uk.ac.manchester.cs.owl.semspreadsheets.repository.bioportal.BioPortalRepository;
 
 /**
@@ -67,55 +62,15 @@ public class OntologyTermValidationDescriptor implements Serializable {
         }
         Collections.sort(this.terms);
     }
-    
-    
+        
     public OntologyTermValidationDescriptor(ValidationType type, IRI entityIRI, OWLPropertyItem propertyItem, OntologyManager ontologyManager) {
         this.type = type;
         this.entityIRI = entityIRI;
 		this.propertyItem = propertyItem;        
         ontologyIRI2PhysicalIRIMap = new HashMap<IRI, IRI>();
 		resolveOntologyIRIMap(entityIRI, propertyItem, ontologyManager);
-		if (SKOSDetector.isSKOSEntity(entityIRI, ontologyManager)) {
-			buildSKOSTermList(ontologyManager);			
-		}
-		else {
-			buildTermList(ontologyManager);
-		}        
-    }
-    
-    protected void buildSKOSTermList(OntologyManager ontologyManager) {
-    	terms=new ArrayList<Term>();    	
-    	    	    	
-    	Set<OWLOntology> ontologies = ontologyManager.getOntologiesForEntityIRI(entityIRI);
-    	for (OWLOntology ontology : ontologies) {
-    		SKOSHierarchyReader reader = new SKOSHierarchyReader(ontologyManager, ontology);
-    		SKOSConcept concept = reader.getSKOSConcept(entityIRI.toURI());
-    		
-    		String name = concept.getURI().getFragment();
-    		terms.add(new Term(IRI.create(concept.getURI()),name));
-    		
-    		
-    		Set<SKOSConcept> narrower = reader.getNarrowerThan(concept);
-    		for (SKOSConcept narrow : narrower) {
-    			name = narrow.getURI().getFragment();
-    			terms.add(new Term(IRI.create(narrow.getURI()),name));
-    		}    		    	
-    	}    	
-    }
-    
-    protected void buildTermList(OntologyManager ontologyManager) {
-    	Set<OWLEntity> entities = type.getEntities(ontologyManager, entityIRI);        
-        for(OWLEntity term : entities) {
-        	if (!term.getIRI().equals(NOTHING_IRI)) {
-        		logger.debug("Adding term "+term.getIRI()+" to list of OntologyTermValidatorDescriptor terms");        	
-                terms.add(new Term(term.getIRI(), ontologyManager.getRendering(term)));
-        	}        	
-        	else {
-        		logger.debug("Ignoring the term "+term.getIRI().toString());
-        	}
-        }
-        Collections.sort(terms);
-    }
+		terms = type.getTerms(ontologyManager, entityIRI);	        
+    }        
 
     private void resolveOntologyIRIMap(IRI entityIRI,
 			OWLPropertyItem propertyItem, OntologyManager ontologyManager) {
@@ -127,10 +82,8 @@ public class OntologyTermValidationDescriptor implements Serializable {
 						.removeBioPortalAPIKey(documentIRI);
 				ontologyIRI2PhysicalIRIMap.put(ontology.getOntologyID()
 						.getOntologyIRI(), documentIRI);			
-		}
-		
-	}
-    	
+		}		
+	}    	
     
     /**
      * @return whether this validation defines a literal, i.e has a property but is FREETEXT
@@ -153,11 +106,7 @@ public class OntologyTermValidationDescriptor implements Serializable {
 
     public ValidationType getType() {
         return type;
-    }
-
-    public Set<OWLEntity> getEntities(OntologyManager ontologyManager) {
-        return type.getEntities(ontologyManager, terms);
-    }
+    }    
 
     public IRI getEntityIRI() {
         return entityIRI;

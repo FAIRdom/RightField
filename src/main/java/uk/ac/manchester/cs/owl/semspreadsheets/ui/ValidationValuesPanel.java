@@ -23,8 +23,6 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import org.semanticweb.owlapi.model.EntityType;
-
 import uk.ac.manchester.cs.owl.semspreadsheets.listeners.CellSelectionListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.listeners.OntologyTermValidationListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidation;
@@ -144,7 +142,7 @@ public class ValidationValuesPanel extends JPanel {
         public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
             JLabel label = (JLabel) super.getListCellRendererComponent(list, ((ValueListItem) value), index, isSelected, cellHasFocus);
             ValueListItem item = (ValueListItem) value;
-            EntityType<?> entityType = item.getType().getEntityType();
+            ValidationEntityType<?> entityType = item.getType().getEntityType();
             label.setIcon(Icons.getOWLEntityIcon(entityType));
             return label;
         }

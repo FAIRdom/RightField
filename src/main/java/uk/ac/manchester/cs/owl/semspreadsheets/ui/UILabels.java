@@ -41,6 +41,14 @@ public class UILabels {
     public static final String DIRECT_INSTANCES_PROPERTY = "ui.label.directinstances";
 
     public static final String DIRECT_INSTANCES_PROPERTY_DEFAULT_VALUE = "Direct instances";
+    
+    public static final String SKOS_NARROWER = "ui.label.skos_narrower";
+    
+    public static final String SKOS_DIRECT_NARROWER = "ui.label.skos_direct_narrower";
+    
+    public static final String SKOS_NARROWER_DEFAULT = "Narrower";
+    
+    public static final String SKOS_DIRECT_NARROWER_DEFAULT = "Directly narrower";
 
     private Properties properties = null;
 
@@ -84,4 +92,13 @@ public class UILabels {
     public String getDirectInstancesLabel() {
         return properties.getProperty(DIRECT_INSTANCES_PROPERTY, DIRECT_INSTANCES_PROPERTY_DEFAULT_VALUE);
     }
+    
+    public String getSKOSNarrowerLabel() {
+    	return properties.getProperty(SKOS_NARROWER,SKOS_NARROWER_DEFAULT);
+    }
+    
+    public String getSKOSDirectNarrowerLabel() {
+    	return properties.getProperty(SKOS_DIRECT_NARROWER,SKOS_DIRECT_NARROWER_DEFAULT);
+    }
+    
 }
