@@ -25,9 +25,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.repository.bioportal.BioPortalRep
  * @author Stuart Owen
  * @author Matthew Horridge
  */
-public class OntologyTermValidationDescriptor implements Serializable {
-
-	private static final Logger logger = Logger.getLogger(OntologyTermValidationDescriptor.class);
+public class OntologyTermValidationDescriptor implements Serializable {	
 	
 	private static final long serialVersionUID = 3278347556332276152L;
 

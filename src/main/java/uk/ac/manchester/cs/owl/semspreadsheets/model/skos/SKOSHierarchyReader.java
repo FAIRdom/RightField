@@ -9,7 +9,6 @@ package uk.ac.manchester.cs.owl.semspreadsheets.model.skos;
 
 import java.net.URI;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
