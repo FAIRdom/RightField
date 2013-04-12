@@ -28,6 +28,8 @@ public class SKOSHierarchyReaderTest {
 		ontologyManager = workbookManager.getOntologyManager();
 	}
 	
+	
+	
 	@Test
 	public void testGetTopConcepts() throws Exception {
 		OWLOntology ontology = ontologyManager.loadOntology(DocumentsCatalogue
@@ -120,6 +122,18 @@ public class SKOSHierarchyReaderTest {
 		assertEquals(1,concepts.size());
 		SKOSConcept narrower = concepts.iterator().next();
 		assertEquals("http://www.fluffyboards.com/vocabulary#snowboard",narrower.getURI().toString());
+	}
+	
+	@Test
+	public void testGetNarrowerDeep() throws Exception {
+		OWLOntology ontology = ontologyManager.loadOntology(DocumentsCatalogue.uriForResourceName("skos/CAST.rdf"));		
+		SKOSHierarchyReader reader = new SKOSHierarchyReader(ontologyManager, ontology);		
+		SKOSConcept concept = reader.getSKOSConcept(URI.create("http://onto.nerc.ac.uk/CAST/5"));
+		Set<SKOSConcept> concepts = reader.getNarrowerThan(concept,false);
+		assertEquals(20,concepts.size());
+		
+		concepts = reader.getNarrowerThan(concept,true);
+		assertEquals(27,concepts.size());
 	}
 	
 	@Test

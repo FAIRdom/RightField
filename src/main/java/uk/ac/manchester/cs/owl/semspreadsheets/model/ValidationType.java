@@ -88,10 +88,9 @@ public enum ValidationType {
     		SKOSConcept concept = reader.getSKOSConcept(iri.toURI());
     		
     		String name = concept.getURI().getFragment();
+    		    		
+    		Set<SKOSConcept> narrower = reader.getNarrowerThan(concept,this.equals(NARROWER));
     		
-    		
-    		
-    		Set<SKOSConcept> narrower = reader.getNarrowerThan(concept);
     		for (SKOSConcept narrow : narrower) {
     			name = narrow.getURI().getFragment();
     			terms.add(new Term(IRI.create(narrow.getURI()),name));

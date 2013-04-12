@@ -9,6 +9,7 @@ package uk.ac.manchester.cs.owl.semspreadsheets.model.skos;
 
 import java.net.URI;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -66,6 +67,19 @@ public class SKOSHierarchyReader {
 			result = new SKOSHashSet();
 		}
 		return result;
+	}
+	
+	public Set<SKOSConcept> getNarrowerThan(SKOSConcept concept, boolean deep) {
+		if (deep) {
+			Set<SKOSConcept> concepts = getNarrowerThan(concept);
+			for (SKOSConcept c : new HashSet<SKOSConcept>(concepts)) {
+				concepts.addAll(getNarrowerThan(c,true));
+			}
+			return concepts;
+		}
+		else {
+			return getNarrowerThan(concept);
+		}
 	}
 	
 	public Set<SKOSConcept> getNarrowerThan(SKOSConcept concept) {
