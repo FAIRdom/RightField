@@ -7,23 +7,22 @@
 
 package uk.ac.manchester.cs.owl.semspreadsheets.ui.skos;
 
-import java.net.URI;
-import java.util.Set;
-
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import org.semanticweb.skos.SKOSAnnotation;
 import org.semanticweb.skos.SKOSConcept;
-import org.semanticweb.skos.SKOSDataset;
+
+import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyManager;
 
 class SKOSHierarchyTreeNode extends DefaultMutableTreeNode {
 		
-	private static final long serialVersionUID = 768120710476700086L;
-	private final SKOSDataset dataset;	
+	private static final long serialVersionUID = 768120710476700086L;	
+	private final OntologyManager ontologyManager;	
 	
-	public SKOSHierarchyTreeNode(SKOSConcept concept,SKOSDataset dataset) {
+	public SKOSHierarchyTreeNode(SKOSConcept concept,OntologyManager ontologyManager) {
 		super(concept);
-		this.dataset = dataset;
+		
+		//FIXME: the reference to the dataset and ontology manager are purely to get the rendered label text.		
+		this.ontologyManager = ontologyManager;
 	}
 	
 	public SKOSConcept getSKOSConcept() {
@@ -31,22 +30,6 @@ class SKOSHierarchyTreeNode extends DefaultMutableTreeNode {
 	}	
 	
 	public String getLabelText() {
-		String result = null;
-		result = getPrefLabel();
-		if (result==null) {
-			result=getSKOSConcept().getURI().getRawFragment();
-		}
-		return result;
-	}
-	
-	private String getPrefLabel() {
-		Set<SKOSAnnotation> skosAnnotations = getSKOSConcept().getSKOSAnnotationsByURI(dataset, URI.create("http://www.w3.org/2004/02/skos/core#prefLabel"));
-		if (skosAnnotations.size()>0) {
-			SKOSAnnotation annotation = skosAnnotations.iterator().next();
-			return annotation.getAnnotationValueAsConstant().getLiteral();
-		}
-		else {
-			return null;
-		}		
-	}
+		return ontologyManager.getRendering(getSKOSConcept());
+	}		
 }

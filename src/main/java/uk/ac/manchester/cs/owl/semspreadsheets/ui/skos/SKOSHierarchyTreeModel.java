@@ -14,7 +14,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.skos.SKOSConcept;
-import org.semanticweb.skos.SKOSDataset;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyManager;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.skos.SKOSHierarchyReader;
@@ -36,15 +35,13 @@ public class SKOSHierarchyTreeModel extends ClassHierarchyTreeModel {
 	@Override
 	protected void buildTreeModel() {
 		rootNode = new DefaultMutableTreeNode("Top");
-		skosReader = new SKOSHierarchyReader(getOntologyManager(), getOntology());
-		SKOSDataset dataset = skosReader.getDataset(getOntology());
+		skosReader = new SKOSHierarchyReader(getOntologyManager(), getOntology());		
 		Set<SKOSConcept> topConcepts = skosReader.getTopConcepts();
 		for (SKOSConcept concept : topConcepts) {
-			SKOSHierarchyTreeNode node = new SKOSHierarchyTreeNode(concept,dataset);
+			SKOSHierarchyTreeNode node = new SKOSHierarchyTreeNode(concept,getOntologyManager());
 			rootNode.add(node);
-			buildChildren(node,dataset);
-		}
-		
+			buildChildren(node);
+		}		
 	}		
 
 	@Override
@@ -52,12 +49,12 @@ public class SKOSHierarchyTreeModel extends ClassHierarchyTreeModel {
 		return rootNode;
 	}
 	
-	private void buildChildren(SKOSHierarchyTreeNode node,SKOSDataset dataset) {
+	private void buildChildren(SKOSHierarchyTreeNode node) {
 		SKOSConcept concept = node.getSKOSConcept();
 		for (SKOSConcept c : skosReader.getNarrowerThan(concept)) {
-			SKOSHierarchyTreeNode newNode = new SKOSHierarchyTreeNode(c,dataset);
+			SKOSHierarchyTreeNode newNode = new SKOSHierarchyTreeNode(c,getOntologyManager());
 			node.add(newNode);
-			buildChildren(newNode,dataset);
+			buildChildren(newNode);
 		}
 	}	
 }

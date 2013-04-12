@@ -87,13 +87,10 @@ public enum ValidationType {
     		SKOSHierarchyReader reader = new SKOSHierarchyReader(ontologyManager, ontology);
     		SKOSConcept concept = reader.getSKOSConcept(iri.toURI());
     		
-    		String name = concept.getURI().getFragment();
-    		    		
     		Set<SKOSConcept> narrower = reader.getNarrowerThan(concept,this.equals(NARROWER));
     		
-    		for (SKOSConcept narrow : narrower) {
-    			name = narrow.getURI().getFragment();
-    			terms.add(new Term(IRI.create(narrow.getURI()),name));
+    		for (SKOSConcept narrow : narrower) {    			
+    			terms.add(new Term(IRI.create(narrow.getURI()),ontologyManager.getRendering(narrow,ontology)));
     		}    		    	
     	}  
     	return terms;

@@ -37,10 +37,12 @@ public class SKOSHierarchyReader {
 	private Map<URI,Set<SKOSConcept>> broader = new HashMap<URI, Set<SKOSConcept>>();
 	private Map<URI,Set<SKOSConcept>> narrower = new HashMap<URI, Set<SKOSConcept>>();
 	private final OWLOntology skosDocument;
+	private final OntologyManager ontologyManager;
 
 	//takes the ontology manager and OWLOntology holding the skos.
 	//although strictly speaking the SKOS isn't an OWL ontology, the SKOS api it built upon the OWL-API, and can be used together in this way
 	public SKOSHierarchyReader(OntologyManager ontologyManager, OWLOntology skosDocument) {		
+		this.ontologyManager = ontologyManager;
 		this.skosDocument = skosDocument;
 		skosManager = new SKOSManager(ontologyManager.getOWLOntologyManager());	
 		buildGraph(skosDocument);
@@ -48,7 +50,7 @@ public class SKOSHierarchyReader {
 	
 	public Set<SKOSConcept> getTopConcepts() {
 		Set<SKOSConcept> top = new SKOSHashSet();
-		for (SKOSConcept concept : getDataset(skosDocument).getSKOSConcepts()) {
+		for (SKOSConcept concept : getOntologyManager().getSKOSDataset(skosDocument).getSKOSConcepts()) {
 			if (getBroaderThan(concept).isEmpty()) {
 				top.add(concept);
 			}
@@ -89,8 +91,12 @@ public class SKOSHierarchyReader {
 		return result;
 	}
 	
+	private OntologyManager getOntologyManager() {
+		return ontologyManager;
+	}
+	
 	private void buildGraph(OWLOntology ontology) {
-		SKOSDataset dataset = getDataset(ontology);
+		SKOSDataset dataset = getOntologyManager().getSKOSDataset(ontology);
 		for (SKOSConcept concept : dataset.getSKOSConcepts()) {
 			Set<SKOSConcept> narrower = parseNarrower(concept,dataset);
 			Set<SKOSConcept> broader = parseBroader(concept,dataset);
@@ -98,18 +104,7 @@ public class SKOSHierarchyReader {
 			addToBroader(concept.getURI(),broader);
 			addToNarrower(concept.getURI(),narrower);
 		}
-	}
-	
-	public SKOSDataset getDataset(OWLOntology ontology) {
-		SKOSDataset result = null;
-		for (SKOSDataset dataset : skosManager.getSKOSDataSets()) {
-			if (dataset.getURI().equals(ontology.getOntologyID().getOntologyIRI().toURI())) {
-				result = dataset;
-				break;
-			}
-		}
-		return result;
-	}
+	}	
 	
 	private void addToNarrower(URI parentURI,Set<SKOSConcept> concepts) {
 		for (SKOSConcept concept : concepts) {

@@ -49,6 +49,10 @@ import org.semanticweb.owlapi.util.OWLEntitySetProvider;
 import org.semanticweb.owlapi.util.ShortFormProvider;
 import org.semanticweb.owlapi.util.SimpleShortFormProvider;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
+import org.semanticweb.skos.SKOSAnnotation;
+import org.semanticweb.skos.SKOSConcept;
+import org.semanticweb.skos.SKOSDataset;
+import org.semanticweb.skosapibinding.SKOSManager;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.listeners.OntologyManagerListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.listeners.OntologyTermValidationListener;
@@ -220,6 +224,7 @@ public class OntologyManager {
 		return owlManager;
 	}
 
+    //FIXME: this and the next 2 don't really belong in OntologyManager
 	public String getRendering(OWLObject object) {
         if (object instanceof OWLEntity) {
             return shortFormProvider.getShortForm((OWLEntity) object);
@@ -228,6 +233,35 @@ public class OntologyManager {
             return object.toString();
         }
     }
+	
+	public String getRendering(SKOSConcept concept) {
+		for (OWLOntology ontology : getOntologiesForEntityIRI(IRI.create(concept.getURI()))) {
+			return getRendering(concept,ontology);
+		}
+		return concept.getURI().getFragment();
+	}
+	
+	public String getRendering(SKOSConcept concept, OWLOntology ontology) {		
+		Set<SKOSAnnotation> skosAnnotations = concept.getSKOSAnnotationsByURI(getSKOSDataset(ontology), URI.create("http://www.w3.org/2004/02/skos/core#prefLabel"));
+		if (skosAnnotations.size()>0) {
+			SKOSAnnotation annotation = skosAnnotations.iterator().next();
+			return annotation.getAnnotationValueAsConstant().getLiteral();
+		}
+		else {
+			return concept.getURI().getFragment();
+		}
+	}
+	
+	public SKOSDataset getSKOSDataset(OWLOntology ontology) {
+		SKOSDataset result = null;
+		for (SKOSDataset dataset : new SKOSManager(this.getOWLOntologyManager()).getSKOSDataSets()) {
+			if (dataset.getURI().equals(ontology.getOntologyID().getOntologyIRI().toURI())) {
+				result = dataset;
+				break;
+			}
+		}
+		return result;
+	}
 	
 	/**
      * Returns a StructuralReasoner that works over all loaded ontologies
