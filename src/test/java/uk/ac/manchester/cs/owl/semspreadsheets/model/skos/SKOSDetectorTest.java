@@ -38,6 +38,9 @@ public class SKOSDetectorTest {
 		
 		assertTrue(SKOSDetector.isSKOSEntity(skosEnt, ontologyManager));
 		assertFalse(SKOSDetector.isSKOSEntity(owlEnt, ontologyManager));
+		
+		assertTrue(SKOSDetector.isSKOSEntity(skosEnt.getIRI(), ontologyManager));
+		assertFalse(SKOSDetector.isSKOSEntity(owlEnt.getIRI(), ontologyManager));
 	}
 
 }

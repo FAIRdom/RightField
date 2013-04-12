@@ -21,7 +21,11 @@ public class SKOSDetector {
 	}
 	
 	public static boolean isSKOSEntity(OWLEntity entity,OntologyManager ontologyManager) {
-		for (OWLOntology ontology : ontologyManager.getOntologiesForEntityIRI(entity.getIRI())) {
+		return isSKOSEntity(entity.getIRI(), ontologyManager);
+	}
+	
+	public static boolean isSKOSEntity(IRI entityIRI,OntologyManager ontologyManager) {
+		for (OWLOntology ontology : ontologyManager.getOntologiesForEntityIRI(entityIRI)) {
 			if (SKOSDetector.isSKOS(ontology)) {
 				return true;
 			}

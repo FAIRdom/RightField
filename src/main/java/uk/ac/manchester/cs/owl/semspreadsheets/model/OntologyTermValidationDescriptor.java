@@ -19,7 +19,11 @@ import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.skos.SKOSConcept;
+import org.semanticweb.skosapibinding.SKOStoOWLConverter;
 
+import uk.ac.manchester.cs.owl.semspreadsheets.model.skos.SKOSDetector;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.skos.SKOSHierarchyReader;
 import uk.ac.manchester.cs.owl.semspreadsheets.repository.bioportal.BioPortalRepository;
 
 /**
@@ -71,7 +75,36 @@ public class OntologyTermValidationDescriptor implements Serializable {
 		this.propertyItem = propertyItem;        
         ontologyIRI2PhysicalIRIMap = new HashMap<IRI, IRI>();
 		resolveOntologyIRIMap(entityIRI, propertyItem, ontologyManager);
-        Set<OWLEntity> entities = type.getEntities(ontologyManager, entityIRI);        
+		if (SKOSDetector.isSKOSEntity(entityIRI, ontologyManager)) {
+			buildSKOSTermList(ontologyManager);			
+		}
+		else {
+			buildTermList(ontologyManager);
+		}        
+    }
+    
+    protected void buildSKOSTermList(OntologyManager ontologyManager) {
+    	terms=new ArrayList<Term>();    	
+    	    	    	
+    	Set<OWLOntology> ontologies = ontologyManager.getOntologiesForEntityIRI(entityIRI);
+    	for (OWLOntology ontology : ontologies) {
+    		SKOSHierarchyReader reader = new SKOSHierarchyReader(ontologyManager, ontology);
+    		SKOSConcept concept = reader.getSKOSConcept(entityIRI.toURI());
+    		
+    		String name = concept.getURI().getFragment();
+    		terms.add(new Term(IRI.create(concept.getURI()),name));
+    		
+    		
+    		Set<SKOSConcept> narrower = reader.getNarrowerThan(concept);
+    		for (SKOSConcept narrow : narrower) {
+    			name = narrow.getURI().getFragment();
+    			terms.add(new Term(IRI.create(narrow.getURI()),name));
+    		}    		    	
+    	}    	
+    }
+    
+    protected void buildTermList(OntologyManager ontologyManager) {
+    	Set<OWLEntity> entities = type.getEntities(ontologyManager, entityIRI);        
         for(OWLEntity term : entities) {
         	if (!term.getIRI().equals(NOTHING_IRI)) {
         		logger.debug("Adding term "+term.getIRI()+" to list of OntologyTermValidatorDescriptor terms");        	
