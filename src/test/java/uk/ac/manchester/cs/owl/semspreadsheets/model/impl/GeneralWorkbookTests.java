@@ -47,7 +47,7 @@ public abstract class GeneralWorkbookTests {
 	}
 	
 	@Test
-	public void testSetCommens() throws Exception {
+	public void testSetComments() throws Exception {
 		Workbook book = getTestWorkbook();
 		book.setComments("Testing commenting");
 		assertEquals("Testing commenting",book.getComments());
@@ -55,6 +55,23 @@ public abstract class GeneralWorkbookTests {
 		book.saveAs(f.toURI());
 		Workbook book2 = WorkbookFactory.createWorkbook(f.toURI());
 		assertEquals("Testing commenting",book2.getComments());		
+	}
+	
+	@Test 
+	public void getCommentsCleanWorkbook() throws Exception {
+		Workbook book = getEmptyWorkbook();
+		assertNull(book.getComments());
+	}
+	
+	@Test 
+	public void setCommentsCleanWorkbook() throws Exception {
+		Workbook book = getEmptyWorkbook();
+		book.setComments("Testing commenting");
+		assertEquals("Testing commenting",book.getComments());
+		File f = SpreadsheetTestHelper.getTempFile(getExtension());
+		book.saveAs(f.toURI());
+		Workbook book2 = WorkbookFactory.createWorkbook(f.toURI());
+		assertEquals("Testing commenting",book2.getComments());	
 	}
 	
 	@Test

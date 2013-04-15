@@ -272,12 +272,20 @@ public class WorkbookHSSFImpl implements MutableWorkbook, WorkbookChangeVisitor 
 
 	@Override
 	public String getComments() {
+		initSummaryInformation();
 		return workbook.getSummaryInformation().getComments();
 	}
 
 	@Override
 	public void setComments(String comments) {
+		initSummaryInformation();
 		workbook.getSummaryInformation().setComments(comments);		
+	}
+	
+	private void initSummaryInformation() {
+		if (workbook.getSummaryInformation()==null) {
+			workbook.createInformationProperties();
+		}
 	}
 
 }
