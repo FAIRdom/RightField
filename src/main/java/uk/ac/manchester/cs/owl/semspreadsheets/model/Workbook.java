@@ -45,6 +45,10 @@ public interface Workbook {
     List<Sheet> getVisibleSheets();
 
     boolean containsSheet(String name);
+    
+    String getComments();
+    
+    void setComments(String comments);
 
     Sheet getSheet(String name);
 

@@ -59,7 +59,7 @@ public class WorkbookHSSFImpl implements MutableWorkbook, WorkbookChangeVisitor 
     }
     
     public WorkbookHSSFImpl(HSSFWorkbook workbook) {
-    	this.workbook=workbook;
+    	this.workbook=workbook;    	
     }
 
     public WorkbookHSSFImpl(URI uri) throws IOException,InvalidWorkbookFormatException {
@@ -268,6 +268,16 @@ public class WorkbookHSSFImpl implements MutableWorkbook, WorkbookChangeVisitor 
 	@Override
 	public void clearChangeListeners() {
 		changeListeners.clear();
+	}
+
+	@Override
+	public String getComments() {
+		return workbook.getSummaryInformation().getComments();
+	}
+
+	@Override
+	public void setComments(String comments) {
+		workbook.getSummaryInformation().setComments(comments);		
 	}
 
 }

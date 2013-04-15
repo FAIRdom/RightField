@@ -41,6 +41,23 @@ public abstract class GeneralWorkbookTests {
 	}
 	
 	@Test
+	public void testGetComments() throws Exception {
+		Workbook book = getTestWorkbook();
+		assertEquals("Comments for RightField Test",book.getComments());
+	}
+	
+	@Test
+	public void testSetCommens() throws Exception {
+		Workbook book = getTestWorkbook();
+		book.setComments("Testing commenting");
+		assertEquals("Testing commenting",book.getComments());
+		File f = SpreadsheetTestHelper.getTempFile(getExtension());
+		book.saveAs(f.toURI());
+		Workbook book2 = WorkbookFactory.createWorkbook(f.toURI());
+		assertEquals("Testing commenting",book2.getComments());		
+	}
+	
+	@Test
 	public void testGetAllChangeListeners() throws Exception {
 		Workbook book = getTestWorkbook();
 		assertEquals(0,book.getAllChangeListeners().size());

@@ -287,4 +287,14 @@ public class WorkbookXSSFImpl implements MutableWorkbook, WorkbookChangeVisitor 
 		changeListeners.clear();		
 	}
 
+	@Override
+	public String getComments() {
+		return workbook.getProperties().getCoreProperties().getDescription();
+	}
+
+	@Override
+	public void setComments(String comments) {
+		workbook.getProperties().getCoreProperties().setDescription(comments);
+	}
+
 }
