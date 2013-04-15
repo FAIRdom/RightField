@@ -57,7 +57,7 @@ public class ClassHierarchyTree extends JTree {
             }
         });
          
-        setupCellRenderer();
+        setupCellRenderer();        
                  
     }
     

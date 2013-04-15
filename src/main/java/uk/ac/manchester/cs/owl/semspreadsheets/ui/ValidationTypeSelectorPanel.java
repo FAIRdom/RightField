@@ -24,6 +24,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidation;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.ValidationType;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.skos.SKOSDetector;
 
 /**
  * UI Panel for selection of the Validation Type - i.e Free Text, Subclasses, Instances etc.
@@ -65,7 +66,7 @@ public class ValidationTypeSelectorPanel extends JPanel {
 		});
 			
 			
-        refreshTypeList();
+        refreshTypeList(null);
     }        
 
 	private void setupListeners() {
@@ -89,13 +90,15 @@ public class ValidationTypeSelectorPanel extends JPanel {
 			
 			@Override
 			public void ontologiesChanged() {
-				refreshTypeList();				
+				if (getWorkbookManager().getOntologyManager().getLoadedOntologies().size()<1) {
+					refreshTypeList(null);
+				}
 			}
 
 			@Override
 			public void ontologySelected(OWLOntology ontology) {
-				// TODO Auto-generated method stub
-				
+				logger.debug("Ontology selected: "+ontology.getOntologyID().getOntologyIRI());
+				refreshTypeList(ontology);
 			}			
 		});
 	}
@@ -138,22 +141,29 @@ public class ValidationTypeSelectorPanel extends JPanel {
     }
 
     /**
-     * Updates the types list in the dropbox box
+     * Updates the types list in the dropbox box, selecting the right values according to the ontology passed, which can be null to indicate no ontology
      */
-    private void refreshTypeList() { 
+    private void refreshTypeList(OWLOntology ontology) { 
     	logger.debug("Refereshing validation type list");
-    	if (getWorkbookManager().getOntologyManager().getLoadedOntologies().size()>0) {
-    		if (comboBox.getItemCount()<=1) {
-    			comboBox.removeAllItems();
-        		for(ValidationType type : ValidationType.values()) {                
-        			comboBox.addItem(type);
-                }
-    		}    		
+    	if (ontology==null) {
+    		logger.debug("No ontology selected");
+    		updateComboBoxItems(ValidationType.valuesNoOntologies());
     	}
-    	else if (comboBox.getItemCount()!=1) {
-    		comboBox.removeAllItems();
-    		comboBox.addItem(ValidationType.FREETEXT);
-    	}    	    	
+    	else if (SKOSDetector.isSKOS(ontology)) {
+    		logger.debug("SKOS taxonomy selected");
+    		updateComboBoxItems(ValidationType.valuesForSKOS());
+    	}
+    	else {
+    		logger.debug("OWL ontology selected");
+    		updateComboBoxItems(ValidationType.valuesForOWL());
+    	}    	    	    
+    }
+    
+    private void updateComboBoxItems(ValidationType [] items) {
+    	comboBox.removeAllItems();
+    	for (ValidationType item : items) {
+    		comboBox.addItem(item);
+    	}
     }
     
     private void setComboBoxEnabled(boolean enabled) {

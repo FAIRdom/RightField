@@ -118,6 +118,19 @@ public enum ValidationType {
         }
     }
     
+    public static ValidationType[] valuesNoOntologies() {
+    	return new ValidationType[] {FREETEXT};
+    }
+    
+    public static ValidationType[] valuesForSKOS() {
+    	return new ValidationType[] {FREETEXT,NARROWER,DIRECTNARROWER};
+    }
+    
+    public static ValidationType[] valuesForOWL() {
+    	return new ValidationType[]{ValidationType.FREETEXT,ValidationType.SUBCLASSES,ValidationType.DIRECTSUBCLASSES,ValidationType.INDIVIDUALS,ValidationType.DIRECTINDIVIDUALS};
+    }
+        
+    
 
     /**
      * Returns the name of this enum constant, as contained in the
