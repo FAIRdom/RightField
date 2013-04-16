@@ -21,6 +21,7 @@ import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
 import org.apache.log4j.Logger;
+import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
@@ -39,7 +40,7 @@ public class ClassHierarchyTreeModel implements TreeModel {
 
     private ClassHierarchyNode rootNode;
 
-	private Map<OWLEntity, Collection<DefaultMutableTreeNode>> cls2NodeMap = new HashMap<OWLEntity, Collection<DefaultMutableTreeNode>>();
+	private Map<IRI, Collection<DefaultMutableTreeNode>> iri2NodeMap = new HashMap<IRI, Collection<DefaultMutableTreeNode>>();
 
     private ClassHierarchyTreeModel.NodeContentComparator nodeContentComparator;
 
@@ -62,21 +63,12 @@ public class ClassHierarchyTreeModel implements TreeModel {
 
 	protected void buildTreeModel() {
 		rootNode = new ClassHierarchyNode();
-        put(rootNode.getOWLClasses().iterator().next(), rootNode);
+        storeIRIForNode(rootNode.getOWLClasses().iterator().next().getIRI(), rootNode);
         buildChildren(rootNode);
-	}
-	
-    private void put(OWLEntity owlEntity, DefaultMutableTreeNode node) {    	
-        Collection<DefaultMutableTreeNode> nodes = cls2NodeMap.get(owlEntity);
-        if (nodes == null) {
-            nodes = new ArrayList<DefaultMutableTreeNode>();
-            cls2NodeMap.put(owlEntity, nodes);
-        }
-        nodes.add(node);
-    }
+	}    
 
-    private Collection<DefaultMutableTreeNode> getNodesForEntity(OWLEntity entity) {
-        Collection<DefaultMutableTreeNode> hierarchyNodes = cls2NodeMap.get(entity);
+    protected Collection<DefaultMutableTreeNode> getNodesForIRI(IRI iri) {
+        Collection<DefaultMutableTreeNode> hierarchyNodes = iri2NodeMap.get(iri);
         if (hierarchyNodes == null) {
             return Collections.emptyList();
         }
@@ -86,12 +78,21 @@ public class ClassHierarchyTreeModel implements TreeModel {
     }
 
     public Collection<TreePath> getTreePathsForEntity(OWLEntity entity) {
-        Collection<DefaultMutableTreeNode> nodes = getNodesForEntity(entity);
+        Collection<DefaultMutableTreeNode> nodes = getNodesForIRI(entity.getIRI());
         List<TreePath> treePaths = new ArrayList<TreePath>();
         for (DefaultMutableTreeNode node : nodes) {
             treePaths.add(new TreePath(node.getPath()));
         }
         return treePaths;
+    }
+    
+    protected void storeIRIForNode(IRI iri, DefaultMutableTreeNode node) {    	
+        Collection<DefaultMutableTreeNode> nodes = iri2NodeMap.get(iri);
+        if (nodes == null) {
+            nodes = new ArrayList<DefaultMutableTreeNode>();
+            iri2NodeMap.put(iri, nodes);
+        }
+        nodes.add(node);
     }
 
     private void buildChildren(ClassHierarchyNode node) {
@@ -106,7 +107,7 @@ public class ClassHierarchyTreeModel implements TreeModel {
                 ClassHierarchyNode childNode = new ClassHierarchyNode(sub);
                 node.add(childNode);
                 for (OWLClass cls : sub) {
-                    put(cls, childNode);
+                    storeIRIForNode(cls.getIRI(), childNode);
                     logger.debug("Adding subclass: "+cls);
                 }
                 buildChildren(childNode);
@@ -119,7 +120,7 @@ public class ClassHierarchyTreeModel implements TreeModel {
             for (OWLNamedIndividual ind : sortedIndividuals) {
                 ClassHierarchyIndividualNode childNode = new ClassHierarchyIndividualNode(ind);
                 node.add(childNode);
-                put(ind, childNode);
+                storeIRIForNode(ind.getIRI(), childNode);
             }
         }
     }        

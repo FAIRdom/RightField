@@ -18,11 +18,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.ui.Icons;
 
 public class SKOSTreeCellRenderer implements TreeCellRenderer {
 	
-	private DefaultTreeCellRenderer treeCellRendererDelegate = new DefaultTreeCellRenderer();
-	
-	public SKOSTreeCellRenderer() {
-		
-	}
+	private DefaultTreeCellRenderer treeCellRendererDelegate = new DefaultTreeCellRenderer();	
 
 	@Override
 	public Component getTreeCellRendererComponent(JTree tree, Object value,

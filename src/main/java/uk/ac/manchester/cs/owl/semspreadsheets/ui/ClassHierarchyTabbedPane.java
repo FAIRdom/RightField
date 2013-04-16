@@ -150,16 +150,16 @@ public class ClassHierarchyTabbedPane extends JTabbedPane {
 			ClassHierarchyTree tree = getSelectedHierarchyTree();
 						
 			//if it contains class select it
-			if (tree!=null && tree.containsClass(cls)) {
-				tree.setSelectedClass(cls);				
+			if (tree!=null && tree.containsEntity(cls)) {
+				tree.setSelectedEntity(cls);				
 			}
 			else {
 				//loop and select first tab to contain cls
 				int i=0;
 				if (getTabCount()>0) {
 					for (ClassHierarchyTree t : getHierachyTrees()) {
-						if (t.containsClass(cls)) {
-							t.setSelectedClass(cls);
+						if (t.containsEntity(cls)) {
+							t.setSelectedEntity(cls);
 							setSelectedIndex(i);
 							break;
 						}

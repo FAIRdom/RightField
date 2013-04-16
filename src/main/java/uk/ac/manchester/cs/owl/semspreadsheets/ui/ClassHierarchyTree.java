@@ -19,7 +19,6 @@ import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
 import org.apache.log4j.Logger;
-import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLOntology;
@@ -64,6 +63,7 @@ public class ClassHierarchyTree extends JTree {
     protected void setupCellRenderer() {
     	setCellRenderer(new OntologyCellRenderer(getWorkbookManager().getOntologyManager()));
     }
+    
     
     protected TreeModel createTreeModel(OntologyManager ontologyManager, OWLOntology ontology) {
     	return new ClassHierarchyTreeModel(ontologyManager,ontology);
@@ -113,12 +113,12 @@ public class ClassHierarchyTree extends JTree {
 		}					
 	}    		
 
-    public boolean containsClass(OWLClass cls) {
-    	return !getClassHierarchyTreeModel().getTreePathsForEntity(cls).isEmpty();
+    public boolean containsEntity(OWLEntity entity) {
+    	return getOntology().containsEntityInSignature(entity.getIRI());
     }
     
-    public void setSelectedClass(OWLClass cls) {
-        Collection<TreePath> treePaths = getClassHierarchyTreeModel().getTreePathsForEntity(cls);        
+    public void setSelectedEntity(OWLEntity entity) {
+        Collection<TreePath> treePaths = getClassHierarchyTreeModel().getTreePathsForEntity(entity);        
         clearSelection();
         if (!treePaths.isEmpty()) {
         	TreePath path = treePaths.iterator().next();

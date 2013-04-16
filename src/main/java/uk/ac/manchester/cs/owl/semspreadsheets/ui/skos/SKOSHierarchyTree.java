@@ -25,7 +25,7 @@ public class SKOSHierarchyTree extends ClassHierarchyTree {
 	private static final Logger logger = Logger.getLogger(SKOSHierarchyTree.class);
 	
 	public SKOSHierarchyTree(final WorkbookManager manager, OWLOntology ontology) {
-		super(manager,ontology);
+		super(manager,ontology);		
 	}
 	
 	@Override
@@ -56,7 +56,4 @@ public class SKOSHierarchyTree extends ClassHierarchyTree {
 		}
 		return entity;
 	}
-	
-	
-
 }

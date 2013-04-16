@@ -12,6 +12,7 @@ import java.util.Set;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.apache.log4j.Logger;
+import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.skos.SKOSConcept;
 
@@ -23,31 +24,32 @@ public class SKOSHierarchyTreeModel extends ClassHierarchyTreeModel {
 	
 	private static final Logger logger = Logger.getLogger(SKOSHierarchyTreeModel.class);
 	private DefaultMutableTreeNode rootNode;
-	private SKOSHierarchyReader skosReader;
+	private SKOSHierarchyReader skosReader;	
 	
 	public SKOSHierarchyTreeModel(OntologyManager ontologyManager,OWLOntology ontology) {
 		super(ontologyManager,ontology);
 		logger.debug("Using SKOSHierarchyTreeModel for "+ontology.getOntologyID().getOntologyIRI());
 		
 		
+	}	
+	
+	@Override
+	public Object getRoot() {
+		return rootNode;
 	}
-
+	
 	@Override
 	protected void buildTreeModel() {
 		rootNode = new DefaultMutableTreeNode("Top");
 		skosReader = new SKOSHierarchyReader(getOntologyManager(), getOntology());		
 		Set<SKOSConcept> topConcepts = skosReader.getTopConcepts();
-		for (SKOSConcept concept : topConcepts) {
-			SKOSHierarchyTreeNode node = new SKOSHierarchyTreeNode(concept,getOntologyManager());
+		for (SKOSConcept concept : topConcepts) {			
+			SKOSHierarchyTreeNode node = new SKOSHierarchyTreeNode(concept,getOntologyManager());			
 			rootNode.add(node);
+			storeIRIForNode(IRI.create(concept.getURI()), node);
 			buildChildren(node);
 		}		
 	}		
-
-	@Override
-	public Object getRoot() {
-		return rootNode;
-	}
 	
 	private void buildChildren(SKOSHierarchyTreeNode node) {
 		SKOSConcept concept = node.getSKOSConcept();
