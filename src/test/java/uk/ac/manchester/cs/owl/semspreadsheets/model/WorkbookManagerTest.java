@@ -94,6 +94,8 @@ public class WorkbookManagerTest {
 		assertTrue(testListener.isWorkbookSavedFired());
 		assertEquals(1,manager.getWorkbook().getAllChangeListeners().size());
 		assertTrue(manager.getWorkbook().getAllChangeListeners().contains(testChangeListener));
+		
+		assertTrue(manager.getWorkbook().getComments().contains("Created by RightField (version "));
 	}	
 	
 	@Test
@@ -118,6 +120,8 @@ public class WorkbookManagerTest {
 		
 		assertEquals(1,manager.getWorkbook().getAllChangeListeners().size());
 		assertTrue(manager.getWorkbook().getAllChangeListeners().contains(testChangeListener));
+		
+		assertTrue(manager.getWorkbook().getComments().contains("Created by RightField (version "));
 	}	
 	
 	@Test(expected=InvalidWorkbookFormatException.class)

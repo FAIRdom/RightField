@@ -31,6 +31,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.ui.CellSelectionModel;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.ErrorHandler;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookFormat;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookState;
+import uk.org.rightfield.RightField;
 
 /** 
  * @author Stuart Owen
@@ -218,7 +219,8 @@ public class WorkbookManager {
 
     public void saveWorkbook(URI uri) throws Exception {
         // Insert validation    	
-    	getOntologyManager().getOntologyTermValidationManager().writeValidationToWorkbook();    	
+    	getOntologyManager().getOntologyTermValidationManager().writeValidationToWorkbook();
+    	appendRightFieldComment();
         workbook.saveAs(uri); 
         logger.debug(getOntologyManager().getOntologyTermValidations().size()+" validation recorded");
         
@@ -237,6 +239,20 @@ public class WorkbookManager {
         }    
         fireWorkbookSaved();
         getWorkbookState().changesSaved(); 
+    }
+    
+    private void appendRightFieldComment() {
+    	String comments = workbook.getComments();
+    	if (comments==null) {
+    		comments = "";
+    	}
+    	if (!comments.contains("Created by RightField")) {
+    		if (comments.length()>0) {
+    			comments = comments + "\n";
+    		}
+    		comments = comments + "Created by RightField (version "+RightField.getApplicationVersion()+")";
+    		workbook.setComments(comments);
+    	}
     }
 
     public void previewValidation() {
