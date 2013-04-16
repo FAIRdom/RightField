@@ -114,7 +114,7 @@ public class ClassHierarchyTabbedPane extends JTabbedPane {
 						clearSelection();
 					}
 					else {
-						updateSelectedTabAndClass(cls);
+						updateSelectedTabAndEntity(cls);
 					}					
 				}				
 			}
@@ -125,7 +125,7 @@ public class ClassHierarchyTabbedPane extends JTabbedPane {
 		getWorkbookManager().getEntitySelectionModel().addListener(new AbstractEntitySelectionModelListener() {			
 			@Override
 			public void selectedEntityChanged(OWLEntity entity) {				
-				updateSelectedTabAndClass(entity);
+				updateSelectedTabAndEntity(entity);
 			}
 		});
 	}
@@ -142,38 +142,29 @@ public class ClassHierarchyTabbedPane extends JTabbedPane {
 		}
 	}
 	
-	private void updateSelectedTabAndClass(OWLEntity selectedEntity) {
-		logger.debug("Updating ontology tab for selected entity - "+selectedEntity);
-		if (selectedEntity instanceof OWLClass) {
-			OWLClass cls = (OWLClass) selectedEntity;
-			//get selected tree first
-			ClassHierarchyTree tree = getSelectedHierarchyTree();
-						
-			//if it contains class select it
-			if (tree!=null && tree.containsEntity(cls)) {
-				tree.setSelectedEntity(cls);				
-			}
-			else {
-				//loop and select first tab to contain cls
-				int i=0;
-				if (getTabCount()>0) {
-					for (ClassHierarchyTree t : getHierachyTrees()) {
-						if (t.containsEntity(cls)) {
-							t.setSelectedEntity(cls);
-							setSelectedIndex(i);
-							break;
-						}
-						i++;
+	private void updateSelectedTabAndEntity(OWLEntity selectedEntity) {
+		logger.debug("Updating ontology tab for selected entity - "
+				+ selectedEntity);
+
+		ClassHierarchyTree tree = getSelectedHierarchyTree();
+
+		// if it contains class select it
+		if (tree != null && tree.containsEntity(selectedEntity)) {
+			tree.setSelectedEntity(selectedEntity);
+		} else {
+			// loop and select first tab to contain cls
+			int i = 0;
+			if (getTabCount() > 0) {
+				for (ClassHierarchyTree t : getHierachyTrees()) {
+					if (t.containsEntity(selectedEntity)) {
+						t.setSelectedEntity(selectedEntity);
+						setSelectedIndex(i);
+						break;
 					}
+					i++;
 				}
-			}			
-		}
-		else {			
-			ClassHierarchyTree tree = getSelectedHierarchyTree();
-			if (tree!=null) {
-				tree.clearSelection();
 			}
-		}
+		}			
 	}
 	
 	private List<ClassHierarchyTree> getHierachyTrees() {

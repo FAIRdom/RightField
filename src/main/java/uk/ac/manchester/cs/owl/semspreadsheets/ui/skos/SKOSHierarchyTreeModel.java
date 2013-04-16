@@ -28,9 +28,7 @@ public class SKOSHierarchyTreeModel extends ClassHierarchyTreeModel {
 	
 	public SKOSHierarchyTreeModel(OntologyManager ontologyManager,OWLOntology ontology) {
 		super(ontologyManager,ontology);
-		logger.debug("Using SKOSHierarchyTreeModel for "+ontology.getOntologyID().getOntologyIRI());
-		
-		
+		logger.debug("Using SKOSHierarchyTreeModel for "+ontology.getOntologyID().getOntologyIRI());				
 	}	
 	
 	@Override
@@ -56,6 +54,7 @@ public class SKOSHierarchyTreeModel extends ClassHierarchyTreeModel {
 		for (SKOSConcept c : skosReader.getNarrowerThan(concept)) {
 			SKOSHierarchyTreeNode newNode = new SKOSHierarchyTreeNode(c,getOntologyManager());
 			node.add(newNode);
+			storeIRIForNode(IRI.create(concept.getURI()), node);
 			buildChildren(newNode);
 		}
 	}	
