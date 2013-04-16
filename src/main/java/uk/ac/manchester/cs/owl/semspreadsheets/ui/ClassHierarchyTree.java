@@ -10,7 +10,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -31,7 +30,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
  *
  */
 @SuppressWarnings("serial")
-public class ClassHierarchyTree extends JTree implements HierarchyTree {
+public class ClassHierarchyTree extends HierarchyTree {
 	
 	private static Logger logger = Logger.getLogger(ClassHierarchyTree.class);
 

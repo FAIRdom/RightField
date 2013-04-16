@@ -245,7 +245,7 @@ public class ClassHierarchyTabbedPane extends JTabbedPane {
 	}
 
 	private void createTab(OWLOntology ontology) {
-		ClassHierarchyTree tree = createTree(ontology);
+		HierarchyTree tree = createTree(ontology);
 		JScrollPane sp = new JScrollPane(tree);
 		tabToTreeMap.put(sp, tree);
 		sp.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
@@ -261,7 +261,7 @@ public class ClassHierarchyTabbedPane extends JTabbedPane {
 		}				
 	}
 	
-	private ClassHierarchyTree createTree(OWLOntology ontology) {
+	private HierarchyTree createTree(OWLOntology ontology) {
 		if (SKOSDetector.isSKOS(ontology)) {
 			return new SKOSHierarchyTree(getWorkbookManager(),ontology);
 		}
