@@ -19,13 +19,13 @@ import org.semanticweb.owlapi.reasoner.impl.NodeFactory;
  * @author Matthew Horridge
  */
 @SuppressWarnings("serial")
-public class ClassHierarchyNode extends DefaultMutableTreeNode {    
+public class ClassHierarchyTreeNode extends DefaultMutableTreeNode {    
 
-    public ClassHierarchyNode() {
+    public ClassHierarchyTreeNode() {
         super(NodeFactory.getOWLClassTopNode());        
     }
 
-    public ClassHierarchyNode(Node<OWLClass> clses) {
+    public ClassHierarchyTreeNode(Node<OWLClass> clses) {
         super(clses);        
     }
 

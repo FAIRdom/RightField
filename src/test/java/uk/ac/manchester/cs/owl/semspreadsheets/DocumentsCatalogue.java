@@ -30,7 +30,15 @@ public class DocumentsCatalogue {
 	public static URI scoroOntologyURI() throws Exception {
 		return uriForResourceName("ontologies/scoro.owl");
 	}
-
+	
+	public static URI exampleSKOSURI() throws Exception {
+		return uriForResourceName("skos/skos-example.rdf");
+	}
+	
+	public static URI castSKOSURI() throws Exception {
+		return uriForResourceName("skos/CAST.rdf");
+	}
+	
 	// a simple workbook that contains cells with quotes and commas
 	public static URI simpleWorkbookForCSVURI() throws Exception {
 		return uriForResourceName("workbooks/workbookForCSVTest.xls");

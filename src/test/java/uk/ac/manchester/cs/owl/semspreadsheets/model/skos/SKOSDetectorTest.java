@@ -18,8 +18,8 @@ public class SKOSDetectorTest {
 		WorkbookManager workbookManager = new WorkbookManager();
 		OntologyManager ontologyManager = workbookManager.getOntologyManager();
 		OWLOntology ontology = ontologyManager.loadOntology(DocumentsCatalogue.jermOntologyURI());
-		OWLOntology skosDocument = ontologyManager.loadOntology(DocumentsCatalogue.uriForResourceName("skos/skos-example.rdf"));
-		OWLOntology castSkosDocument = ontologyManager.loadOntology(DocumentsCatalogue.uriForResourceName("skos/CAST.rdf"));
+		OWLOntology skosDocument = ontologyManager.loadOntology(DocumentsCatalogue.exampleSKOSURI());
+		OWLOntology castSkosDocument = ontologyManager.loadOntology(DocumentsCatalogue.castSKOSURI());
 		
 		assertFalse(SKOSDetector.isSKOS(ontology));
 		assertTrue(SKOSDetector.isSKOS(skosDocument));
@@ -31,7 +31,7 @@ public class SKOSDetectorTest {
 		WorkbookManager workbookManager = new WorkbookManager();
 		OntologyManager ontologyManager = workbookManager.getOntologyManager();
 		OWLOntology ontology = ontologyManager.loadOntology(DocumentsCatalogue.jermOntologyURI());
-		OWLOntology skosDocument = ontologyManager.loadOntology(DocumentsCatalogue.uriForResourceName("skos/skos-example.rdf"));
+		OWLOntology skosDocument = ontologyManager.loadOntology(DocumentsCatalogue.exampleSKOSURI());
 		
 		OWLEntity owlEnt = ontology.getEntitiesInSignature(IRI.create("http://www.mygrid.org.uk/ontology/JERMOntology#affinity_chromatography")).iterator().next();
 		OWLEntity skosEnt = skosDocument.getEntitiesInSignature(IRI.create("http://www.fluffyboards.com/vocabulary#snowboard")).iterator().next();

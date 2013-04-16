@@ -59,7 +59,7 @@ public class ClassHierarchyTabbedPane extends JTabbedPane {
 
 	private final WorkbookFrame workbookFrame;
 	
-	private Map<JScrollPane,ClassHierarchyTree> tabToTreeMap = new HashMap<JScrollPane,ClassHierarchyTree>();
+	private Map<JScrollPane,HierarchyTree> tabToTreeMap = new HashMap<JScrollPane,HierarchyTree>();
 		
 
 	public ClassHierarchyTabbedPane(WorkbookFrame workbookFrame) {
@@ -86,7 +86,7 @@ public class ClassHierarchyTabbedPane extends JTabbedPane {
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				if (e.getSource() instanceof ClassHierarchyTabbedPane) {				
-					ClassHierarchyTree selectedHierarchyTree = ((ClassHierarchyTabbedPane)e.getSource()).getSelectedHierarchyTree();					
+					HierarchyTree selectedHierarchyTree = ((ClassHierarchyTabbedPane)e.getSource()).getSelectedHierarchyTree();					
 					if (selectedHierarchyTree!=null) {						
 						OWLOntology ontology = selectedHierarchyTree.getOntology();
 						fireOntologySelected(ontology);
@@ -136,7 +136,7 @@ public class ClassHierarchyTabbedPane extends JTabbedPane {
 	}
 	
 	private void clearSelection() {
-		ClassHierarchyTree tree = getSelectedHierarchyTree();
+		HierarchyTree tree = getSelectedHierarchyTree();
 		if (tree!=null) {
 			tree.clearSelection();
 		}
@@ -146,7 +146,7 @@ public class ClassHierarchyTabbedPane extends JTabbedPane {
 		logger.debug("Updating ontology tab for selected entity - "
 				+ selectedEntity);
 
-		ClassHierarchyTree tree = getSelectedHierarchyTree();
+		HierarchyTree tree = getSelectedHierarchyTree();
 
 		// if it contains class select it
 		if (tree != null && tree.containsEntity(selectedEntity)) {
@@ -155,7 +155,7 @@ public class ClassHierarchyTabbedPane extends JTabbedPane {
 			// loop and select first tab to contain cls
 			int i = 0;
 			if (getTabCount() > 0) {
-				for (ClassHierarchyTree t : getHierachyTrees()) {
+				for (HierarchyTree t : getHierachyTrees()) {
 					if (t.containsEntity(selectedEntity)) {
 						t.setSelectedEntity(selectedEntity);
 						setSelectedIndex(i);
@@ -167,12 +167,12 @@ public class ClassHierarchyTabbedPane extends JTabbedPane {
 		}			
 	}
 	
-	private List<ClassHierarchyTree> getHierachyTrees() {
-		List<ClassHierarchyTree> trees = new ArrayList<ClassHierarchyTree>();
+	private List<HierarchyTree> getHierachyTrees() {
+		List<HierarchyTree> trees = new ArrayList<HierarchyTree>();
 		for (int i=0;i<getComponentCount();i++) {
 			Component comp = getComponent(i);
 			if (comp instanceof JScrollPane) {
-				ClassHierarchyTree tree = tabToTreeMap.get(comp);
+				HierarchyTree tree = tabToTreeMap.get(comp);
 				if (tree!=null) {
 					trees.add(tree);
 				}				
@@ -181,7 +181,7 @@ public class ClassHierarchyTabbedPane extends JTabbedPane {
 		return trees;
 	}
 	
-	private ClassHierarchyTree getSelectedHierarchyTree() {
+	private HierarchyTree getSelectedHierarchyTree() {
 		JScrollPane scrollPane = (JScrollPane)getSelectedComponent();
 		return tabToTreeMap.get(scrollPane);
 	}		

@@ -40,8 +40,8 @@ public class OntologyCellRenderer implements TreeCellRenderer, ListCellRenderer 
     @Override
     public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
         JLabel label = (JLabel) treeCellRendererDelegate.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
-        if(value instanceof ClassHierarchyNode) {
-            ClassHierarchyNode node = (ClassHierarchyNode) value;
+        if(value instanceof ClassHierarchyTreeNode) {
+            ClassHierarchyTreeNode node = (ClassHierarchyTreeNode) value;
             setupRenderer(label, node.getOWLClasses().iterator().next());
         }
         else if(value instanceof ClassHierarchyIndividualNode) {

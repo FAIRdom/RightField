@@ -7,7 +7,6 @@
 
 package uk.ac.manchester.cs.owl.semspreadsheets.ui.skos;
 
-import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
 import org.apache.log4j.Logger;
@@ -19,6 +18,7 @@ import org.semanticweb.skosapibinding.SKOStoOWLConverter;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyManager;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.ClassHierarchyTree;
+import uk.ac.manchester.cs.owl.semspreadsheets.ui.HierarchyTreeModel;
 
 @SuppressWarnings("serial")
 public class SKOSHierarchyTree extends ClassHierarchyTree {
@@ -34,12 +34,12 @@ public class SKOSHierarchyTree extends ClassHierarchyTree {
     }
     
 	@Override
-    protected TreeModel createTreeModel(OntologyManager ontologyManager, OWLOntology ontology) {
+    protected HierarchyTreeModel createTreeModel(OntologyManager ontologyManager, OWLOntology ontology) {
     	return new SKOSHierarchyTreeModel(ontologyManager, ontology);
     }
 
 	@Override
-	protected OWLEntity getSelectedEntity() {
+	public OWLEntity getSelectedEntity() {
 		TreePath[] selectedPaths = getSelectionPaths();
 		OWLEntity entity = null;
 		if (selectedPaths == null) {

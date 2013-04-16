@@ -14,7 +14,6 @@ import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
@@ -32,7 +31,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
  *
  */
 @SuppressWarnings("serial")
-public class ClassHierarchyTree extends JTree {
+public class ClassHierarchyTree extends JTree implements HierarchyTree {
 	
 	private static Logger logger = Logger.getLogger(ClassHierarchyTree.class);
 
@@ -56,50 +55,27 @@ public class ClassHierarchyTree extends JTree {
             }
         });
          
-        setupCellRenderer();        
-                 
+        setupCellRenderer();                 
     }
     
     protected void setupCellRenderer() {
     	setCellRenderer(new OntologyCellRenderer(getWorkbookManager().getOntologyManager()));
     }
-    
-    
-    protected TreeModel createTreeModel(OntologyManager ontologyManager, OWLOntology ontology) {
+       
+    protected HierarchyTreeModel createTreeModel(OntologyManager ontologyManager, OWLOntology ontology) {
     	return new ClassHierarchyTreeModel(ontologyManager,ontology);
     }
     
+    @Override
     public OWLOntology getOntology() {
     	return ontology;
     }    
     
-    public ClassHierarchyTreeModel getClassHierarchyTreeModel() {
-        return (ClassHierarchyTreeModel) super.getModel();
-    } 
-    
-    protected OWLEntity getSelectedEntity() {
-		TreePath[] selectedPaths = getSelectionPaths();
-		if (selectedPaths == null) {
-			return null;
-		}
-		Set<OWLEntity> selectedEntities = new HashSet<OWLEntity>();
-		
-		for (TreePath path : selectedPaths) {
-			DefaultMutableTreeNode node = (DefaultMutableTreeNode) path
-					.getLastPathComponent();
-			if (node instanceof ClassHierarchyNode) {
-				selectedEntities.addAll(((ClassHierarchyNode) node)
-						.getOWLClasses());
-			} else {
-				selectedEntities
-						.add((OWLNamedIndividual) ((ClassHierarchyIndividualNode) node)
-								.getUserObject());
-			}
-		}
-		OWLEntity selectedEntity = selectedEntities.iterator().next();
-		return selectedEntity;
-	}
+    public HierarchyTreeModel getHierarchyTreeModel() {
+        return (HierarchyTreeModel) super.getModel();
+    }         
 
+    @Override
 	public void previewSelectedClass() {
 		logger.debug("In previewSelectedClass");
 		
@@ -113,19 +89,45 @@ public class ClassHierarchyTree extends JTree {
 		}					
 	}    		
 
+	@Override
     public boolean containsEntity(OWLEntity entity) {
     	return getOntology().containsEntityInSignature(entity.getIRI());
     }
     
+	@Override
     public void setSelectedEntity(OWLEntity entity) {
-        Collection<TreePath> treePaths = getClassHierarchyTreeModel().getTreePathsForEntity(entity);        
+        Collection<TreePath> treePaths = getHierarchyTreeModel().getTreePathsForEntity(entity);        
         clearSelection();
         if (!treePaths.isEmpty()) {
         	TreePath path = treePaths.iterator().next();
         	addSelectionPath(path);
             scrollPathToVisible(path);        	
         }              
-    }     
+    } 
+    
+	@Override
+    public OWLEntity getSelectedEntity() {
+		TreePath[] selectedPaths = getSelectionPaths();
+		if (selectedPaths == null) {
+			return null;
+		}
+		Set<OWLEntity> selectedEntities = new HashSet<OWLEntity>();
+		
+		for (TreePath path : selectedPaths) {
+			DefaultMutableTreeNode node = (DefaultMutableTreeNode) path
+					.getLastPathComponent();
+			if (node instanceof ClassHierarchyTreeNode) {
+				selectedEntities.addAll(((ClassHierarchyTreeNode) node)
+						.getOWLClasses());
+			} else {
+				selectedEntities
+						.add((OWLNamedIndividual) ((ClassHierarchyIndividualNode) node)
+								.getUserObject());
+			}
+		}
+		OWLEntity selectedEntity = selectedEntities.iterator().next();
+		return selectedEntity;
+	}
     
     protected WorkbookManager getWorkbookManager() {
     	return workbookManager;

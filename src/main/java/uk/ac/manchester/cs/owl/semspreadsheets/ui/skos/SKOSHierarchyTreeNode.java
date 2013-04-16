@@ -13,7 +13,7 @@ import org.semanticweb.skos.SKOSConcept;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyManager;
 
-class SKOSHierarchyTreeNode extends DefaultMutableTreeNode {
+public class SKOSHierarchyTreeNode extends DefaultMutableTreeNode {
 		
 	private static final long serialVersionUID = 768120710476700086L;	
 	private final OntologyManager ontologyManager;	

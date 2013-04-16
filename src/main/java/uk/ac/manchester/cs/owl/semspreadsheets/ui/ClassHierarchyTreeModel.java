@@ -17,7 +17,6 @@ import java.util.Set;
 
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
 import org.apache.log4j.Logger;
@@ -36,9 +35,9 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyManager;
  * @author Stuart Owen
  * @author Matthew Horridge
  */
-public class ClassHierarchyTreeModel implements TreeModel {	
+public class ClassHierarchyTreeModel implements HierarchyTreeModel {	
 
-    private ClassHierarchyNode rootNode;
+    private ClassHierarchyTreeNode rootNode;
 
 	private Map<IRI, Collection<DefaultMutableTreeNode>> iri2NodeMap = new HashMap<IRI, Collection<DefaultMutableTreeNode>>();
 
@@ -50,7 +49,8 @@ public class ClassHierarchyTreeModel implements TreeModel {
 
 	private final OntologyManager ontologyManager;  
 	
-	private static final Logger logger = Logger.getLogger(ClassHierarchyNode.class);
+	private static final Logger logger = Logger.getLogger(ClassHierarchyTreeNode.class);
+	private List<TreeModelListener> treeModelListeners = new ArrayList<TreeModelListener>();
 
 	public ClassHierarchyTreeModel(OntologyManager ontologyManager, OWLOntology ontology) {
         this.ontologyManager = ontologyManager;		
@@ -60,9 +60,63 @@ public class ClassHierarchyTreeModel implements TreeModel {
             buildTreeModel();
         }        
     }
+	
+	@Override
+    public Collection<TreePath> getTreePathsForEntity(OWLEntity entity) {
+        Collection<DefaultMutableTreeNode> nodes = getNodesForIRI(entity.getIRI());
+        List<TreePath> treePaths = new ArrayList<TreePath>();
+        for (DefaultMutableTreeNode node : nodes) {
+            treePaths.add(new TreePath(node.getPath()));
+        }
+        return treePaths;
+    }
+	
+	 @Override
+    public Object getRoot() {
+        return rootNode;
+    }
+
+	@Override
+    public Object getChild(Object parent, int index) {
+        return ((DefaultMutableTreeNode) parent).getChildAt(index);
+    }
+
+    @Override
+    public int getChildCount(Object parent) {
+        return ((DefaultMutableTreeNode) parent).getChildCount();
+    }
+
+    @Override
+    public boolean isLeaf(Object node) {
+        return ((DefaultMutableTreeNode) node).isLeaf();
+    }
+
+    @Override
+    public void valueForPathChanged(TreePath path, Object newValue) {
+    }
+
+    @Override
+    public int getIndexOfChild(Object parent, Object child) {
+        return ((DefaultMutableTreeNode) parent).getIndex((ClassHierarchyTreeNode) child);
+    }
+
+    @Override
+	public void addTreeModelListener(TreeModelListener l) {
+		treeModelListeners.add(l);
+	}
+
+	@Override
+	public void removeTreeModelListener(TreeModelListener l) {
+		treeModelListeners.remove(l);		
+	}
+    
+
+    protected OWLOntology getOntology() {
+		return ontology;
+	}  
 
 	protected void buildTreeModel() {
-		rootNode = new ClassHierarchyNode();
+		rootNode = new ClassHierarchyTreeNode();
         storeIRIForNode(rootNode.getOWLClasses().iterator().next().getIRI(), rootNode);
         buildChildren(rootNode);
 	}    
@@ -75,16 +129,7 @@ public class ClassHierarchyTreeModel implements TreeModel {
         else {
             return new ArrayList<DefaultMutableTreeNode>(hierarchyNodes);
         }
-    }
-
-    public Collection<TreePath> getTreePathsForEntity(OWLEntity entity) {
-        Collection<DefaultMutableTreeNode> nodes = getNodesForIRI(entity.getIRI());
-        List<TreePath> treePaths = new ArrayList<TreePath>();
-        for (DefaultMutableTreeNode node : nodes) {
-            treePaths.add(new TreePath(node.getPath()));
-        }
-        return treePaths;
-    }
+    }    
     
     protected void storeIRIForNode(IRI iri, DefaultMutableTreeNode node) {    	
         Collection<DefaultMutableTreeNode> nodes = iri2NodeMap.get(iri);
@@ -92,10 +137,12 @@ public class ClassHierarchyTreeModel implements TreeModel {
             nodes = new ArrayList<DefaultMutableTreeNode>();
             iri2NodeMap.put(iri, nodes);
         }
-        nodes.add(node);
+        if (!nodes.contains(node)) {
+        	nodes.add(node);
+        }        
     }
 
-    private void buildChildren(ClassHierarchyNode node) {
+    private void buildChildren(ClassHierarchyTreeNode node) {
     	logger.debug("Building class hierarchy tree");
         Set<OWLClass> clses = node.getOWLClasses();
         OWLClass representative = clses.iterator().next();
@@ -104,7 +151,7 @@ public class ClassHierarchyTreeModel implements TreeModel {
             List<Node<OWLClass>> sortedSubs = new ArrayList<Node<OWLClass>>(subs.getNodes());
             Collections.sort(sortedSubs, nodeContentComparator);
             for (Node<OWLClass> sub : sortedSubs) {
-                ClassHierarchyNode childNode = new ClassHierarchyNode(sub);
+                ClassHierarchyTreeNode childNode = new ClassHierarchyTreeNode(sub);
                 node.add(childNode);
                 for (OWLClass cls : sub) {
                     storeIRIForNode(cls.getIRI(), childNode);
@@ -123,42 +170,7 @@ public class ClassHierarchyTreeModel implements TreeModel {
                 storeIRIForNode(ind.getIRI(), childNode);
             }
         }
-    }        
-
-    @Override
-    public Object getRoot() {
-        return rootNode;
-    }
-
-    public Object getChild(Object parent, int index) {
-        return ((DefaultMutableTreeNode) parent).getChildAt(index);
-    }
-
-    public int getChildCount(Object parent) {
-        return ((DefaultMutableTreeNode) parent).getChildCount();
-    }
-
-    public boolean isLeaf(Object node) {
-        return ((DefaultMutableTreeNode) node).isLeaf();
-    }
-
-    public void valueForPathChanged(TreePath path, Object newValue) {
-    }
-
-    public int getIndexOfChild(Object parent, Object child) {
-        return ((DefaultMutableTreeNode) parent).getIndex((ClassHierarchyNode) child);
-    }
-
-    public void addTreeModelListener(TreeModelListener l) {
-
-    }
-
-    public void removeTreeModelListener(TreeModelListener l) {
-    }
-
-    protected OWLOntology getOntology() {
-		return ontology;
-	}       
+    }              
     
     private OWLReasoner getReasoner() {
     	return getOntologyManager().getStructuralReasoner(getOntology());    	
@@ -184,4 +196,6 @@ public class ClassHierarchyTreeModel implements TreeModel {
     protected OntologyManager getOntologyManager() {
     	return ontologyManager;
     }
+
+	
 }
