@@ -54,7 +54,7 @@ public class SKOSHierarchyTreeModel extends ClassHierarchyTreeModel {
 		for (SKOSConcept c : skosReader.getNarrowerThan(concept)) {
 			SKOSHierarchyTreeNode newNode = new SKOSHierarchyTreeNode(c,getOntologyManager());
 			node.add(newNode);
-			storeIRIForNode(IRI.create(concept.getURI()), node);
+			storeIRIForNode(IRI.create(c.getURI()), newNode);
 			buildChildren(newNode);
 		}
 	}	

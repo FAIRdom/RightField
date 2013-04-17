@@ -18,12 +18,8 @@ import javax.swing.tree.TreeCellRenderer;
 
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
-import org.semanticweb.skos.SKOSConcept;
 
-import uk.ac.manchester.cs.owl.owlapi.OWLNamedIndividualImpl;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyManager;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.skos.SKOSDetector;
-import uk.ac.manchester.cs.skos.SKOSConceptImpl;
 
 /**
  * @author Stuart Owen

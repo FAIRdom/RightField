@@ -17,6 +17,7 @@ import java.util.Set;
 
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
 import org.apache.log4j.Logger;
@@ -97,7 +98,7 @@ public class ClassHierarchyTreeModel implements HierarchyTreeModel {
 
     @Override
     public int getIndexOfChild(Object parent, Object child) {
-        return ((DefaultMutableTreeNode) parent).getIndex((ClassHierarchyTreeNode) child);
+        return ((DefaultMutableTreeNode) parent).getIndex((TreeNode)child);
     }
 
     @Override
