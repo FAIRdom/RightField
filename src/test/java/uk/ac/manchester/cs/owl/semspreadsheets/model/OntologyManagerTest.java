@@ -539,6 +539,11 @@ public class OntologyManagerTest {
 		
 		rendering = ontologyManager.getRendering(new SKOSConceptImpl(new OWLNamedIndividualImpl(IRI.create("http://onto.nerc.ac.uk/CAST/178"))));
 		assertEquals("ground level rainfall measurement",rendering);
+		
+		//try sending a SKOS term, but as an OWLEntity
+		rendering = ontologyManager.getRendering(new OWLNamedIndividualImpl(IRI.create("http://onto.nerc.ac.uk/CAST/178")));
+		assertEquals("ground level rainfall measurement",rendering);
+		
 	}
 
 }

@@ -66,13 +66,7 @@ public class OntologyCellRenderer implements TreeCellRenderer, ListCellRenderer 
         if(value instanceof OWLEntity) {
         	OWLEntity entity = (OWLEntity)value;
             label.setIcon(Icons.getOWLEntityIcon(entity));
-            if (SKOSDetector.isSKOSEntity(entity, ontologyManager)) {
-            	SKOSConcept concept = new SKOSConceptImpl(new OWLNamedIndividualImpl(entity.getIRI()));
-            	label.setText(ontologyManager.getRendering(concept));
-            }
-            else {
-            	label.setText(ontologyManager.getRendering(entity));
-            }                       
+            label.setText(ontologyManager.getRendering(entity));                                  
         }        
         else {
             label.setIcon(null);

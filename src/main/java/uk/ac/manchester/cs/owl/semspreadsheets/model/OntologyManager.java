@@ -59,6 +59,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.listeners.OntologyTermValidationL
 import uk.ac.manchester.cs.owl.semspreadsheets.model.skos.SKOSDetector;
 import uk.ac.manchester.cs.owl.semspreadsheets.repository.bioportal.BioPortalRepository;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.ErrorHandler;
+import uk.ac.manchester.cs.skos.SKOSConceptImpl;
 
 /**
  * Encapsulates everything to do with Ontologies, and wraps the {@link OWLOntologyManager} and {@link OntologyTermValidationManager}
@@ -252,7 +253,13 @@ public class OntologyManager {
     //FIXME: this and the next 2 don't really belong in OntologyManager
 	public String getRendering(OWLObject object) {
         if (object instanceof OWLEntity) {
-            return shortFormProvider.getShortForm((OWLEntity) object);
+        	if (SKOSDetector.isSKOSEntity(((OWLEntity) object).getIRI(), this)) {
+        		return getRendering(new SKOSConceptImpl(new OWLNamedIndividualImpl(((OWLEntity) object).getIRI())));
+        	}
+        	else {
+        		return shortFormProvider.getShortForm((OWLEntity) object);
+        	}
+            
         }
         else {
             return object.toString();
