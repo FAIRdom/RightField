@@ -11,10 +11,12 @@ import java.awt.Component;
 
 import javax.swing.JLabel;
 import javax.swing.JTree;
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.Icons;
+import uk.ac.manchester.cs.owl.semspreadsheets.ui.skos.SKOSHierarchyTreeModel.SKOSTopNode;
 
 public class SKOSTreeCellRenderer implements TreeCellRenderer {
 	
@@ -28,6 +30,10 @@ public class SKOSTreeCellRenderer implements TreeCellRenderer {
 		if (value instanceof SKOSHierarchyTreeNode) {
 			SKOSHierarchyTreeNode node = (SKOSHierarchyTreeNode)value;
 			label.setText(node.getLabelText());
+			label.setIcon(Icons.getSKOSConceptIcon());
+		}
+		else if (value instanceof SKOSTopNode){
+			label.setText(((DefaultMutableTreeNode) value).getUserObject().toString());
 			label.setIcon(Icons.getSKOSConceptIcon());
 		}
 					

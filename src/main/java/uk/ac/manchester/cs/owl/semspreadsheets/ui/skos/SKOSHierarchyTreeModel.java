@@ -22,6 +22,16 @@ import uk.ac.manchester.cs.owl.semspreadsheets.ui.ClassHierarchyTreeModel;
 
 public class SKOSHierarchyTreeModel extends ClassHierarchyTreeModel {
 	
+	public class SKOSTopNode extends DefaultMutableTreeNode {
+		
+		private static final long serialVersionUID = 4707804678459767953L;
+
+		public SKOSTopNode() {
+			super("Top");
+		}
+	}
+	
+	
 	private static final Logger logger = Logger.getLogger(SKOSHierarchyTreeModel.class);
 	private DefaultMutableTreeNode rootNode;
 	private SKOSHierarchyReader skosReader;	
@@ -38,7 +48,8 @@ public class SKOSHierarchyTreeModel extends ClassHierarchyTreeModel {
 	
 	@Override
 	protected void buildTreeModel() {
-		rootNode = new DefaultMutableTreeNode("Top");
+		rootNode = new SKOSTopNode();
+		
 		skosReader = new SKOSHierarchyReader(getOntologyManager(), getOntology());		
 		Set<SKOSConcept> topConcepts = skosReader.getTopConcepts();
 		for (SKOSConcept concept : topConcepts) {			
@@ -57,5 +68,5 @@ public class SKOSHierarchyTreeModel extends ClassHierarchyTreeModel {
 			storeIRIForNode(IRI.create(c.getURI()), newNode);
 			buildChildren(newNode);
 		}
-	}	
+	}		
 }
