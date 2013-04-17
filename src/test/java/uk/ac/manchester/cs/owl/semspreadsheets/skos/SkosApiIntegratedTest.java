@@ -7,6 +7,7 @@ import java.net.URI;
 import java.util.Set;
 
 import org.junit.Test;
+import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.skos.SKOSAnnotation;
 import org.semanticweb.skos.SKOSConcept;
@@ -22,7 +23,7 @@ public class SkosApiIntegratedTest {
 	@Test
 	public void testOpeningSkos() throws Exception {
 		SKOSManager manager = new SKOSManager();
-		URI uri = DocumentsCatalogue.uriForResourceName("skos/skos-example.rdf");
+		URI uri = DocumentsCatalogue.exampleSKOSURI();
 		SKOSDataset dataset = manager.loadDataset(uri);
 		assertEquals(5,dataset.getSKOSConcepts().size());
 		
@@ -42,7 +43,7 @@ public class SkosApiIntegratedTest {
 	@Test
 	public void testOpeningCastSKOS() throws Exception {
 		SKOSManager manager = new SKOSManager();
-		URI uri = DocumentsCatalogue.uriForResourceName("skos/CAST.rdf");
+		URI uri = DocumentsCatalogue.castSKOSURI();
 		SKOSDataset dataset = manager.loadDataset(uri);
 		assertEquals(257,dataset.getSKOSConcepts().size());		
 		SKOSConcept concept = manager.getSKOSDataFactory().getSKOSConcept(URI.create("http://onto.nerc.ac.uk/CAST/11"));
@@ -55,7 +56,7 @@ public class SkosApiIntegratedTest {
 		WorkbookManager workbookManager = new WorkbookManager();
 		OntologyManager ontologyManager = workbookManager.getOntologyManager();	
 		OWLOntologyManager owlOntologyManager = ontologyManager.getOWLOntologyManager();
-		ontologyManager.loadOntology(DocumentsCatalogue.uriForResourceName("skos/skos-example.rdf"));
+		ontologyManager.loadOntology(DocumentsCatalogue.exampleSKOSURI());
 		ontologyManager.loadOntology(DocumentsCatalogue.jermOntologyURI());
 		SKOSManager manager = new SKOSManager(owlOntologyManager);
 		SKOSConcept concept = manager.getSKOSDataFactory().getSKOSConcept(URI.create("http://www.fluffyboards.com/vocabulary#snowboard"));

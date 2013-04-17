@@ -45,7 +45,6 @@ import org.semanticweb.owlapi.reasoner.SimpleConfiguration;
 import org.semanticweb.owlapi.reasoner.structural.StructuralReasoner;
 import org.semanticweb.owlapi.util.AnnotationValueShortFormProvider;
 import org.semanticweb.owlapi.util.BidirectionalShortFormProviderAdapter;
-import org.semanticweb.owlapi.util.OWLEntitySetProvider;
 import org.semanticweb.owlapi.util.ShortFormProvider;
 import org.semanticweb.owlapi.util.SimpleShortFormProvider;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
@@ -128,10 +127,15 @@ public class OntologyManager {
         return getOWLOntologyManager().getOWLDataFactory();
     }
 	
-	public Collection<OWLEntity> getEntitiesForShortForm(String shortForm) {
+	/**
+	 * Returns a collection of entities where their defined label contains the label passed as a parameter
+	 * @param label
+	 * @return
+	 */
+	public Collection<OWLEntity> searchForMatchingEntitiesByLabel(String label) {
         Set<OWLEntity> result = new HashSet<OWLEntity>();
         for(String s : shortFormProvider.getShortForms()) {
-            if(s.toLowerCase().contains(shortForm.toLowerCase())) {
+            if(s.toLowerCase().contains(label.toLowerCase())) {
                 result.addAll(shortFormProvider.getEntities(s));
             }
         }
@@ -207,7 +211,7 @@ public class OntologyManager {
         		}
         	}
     	}
-    	    	 
+    	
     	return result;    	
     }        
     
@@ -218,8 +222,7 @@ public class OntologyManager {
     public Collection<OntologyTermValidation> getOntologyTermValidations() {
         return getOntologyTermValidationManager().getValidations();
     }
-            
-    
+                
     public OWLOntologyManager getOWLOntologyManager() {
 		return owlManager;
 	}
@@ -306,7 +309,7 @@ public class OntologyManager {
             }
         }        
         owlManager.removeIRIMapper(mapper);        
-        setLabelRendering(true);
+        updateShortFormProvider();
         fireOntologiesChanged();
     }
     
@@ -343,7 +346,7 @@ public class OntologyManager {
         
         loadedOntologies.add(ontology);
         
-        setLabelRendering(true);
+        updateShortFormProvider();
         fireOntologiesChanged();        
         
         return ontology;
@@ -416,33 +419,23 @@ public class OntologyManager {
     public void removeOntology(OWLOntology ontology) {
     	getOWLOntologyManager().removeOntology(ontology);
     	loadedOntologies.remove(ontology);
-    	fireOntologiesChanged();
+    	fireOntologiesChanged();    	
     }
     
-    public void setLabelRendering(boolean b) {
-        if(b) {
-            IRI iri = OWLRDFVocabulary.RDFS_LABEL.getIRI();
-            OWLAnnotationProperty prop = owlManager.getOWLDataFactory().getOWLAnnotationProperty(iri);
-            List<OWLAnnotationProperty> props = new ArrayList<OWLAnnotationProperty>();
-            props.add(prop);
-            ShortFormProvider provider = new AnnotationValueShortFormProvider(props, new HashMap<OWLAnnotationProperty, List<String>>(), owlManager);
-            shortFormProvider.dispose();
-            shortFormProvider = new BidirectionalShortFormProviderAdapter(owlManager.getOntologies(), provider);
-            final Set<OWLEntity> entities = new HashSet<OWLEntity>();
-            for(OWLOntology ont : owlManager.getOntologies()) {
-                entities.addAll(ont.getSignature());
-            }
-            shortFormProvider.rebuild(new OWLEntitySetProvider<OWLEntity>() {
-                public Set<OWLEntity> getEntities() {
-                    return entities;
-                }
-            });
-        }
-        else {
-            ShortFormProvider provider = new SimpleShortFormProvider();
-            shortFormProvider = new BidirectionalShortFormProviderAdapter(owlManager.getOntologies(), provider);
-        }
-    }
+	private void updateShortFormProvider() {
+
+		IRI iri = OWLRDFVocabulary.RDFS_LABEL.getIRI();
+		OWLAnnotationProperty prop = owlManager.getOWLDataFactory()
+				.getOWLAnnotationProperty(iri);
+		List<OWLAnnotationProperty> props = new ArrayList<OWLAnnotationProperty>();
+		props.add(prop);
+		ShortFormProvider provider = new AnnotationValueShortFormProvider(
+				props, new HashMap<OWLAnnotationProperty, List<String>>(),
+				owlManager);
+		shortFormProvider.dispose();
+		shortFormProvider = new BidirectionalShortFormProviderAdapter(
+				owlManager.getOntologies(), provider);		
+	}
 
     public void setOntologyTermValidation(Range rangeToApply,
 			ValidationType type, IRI entityIRI, OWLPropertyItem property) {

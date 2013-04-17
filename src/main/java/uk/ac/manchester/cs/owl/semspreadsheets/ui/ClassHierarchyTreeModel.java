@@ -110,7 +110,6 @@ public class ClassHierarchyTreeModel implements HierarchyTreeModel {
 		treeModelListeners.remove(l);		
 	}
     
-
     protected OWLOntology getOntology() {
 		return ontology;
 	}  

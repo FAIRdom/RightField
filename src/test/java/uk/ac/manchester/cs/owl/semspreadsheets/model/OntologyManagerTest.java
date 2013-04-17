@@ -8,6 +8,7 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.net.URI;
+import java.util.Collection;
 import java.util.Set;
 
 import org.junit.Before;
@@ -20,6 +21,8 @@ import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.reasoner.NodeSet;
 
+import uk.ac.manchester.cs.owl.owlapi.OWLClassImpl;
+import uk.ac.manchester.cs.owl.owlapi.OWLNamedIndividualImpl;
 import uk.ac.manchester.cs.owl.semspreadsheets.DocumentsCatalogue;
 import uk.ac.manchester.cs.owl.semspreadsheets.DummyOntologyManagerListener;
 
@@ -40,7 +43,7 @@ public class OntologyManagerTest {
 	@Test
 	public void testGetOntologiesForEntityIRI() throws Exception {
 		OWLOntology jermOnt = ontologyManager.loadOntology(DocumentsCatalogue.jermOntologyURI());		
-		OWLOntology skosOnt = ontologyManager.loadOntology(DocumentsCatalogue.uriForResourceName("skos/skos-example.rdf"));
+		OWLOntology skosOnt = ontologyManager.loadOntology(DocumentsCatalogue.exampleSKOSURI());
 		
 		OWLEntity ent = jermOnt.getEntitiesInSignature(IRI.create("http://www.mygrid.org.uk/ontology/JERMOntology#affinity_chromatography")).iterator().next();
 		assertNotNull(ent);
@@ -468,7 +471,7 @@ public class OntologyManagerTest {
 	
 	@Test
 	public void testGetPropertiesForFreeText() throws Exception {
-		OWLOntology jermOntology = ontologyManager.loadOntology(IRI.create(DocumentsCatalogue.jermOntologyURI()));
+		OWLOntology jermOntology = ontologyManager.loadOntology(DocumentsCatalogue.jermOntologyURI());
 		ontologyManager.loadOntology(IRI.create(DocumentsCatalogue.aminoAcidOntologyURI()));
 		Set<OWLPropertyItem> properties = ontologyManager.getAllOWLProperties(jermOntology,ValidationType.FREETEXT);
 		assertEquals(19,properties.size());
@@ -481,6 +484,49 @@ public class OntologyManagerTest {
 			}
 		}
 		assertTrue("Should have found http://www.mygrid.org.uk/ontology/JERMOntology#Lab_internal_ID",found);
+	}
+	
+	@Test
+	public void testSearchByMatchingLabel() throws Exception {
+		ontologyManager.loadOntology(DocumentsCatalogue.jermOntologyURI());
+		ontologyManager.loadOntology(DocumentsCatalogue.exampleSKOSURI());
+		ontologyManager.loadOntology(DocumentsCatalogue.castSKOSURI());
+		
+		//search for some terms from JERM
+		Collection<OWLEntity> results = ontologyManager.searchForMatchingEntitiesByLabel("metabolomics");
+		assertEquals(1,results.size());
+		assertTrue(results.contains(new OWLClassImpl(IRI.create("http://www.mygrid.org.uk/ontology/JERMOntology#metabolomics"))));
+		
+		results = ontologyManager.searchForMatchingEntitiesByLabel("mEtabOLomicS");
+		assertEquals(1,results.size());
+		assertTrue(results.contains(new OWLClassImpl(IRI.create("http://www.mygrid.org.uk/ontology/JERMOntology#metabolomics"))));
+		
+		results = ontologyManager.searchForMatchingEntitiesByLabel("etabol");
+		assertEquals(8,results.size());
+		assertTrue(results.contains(new OWLClassImpl(IRI.create("http://www.mygrid.org.uk/ontology/JERMOntology#metabolomics"))));
+		assertTrue(results.contains(new OWLClassImpl(IRI.create("http://www.mygrid.org.uk/ontology/JERMOntology#metabolite_profiling"))));
+		
+		//now some SKOS terms
+		results = ontologyManager.searchForMatchingEntitiesByLabel("Customer");
+		assertEquals(1,results.size());
+		assertTrue(results.contains(new OWLNamedIndividualImpl(IRI.create("http://www.fluffyboards.com/vocabulary#customer"))));			
+		
+		results = ontologyManager.searchForMatchingEntitiesByLabel("eview");
+		assertEquals(1,results.size());
+		assertTrue(results.contains(new OWLNamedIndividualImpl(IRI.create("http://www.fluffyboards.com/vocabulary#review"))));
+		
+		//check its using the label and not just the URI
+		results = ontologyManager.searchForMatchingEntitiesByLabel("111");
+		assertEquals(0,results.size());
+		results = ontologyManager.searchForMatchingEntitiesByLabel("water depth");
+		assertEquals(1,results.size());
+		assertTrue(results.contains(new OWLNamedIndividualImpl(IRI.create("http://onto.nerc.ac.uk/CAST/187"))));
+		
+		//include altLabel
+		results = ontologyManager.searchForMatchingEntitiesByLabel("product opinion");
+		assertEquals(1,results.size());
+		assertTrue(results.contains(new OWLNamedIndividualImpl(IRI.create("http://www.fluffyboards.com/vocabulary#review"))));
+		
 	}
 
 }

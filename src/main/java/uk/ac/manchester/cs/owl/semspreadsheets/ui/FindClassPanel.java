@@ -30,6 +30,7 @@ import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.OWLEntity;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.skos.SKOSDetector;
 
 /**
  * @author Stuart Owen
@@ -149,10 +150,10 @@ public class FindClassPanel extends JPanel {
 
 	private void doFind() {
 		Collection<OWLEntity> entities = manager
-				.getOntologyManager().getEntitiesForShortForm(findField.getText().trim());
+				.getOntologyManager().searchForMatchingEntitiesByLabel(findField.getText().trim());
 		ArrayList<OWLEntity> sortedEntities = new ArrayList<OWLEntity>();
 		for (OWLEntity ent : entities) {
-			if (ent.isOWLClass()) {
+			if (ent.isOWLClass() || SKOSDetector.isSKOSEntity(ent, manager.getOntologyManager())) {
 				sortedEntities.add(ent);
 			}
 		}
