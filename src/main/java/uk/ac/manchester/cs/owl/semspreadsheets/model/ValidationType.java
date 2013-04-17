@@ -62,8 +62,11 @@ public enum ValidationType {
     		terms = new ArrayList<Term>();
     		for (OWLEntity entity : getOWLEntities(ontologyManager, iri)) {
     			if (!entity.getIRI().equals(NOTHING_IRI)) {
-            		logger.debug("Adding term "+entity.getIRI()+" to list of terms");        	
-                    terms.add(new Term(entity.getIRI(), ontologyManager.getRendering(entity)));
+            		logger.debug("Adding term "+entity.getIRI()+" to list of terms");
+            		String label = ontologyManager.getRendering(entity);
+            		if (label!=null) {
+            			terms.add(new Term(entity.getIRI(),label));
+            		}                    
             	}        	
             	else {
             		logger.debug("Ignoring the term "+entity.getIRI().toString());
@@ -90,7 +93,10 @@ public enum ValidationType {
     		Set<SKOSConcept> narrower = reader.getNarrowerThan(concept,this.equals(NARROWER));
     		
     		for (SKOSConcept narrow : narrower) {    			
-    			terms.add(new Term(IRI.create(narrow.getURI()),ontologyManager.getSKOSLabel(narrow,ontology)));
+    			String label = ontologyManager.getSKOSLabel(narrow,ontology);
+    			if (label!=null) {
+    				terms.add(new Term(IRI.create(narrow.getURI()),label));
+    			}    			
     		}    		    	
     	}  
     	return terms;

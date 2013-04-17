@@ -291,8 +291,7 @@ public class OntologyManager {
 			SKOSAnnotation annotation = skosAnnotations.iterator().next();
 			label = annotation.getAnnotationValueAsConstant().getLiteral();
 		}
-		return label;
-		
+		return label;		
 	}
 	
 	private void handleSKOSLabels(Set<OWLOntology> skosOntologies) {
