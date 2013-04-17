@@ -25,6 +25,7 @@ import uk.ac.manchester.cs.owl.owlapi.OWLClassImpl;
 import uk.ac.manchester.cs.owl.owlapi.OWLNamedIndividualImpl;
 import uk.ac.manchester.cs.owl.semspreadsheets.DocumentsCatalogue;
 import uk.ac.manchester.cs.owl.semspreadsheets.DummyOntologyManagerListener;
+import uk.ac.manchester.cs.skos.SKOSConceptImpl;
 
 public class OntologyManagerTest {
 	
@@ -525,8 +526,19 @@ public class OntologyManagerTest {
 		//include altLabel
 		results = ontologyManager.searchForMatchingEntitiesByLabel("product opinion");
 		assertEquals(1,results.size());
-		assertTrue(results.contains(new OWLNamedIndividualImpl(IRI.create("http://www.fluffyboards.com/vocabulary#review"))));
+		assertTrue(results.contains(new OWLNamedIndividualImpl(IRI.create("http://www.fluffyboards.com/vocabulary#review"))));		
+	}
+	
+	@Test
+	public void testGetRendering() throws Exception {
+		ontologyManager.loadOntology(DocumentsCatalogue.jermOntologyURI());
+		ontologyManager.loadOntology(DocumentsCatalogue.castSKOSURI());
 		
+		String rendering = ontologyManager.getRendering(new OWLClassImpl(IRI.create("http://www.mygrid.org.uk/ontology/JERMOntology#metabolite_profiling")));
+		assertEquals("metabolite_profiling",rendering);
+		
+		rendering = ontologyManager.getRendering(new SKOSConceptImpl(new OWLNamedIndividualImpl(IRI.create("http://onto.nerc.ac.uk/CAST/178"))));
+		assertEquals("ground level rainfall measurement",rendering);
 	}
 
 }

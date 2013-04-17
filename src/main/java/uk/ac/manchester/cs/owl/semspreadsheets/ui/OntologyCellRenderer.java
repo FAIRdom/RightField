@@ -18,8 +18,12 @@ import javax.swing.tree.TreeCellRenderer;
 
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
+import org.semanticweb.skos.SKOSConcept;
 
+import uk.ac.manchester.cs.owl.owlapi.OWLNamedIndividualImpl;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyManager;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.skos.SKOSDetector;
+import uk.ac.manchester.cs.skos.SKOSConceptImpl;
 
 /**
  * @author Stuart Owen
@@ -60,8 +64,15 @@ public class OntologyCellRenderer implements TreeCellRenderer, ListCellRenderer 
 
     private void setupRenderer(JLabel label, Object value) {
         if(value instanceof OWLEntity) {
-            label.setIcon(Icons.getOWLEntityIcon((OWLEntity) value));
-            label.setText(ontologyManager.getRendering((OWLEntity) value));
+        	OWLEntity entity = (OWLEntity)value;
+            label.setIcon(Icons.getOWLEntityIcon(entity));
+            if (SKOSDetector.isSKOSEntity(entity, ontologyManager)) {
+            	SKOSConcept concept = new SKOSConceptImpl(new OWLNamedIndividualImpl(entity.getIRI()));
+            	label.setText(ontologyManager.getRendering(concept));
+            }
+            else {
+            	label.setText(ontologyManager.getRendering(entity));
+            }                       
         }        
         else {
             label.setIcon(null);

@@ -90,7 +90,7 @@ public enum ValidationType {
     		Set<SKOSConcept> narrower = reader.getNarrowerThan(concept,this.equals(NARROWER));
     		
     		for (SKOSConcept narrow : narrower) {    			
-    			terms.add(new Term(IRI.create(narrow.getURI()),ontologyManager.getRendering(narrow,ontology)));
+    			terms.add(new Term(IRI.create(narrow.getURI()),ontologyManager.getSKOSLabel(narrow,ontology)));
     		}    		    	
     	}  
     	return terms;

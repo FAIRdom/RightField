@@ -7,7 +7,6 @@ import java.net.URI;
 import java.util.Set;
 
 import org.junit.Test;
-import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.skos.SKOSAnnotation;
 import org.semanticweb.skos.SKOSConcept;

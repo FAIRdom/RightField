@@ -10,7 +10,6 @@ import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.skos.SKOSConcept;
 

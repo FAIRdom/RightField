@@ -89,7 +89,7 @@ public class SKOSHierarchyReader {
 			result = new SKOSHashSet();			
 		}
 		return result;
-	}
+	}	
 	
 	private OntologyManager getOntologyManager() {
 		return ontologyManager;

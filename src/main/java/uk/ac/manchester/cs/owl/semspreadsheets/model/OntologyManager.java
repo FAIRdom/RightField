@@ -53,8 +53,10 @@ import org.semanticweb.skos.SKOSConcept;
 import org.semanticweb.skos.SKOSDataset;
 import org.semanticweb.skosapibinding.SKOSManager;
 
+import uk.ac.manchester.cs.owl.owlapi.OWLNamedIndividualImpl;
 import uk.ac.manchester.cs.owl.semspreadsheets.listeners.OntologyManagerListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.listeners.OntologyTermValidationListener;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.skos.SKOSDetector;
 import uk.ac.manchester.cs.owl.semspreadsheets.repository.bioportal.BioPortalRepository;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.ErrorHandler;
 
@@ -76,6 +78,8 @@ public class OntologyManager {
 	private OntologyTermValidationManager ontologyTermValidationManager;
 	private Set<OntologyManagerListener> ontologyManagerListeners = new HashSet<OntologyManagerListener>();
 	private OWLPropertyHandler propertyHandler;	
+	
+	private Map<String,Set<OWLEntity>> skosLabelsForConcepts;
 
 	private Set<OWLOntology> loadedOntologies = new HashSet<OWLOntology>();
 
@@ -132,15 +136,33 @@ public class OntologyManager {
 	 * @param label
 	 * @return
 	 */
-	public Collection<OWLEntity> searchForMatchingEntitiesByLabel(String label) {
-        Set<OWLEntity> result = new HashSet<OWLEntity>();
+	public Collection<OWLEntity> searchForMatchingEntitiesByLabel(String label) {		
+        Set<OWLEntity> result = searchForMatchingOWLEntities(label);
+        result.addAll(searchForMatchingSKOSEntities(label));
+        return result;
+    }
+
+	private Set<OWLEntity> searchForMatchingOWLEntities(String label) {
+		label = label.toLowerCase();
+		Set<OWLEntity> result = new HashSet<OWLEntity>();
         for(String s : shortFormProvider.getShortForms()) {
-            if(s.toLowerCase().contains(label.toLowerCase())) {
+            if(s.toLowerCase().contains(label)) {
                 result.addAll(shortFormProvider.getEntities(s));
             }
         }
-        return result;
-    }
+		return result;
+	}
+	
+	private Set<OWLEntity> searchForMatchingSKOSEntities(String label) {
+		label = label.toLowerCase();
+		Set<OWLEntity> result = new HashSet<OWLEntity>();
+		for (String key : skosLabelsForConcepts.keySet()) {
+			if (key.toLowerCase().contains(label)) {
+				result.addAll(skosLabelsForConcepts.get(key));
+			}
+		}
+		return result;
+	}
 	
 	public Collection<OntologyTermValidation> getIntersectingOntologyTermValidations(Range range) {
         return getOntologyTermValidationManager().getIntersectingValidations(range);
@@ -238,20 +260,58 @@ public class OntologyManager {
     }
 	
 	public String getRendering(SKOSConcept concept) {
+		String label = null;
 		for (OWLOntology ontology : getOntologiesForEntityIRI(IRI.create(concept.getURI()))) {
-			return getRendering(concept,ontology);
+			label = getSKOSLabel(concept,ontology);
+			if (label!=null) {
+				break;
+			}
 		}
-		return concept.getURI().getFragment();
+		if (label==null) {
+			label = concept.getURI().getFragment();
+		}
+		return label;
 	}
 	
-	public String getRendering(SKOSConcept concept, OWLOntology ontology) {		
-		Set<SKOSAnnotation> skosAnnotations = concept.getSKOSAnnotationsByURI(getSKOSDataset(ontology), URI.create("http://www.w3.org/2004/02/skos/core#prefLabel"));
+	public String getSKOSLabel(SKOSConcept concept, OWLOntology ontology) {		
+		return getSKOSLabel(concept,ontology,URI.create("http://www.w3.org/2004/02/skos/core#prefLabel"));
+	}
+	
+	private String getSKOSLabel(SKOSConcept concept, OWLOntology ontology, URI labelURI) {
+		Set<SKOSAnnotation> skosAnnotations = concept.getSKOSAnnotationsByURI(getSKOSDataset(ontology), labelURI);
+		String label = null;
 		if (skosAnnotations.size()>0) {
 			SKOSAnnotation annotation = skosAnnotations.iterator().next();
-			return annotation.getAnnotationValueAsConstant().getLiteral();
+			label = annotation.getAnnotationValueAsConstant().getLiteral();
 		}
-		else {
-			return concept.getURI().getFragment();
+		return label;
+		
+	}
+	
+	private void handleSKOSLabels(Set<OWLOntology> skosOntologies) {
+		skosLabelsForConcepts = new HashMap<String,Set<OWLEntity>>();
+		for (OWLOntology ontology : skosOntologies) {
+			for (SKOSConcept concept : getSKOSDataset(ontology).getSKOSConcepts()) {
+				String label = getSKOSLabel(concept,ontology);
+				
+				Set<OWLEntity> entities = skosLabelsForConcepts.get(label);
+				if (entities==null) {
+					entities = new HashSet<OWLEntity>();
+					skosLabelsForConcepts.put(label, entities);
+				}
+				entities.add(new OWLNamedIndividualImpl(IRI.create(concept.getURI())));
+				
+				//altLabel
+				String altLabel = getSKOSLabel(concept,ontology,URI.create("http://www.w3.org/2004/02/skos/core#altLabel"));
+				if (altLabel!=null) {
+					entities = skosLabelsForConcepts.get(altLabel);
+					if (entities==null) {
+						entities = new HashSet<OWLEntity>();
+						skosLabelsForConcepts.put(altLabel, entities);
+					}
+					entities.add(new OWLNamedIndividualImpl(IRI.create(concept.getURI())));
+				}								
+			}
 		}
 	}
 	
@@ -309,7 +369,7 @@ public class OntologyManager {
             }
         }        
         owlManager.removeIRIMapper(mapper);        
-        updateShortFormProvider();
+        retrieveLabelsFromOntologies();
         fireOntologiesChanged();
     }
     
@@ -346,7 +406,7 @@ public class OntologyManager {
         
         loadedOntologies.add(ontology);
         
-        updateShortFormProvider();
+        retrieveLabelsFromOntologies();
         fireOntologiesChanged();        
         
         return ontology;
@@ -422,8 +482,22 @@ public class OntologyManager {
     	fireOntologiesChanged();    	
     }
     
-	private void updateShortFormProvider() {
+	private void retrieveLabelsFromOntologies() {
+		Set<OWLOntology> owlOntologies = new HashSet<OWLOntology>();
+		Set<OWLOntology> skosOntologies = new HashSet<OWLOntology>();
+		for (OWLOntology ontology : getAllOntologies()) {
+			if (SKOSDetector.isSKOS(ontology)) {
+				skosOntologies.add(ontology);
+			}
+			else {
+				owlOntologies.add(ontology);
+			}
+		}
+		handleOwlLabels(owlOntologies);
+		handleSKOSLabels(skosOntologies);
+	}
 
+	private void handleOwlLabels(Set<OWLOntology> owlOntologies) {
 		IRI iri = OWLRDFVocabulary.RDFS_LABEL.getIRI();
 		OWLAnnotationProperty prop = owlManager.getOWLDataFactory()
 				.getOWLAnnotationProperty(iri);
@@ -433,9 +507,8 @@ public class OntologyManager {
 				props, new HashMap<OWLAnnotationProperty, List<String>>(),
 				owlManager);
 		shortFormProvider.dispose();
-		shortFormProvider = new BidirectionalShortFormProviderAdapter(
-				owlManager.getOntologies(), provider);		
-	}
+		shortFormProvider = new BidirectionalShortFormProviderAdapter(owlOntologies, provider);
+	}	
 
     public void setOntologyTermValidation(Range rangeToApply,
 			ValidationType type, IRI entityIRI, OWLPropertyItem property) {
