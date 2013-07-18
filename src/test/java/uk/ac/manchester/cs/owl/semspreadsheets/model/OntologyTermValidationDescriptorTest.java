@@ -3,6 +3,7 @@ package uk.ac.manchester.cs.owl.semspreadsheets.model;
 import static org.junit.Assert.*;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.reasoner.impl.NodeFactory;
@@ -21,7 +22,7 @@ public class OntologyTermValidationDescriptorTest {
 		ontManager.loadOntology(DocumentsCatalogue.aminoAcidOntologyURI());		
 	}
 	
-	@Test
+	@Test @Ignore("Dependent ontology contains an invalid import. Ontology needs fixing to no longer be reliant on external resources")
 	public void testOntologyIRIsWithOWLThing() throws Exception {		
 		IRI owlThingEntity = NodeFactory.getOWLClassTopNode().getEntities().iterator().next().getIRI();
 		OntologyTermValidationDescriptor descriptor = new OntologyTermValidationDescriptor(ValidationType.SUBCLASSES,owlThingEntity,null,ontManager);
