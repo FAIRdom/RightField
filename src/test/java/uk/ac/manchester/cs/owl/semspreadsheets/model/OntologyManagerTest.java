@@ -95,7 +95,7 @@ public class OntologyManagerTest {
 		assertEquals(IRI.create("http://www.mygrid.org.uk/ontology/JERMOntology"),ontology.getOntologyID().getOntologyIRI());
 	}
 	
-	@Test
+	@Test @Ignore("Dependent ontology contains an invalid import. Ontology needs fixing to no longer be reliant on external resources")
 	public void loadMGEDOntology() throws Exception {
 		//to cover a problem with the MGED ontology loading an ontology with a nil IRI.
 		//should be avoided by differntiating between loaded and imported ontologies
@@ -412,7 +412,7 @@ public class OntologyManagerTest {
 		
 	}
 	
-	@Test
+	@Test @Ignore("Dependent ontology contains an invalid import. Ontology needs fixing to no longer be reliant on external resources")
 	public void testLoadEmbeddedOntologies() throws Exception {
 		workbookManager.loadWorkbook(DocumentsCatalogue.twoOntologiesWorkbookURI());
 		assertEquals(0, ontologyManager.getLoadedOntologies().size());
