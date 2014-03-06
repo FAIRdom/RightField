@@ -15,6 +15,7 @@ import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -22,6 +23,9 @@ import javax.xml.parsers.SAXParserFactory;
 
 import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.repository.Repository;
 import uk.ac.manchester.cs.owl.semspreadsheets.repository.RepositoryAccessor;
@@ -51,38 +55,43 @@ public class BioPortalRepositoryAccessor implements RepositoryAccessor {
         return repository;
     }
     
+    public static void main(String [] args) throws Exception {
+    	new BioPortalRepositoryAccessor().getOntologies();
+    }
+    
     public Collection<RepositoryItem> getOntologies() {
         final Collection<RepositoryItem> items = new ArrayList<RepositoryItem>();
         URL url = null;
         try {
-            SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
-            SAXParser saxParser = saxParserFactory.newSAXParser();            
-            url = new URL(BioPortalRepository.ONTOLOGY_LIST + "?apikey=" + BioPortalRepository.readAPIKey());
+                     
+            url = new URL(BioPortalRepository.ONTOLOGY_LIST + "?format=json&apikey=" + BioPortalRepository.readAPIKey());        	
             
             logger.info("Contacting BioPortal REST API at: "+url.toExternalForm());
-            
-            BioPortalOntologyListHandler handler = new BioPortalOntologyListHandler(new BioPortalRepositoryItemHandler() {
-                public void handleItem(RepositoryItem item) {
-                    logger.debug("Found BioportalRepositoryItem handler: " + item);
-                    items.add(item);
-                }
-            });            
-            HttpURLConnection connection = (HttpURLConnection)url.openConnection();
+                                   
+            HttpURLConnection connection = (HttpURLConnection)url.openConnection();            
             connection.setConnectTimeout(CONNECT_TIMEOUT);
             connection.setReadTimeout(CONNECT_TIMEOUT);
-            if (connection.getResponseCode()==403) {
+            int responseCode = connection.getResponseCode();
+            logger.info("BioPortal http response: " + responseCode);
+            
+            if (responseCode == 400 || responseCode == 403) {
             	throw new BioPortalAccessDeniedException();
             }            
-            BufferedInputStream bufferedInputStream = new BufferedInputStream(connection.getInputStream());
-            saxParser.parse(bufferedInputStream, handler);
-            bufferedInputStream.close();
-        }
-        catch (ParserConfigurationException e) {
-            logger.error("Error parsing configuration",e);
-        }
-        catch (SAXException e) {
-            logger.error("Error handling XML from BioPortal",e);
-        }
+            ObjectMapper mapper = new ObjectMapper();            
+            
+            JsonNode node = mapper.readTree(connection.getInputStream());
+            for (final JsonNode item : node) {
+            	String name = item.get("name").asText();
+            	String id = item.get("acronym").asText();
+            	if (logger.isDebugEnabled()) {
+            		logger.debug("Found BioPortal ontology: " + name +" acronym:"+id);
+            	}
+            	if (items.size()<10) {
+            		items.add(new BioPortalRepositoryItem(id,name));
+            	}
+            }
+
+        }        
         catch (UnknownHostException e) {
             ErrorHandler.getErrorHandler().handleError(e);
         }

@@ -31,9 +31,9 @@ public class BioPortalRepository implements Repository {
 
     public static final String NAME = "BioPortal";
 
-    public static final String BASE = "http://rest.bioontology.org/bioportal/";
+    public static final String BASE = "http://data.bioontology.org/";
 
-    public static final String ONTOLOGY_LIST = BASE + "ontologies/";
+    public static final String ONTOLOGY_LIST = BASE + "ontologies";
 
     public static final String ONTOLOGY_IRI_BASE = BASE + "ontologies/";
 

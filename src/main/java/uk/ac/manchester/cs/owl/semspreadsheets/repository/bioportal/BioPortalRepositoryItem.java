@@ -24,16 +24,16 @@ import uk.ac.manchester.cs.owl.semspreadsheets.repository.RepositoryItem;
  */
 public class BioPortalRepositoryItem implements RepositoryItem {
 
-    private int ontologyID;
+    private String acroynm;
 
     private String humanReadableName;
 
     private String format;
     
-    public BioPortalRepositoryItem(int ontologyID, String humanReadableName,String format) {
-        this.ontologyID = ontologyID;
+    public BioPortalRepositoryItem(String acroynm, String humanReadableName) {
+        this.acroynm = acroynm;
         this.humanReadableName = humanReadableName;
-        this.format=format;
+        //this.format=format;
     }
 
     public String getHumanReadableName() {
@@ -45,7 +45,7 @@ public class BioPortalRepositoryItem implements RepositoryItem {
     }
 
     public IRI getOntologyIRI() {
-        return IRI.create(BioPortalRepository.BASE + "virtual/download/" + ontologyID);
+        return IRI.create(BioPortalRepository.ONTOLOGY_LIST + "/" + acroynm + "/download" + "?apikey=" + BioPortalRepository.readAPIKey());
     }
 
     public IRI getVersionIRI() {
@@ -57,7 +57,7 @@ public class BioPortalRepositoryItem implements RepositoryItem {
     }
     
     public String toString() {
-    	return humanReadableName+" : "+ontologyID+" ("+format+")";    	
+    	return humanReadableName+" : "+acroynm+" ("+format+")";    	
     }
     
 }
