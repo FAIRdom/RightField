@@ -7,7 +7,9 @@
 package uk.ac.manchester.cs.owl.semspreadsheets.repository.bioportal;
 
 import java.io.BufferedInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
@@ -42,6 +44,8 @@ public class BioPortalRepositoryAccessor implements RepositoryAccessor {
 	
 	private final int CONNECT_TIMEOUT = 30000;
 	
+	private final boolean SAVE_PROPERTIES_CACHE = false;
+	
     private BioPortalRepository repository;
 
     public String getRepositoryName() {
@@ -66,7 +70,7 @@ public class BioPortalRepositoryAccessor implements RepositoryAccessor {
                      
             url = new URL(BioPortalRepository.ONTOLOGY_LIST + "?format=json&apikey=" + BioPortalRepository.readAPIKey());        	
             
-            logger.info("Contacting BioPortal REST API at: "+url.toExternalForm());
+            logger.debug("Contacting BioPortal REST API at: "+url.toExternalForm());
                                    
             HttpURLConnection connection = (HttpURLConnection)url.openConnection();            
             connection.setConnectTimeout(CONNECT_TIMEOUT);
@@ -83,14 +87,19 @@ public class BioPortalRepositoryAccessor implements RepositoryAccessor {
             for (final JsonNode item : node) {
             	String name = item.get("name").asText();
             	String id = item.get("acronym").asText();
-            	if (logger.isDebugEnabled()) {
-            		logger.debug("Found BioPortal ontology: " + name +" acronym:"+id);
-            	}
-            	if (items.size()<10) {
-            		items.add(new BioPortalRepositoryItem(id,name));
-            	}
+            	            	
+        		BioPortalRepositoryItem repositoryItem = new BioPortalRepositoryItem(id,name);        		
+    			if (repositoryItem.isCompatible()) {
+    				items.add(repositoryItem);
+    			}        	
             }
-
+            if (SAVE_PROPERTIES_CACHE) {
+            	String file = BioPortalRepositoryItem.class.getResource("/bioportal-cache.properties").getFile();
+            	FileOutputStream stream = new FileOutputStream(file);
+            	logger.debug("Properties file: "+file);
+            	BioPortalRepositoryItem.bioportalCachedDetails.store(stream,"some comments");
+            	stream.close();
+            }
         }        
         catch (UnknownHostException e) {
             ErrorHandler.getErrorHandler().handleError(e);

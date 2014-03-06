@@ -34,8 +34,10 @@ public class BioPortalRepository implements Repository {
     public static final String BASE = "http://data.bioontology.org/";
 
     public static final String ONTOLOGY_LIST = BASE + "ontologies";
-
-    public static final String ONTOLOGY_IRI_BASE = BASE + "ontologies/";
+    
+    public static final String ONTOLOGY = BASE + "ontology";
+    
+    public static final String LATEST_SUBMISSION = "latest_submission";
 
     private static String API_KEY = null;
 
