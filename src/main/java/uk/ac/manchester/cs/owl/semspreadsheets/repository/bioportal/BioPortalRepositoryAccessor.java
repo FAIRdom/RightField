@@ -88,7 +88,7 @@ public class BioPortalRepositoryAccessor implements RepositoryAccessor {
                 	if ("hasOntologyLanguage".equals(name)) {
                 		parser.nextToken();
                 		format = parser.getText();
-                		cache.storeFormat(ontologyAcronym, format);
+                		cache.storeFormat(ontologyAcronym, format);                		
                 	}
                 }                                
         	}
