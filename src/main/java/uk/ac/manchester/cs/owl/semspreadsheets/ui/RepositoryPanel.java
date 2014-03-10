@@ -95,7 +95,7 @@ public class RepositoryPanel extends JPanel {
 	private class RepositoryItemCellRenderer extends DefaultListCellRenderer {
 		
 		@Override
-		public Component getListCellRendererComponent(JList list, Object value,
+		public Component getListCellRendererComponent(JList<?> list, Object value,
 				int index, boolean isSelected, boolean cellHasFocus) {
 			RepositoryItem item = (RepositoryItem) value;
 			return super

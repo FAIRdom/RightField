@@ -52,7 +52,7 @@ public class OntologyCellRenderer implements TreeCellRenderer, ListCellRenderer<
     }
 
     @Override
-    public Component getListCellRendererComponent(JList list, OWLEntity value, int index, boolean isSelected, boolean cellHasFocus) {
+    public Component getListCellRendererComponent(JList<? extends OWLEntity> list, OWLEntity value, int index, boolean isSelected, boolean cellHasFocus) {
         JLabel label = (JLabel) listCellRendererDelegate.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
         setupRenderer(label, value);
         return label;

@@ -42,7 +42,7 @@ public class ValidationValuesPanel extends JPanel {
 
     private WorkbookManager workbookManager;
 
-    private JList<Term> termList;
+    private JList<ValueListItem> termList;
 
     private static final String NO_VALIDATION_MESSAGE = "Any";
 
@@ -78,7 +78,7 @@ public class ValidationValuesPanel extends JPanel {
     }
 
 	private void createTermList() {
-		termList = new JList<Term>() {
+		termList = new JList<ValueListItem>() {
             
             private Font nowValuesSpecifiedFont = new Font("Lucida Grande", Font.BOLD, 14);
 
@@ -117,11 +117,11 @@ public class ValidationValuesPanel extends JPanel {
                 listData.add(new ValueListItem(term.getFormattedName(), validation.getValidationDescriptor().getType()));
             }
         }
-        termList.setListData(listData.toArray(new Term[listData.size()]));		
+        termList.setListData(listData.toArray(new ValueListItem[listData.size()]));		
 	}
 
 	private void updateFromModel(Range range) {		
-        termList.setListData(new Term [0]);
+        termList.setListData(new ValueListItem [0]);
         
         if(!range.isCellSelection()) {
             return;
@@ -133,13 +133,13 @@ public class ValidationValuesPanel extends JPanel {
                 listData.add(new ValueListItem(term.getFormattedName(), validation.getValidationDescriptor().getType()));
             }
         }
-        termList.setListData(listData.toArray(new Term[listData.size()]));
+        termList.setListData(listData.toArray(new ValueListItem[listData.size()]));
     }
 
     private class ValueListItemCellRenderer extends DefaultListCellRenderer {
 
         @Override
-        public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+        public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
             JLabel label = (JLabel) super.getListCellRendererComponent(list, ((ValueListItem) value), index, isSelected, cellHasFocus);
             ValueListItem item = (ValueListItem) value;
             ValidationEntityType<?> entityType = item.getType().getEntityType();
