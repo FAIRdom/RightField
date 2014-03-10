@@ -87,10 +87,13 @@ public class BioPortalRepositoryAccessor implements RepositoryAccessor {
                 	String name = parser.getCurrentName();            	
                 	if ("hasOntologyLanguage".equals(name)) {
                 		parser.nextToken();
-                		format = parser.getText();
-                		cache.storeFormat(ontologyAcronym, format);                		
+                		format = parser.getText();                		                	
                 	}
-                }                                
+                } 
+                if (format==null) {
+                	format="unknown";
+                }
+                cache.storeFormat(ontologyAcronym, format);
         	}
         	catch (UnknownHostException e) {
                 ErrorHandler.getErrorHandler().handleError(e);
