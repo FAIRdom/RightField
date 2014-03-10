@@ -43,10 +43,10 @@ public class PropertyListPanel extends JPanel {
 	private final WorkbookManager workbookManager;
 	private static final Logger logger = Logger
 			.getLogger(PropertyListPanel.class);
-	private JComboBox comboBox;
+	private JComboBox<OWLPropertyItem> comboBox;
 	private JCheckBox checkBox;	
 	private OWLOntology selectedOntology;
-	private DefaultComboBoxModel propertyListModel;
+	private DefaultComboBoxModel<OWLPropertyItem> propertyListModel;
 
 	public PropertyListPanel(WorkbookManager workbookManager) {
 
@@ -62,8 +62,8 @@ public class PropertyListPanel extends JPanel {
 	}	
 
 	private void addDropDownBox() {
-		comboBox = new JComboBox();
-		propertyListModel = new DefaultComboBoxModel();
+		comboBox = new JComboBox<OWLPropertyItem>();
+		propertyListModel = new DefaultComboBoxModel<OWLPropertyItem>();
 		comboBox.setModel(propertyListModel);
 		add(comboBox, BorderLayout.CENTER);		
 	}

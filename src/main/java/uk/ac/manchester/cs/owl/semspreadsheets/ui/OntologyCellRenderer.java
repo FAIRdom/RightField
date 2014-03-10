@@ -25,7 +25,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyManager;
  * @author Stuart Owen
  * @author Matthew Horridge
  */
-public class OntologyCellRenderer implements TreeCellRenderer, ListCellRenderer {
+public class OntologyCellRenderer implements TreeCellRenderer, ListCellRenderer<OWLEntity> {
 
     private DefaultListCellRenderer listCellRendererDelegate = new DefaultListCellRenderer();
 
@@ -52,7 +52,7 @@ public class OntologyCellRenderer implements TreeCellRenderer, ListCellRenderer 
     }
 
     @Override
-    public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+    public Component getListCellRendererComponent(JList list, OWLEntity value, int index, boolean isSelected, boolean cellHasFocus) {
         JLabel label = (JLabel) listCellRendererDelegate.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
         setupRenderer(label, value);
         return label;

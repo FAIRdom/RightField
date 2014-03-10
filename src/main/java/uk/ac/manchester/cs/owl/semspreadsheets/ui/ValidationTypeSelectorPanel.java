@@ -41,7 +41,7 @@ public class ValidationTypeSelectorPanel extends JPanel {
 
     private CellSelectionListener cellSelectionListener;
         
-    JComboBox comboBox;
+    JComboBox<ValidationType> comboBox;
 
 	private PropertyListPanel propertyListPanel;
 
@@ -49,7 +49,7 @@ public class ValidationTypeSelectorPanel extends JPanel {
         this.workbookManager = workbookManager;		
         setLayout(new BorderLayout());
                      
-        comboBox = new JComboBox();
+        comboBox = new JComboBox<ValidationType>();
         add(comboBox,BorderLayout.NORTH);
         propertyListPanel = new PropertyListPanel(workbookManager);      
         add(propertyListPanel,BorderLayout.SOUTH);                

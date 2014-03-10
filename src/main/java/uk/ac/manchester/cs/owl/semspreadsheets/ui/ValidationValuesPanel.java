@@ -42,7 +42,7 @@ public class ValidationValuesPanel extends JPanel {
 
     private WorkbookManager workbookManager;
 
-    private JList termList;
+    private JList<Term> termList;
 
     private static final String NO_VALIDATION_MESSAGE = "Any";
 
@@ -78,7 +78,7 @@ public class ValidationValuesPanel extends JPanel {
     }
 
 	private void createTermList() {
-		termList = new JList() {
+		termList = new JList<Term>() {
             
             private Font nowValuesSpecifiedFont = new Font("Lucida Grande", Font.BOLD, 14);
 
@@ -117,11 +117,11 @@ public class ValidationValuesPanel extends JPanel {
                 listData.add(new ValueListItem(term.getFormattedName(), validation.getValidationDescriptor().getType()));
             }
         }
-        termList.setListData(listData.toArray());		
+        termList.setListData(listData.toArray(new Term[listData.size()]));		
 	}
 
 	private void updateFromModel(Range range) {		
-        termList.setListData(new Object [0]);
+        termList.setListData(new Term [0]);
         
         if(!range.isCellSelection()) {
             return;
@@ -133,7 +133,7 @@ public class ValidationValuesPanel extends JPanel {
                 listData.add(new ValueListItem(term.getFormattedName(), validation.getValidationDescriptor().getType()));
             }
         }
-        termList.setListData(listData.toArray());
+        termList.setListData(listData.toArray(new Term[listData.size()]));
     }
 
     private class ValueListItemCellRenderer extends DefaultListCellRenderer {

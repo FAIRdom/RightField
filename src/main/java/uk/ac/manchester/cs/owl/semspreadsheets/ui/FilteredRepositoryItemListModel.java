@@ -23,7 +23,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.repository.RepositoryItem;
  * @author Stuart Owen 
  */
 @SuppressWarnings("serial")
-class FilteredRepositoryItemListModel extends AbstractListModel {
+class FilteredRepositoryItemListModel extends AbstractListModel<RepositoryItem> {
 	
 	private final List<RepositoryItem> items;
 	private final List<RepositoryItem> filteredItems;
@@ -34,7 +34,7 @@ class FilteredRepositoryItemListModel extends AbstractListModel {
 	}
 
 	@Override
-	public Object getElementAt(int index) {
+	public RepositoryItem getElementAt(int index) {
 		return filteredItems.get(index);
 	}
 

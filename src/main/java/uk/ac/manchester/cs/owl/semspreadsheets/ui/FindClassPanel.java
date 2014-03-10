@@ -45,7 +45,7 @@ public class FindClassPanel extends JPanel {
 
 	private JTextField findField = new JTextField();
 
-	private JList resultList = new JList();
+	private JList<OWLEntity> resultList = new JList<OWLEntity>();
 
 	private JWindow resultWindow;	
 
@@ -157,7 +157,7 @@ public class FindClassPanel extends JPanel {
 				sortedEntities.add(ent);
 			}
 		}
-		resultList.setListData(sortedEntities.toArray());
+		resultList.setListData(sortedEntities.toArray(new OWLEntity[sortedEntities.size()]));
 		showResults();
 	}
 

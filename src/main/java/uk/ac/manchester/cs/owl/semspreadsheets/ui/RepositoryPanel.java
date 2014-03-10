@@ -43,7 +43,7 @@ public class RepositoryPanel extends JPanel {
 	
 	Logger logger = Logger.getLogger(RepositoryPanel.class);
 
-	private JList list;
+	private JList<RepositoryItem> list;
 
 	public final JTextField filterTextField;
 
@@ -56,7 +56,7 @@ public class RepositoryPanel extends JPanel {
 		ArrayList<RepositoryItem> items = new ArrayList<RepositoryItem>(
 				repository.getOntologies());
 		Collections.sort(items, new RepositoryItemComparator());
-		list = new JList();
+		list = new JList<RepositoryItem>();
 		filteredListModel = new FilteredRepositoryItemListModel(items);
 		list.setModel(filteredListModel);
 		list.setVisibleRowCount(15);
