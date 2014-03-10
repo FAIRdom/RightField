@@ -37,7 +37,7 @@ public class BioPortalRepositoryAccessor implements RepositoryAccessor {
 	
 	private final int CONNECT_TIMEOUT = 30000;
 	
-	private final boolean SAVE_PROPERTIES_CACHE = true;
+	private final boolean SAVE_PROPERTIES_CACHE = false;
 	
     private BioPortalRepository repository;
     
