@@ -169,6 +169,16 @@ public class OntologyTermValidationManager {
         return result;
     }
 
+    /**
+     * returns the physical IRI that the ontology was original retrieved from, according to the ontology IRI
+     * 
+     * @param ontologyIRI
+     * @return physicalIRI
+     */
+    public IRI getOntologyPhysicalIRI(IRI ontologyIRI) {
+		return getOntology2PhysicalIRIMap().get(ontologyIRI);
+	}
+    
     public Map<IRI, IRI> getOntology2PhysicalIRIMap() {
         Map<IRI, IRI> result = new HashMap<IRI, IRI>();
         for(OntologyTermValidation validation : ontologyTermValidations) {
@@ -230,4 +240,6 @@ public class OntologyTermValidationManager {
     protected OntologyManager getOntologyManager() {
     	return getWorkbookManager().getOntologyManager();
     }
+
+	
 }

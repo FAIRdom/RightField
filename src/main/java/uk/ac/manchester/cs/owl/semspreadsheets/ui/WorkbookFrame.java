@@ -44,6 +44,7 @@ import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import uk.ac.manchester.cs.owl.semspreadsheets.listeners.AbstractWorkbookManagerListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.listeners.OntologyManagerListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.KnownOntologies;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyManager;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
@@ -278,22 +279,13 @@ public class WorkbookFrame extends JFrame {
 
 	public void handleNewWorkbook() {
 		updateTitleBar();
-		Collection<IRI> ontologyIRIs = getWorkbookManager().getOntologyManager().getOntologyIRIs();		
+		OntologyManager ontologyManager = getWorkbookManager().getOntologyManager();
+		Collection<IRI> ontologyIRIs = ontologyManager.getOntologyIRIs();		
 				
-		Set<IRI> missingOntologies = new HashSet<IRI>();
-		Set<OWLOntology> openOntologies = getWorkbookManager().getOntologyManager().getLoadedOntologies();
+		Set<IRI> missingOntologies = new HashSet<IRI>();		
 		
-		for (IRI ontologyIRI : ontologyIRIs) {			
-			boolean present = false;
-			//need to loop over like this because OWLOntologyManager.contains() seems to rely on being the same instance
-			//TODO: check if this is still the case with v3.2.5 when its released.
-			for (OWLOntology openOntology : openOntologies) {
-				present = openOntology.getOntologyID().getOntologyIRI().equals(ontologyIRI);
-				if (present) {
-					break;
-				}
-			}
-			if (!present) {
+		for (IRI ontologyIRI : ontologyIRIs) {						
+			if (!ontologyManager.isOntologyLoaded(ontologyIRI)) {
 				missingOntologies.add(ontologyIRI);
 				logger.debug("Missing ontology detected: "+ontologyIRI);
 			}

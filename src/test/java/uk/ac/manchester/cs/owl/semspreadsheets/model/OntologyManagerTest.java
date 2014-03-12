@@ -42,6 +42,17 @@ public class OntologyManagerTest {
 		ontologyManager.addListener(testListener);
 	}
 	
+	@Test 
+	public void testIsOntologyLoaded() throws Exception {
+		OWLOntology jermOnt = ontologyManager.loadOntology(DocumentsCatalogue.jermOntologyURI());
+		IRI ontologyIRI = jermOnt.getOntologyID().getOntologyIRI();
+		assertTrue(ontologyManager.isOntologyLoaded(ontologyIRI));
+		
+		ontologyIRI = IRI.create("http://another-ontology.fish");
+		assertFalse(ontologyManager.isOntologyLoaded(ontologyIRI));
+	}
+		
+	
 	@Test
 	public void testGetOntologiesForEntityIRI() throws Exception {
 		OWLOntology jermOnt = ontologyManager.loadOntology(DocumentsCatalogue.jermOntologyURI());		

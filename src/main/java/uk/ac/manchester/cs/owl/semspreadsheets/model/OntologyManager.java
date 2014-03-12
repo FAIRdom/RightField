@@ -359,16 +359,34 @@ public class OntologyManager {
     		}
 		}
     	return reasoner;
-    }       
+    }     
+    
+    public boolean isOntologyLoaded(IRI ontologyIRI) {
+    	boolean present = false;
+		//need to loop over like this because OWLOntologyManager.contains() seems to rely on being the same instance
+		//TODO: check if this is still the case with v3.2.5 when its released.
+		for (OWLOntology openOntology : getLoadedOntologies()) {
+			present = openOntology.getOntologyID().getOntologyIRI().equals(ontologyIRI);
+			if (present) {
+				break;
+			}
+		}
+		return present;
+    }
     
     public void loadEmbeddedTermOntologies() {
         
         OWLOntologyIRIMapper mapper = new OntologyTermValdiationManagerMapper(ontologyTermValidationManager);
         owlManager.addIRIMapper(mapper);                
-        for(IRI iri : getOntologyTermValidationManager().getOntologyIRIs()) {        	
-            if(!owlManager.contains(iri)) {
+        for(IRI iri : getOntologyTermValidationManager().getOntologyIRIs()) {
+        	
+            if(!isOntologyLoaded(iri)) {
                 try {
-                	loadOntology(iri);
+                	IRI sourceIRI = getOntologyTermValidationManager().getOntologyPhysicalIRI(iri);
+                	if (sourceIRI==null) {
+                		sourceIRI=iri; //if the physical IRI cannot be found, that as a last resort try the ontology IRI
+                	}
+                	loadOntology(sourceIRI);
 				} catch (OWLOntologyCreationException e) {					
 					ErrorHandler.getErrorHandler().handleError(e,iri);
 				}
