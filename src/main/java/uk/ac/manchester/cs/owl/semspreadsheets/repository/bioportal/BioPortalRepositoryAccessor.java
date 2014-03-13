@@ -52,11 +52,7 @@ public class BioPortalRepositoryAccessor implements RepositoryAccessor {
             repository = new BioPortalRepository();
         }
         return repository;
-    }
-    
-    public static void main(String [] args) throws Exception {
-    	new BioPortalRepositoryAccessor().getOntologies();
-    }
+    }    
        
     public String fetchOntologyFormat(String ontologyAcronym) {
     	logger.debug("Fetching format for "+ontologyAcronym);
