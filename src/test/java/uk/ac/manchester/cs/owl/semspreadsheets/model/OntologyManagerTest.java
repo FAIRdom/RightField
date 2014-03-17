@@ -423,30 +423,30 @@ public class OntologyManagerTest {
 		
 	}
 	
-	@Test @Ignore("Dependent ontology contains an invalid import. Ontology needs fixing to no longer be reliant on external resources")
-	public void testLoadEmbeddedOntologies() throws Exception {
-		workbookManager.loadWorkbook(DocumentsCatalogue.twoOntologiesWorkbookURI());
-		assertEquals(0, ontologyManager.getLoadedOntologies().size());
-		assertEquals(0, ontologyManager.getAllOntologies().size());
-		assertEquals(2,ontologyManager.getOntologyIRIs().size());
-		assertTrue(ontologyManager.getOntologyIRIs().contains(IRI.create("http://www.mygrid.org.uk/ontology/JERMOntology")));
-		assertTrue(ontologyManager.getOntologyIRIs().contains(IRI.create("http://mged.sourceforge.net/ontologies/MGEDOntology.owl")));
-		ontologyManager.loadEmbeddedTermOntologies();
-		assertEquals(2, ontologyManager.getLoadedOntologies().size());
-		assertEquals(4, ontologyManager.getAllOntologies().size());
-		
-		//now with just properties over free text		
-		WorkbookManager manager = new WorkbookManager();
-		manager.loadWorkbook(DocumentsCatalogue.simpleWorkbookWithLiteralsOverRangeURI());
-		assertEquals(0, manager.getOntologyManager().getLoadedOntologies().size());
-		assertEquals(0, manager.getOntologyManager().getAllOntologies().size());
-		assertEquals(1,manager.getOntologyManager().getOntologyIRIs().size());
-		manager.getOntologyManager().loadEmbeddedTermOntologies();
-		assertEquals(1, manager.getOntologyManager().getLoadedOntologies().size());
-		assertEquals(1, manager.getOntologyManager().getAllOntologies().size());
-		
-		
-	}
+//	@Test @Ignore("Dependent ontology contains an invalid import. Ontology needs fixing to no longer be reliant on external resources")
+//	public void testLoadEmbeddedOntologies() throws Exception {
+//		workbookManager.loadWorkbook(DocumentsCatalogue.twoOntologiesWorkbookURI());
+//		assertEquals(0, ontologyManager.getLoadedOntologies().size());
+//		assertEquals(0, ontologyManager.getAllOntologies().size());
+//		assertEquals(2,ontologyManager.getOntologyIRIs().size());
+//		assertTrue(ontologyManager.getOntologyIRIs().contains(IRI.create("http://www.mygrid.org.uk/ontology/JERMOntology")));
+//		assertTrue(ontologyManager.getOntologyIRIs().contains(IRI.create("http://mged.sourceforge.net/ontologies/MGEDOntology.owl")));
+//		ontologyManager.loadEmbeddedTermOntologies();
+//		assertEquals(2, ontologyManager.getLoadedOntologies().size());
+//		assertEquals(4, ontologyManager.getAllOntologies().size());
+//		
+//		//now with just properties over free text		
+//		WorkbookManager manager = new WorkbookManager();
+//		manager.loadWorkbook(DocumentsCatalogue.simpleWorkbookWithLiteralsOverRangeURI());
+//		assertEquals(0, manager.getOntologyManager().getLoadedOntologies().size());
+//		assertEquals(0, manager.getOntologyManager().getAllOntologies().size());
+//		assertEquals(1,manager.getOntologyManager().getOntologyIRIs().size());
+//		manager.getOntologyManager().loadEmbeddedTermOntologies();
+//		assertEquals(1, manager.getOntologyManager().getLoadedOntologies().size());
+//		assertEquals(1, manager.getOntologyManager().getAllOntologies().size());
+//		
+//		
+//	}
 	
 	@Test
 	public void testGetPropertiesForSubclasses() throws Exception {

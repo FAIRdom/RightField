@@ -6,6 +6,13 @@
  ******************************************************************************/
 package uk.ac.manchester.cs.owl.semspreadsheets.ui;
 
+import java.util.Collection;
+
+import org.apache.log4j.Logger;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLOntologyCreationException;
+
+import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidationManager;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.task.AbstractTask;
 
 /**
@@ -13,10 +20,41 @@ import uk.ac.manchester.cs.owl.semspreadsheets.ui.task.AbstractTask;
  * @author Matthew Horridge
  */
 public class LoadEmbeddedTermsOntologies extends AbstractTask<Object,RuntimeException> {
+	
+	private static final Logger logger = Logger.getLogger(LoadEmbeddedTermsOntologies.class);
 
     public Object runTask() throws RuntimeException {
-        getOntologyManager().loadEmbeddedTermOntologies();
+        loadEmbeddedTermOntologies();
         return null;
+    }
+    
+    public void loadEmbeddedTermOntologies()  {
+    	OntologyTermValidationManager ontologyTermValidationManager = getOntologyManager().getOntologyTermValidationManager();
+    	Collection<IRI> ontologyIRIs = ontologyTermValidationManager.getOntologyIRIs();
+    	setLength(ontologyIRIs.size());
+    	setProgress(0);
+        for(IRI ontologyIRI : ontologyIRIs) {        	
+            if(!getOntologyManager().isOntologyLoaded(ontologyIRI)) {            	
+            	IRI sourceIRI = ontologyTermValidationManager.getOntologyPhysicalIRI(ontologyIRI);
+            	if (sourceIRI==null) {
+            		sourceIRI=ontologyIRI; //if the physical IRI cannot be found, that as a last resort try the ontology IRI
+            	}
+                try {
+                	logger.info("Loading embedded ontology from source: "+sourceIRI.toString());
+                	getOntologyManager().loadOntology(sourceIRI);
+				} catch (OWLOntologyCreationException e) {					
+					ErrorHandler.getErrorHandler().handleError(e,sourceIRI);
+//					try {
+//						logger.info("Unable to load ontology from source: "+sourceIRI.toString()+", using ontology IRI: "+ontologyIRI.toString());
+//						getOntologyManager().loadOntology(ontologyIRI);
+//					} catch (OWLOntologyCreationException e1) {
+//						// TODO Auto-generated catch block
+//						e1.printStackTrace();
+//					}
+				}				
+            }
+            setProgress(getProgress()+1);
+        }                
     }
 
     public String getTitle() {

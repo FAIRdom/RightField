@@ -374,28 +374,7 @@ public class OntologyManager {
 		return present;
     }
     
-    public void loadEmbeddedTermOntologies() {
-        
-        OWLOntologyIRIMapper mapper = new OntologyTermValdiationManagerMapper(ontologyTermValidationManager);
-        owlManager.addIRIMapper(mapper);                
-        for(IRI iri : getOntologyTermValidationManager().getOntologyIRIs()) {
-        	
-            if(!isOntologyLoaded(iri)) {
-                try {
-                	IRI sourceIRI = getOntologyTermValidationManager().getOntologyPhysicalIRI(iri);
-                	if (sourceIRI==null) {
-                		sourceIRI=iri; //if the physical IRI cannot be found, that as a last resort try the ontology IRI
-                	}
-                	loadOntology(sourceIRI);
-				} catch (OWLOntologyCreationException e) {					
-					ErrorHandler.getErrorHandler().handleError(e,iri);
-				}
-            }
-        }        
-        owlManager.removeIRIMapper(mapper);        
-        retrieveLabelsFromOntologies();
-        fireOntologiesChanged();
-    }
+    
     
     public OWLOntology loadOntology(URI physicalURI) throws OWLOntologyCreationException {
     	return loadOntology(IRI.create(physicalURI));
