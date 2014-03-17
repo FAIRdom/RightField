@@ -42,13 +42,18 @@ public class LoadEmbeddedTermsOntologies extends AbstractTask<Object,RuntimeExce
                 try {
                 	logger.info("Loading embedded ontology from source: "+sourceIRI.toString());
                 	getOntologyManager().loadOntology(sourceIRI);
-				} catch (OWLOntologyCreationException e) {										
-					try {
-						logger.info("Unable to load ontology from source: "+sourceIRI.toString()+", using ontology IRI: "+ontologyIRI.toString());
-						getOntologyManager().loadOntology(ontologyIRI);
-					} catch (OWLOntologyCreationException e1) {
-						ErrorHandler.getErrorHandler().handleError(e,ontologyIRI);
+				} catch (OWLOntologyCreationException e) {
+					if (sourceIRI.equals(ontologyIRI)) {
+						ErrorHandler.getErrorHandler().handleError(e,sourceIRI);
 					}
+					else {
+						try {
+							logger.info("Unable to load ontology from source: "+sourceIRI.toString()+", using ontology IRI: "+ontologyIRI.toString());
+							getOntologyManager().loadOntology(ontologyIRI);
+						} catch (OWLOntologyCreationException e1) {
+							ErrorHandler.getErrorHandler().handleError(e,ontologyIRI);
+						}
+					}					
 				}				
             }
             setProgress(getProgress()+1);
