@@ -29,10 +29,13 @@ public class LoadEmbeddedTermsOntologies extends AbstractTask<Object,RuntimeExce
     }
     
     public void loadEmbeddedTermOntologies()  {
+                        
     	OntologyTermValidationManager ontologyTermValidationManager = getOntologyManager().getOntologyTermValidationManager();
+    	
     	Collection<IRI> ontologyIRIs = ontologyTermValidationManager.getOntologyIRIs();
     	setLength(ontologyIRIs.size());
     	setProgress(0);
+    	
         for(IRI ontologyIRI : ontologyIRIs) {        	
             if(!getOntologyManager().isOntologyLoaded(ontologyIRI)) {            	
             	IRI sourceIRI = ontologyTermValidationManager.getOntologyPhysicalIRI(ontologyIRI);
@@ -57,7 +60,7 @@ public class LoadEmbeddedTermsOntologies extends AbstractTask<Object,RuntimeExce
 				}				
             }
             setProgress(getProgress()+1);
-        }                
+        }        
     }
 
     public String getTitle() {

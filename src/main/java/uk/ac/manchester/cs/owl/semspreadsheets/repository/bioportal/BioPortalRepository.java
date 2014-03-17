@@ -32,6 +32,8 @@ public class BioPortalRepository implements Repository {
     public static final String NAME = "BioPortal";
 
     public static final String BASE = "http://data.bioontology.org/";
+    
+    public static final String OLD_BASE = "http://rest.bioontology.org/";
 
     public static final String ONTOLOGY_LIST = BASE + "ontologies";
     
@@ -86,7 +88,7 @@ public class BioPortalRepository implements Repository {
 	public static IRI handleBioPortalAPIKey(IRI iri) {
 		IRI newIRI = iri;
 		String strIri=iri.toString();
-        if (strIri.contains(BioPortalRepository.BASE) && !strIri.contains("apikey")) {
+        if ((strIri.contains(BioPortalRepository.OLD_BASE) || strIri.contains(BioPortalRepository.BASE) && !strIri.contains("apikey"))) {
         	//FIXME: need to join the parameter, as it may not be the only parameter
         	newIRI = IRI.create(strIri+"?apikey="+BioPortalRepository.readAPIKey());
         }
