@@ -10,6 +10,7 @@ import java.util.Collection;
 
 import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLOntologyAlreadyExistsException;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidationManager;
@@ -43,9 +44,13 @@ public class LoadEmbeddedTermsOntologies extends AbstractTask<Object,RuntimeExce
             		sourceIRI=ontologyIRI; //if the physical IRI cannot be found, that as a last resort try the ontology IRI
             	}
                 try {
-                	logger.info("Loading embedded ontology from source: "+sourceIRI.toString());
+                	logger.debug("Loading embedded ontology from source: "+sourceIRI.toString());
                 	getOntologyManager().loadOntology(sourceIRI);
-				} catch (OWLOntologyCreationException e) {
+                } 
+                catch (OWLOntologyAlreadyExistsException e) {
+                	logger.warn("Ontology already loaded whilst loading embedded ontologies: "+sourceIRI.toString());                	                                
+				} 
+                catch (OWLOntologyCreationException e) {
 					if (sourceIRI.equals(ontologyIRI)) {
 						ErrorHandler.getErrorHandler().handleError(e,sourceIRI);
 					}
@@ -53,8 +58,10 @@ public class LoadEmbeddedTermsOntologies extends AbstractTask<Object,RuntimeExce
 						try {
 							logger.info("Unable to load ontology from source: "+sourceIRI.toString()+", using ontology IRI: "+ontologyIRI.toString());
 							getOntologyManager().loadOntology(ontologyIRI);
+						} catch (OWLOntologyAlreadyExistsException e1) {
+		                	logger.warn("Ontology already loaded whilst loading embedded ontologies: "+sourceIRI.toString());                	                                
 						} catch (OWLOntologyCreationException e1) {
-							ErrorHandler.getErrorHandler().handleError(e,ontologyIRI);
+							ErrorHandler.getErrorHandler().handleError(e1,ontologyIRI);
 						}
 					}					
 				}				
