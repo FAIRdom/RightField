@@ -390,7 +390,7 @@ public class OntologyManager {
                 
         OWLOntologyDocumentSource source = new IRIDocumentSource(BioPortalRepository.handleBioPortalAPIKey(physicalIRI));
                 
-        OWLOntology ontology = processOntologyDocumentSourceWithTimeout(source, 30);        
+        OWLOntology ontology = processOntologyDocumentSourceWithTimeout(source, 120);        
     	
     	logIRI = ontology.getOntologyID().getOntologyIRI();
     	if (logIRI==null) {

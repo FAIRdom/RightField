@@ -35,7 +35,7 @@ public class BioPortalRepositoryAccessor implements RepositoryAccessor {
 
 	private static Logger logger = Logger.getLogger(BioPortalRepositoryAccessor.class);
 	
-	private final int CONNECT_TIMEOUT = 30000;
+	private final int CONNECT_TIMEOUT = 120000;
 	
 	private final boolean SAVE_PROPERTIES_CACHE = false;
 	
