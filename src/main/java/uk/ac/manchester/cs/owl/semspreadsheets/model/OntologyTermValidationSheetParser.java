@@ -14,6 +14,8 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.IRI;
 
+import uk.ac.manchester.cs.owl.semspreadsheets.repository.bioportal.LegacyBioportalSourceResolver;
+
 /**
  * Creates and parses a validation sheet, which is a 'very' hidden sheet that contains the data for the named range that forms the
  * dropdown list for the cell, or range of cells, and also contains additional information about the ontology, where it came from, the validation type
@@ -167,7 +169,7 @@ public class OntologyTermValidationSheetParser {
                 if (!ontologyIRI.equals(KnownOntologies.PROTEGE_ONTOLOGY_IRI)) {
                 	Cell physicalIRICell = sheet.getCellAt(2, row);
                     if (physicalIRICell != null) {
-                        IRI physicalIRI = toIRI(physicalIRICell.getValue());
+                        IRI physicalIRI = toIRI(physicalIRICell.getValue());                        
                         result.put(ontologyIRI, physicalIRI);
                     }                	
                 }                
@@ -248,7 +250,11 @@ public class OntologyTermValidationSheetParser {
             if (physicalIRICell == null) {
                 physicalIRICell = sheet.addCellAt(2, row);
             }
-            physicalIRICell.setValue(descriptor.getPhysicalIRIForOntologyIRI(iri).toQuotedString());
+            IRI physicalIRI = descriptor.getPhysicalIRIForOntologyIRI(iri);
+            
+            //swap old bioportal IRIs to the new API format, if it matches.
+            physicalIRI = LegacyBioportalSourceResolver.getInstance().resolve(physicalIRI);
+            physicalIRICell.setValue(physicalIRI.toQuotedString());
             row++;
         }
     }

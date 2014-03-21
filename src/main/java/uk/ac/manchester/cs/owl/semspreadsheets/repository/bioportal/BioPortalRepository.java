@@ -89,6 +89,7 @@ public class BioPortalRepository implements Repository {
 		IRI newIRI = iri;
 		String strIri=iri.toString();
         if ((strIri.contains(BioPortalRepository.OLD_BASE) || strIri.contains(BioPortalRepository.BASE) && !strIri.contains("apikey"))) {
+        	strIri=LegacyBioportalSourceResolver.getInstance().resolve(iri).toString();
         	//FIXME: need to join the parameter, as it may not be the only parameter
         	newIRI = IRI.create(strIri+"?apikey="+BioPortalRepository.readAPIKey());
         }
