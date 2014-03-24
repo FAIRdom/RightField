@@ -21,7 +21,7 @@ public class BioPortalCache {
 	}
 	public static BioPortalCache getInstance() {
 		return BioPortalCacheHolder.INSTANCE;
-	}
+	}	
 	
 	private static final String CACHE_NAME = "/bioportal_cache";
 	

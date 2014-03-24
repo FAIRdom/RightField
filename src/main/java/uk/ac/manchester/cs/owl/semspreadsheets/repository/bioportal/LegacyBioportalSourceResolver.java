@@ -42,7 +42,7 @@ public class LegacyBioportalSourceResolver {
 	private static final String OLD_HOST = "rest.bioontology.org";
 	private static final String NEW_BASE = "http://data.bioontology.org/ontologies/";
 	
-	public LegacyBioportalSourceResolver() {
+	private LegacyBioportalSourceResolver() {
 		if (mappings.isEmpty()) {
 			readMappings();
 		}
