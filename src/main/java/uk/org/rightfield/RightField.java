@@ -40,6 +40,8 @@ public class RightField {
     private static final String WINDOW_WIDTH_KEY = "orch.window.width";
 
     private static final String WINDOW_HEIGHT_KEY = "orch.window.height";
+    
+    public static final String REGISTRATION_SHOWN_KEY = "REGISTRATION_SHOWN"+RightField.getApplicationVersion();
 
     public static void main(String[] args) {
     	new RightField(args);

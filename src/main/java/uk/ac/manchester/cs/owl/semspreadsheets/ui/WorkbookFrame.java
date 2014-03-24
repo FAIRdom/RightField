@@ -9,6 +9,7 @@ package uk.ac.manchester.cs.owl.semspreadsheets.ui;
 import java.awt.BorderLayout;
 import java.awt.FileDialog;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -24,6 +25,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.prefs.Preferences;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -76,6 +78,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.ui.task.FetchBioportalOntologyLis
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.task.LoadOntologyFromURITask;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.task.LoadRepositoryItemTask;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.task.TaskManager;
+import uk.org.rightfield.RightField;
 
 /**
  * @author Stuart Owen
@@ -155,6 +158,7 @@ public class WorkbookFrame extends JFrame {
 
 			@Override
 			public void windowOpened(WindowEvent e) {
+				registrationPrompt();
 				suggestOpeningWorkbook();
 			}			
 		});
@@ -171,6 +175,15 @@ public class WorkbookFrame extends JFrame {
 			}
 		}
 		return iconImages;
+	}
+	
+	private void registrationPrompt() {
+		Preferences prefs = Preferences.userNodeForPackage(RightField.class);
+		if (!prefs.getBoolean(RightField.REGISTRATION_SHOWN_KEY,false)) {
+			RegistrationAction registrationAction = new RegistrationAction(this);
+			registrationAction.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null));
+			prefs.putBoolean(RightField.REGISTRATION_SHOWN_KEY, true);
+		}		
 	}
 
 	private void addMainPanel() {

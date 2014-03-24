@@ -26,8 +26,11 @@ private String REG_URI="http://www.rightfield.org.uk/registration";
 	
 	@Override
 	public void actionPerformed(ActionEvent action) {
-		String msg = "Registration of RightField is enitirely optional,\nbut doing so helps provide the continued development and support of RightField. \nIt is also an oppurtunity to easily provide feedback and suggestions.";
-		msg+="\n\nPlease select OK to proceed to open the registration form in a browser.";
+		String msg = "RightField is developed as part of a publically funded academic researc project.\n";
+		msg+="Please help support future open source development of RightField by registering your interest and,\n";
+		msg+="optionally, provide some details about how you use RightField. \nIt is also an oppurtunity to easily provide feedback and suggestions.\n\n";
+		msg+="Please select OK to proceed to open the registration form in a browser.\n";
+		msg+="If you wish to register later, you can register via the Help menu.";
 		int ret = JOptionPane.showConfirmDialog(getWorkbookFrame(), msg,"Feedback and Registration",JOptionPane.OK_CANCEL_OPTION);
 		if (ret==JOptionPane.OK_OPTION) {
 			try {
