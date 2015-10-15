@@ -5,7 +5,6 @@ cache:
     - $HOME/.m2
 
 language: java
-script: "mvn compile"
 jdk:
   - openjdk7
   - oraclejdk7
