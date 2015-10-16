@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.semanticweb.owlapi.model.IRI;
 
@@ -27,7 +26,6 @@ public class LoadEmbeddedOntologiesTest {
 		ontologyManager.addListener(testListener);
 	}
 	
-	@Ignore("needs to be fixed to run headless for travis")
 	@Test
 	public void testLoadEmbeddedOntologies() throws Exception {
 		LoadEmbeddedTermsOntologies task = new LoadEmbeddedTermsOntologies();
