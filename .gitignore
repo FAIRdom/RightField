@@ -14,3 +14,4 @@ target/
 *.swp
 *.orig
 *~
+.idea/
