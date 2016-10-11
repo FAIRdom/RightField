@@ -1,25 +1,8 @@
 package uk.ac.manchester.cs.owl.semspreadsheets.model.xssf.impl;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Name;
-import org.apache.poi.xssf.usermodel.XSSFCell;
-import org.apache.poi.xssf.usermodel.XSSFName;
-import org.apache.poi.xssf.usermodel.XSSFRichTextString;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
+import org.apache.poi.xssf.usermodel.*;
 import uk.ac.manchester.cs.owl.semspreadsheets.listeners.WorkbookChangeListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.MutableWorkbook;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.NamedRange;
@@ -29,6 +12,12 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.change.SetCellValue;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.change.WorkbookChange;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.change.WorkbookChangeEvent;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.change.WorkbookChangeVisitor;
+
+import java.io.*;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /*
  * Copyright (C) 2009, University of Manchester
@@ -115,8 +104,8 @@ public class WorkbookXSSFImpl implements MutableWorkbook, WorkbookChangeVisitor 
 
     public Collection<NamedRange> getNamedRanges() {
         Collection<NamedRange> result = new ArrayList<NamedRange>();
-        for(int i = 0; i < workbook.getNumberOfNames(); i++) {
-            XSSFName name = workbook.getNameAt(i);
+        for(XSSFName name : workbook.getAllNames())
+        {
             if(!name.isDeleted() && !name.isFunctionName()) {
                 NamedRange range = new NamedRangeXSSFImpl(this, name);
                 result.add(range);

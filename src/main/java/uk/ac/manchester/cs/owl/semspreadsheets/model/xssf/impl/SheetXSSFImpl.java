@@ -1,30 +1,20 @@
 package uk.ac.manchester.cs.owl.semspreadsheets.model.xssf.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-
 import org.apache.log4j.Logger;
-import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.DataValidation;
 import org.apache.poi.ss.usermodel.DataValidationConstraint;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellRangeAddressList;
-import org.apache.poi.xssf.usermodel.XSSFCell;
-import org.apache.poi.xssf.usermodel.XSSFDataValidation;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
-import uk.ac.manchester.cs.owl.semspreadsheets.model.Cell;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.PropertyValidationForumlaDefinition;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.Validation;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.Workbook;
+import org.apache.poi.xssf.usermodel.*;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.*;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.impl.ValidationImpl;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author Stuart Owen
@@ -65,7 +55,7 @@ public class SheetXSSFImpl implements Sheet {
         		int lastCell = row.getLastCellNum();
         		for (int cellIndex = firstCell ; cellIndex <= lastCell;cellIndex++) {
         			XSSFCell cell = row.getCell(cellIndex);
-        			boolean skip = cell==null || cell.getCellType()==HSSFCell.CELL_TYPE_BLANK || (cell.getCellType()==HSSFCell.CELL_TYPE_STRING && cell.getStringCellValue().isEmpty());        			
+        			boolean skip = cell==null || cell.getCellTypeEnum()== CellType.BLANK|| (cell.getCellTypeEnum()==CellType.STRING && cell.getStringCellValue().isEmpty());
         			if (!skip) {
         				cells.add(new CellXSSFImpl(hssfWorkbook, cell));
         			}
