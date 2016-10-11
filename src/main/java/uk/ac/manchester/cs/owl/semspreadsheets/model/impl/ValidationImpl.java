@@ -8,6 +8,7 @@ package uk.ac.manchester.cs.owl.semspreadsheets.model.impl;
 
 import org.apache.log4j.Logger;
 
+
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidationSheetParser;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.PropertyValidationForumlaDefinition;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;

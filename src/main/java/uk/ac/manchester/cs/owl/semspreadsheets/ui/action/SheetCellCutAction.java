@@ -6,16 +6,15 @@
  ******************************************************************************/
 package uk.ac.manchester.cs.owl.semspreadsheets.ui.action;
 
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-
 import org.apache.log4j.Logger;
-
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Cell;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.change.SetCellValue;
+
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
 /**
  * Action to handle 'cutting' a range of cells from a sheet

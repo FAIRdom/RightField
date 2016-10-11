@@ -1,23 +1,13 @@
 package uk.ac.manchester.cs.owl.semspreadsheets.model.xssf.impl;
 
-import java.awt.Color;
-import java.awt.Font;
+import org.apache.log4j.Logger;
+import org.apache.poi.xssf.usermodel.*;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.Cell;
+
+import javax.swing.*;
+import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.swing.SwingConstants;
-
-import org.apache.log4j.Logger;
-import org.apache.poi.xssf.usermodel.XSSFCell;
-import org.apache.poi.xssf.usermodel.XSSFCellStyle;
-import org.apache.poi.xssf.usermodel.XSSFColor;
-import org.apache.poi.xssf.usermodel.XSSFComment;
-import org.apache.poi.xssf.usermodel.XSSFFont;
-import org.apache.poi.xssf.usermodel.XSSFRichTextString;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
-import uk.ac.manchester.cs.owl.semspreadsheets.model.Cell;
 
 /**
  * @author Stuart Owen
@@ -214,11 +204,11 @@ public class CellXSSFImpl implements Cell {
         }        
         else {
         	XSSFColor xssfColour = cellStyle.getFillForegroundXSSFColor();
-    		if (xssfColour == null) {
+    		if (xssfColour == null || null == xssfColour.getRGB()) {
     			colour = Color.WHITE;
     		}
     		else {
-    			colour = translateRGB(xssfColour.getRgb());
+    			colour = translateRGB(xssfColour.getRGB());
     		}
         }
 		
@@ -273,8 +263,8 @@ public class CellXSSFImpl implements Cell {
     public Color getForeground() {
         if (foreground == null) {
         	XSSFColor colour = theCell.getCellStyle().getFont().getXSSFColor();
-        	if (colour!=null) {
-        		foreground = translateRGB(colour.getRgb());
+        	if (colour.getRGB() != null) {
+        		foreground = translateRGB(colour.getRGB());
         	}        	
         	else {
         		foreground = Color.BLACK;
