@@ -148,8 +148,9 @@ public class WorkbookXSSFImpl implements MutableWorkbook, WorkbookChangeVisitor 
     }
 
     public void addName(String name, Range rng) {
-        if(workbook.getName(name) != null) {
-            workbook.removeName(name);
+        XSSFName nameObject = workbook.getName(name);
+        if(nameObject != null) {
+            workbook.removeName(nameObject);
         }
         Name xssfName = workbook.createName();
         xssfName.setNameName(name);
@@ -157,7 +158,7 @@ public class WorkbookXSSFImpl implements MutableWorkbook, WorkbookChangeVisitor 
     }
 
     public void removeName(String name) {
-        workbook.removeName(name);
+        workbook.removeName(workbook.getName(name));
     }
         
     public Sheet addSheet() {
