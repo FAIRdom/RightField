@@ -58,7 +58,7 @@ public class SheetHSSFImpl implements Sheet {
         		int lastCell = row.getLastCellNum();
         		for (int cellIndex = firstCell ; cellIndex <= lastCell;cellIndex++) {
         			HSSFCell cell = row.getCell(cellIndex);
-        			boolean skip = cell==null || cell.()== CellType.BLANK || (cell.getCellTypeEnum()==CellType.STRING && cell.getStringCellValue().isEmpty());
+        			boolean skip = cell==null || cell.getCellTypeEnum()== CellType.BLANK || (cell.getCellTypeEnum()==CellType.STRING && cell.getStringCellValue().isEmpty());
         			if (!skip) {
         				cells.add(new CellHSSFImpl(hssfWorkbook, cell));
         			}
@@ -245,7 +245,8 @@ public class SheetHSSFImpl implements Sheet {
     }
     public void clearValidationData() {
 /*        PatchedPoi.getInstance().clearValidationData(sheet);*/
-        sheet.getDataValidations().clear();
+        List<HSSFDataValidation> at = getValidationData();
+        at.clear();
     }
 
 }
