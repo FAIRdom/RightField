@@ -6,6 +6,7 @@
  ******************************************************************************/
 package uk.ac.manchester.cs.owl.semspreadsheets.model.hssf.impl;
 
+import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.DataValidationConstraint;
@@ -31,6 +32,8 @@ public class SheetHSSFImpl implements Sheet {
     private HSSFWorkbook hssfWorkbook;
 
     private HSSFSheet sheet;
+
+    private static Logger logger = Logger.getLogger(SheetHSSFImpl.class);
 
     private static final short MAX_ROWS = Short.MAX_VALUE;
 
@@ -241,12 +244,25 @@ public class SheetHSSFImpl implements Sheet {
     	return PatchedPoi.getInstance().getValidationData(sheet, hssfWorkbook);
     }   */
     public List<HSSFDataValidation> getValidationData() {
-        return sheet.getDataValidations();
+            return sheet.getDataValidations();
     }
     public void clearValidationData() {
 /*        PatchedPoi.getInstance().clearValidationData(sheet);*/
-        List<HSSFDataValidation> at = getValidationData();
-        at.clear();
+
+        sheet.getDataValidations().clear();
+
+/*        try
+        {
+            List<HSSFDataValidation> validationList = getValidationData();
+            validationList.clear();
+        }catch(IndexOutOfBoundsException e)
+        {
+            logger.debug("NamePtg getIndex call when array is empty");
+        }*/
+
+        //sheet.getDataValidations().clear();
+
     }
+
 
 }

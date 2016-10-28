@@ -7,15 +7,10 @@
 package uk.ac.manchester.cs.owl.semspreadsheets.model;
 
 
-import java.awt.Color;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.log4j.Logger;
+
+import java.awt.*;
+import java.util.*;
 
 /**
  * @author Matthew Horridge
@@ -75,7 +70,7 @@ public class OntologyTermValidationWorkbookParser {
     	Map<String,Validation> validations = new HashMap<String,Validation>();
     	
     	for (Sheet sheet : workbook.getSheets()) {    		
-    		for (Validation validation : sheet.getValidations()) {
+			for (Validation validation : sheet.getValidations()) {
     			if (validation.isLiteralValidation()) {    				    				
     				validations.put(PropertyValidationForumlaDefinition.decode(validation.getFormula()),validation);
     			}
