@@ -193,7 +193,7 @@ public class WorkbookXSSFImpl implements MutableWorkbook, WorkbookChangeVisitor 
 
     public Sheet addVeryHiddenSheet() {
     	Sheet sheet = createSheet();
-        sheet.setVeryHidden(true);
+        //sheet.setVeryHidden(true);
         return sheet;
     }
 

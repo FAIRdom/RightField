@@ -240,28 +240,14 @@ public class SheetHSSFImpl implements Sheet {
         return validationList;
     }   
     
-/*    public List<HSSFDataValidation> getValidationData() {
-    	return PatchedPoi.getInstance().getValidationData(sheet, hssfWorkbook);
-    }   */
     public List<HSSFDataValidation> getValidationData() {
-            return sheet.getDataValidations();
+    	return PatchedPoi.getInstance().getValidationData(sheet, hssfWorkbook);
     }
+    /*public List<HSSFDataValidation> getValidationData() {
+            return sheet.getDataValidations();
+    }*/
     public void clearValidationData() {
-/*        PatchedPoi.getInstance().clearValidationData(sheet);*/
-
-        sheet.getDataValidations().clear();
-
-/*        try
-        {
-            List<HSSFDataValidation> validationList = getValidationData();
-            validationList.clear();
-        }catch(IndexOutOfBoundsException e)
-        {
-            logger.debug("NamePtg getIndex call when array is empty");
-        }*/
-
-        //sheet.getDataValidations().clear();
-
+        PatchedPoi.getInstance().clearValidationData(sheet);
     }
 
 

@@ -10,7 +10,7 @@
       <sourceFolder url="file://$MODULE_DIR$/src/test/resources" type="java-test-resource" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="1.7" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Maven: uk.ac.manchester.cs.skos:skos-api:3.0.1" level="project" />
     <orderEntry type="library" name="Maven: net.sourceforge.owlapi:owlapi-api:3.4.3" level="project" />
@@ -19,9 +19,10 @@
     <orderEntry type="library" name="Maven: net.sourceforge.owlapi:owlapi-apibinding:3.4.3" level="project" />
     <orderEntry type="library" name="Maven: net.sourceforge.owlapi:owlapi-parsers:3.4.3" level="project" />
     <orderEntry type="library" name="Maven: net.sourceforge.owlapi:owlapi-tools:3.4.3" level="project" />
+    <orderEntry type="library" name="Maven: org.sysmo-db:rightfield-poi:3.15-FINAL" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.commons:commons-collections4:4.1" level="project" />
     <orderEntry type="library" name="Maven: org.apache.poi:poi-ooxml:3.15" level="project" />
     <orderEntry type="library" name="Maven: org.apache.poi:poi:3.15" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.commons:commons-collections4:4.1" level="project" />
     <orderEntry type="library" name="Maven: org.apache.poi:poi-ooxml-schemas:3.15" level="project" />
     <orderEntry type="library" name="Maven: com.github.virtuald:curvesapi:1.04" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.3.1" level="project" />
