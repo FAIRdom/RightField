@@ -76,7 +76,7 @@ public class SheetXSSFImpl implements Sheet {
     }
 
     public void setHidden(boolean b) {
-        hssfWorkbook.setSheetHidden(hssfWorkbook.getSheetIndex(sheet), b);
+        //hssfWorkbook.setSheetHidden(hssfWorkbook.getSheetIndex(sheet), b);
     }
 
     public void setVeryHidden(boolean b) {    	

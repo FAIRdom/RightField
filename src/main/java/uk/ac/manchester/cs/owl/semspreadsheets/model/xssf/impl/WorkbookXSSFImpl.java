@@ -173,6 +173,19 @@ public class WorkbookXSSFImpl implements MutableWorkbook, WorkbookChangeVisitor 
         }
         return sheet;
     }
+    public Sheet addSheet(String name) {
+        Sheet sheet = createSheet();
+        for(WorkbookChangeListener listener : new ArrayList<WorkbookChangeListener>(changeListeners)) {
+            try {
+                listener.sheetAdded();
+            }
+            catch (Exception e) {
+                logger.error("Error adding a new sheet",e);
+            }
+        }
+        sheet.setName(name);
+        return sheet;
+    }
     
     protected Sheet createSheet() { 
     	int x=0;

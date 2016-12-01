@@ -6,76 +6,33 @@
  ******************************************************************************/
 package uk.ac.manchester.cs.owl.semspreadsheets.ui;
 
-import java.awt.BorderLayout;
-import java.awt.FileDialog;
-import java.awt.Image;
-import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import org.apache.log4j.Logger;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyCreationException;
+import uk.ac.manchester.cs.owl.semspreadsheets.listeners.AbstractWorkbookManagerListener;
+import uk.ac.manchester.cs.owl.semspreadsheets.listeners.OntologyManagerListener;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.*;
+import uk.ac.manchester.cs.owl.semspreadsheets.repository.RepositoryItem;
+import uk.ac.manchester.cs.owl.semspreadsheets.repository.RepositoryManager;
+import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.*;
+import uk.ac.manchester.cs.owl.semspreadsheets.ui.task.FetchBioportalOntologyListTask;
+import uk.ac.manchester.cs.owl.semspreadsheets.ui.task.LoadOntologyFromURITask;
+import uk.ac.manchester.cs.owl.semspreadsheets.ui.task.LoadRepositoryItemTask;
+import uk.ac.manchester.cs.owl.semspreadsheets.ui.task.TaskManager;
+
+import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
+import java.awt.*;
+import java.awt.event.*;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
+import java.util.*;
 import java.util.List;
-import java.util.Set;
-
-import javax.swing.ImageIcon;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JSeparator;
-import javax.swing.KeyStroke;
-import javax.swing.filechooser.FileFilter;
-
-import org.apache.log4j.Logger;
-import org.semanticweb.owlapi.model.IRI;
-import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyCreationException;
-
-import uk.ac.manchester.cs.owl.semspreadsheets.listeners.AbstractWorkbookManagerListener;
-import uk.ac.manchester.cs.owl.semspreadsheets.listeners.OntologyManagerListener;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.KnownOntologies;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyManager;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
-import uk.ac.manchester.cs.owl.semspreadsheets.repository.RepositoryItem;
-import uk.ac.manchester.cs.owl.semspreadsheets.repository.RepositoryManager;
-import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.AboutBoxAction;
-import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.ClearOntologyValuesAction;
-import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.CloseSelectedOntologyAction;
-import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.CloseWorkbookAction;
-import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.ExitAction;
-import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.ExportCSVAction;
-import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.ExportRDFAction;
-import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.AddSheetAction;
-import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.OnlineHelpAction;
-import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.OpenFromBioPortalAction;
-import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.OpenOntologyAction;
-import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.OpenOntologyFromURLAction;
-import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.OpenWorkbookAction;
-import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.RegistrationAction;
-import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.RemoveSheetAction;
-import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.RenameSheetAction;
-import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.SaveAction;
-import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.SaveAsAction;
-import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.SheetCellClearAction;
-import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.SheetCellCopyAction;
-import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.SheetCellCutAction;
-import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.SheetCellPasteAction;
-import uk.ac.manchester.cs.owl.semspreadsheets.ui.task.FetchBioportalOntologyListTask;
-import uk.ac.manchester.cs.owl.semspreadsheets.ui.task.LoadOntologyFromURITask;
-import uk.ac.manchester.cs.owl.semspreadsheets.ui.task.LoadRepositoryItemTask;
-import uk.ac.manchester.cs.owl.semspreadsheets.ui.task.TaskManager;
 
 /**
  * @author Stuart Owen
@@ -240,8 +197,10 @@ public class WorkbookFrame extends JFrame {
 		onlineHelp.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
 		helpMenu.add(new RegistrationAction(this));
 		helpMenu.add(new AboutBoxAction(this));
-										
-		setJMenuBar(menuBar);		
+
+		JMenu testMenu = menuBar.add(new JMenu("Test"));
+		testMenu.add(new LinkCellsAction(workbookManager, this));
+		setJMenuBar(menuBar);
 	}
 	
 	public void exit() {

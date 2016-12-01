@@ -6,21 +6,11 @@
  ******************************************************************************/
 package uk.ac.manchester.cs.owl.semspreadsheets.model;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
-
 import uk.ac.manchester.cs.owl.semspreadsheets.listeners.CellSelectionListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.listeners.WorkbookChangeListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.listeners.WorkbookManagerListener;
@@ -32,6 +22,11 @@ import uk.ac.manchester.cs.owl.semspreadsheets.ui.ErrorHandler;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookFormat;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookState;
 import uk.org.rightfield.RightField;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.util.*;
 
 /** 
  * @author Stuart Owen
@@ -265,7 +260,108 @@ public class WorkbookManager {
     	
     	getOntologyManager().getOntologyTermValidationManager().previewValidation(range,type, iri,owlPropertyItem);
 	}	
-    
+    public void linkCells() {
+        System.out.println("what?");
+        Range selectedRange = getSelectionModel().getSelectedRange();
+        if(!selectedRange.isCellSelection()) {
+            return;
+        }
+
+        System.out.println((char)(selectedRange.getToColumn() / 26 + 64));
+        System.out.println((char)(selectedRange.getToColumn() % 26 + 65));
+        String fromColumn = selectedRange.getFromColumn() < 26 ? (char)(selectedRange.getFromColumn() + 65) + ""
+                : Character.toString((char)(selectedRange.getFromColumn() / 26 + 64)) + (char)(selectedRange.getFromColumn() % 26 + 65) + "";
+        String toColumn = selectedRange.getToColumn() < 26 ? (char)(selectedRange.getToColumn() + 65) + ""
+                : Character.toString((char)(selectedRange.getToColumn() / 26 + 64))+ (char)(selectedRange.getToColumn() % 26 + 65) + "";
+        String from = fromColumn + "," + (selectedRange.getFromRow() + 1);
+        String to = toColumn + "," +(selectedRange.getToRow() + 1);
+        System.out.println(from + "->" + to);
+
+        List<Sheet> sheets = workbook.getSheets();
+        Sheet sheet = null;
+        for(int i = 0 ; i < sheets.size(); i++)
+        {
+            //String temp = sheets.get(i).getName();
+            if(sheets.get(i).getName().equals("LinkedCells"))
+            {
+                sheet = sheets.get(i);
+                break;
+            }
+        }
+
+        if(sheet == null)
+        {
+            sheet = workbook.addSheet("LinkedCells");
+            sheet.addCellAt(0,0).setValue("0");
+        }
+
+        int indexCell = Integer.parseInt(sheet.getCellAt(0,0).getValue());
+        String newLink = from + "->" + to;
+        if(from.equals(to))
+        {
+            return;
+        }
+        boolean foundExistingLink = false;
+        for(int i = 0; i < indexCell; i++)
+        {
+            String[] temp2 = newLink.split("->");
+            String temp3 = temp2[1] + "->" + temp2[0];
+            String pi = sheet.getCellAt(0,i+1).getValue();
+            if(pi.equals(newLink))
+            {
+                //reverse
+                int fromColumnSheet = Integer.parseInt(sheet.getCellAt(1,i+1).getValue());
+                int fromRowSheet = Integer.parseInt(sheet.getCellAt(2,i+1).getValue());
+                int toColumnSheet = Integer.parseInt(sheet.getCellAt(3,i+1).getValue());
+                int toRowSheet = Integer.parseInt(sheet.getCellAt(4,i+1).getValue());
+
+                String[] temp = sheet.getCellAt(0,i+1).getValue().split("->");
+                sheet.getCellAt(0,i+1).setValue(temp[1] + "->" + temp[0]);
+                sheet.getCellAt(1,i+1).setValue(Integer.toString(toColumnSheet));
+                sheet.getCellAt(2,i+1).setValue(Integer.toString(toRowSheet));
+                sheet.getCellAt(3,i+1).setValue(Integer.toString(fromColumnSheet));
+                sheet.getCellAt(4,i+1).setValue(Integer.toString(fromRowSheet));
+                foundExistingLink = true;
+                break;
+            }
+            else if(temp3.equals(pi))
+            {
+                sheet.getCellAt(0, 0).setValue(Integer.toString(indexCell - 1));
+
+                sheet.getCellAt(0,i+1).setValue(sheet.getCellAt(0,indexCell).getValue());
+                sheet.getCellAt(1,i+1).setValue(sheet.getCellAt(1,indexCell).getValue());
+                sheet.getCellAt(2,i+1).setValue(sheet.getCellAt(2,indexCell).getValue());
+                sheet.getCellAt(3,i+1).setValue(sheet.getCellAt(3,indexCell).getValue());
+                sheet.getCellAt(4,i+1).setValue(sheet.getCellAt(4,indexCell).getValue());
+
+                sheet.clearCellAt(0,indexCell);
+                sheet.clearCellAt(1,indexCell);
+                sheet.clearCellAt(2,indexCell);
+                sheet.clearCellAt(3,indexCell);
+                sheet.clearCellAt(4,indexCell);
+
+
+                foundExistingLink = true;
+                break;
+            }
+
+
+            }
+
+        if(!foundExistingLink) {
+            sheet.getCellAt(0, 0).setValue(Integer.toString(indexCell + 1));
+            sheet.addCellAt(0, indexCell + 1).setValue(from + "->" + to);
+            sheet.addCellAt(1, indexCell + 1).setValue(Integer.toString(selectedRange.getFromColumn()));
+            sheet.addCellAt(2, indexCell + 1).setValue(Integer.toString(selectedRange.getFromRow()));
+            sheet.addCellAt(3, indexCell + 1).setValue(Integer.toString(selectedRange.getToColumn()));
+            sheet.addCellAt(4, indexCell + 1).setValue(Integer.toString(selectedRange.getToRow()));
+        }
+
+
+
+
+
+    }
     public void applyValidationChange() {
     	ValidationType type = entitySelectionModel.getValidationType();
     	IRI iri = entitySelectionModel.getSelectedEntity().getIRI();

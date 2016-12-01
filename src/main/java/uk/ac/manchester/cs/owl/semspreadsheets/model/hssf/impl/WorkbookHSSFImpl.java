@@ -7,38 +7,19 @@
 
 package uk.ac.manchester.cs.owl.semspreadsheets.model.hssf.impl;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.apache.log4j.Logger;
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFName;
-import org.apache.poi.hssf.usermodel.HSSFRichTextString;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.poifs.filesystem.OfficeXmlFileException;
-
 import uk.ac.manchester.cs.owl.semspreadsheets.listeners.WorkbookChangeListener;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.InvalidWorkbookFormatException;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.MutableWorkbook;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.NamedRange;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.*;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.change.SetCellValue;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.change.WorkbookChange;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.change.WorkbookChangeEvent;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.change.WorkbookChangeVisitor;
+
+import java.io.*;
+import java.net.URI;
+import java.util.*;
 
 /**
  * @author Stuart Owen
@@ -159,6 +140,19 @@ public class WorkbookHSSFImpl implements MutableWorkbook, WorkbookChangeVisitor 
                 logger.error("Error adding a new sheet",e);
             }
         }
+        return sheet;
+    }
+    public Sheet addSheet(String name) {
+        Sheet sheet = createSheet();
+        for(WorkbookChangeListener listener : new ArrayList<WorkbookChangeListener>(changeListeners)) {
+            try {
+                listener.sheetAdded();
+            }
+            catch (Exception e) {
+                logger.error("Error adding a new sheet",e);
+            }
+        }
+        sheet.setName(name);
         return sheet;
     }
     
