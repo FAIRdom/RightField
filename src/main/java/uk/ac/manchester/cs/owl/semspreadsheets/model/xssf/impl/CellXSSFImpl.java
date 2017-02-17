@@ -1,6 +1,7 @@
 package uk.ac.manchester.cs.owl.semspreadsheets.model.xssf.impl;
 
 import org.apache.log4j.Logger;
+import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
@@ -240,7 +241,52 @@ public class CellXSSFImpl implements Cell {
 			logger.error("Error setting cell style",e);
 		}
 	}
+    public void setBorders(Color colour) {
+        XSSFCellStyle style = getBorderStyleForColour(colour);
 
+        try {
+
+            theCell.getCellStyle().setBottomBorderColor(new XSSFColor(colour));
+            theCell.getCellStyle().setTopBorderColor(new XSSFColor(colour));
+            theCell.getCellStyle().setLeftBorderColor(new XSSFColor(colour));
+            theCell.getCellStyle().setRightBorderColor(new XSSFColor(colour));
+
+            theCell.getCellStyle().setBorderTop(BorderStyle.THICK);
+            theCell.getCellStyle().setBorderBottom(BorderStyle.THICK);
+            theCell.getCellStyle().setBorderLeft(BorderStyle.THICK);
+            theCell.getCellStyle().setBorderRight(BorderStyle.THICK);
+            //theCell.setCellStyle(style);
+        }
+        catch(Exception e) {
+            logger.error("Error setting cell style",e);
+        }
+
+    }
+    private XSSFCellStyle getBorderStyleForColour(Color colour) {
+        Map<Color,XSSFCellStyle> styles = colourStylesForWorkbook.get(getWorkbook());
+        if (styles == null) {
+            styles = new HashMap<Color,XSSFCellStyle>();
+            colourStylesForWorkbook.put(getWorkbook(), styles);
+        }
+        XSSFCellStyle style = styles.get(colour);
+        if (style==null) {
+            style = getWorkbook().createCellStyle();
+            XSSFColor col = new XSSFColor(colour);
+
+            style.setBottomBorderColor(col);
+            style.setTopBorderColor(col);
+            style.setLeftBorderColor(col);
+            style.setRightBorderColor(col);
+
+            style.setBorderTop(BorderStyle.THICK);
+            style.setBorderBottom(BorderStyle.THICK);
+            style.setBorderLeft(BorderStyle.THICK);
+            style.setBorderRight(BorderStyle.THICK);
+
+            styles.put(colour,style);
+        }
+        return style;
+    }
 	private XSSFCellStyle getFillStyleForColour(Color colour) {
 		Map<Color,XSSFCellStyle> styles = colourStylesForWorkbook.get(getWorkbook());
     	if (styles == null) {

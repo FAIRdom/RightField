@@ -177,7 +177,7 @@ public class SheetHSSFImpl implements Sheet {
             theCell.setCellValue("");
         }
     }            
-        
+
 
     public Collection<Validation> getIntersectingValidations(Range range) {
         ArrayList<Validation> intersectingValidations = new ArrayList<Validation>();

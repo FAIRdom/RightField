@@ -6,27 +6,15 @@
  ******************************************************************************/
 package uk.ac.manchester.cs.owl.semspreadsheets.ui;
 
-import java.awt.AlphaComposite;
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Composite;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.Stroke;
+import org.apache.log4j.Logger;
+import org.apache.poi.ss.util.CellAddress;
+import org.apache.xmlbeans.impl.values.XmlValueDisconnectedException;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.*;
 
-import javax.swing.JTable;
+import javax.swing.*;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
-
-import org.apache.log4j.Logger;
-import org.apache.xmlbeans.impl.values.XmlValueDisconnectedException;
-
-import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidation;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidationDescriptor;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
+import java.awt.*;
 
 /**
  * @author Stuart Owen
@@ -122,6 +110,57 @@ public class SheetTable extends JTable {
                 g2.setComposite(oldComposite);
             }
         }
+
+        java.util.List<Sheet> sheets = workbookManager.getWorkbook().getSheets();
+        Sheet sheet = null;
+        for(int i = 0 ; i < sheets.size(); i++)
+        {
+            //String temp = sheets.get(i).getName();
+            if(sheets.get(i).getName().equals("LinkedCells"))
+            {
+                sheet = sheets.get(i);
+                break;
+            }
+        }
+
+        if(sheet != null)
+        {
+            int indexCell = Integer.parseInt(sheet.getCellAt(0,0).getValue());
+            if(indexCell != 0)
+            {
+                ;
+            }
+            for(int i = 1; i < indexCell + 1; i++)
+            {
+                for(int j = 0; j <= 1; j++)
+                {
+                    Cell linkedCell = sheet.getCellAt(j,i);
+                    CellAddress da = new CellAddress(linkedCell.getValue());
+                    if(sheet.getCellAt(da.getColumn(), da.getRow()) == null)
+                    {
+                        sheet.addCellAt(da.getColumn(), da.getRow());
+                    }
+                    Range validation = new Range(sheet, sheet.getCellAt(da.getColumn(), da.getRow()));
+                    g.setColor(Color.BLUE);
+                    Rectangle startRect = getCellRect(validation.getFromRow(), validation.getFromColumn(), false);
+                    Rectangle endRect = getCellRect(validation.getToRow(), validation.getToColumn(), false);
+                    int x1 = startRect.x + 1;
+                    int y1 = startRect.y + 1;
+                    int width = endRect.width + endRect.x - startRect.x - 2;
+                    int height = endRect.y + endRect.height - startRect.y - 2;
+                    Rectangle rect = new Rectangle(x1, y1, width, height);
+                    Composite oldComposite = g2.getComposite();
+                    g2.setComposite(alphaComposite2);
+                    g2.drawRoundRect(rect.x, rect.y, rect.width, rect.height, 5, 5);
+                    g2.setComposite(alphaComposite);
+                    //g2.fill(rect);
+                    g2.setComposite(oldComposite);
+                }
+            }
+        }
+
+
+
 
         g2.setStroke(oldStroke);
         g.setColor(oldColor);

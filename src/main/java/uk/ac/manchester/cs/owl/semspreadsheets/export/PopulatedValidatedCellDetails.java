@@ -44,7 +44,7 @@ class PopulatedValidatedCellDetails
 		this.term = term;
 		this.textValue = textValue;		
 	}
-	
+
 	public PopulatedValidatedCellDetails(OntologyTermValidation validation, Cell cell, String textValue) {
 		this(validation,cell,null,textValue);
 	}

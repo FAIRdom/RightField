@@ -19,9 +19,9 @@ import java.awt.event.KeyEvent;
  *
  */
 @SuppressWarnings("serial")
-public class LinkCellsAction extends WorkbookFrameAction {
+public class AddLinkCellsAction extends WorkbookFrameAction {
 
-    public LinkCellsAction(WorkbookManager workbookManager, WorkbookFrame workbookFrame) {
+    public AddLinkCellsAction(WorkbookManager workbookManager, WorkbookFrame workbookFrame) {
         super("Link PLM", workbookFrame);
         setAcceleratorKey(KeyEvent.VK_J);
     }
@@ -32,6 +32,6 @@ public class LinkCellsAction extends WorkbookFrameAction {
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        getWorkbookManager().linkCells();
+        getWorkbookManager().addLinkCells(false);
     }
 }

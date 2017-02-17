@@ -1,12 +1,13 @@
 /*******************************************************************************
  * Copyright (c) 2009-2012, University of Manchester
- * 
- * Licensed under the New BSD License. 
+ *
+ * Licensed under the New BSD License.
  * Please see LICENSE file that is distributed with the source code
  ******************************************************************************/
 package uk.ac.manchester.cs.owl.semspreadsheets.model;
 
 import org.apache.log4j.Logger;
+import org.apache.poi.ss.util.CellAddress;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLEntity;
@@ -28,19 +29,19 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.*;
 
-/** 
+/**
  * @author Stuart Owen
  * @author Matthew Horridge
  */
 public class WorkbookManager {
 
 	private static final Logger logger = Logger.getLogger(WorkbookManager.class);
-    private Workbook workbook;      
+    private Workbook workbook;
 
-    private URI workbookURI;  
-    
-    private OntologyManager ontologyManager;   
-    
+    private URI workbookURI;
+
+    private OntologyManager ontologyManager;
+
     private WorkbookState workbookState = new WorkbookState();
 
     private CellSelectionModel selectionModel;
@@ -49,11 +50,11 @@ public class WorkbookManager {
 
     private Set<WorkbookManagerListener> workbookManagerListeners = new HashSet<WorkbookManagerListener>();
 
-    public WorkbookManager() {    	
-        
+    public WorkbookManager() {
+
         ontologyManager = new OntologyManager(this);
-                                
-        entitySelectionModel = new EntitySelectionModel(ontologyManager.getOWLOntologyManager().getOWLDataFactory().getOWLThing());        
+
+        entitySelectionModel = new EntitySelectionModel(ontologyManager.getOWLOntologyManager().getOWLDataFactory().getOWLThing());
         workbook = WorkbookFactory.createWorkbook();
         selectionModel = new CellSelectionModel();
         selectionModel.setSelectedRange(new Range(workbook.getSheet(0)));
@@ -62,7 +63,7 @@ public class WorkbookManager {
                 handleCellSelectionChanged(range);
             }
         });
-    }     
+    }
 
     public void applyChanges(List<? extends WorkbookChange> changes) {
         for(WorkbookChange change : changes) {
@@ -71,26 +72,26 @@ public class WorkbookManager {
     }
 
     public void applyChange(WorkbookChange change) {
-        ((MutableWorkbook) workbook).applyChange(change);         
+        ((MutableWorkbook) workbook).applyChange(change);
     }
 
     public void addListener(WorkbookManagerListener listener) {
-        workbookManagerListeners.add(listener);        
+        workbookManagerListeners.add(listener);
     }
 
     public void removeListener(WorkbookManagerListener listener) {
-        workbookManagerListeners.remove(listener);        
+        workbookManagerListeners.remove(listener);
     }
-    
+
     public EntitySelectionModel getEntitySelectionModel() {
         return entitySelectionModel;
-    }    
+    }
 
     private List<WorkbookManagerListener> getCopyOfListeners() {
         return new ArrayList<WorkbookManagerListener>(workbookManagerListeners);
     }
 
-    private void handleCellSelectionChanged(Range range) {        
+    private void handleCellSelectionChanged(Range range) {
         OWLEntity selEnt = getEntitySelectionModel().getSelectedEntity();
         if (range.isCellSelection()) {
             for (OntologyTermValidation validation : getOntologyManager().getContainingOntologyTermValidations(range)) {
@@ -102,7 +103,7 @@ public class WorkbookManager {
         getEntitySelectionModel().setSelectedEntity(selEnt);
     }
 
-    private void fireWorkbookCreated() {  
+    private void fireWorkbookCreated() {
     	List<WorkbookManagerListener> listeners = getCopyOfListeners();
     	logger.debug("firing workbookCreated to "+listeners.size()+" listeners");
         for (WorkbookManagerListener listener : listeners) {
@@ -114,24 +115,24 @@ public class WorkbookManager {
             }
         }
     }
-    
-    private void fireWorkbookSaved() { 
+
+    private void fireWorkbookSaved() {
     	List<WorkbookManagerListener> listeners = getCopyOfListeners();
     	logger.debug("firing workbookSaved to "+listeners.size()+" listeners");
         for (WorkbookManagerListener listener : listeners) {
-            listener.workbookSaved();            
-        }
-    }
-    
-    private void fireValidationAppliedOrCancelled() {
-    	List<WorkbookManagerListener> listeners = getCopyOfListeners();
-    	logger.debug("firing validationAppliedOrCancelled to "+listeners.size()+" listeners");
-    	for (WorkbookManagerListener listener : listeners) {            
-                listener.validationAppliedOrCancelled();            
+            listener.workbookSaved();
         }
     }
 
-    private void fireWorkbookLoaded() {        
+    private void fireValidationAppliedOrCancelled() {
+    	List<WorkbookManagerListener> listeners = getCopyOfListeners();
+    	logger.debug("firing validationAppliedOrCancelled to "+listeners.size()+" listeners");
+    	for (WorkbookManagerListener listener : listeners) {
+                listener.validationAppliedOrCancelled();
+        }
+    }
+
+    private void fireWorkbookLoaded() {
     	List<WorkbookManagerListener> listeners = getCopyOfListeners();
     	logger.debug("firing workbookLoaded to "+listeners.size()+" listeners");
         for (WorkbookManagerListener listener : listeners) {
@@ -151,7 +152,7 @@ public class WorkbookManager {
     public Workbook getWorkbook() {
         return workbook;
     }
-    
+
     public Workbook createNewWorkbook() {
     	return createNewWorkbook(WorkbookFormat.EXCEL97);
     }
@@ -162,12 +163,12 @@ public class WorkbookManager {
     	getOntologyManager().clearOntologyTermValidations();
     	OntologyTermValidationWorkbookParser.clearOriginalColours();
     	try {
-    		workbook = WorkbookFactory.createWorkbook(format);  
+    		workbook = WorkbookFactory.createWorkbook(format);
     		for (WorkbookChangeListener l : existingListeners) {
     			workbook.addChangeListener(l);
     		}
     		workbookURI=null;
-        
+
     		fireWorkbookCreated();
     	}
     	catch(Exception e) {
@@ -188,21 +189,21 @@ public class WorkbookManager {
             for (WorkbookChangeListener l : existingListeners) {
             	workbook.addChangeListener(l);
             }
-            
+
             workbookURI = uri;
-            
+
             // Extract validation
             logger.debug("About to read validations from workbook");
             getOntologyManager().getOntologyTermValidationManager().readValidationFromWorkbook();
-            logger.debug(getOntologyManager().getOntologyTermValidations().size()+" validations after read");            
-            fireWorkbookLoaded();            
-            getWorkbookState().changesSaved();            
+            logger.debug(getOntologyManager().getOntologyTermValidations().size()+" validations after read");
+            fireWorkbookLoaded();
+            getWorkbookState().changesSaved();
             return workbook;
         }
         catch (IOException e) {
             throw new IOException("Could not open spreadsheet: " + e.getMessage());
         }
-    }    
+    }
 
     public void loadWorkbook(File file) throws IOException,InvalidWorkbookFormatException {
         loadWorkbook(file.toURI());
@@ -213,29 +214,29 @@ public class WorkbookManager {
     }
 
     public void saveWorkbook(URI uri) throws Exception {
-        // Insert validation    	
+        // Insert validation
     	getOntologyManager().getOntologyTermValidationManager().writeValidationToWorkbook();
     	appendRightFieldComment();
-        workbook.saveAs(uri); 
+        workbook.saveAs(uri);
         logger.debug(getOntologyManager().getOntologyTermValidations().size()+" validation recorded");
-        
+
         //to get round a bug in POI - https://issues.apache.org/bugzilla/show_bug.cgi?id=46662
         //the internal workbook state is reloaded after a save, which mean the validations need refreshing according to the workbook
         if (workbook instanceof WorkbookXSSFImpl) {
-        	logger.debug("XSSF workbook, reloaded so re-reading validation");        	        	      
-        	loadWorkbook(uri);        	        
+        	logger.debug("XSSF workbook, reloaded so re-reading validation");
+        	loadWorkbook(uri);
         }
         else {
         	OntologyTermValidationWorkbookParser workbookParser = new OntologyTermValidationWorkbookParser(this);
            	workbookParser.clearOntologyTermValidations();
-           	if (workbookURI == null || !uri.equals(workbookURI)) {            
+           	if (workbookURI == null || !uri.equals(workbookURI)) {
                 workbookURI = uri;
-            }            
-        }    
+            }
+        }
         fireWorkbookSaved();
-        getWorkbookState().changesSaved(); 
+        getWorkbookState().changesSaved();
     }
-    
+
     private void appendRightFieldComment() {
     	String comments = workbook.getComments();
     	if (comments==null) {
@@ -257,25 +258,22 @@ public class WorkbookManager {
     	logger.debug("Type for preview: "+type.getEntityType());
     	OWLPropertyItem owlPropertyItem = getEntitySelectionModel().getOWLPropertyItem();
     	Range range = new Range(workbook.getSheet(0));
-    	
+
     	getOntologyManager().getOntologyTermValidationManager().previewValidation(range,type, iri,owlPropertyItem);
-	}	
-    public void linkCells() {
-        System.out.println("what?");
+	}
+	public void deleteLinkCells()
+    {
+        System.out.println("caca pipi");
+    }
+	public void addLinkCells(Boolean delete)
+    {
+        System.out.println("map version");
         Range selectedRange = getSelectionModel().getSelectedRange();
         if(!selectedRange.isCellSelection()) {
             return;
         }
-
-        System.out.println((char)(selectedRange.getToColumn() / 26 + 64));
-        System.out.println((char)(selectedRange.getToColumn() % 26 + 65));
-        String fromColumn = selectedRange.getFromColumn() < 26 ? (char)(selectedRange.getFromColumn() + 65) + ""
-                : Character.toString((char)(selectedRange.getFromColumn() / 26 + 64)) + (char)(selectedRange.getFromColumn() % 26 + 65) + "";
-        String toColumn = selectedRange.getToColumn() < 26 ? (char)(selectedRange.getToColumn() + 65) + ""
-                : Character.toString((char)(selectedRange.getToColumn() / 26 + 64))+ (char)(selectedRange.getToColumn() % 26 + 65) + "";
-        String from = fromColumn + "," + (selectedRange.getFromRow() + 1);
-        String to = toColumn + "," +(selectedRange.getToRow() + 1);
-        System.out.println(from + "->" + to);
+        String from = getCellString(selectedRange.getFromColumn(),selectedRange.getFromRow());
+        String to = getCellString(selectedRange.getToColumn(),selectedRange.getToRow());
 
         List<Sheet> sheets = workbook.getSheets();
         Sheet sheet = null;
@@ -296,12 +294,180 @@ public class WorkbookManager {
         }
 
         int indexCell = Integer.parseInt(sheet.getCellAt(0,0).getValue());
-        String newLink = from + "->" + to;
-        if(from.equals(to))
+        int step = sheet.getCellAt(0,indexCell+1) == null || sheet.getCellAt(0,indexCell+1).getValue().equals("")? 1 : 2;
+        if(step == 1)
         {
+            if(!from.equals(to))
+            {
+                return;
+            }
+            sheet.addCellAt(0,indexCell+1).setValue(new CellAddress(selectedRange.getFromRow(), selectedRange.getFromColumn()) + ""/*+ "," +  new CellAddress(selectedRange.getToRow(), selectedRange.getToColumn())*/);
+        }
+        if(step == 2)
+        {
+            Set<String> map = new HashSet<String>();
+            int what = map.size();
+            String mama = sheet.getCellAt(0,indexCell+1).getValue();
+
+            //add in set what is already linked
+            for(int i = 1; i < indexCell + 1; i++)
+            {
+                map.add(sheet.getCellAt(0,i).getValue()+ "," +sheet.getCellAt(1,i).getValue());
+            }
+
+            for(int i = selectedRange.getFromRow(); i <= selectedRange.getToRow(); i++)
+            {
+                for(int j = selectedRange.getFromColumn(); j <= selectedRange.getToColumn(); j++)
+                {
+                    if(delete)
+                    {
+                        System.out.println("CLICK DREAPTA DELET DATEN MORTI MATI NU STAM LA DISCUTII");
+                        map.remove(mama+","+new CellAddress(i,j) + "");
+                    }
+                    else
+                    {
+                        System.out.println("ADD");
+                        map.add(mama+","+new CellAddress(i,j) + "");
+                    }
+
+                }
+            }
+            //indexCell = map.size();
+            //Iterator<Map.Entry<String, String>> iter = map.entrySet().iterator();
+            int tempIndex = 1;
+            for(String s : map)
+            {
+                String[] temp = s.split(",");
+                sheet.addCellAt(0,tempIndex).setValue(temp[0]);
+                sheet.addCellAt(1,tempIndex).setValue(temp[1]);
+                tempIndex++;
+            }
+            int test = map.size();
+            sheet.getCellAt(0,0).setValue(map.size() + "");
+            for(int i = tempIndex; i < indexCell + 2; i++)
+            {
+                sheet.clearCellAt(0,i);
+                sheet.clearCellAt(1,i);
+            }
+
+
+
+        }
+        fireValidationAppliedOrCancelled();
+    }
+    public void linkCellss() {
+        System.out.println("what?");
+        Range selectedRange = getSelectionModel().getSelectedRange();
+        Sheet workingSheet = selectedRange.getSheet();
+
+        if(!selectedRange.isCellSelection()) {
             return;
         }
-        boolean foundExistingLink = false;
+
+        //System.out.println((char)(selectedRange.getToColumn() / 26 + 64));
+        //System.out.println((char)(selectedRange.getToColumn() % 26 + 65));
+        /*String fromColumn = selectedRange.getFromColumn() < 26 ? (char)(selectedRange.getFromColumn() + 65) + ""
+                : Character.toString((char)(selectedRange.getFromColumn() / 26 + 64)) + (char)(selectedRange.getFromColumn() % 26 + 65) + "";
+        String toColumn = selectedRange.getToColumn() < 26 ? (char)(selectedRange.getToColumn() + 65) + ""
+                : Character.toString((char)(selectedRange.getToColumn() / 26 + 64))+ (char)(selectedRange.getToColumn() % 26 + 65) + "";
+        String from = fromColumn + "," + (selectedRange.getFromRow() + 1);
+        String to = toColumn + "," +(selectedRange.getToRow() + 1);
+        System.out.println(from + "->" + to);*/
+
+        String from = getCellString(selectedRange.getFromColumn(),selectedRange.getFromRow());
+        String to = getCellString(selectedRange.getToColumn(),selectedRange.getToRow());
+
+        List<Sheet> sheets = workbook.getSheets();
+        Sheet sheet = null;
+        for(int i = 0 ; i < sheets.size(); i++)
+        {
+            //String temp = sheets.get(i).getName();
+            if(sheets.get(i).getName().equals("LinkedCells"))
+            {
+                sheet = sheets.get(i);
+                break;
+            }
+        }
+
+        if(sheet == null)
+        {
+            sheet = workbook.addSheet("LinkedCells");
+            sheet.addCellAt(0,0).setValue("0");
+        }
+
+        int indexCell = Integer.parseInt(sheet.getCellAt(0,0).getValue());
+        //String newLink = from + "->" + to;
+        String newLink = from+to;
+        /*if(from.equals(to))
+        {
+            return;
+        }*/
+        /*workingSheet.addCellAt(0,0);
+        Cell mm = workingSheet.getCellAt(0,0);
+        mm.setValue("morti mei");
+        mm.setBold(true);
+        mm.setBackgroundFill(Color.GREEN);
+        mm.setBorders(Color.CYAN);*/
+        int step = sheet.getCellAt(0,indexCell+1) == null || sheet.getCellAt(0,indexCell+1).getValue().equals("")? 1 : 2;
+        if(step == 1)
+        {
+            if(!from.equals(to))
+            {
+                return;
+            }
+            sheet.addCellAt(0,indexCell+1).setValue(new CellAddress(selectedRange.getFromRow(), selectedRange.getFromColumn()) + ""/*+ "," +  new CellAddress(selectedRange.getToRow(), selectedRange.getToColumn())*/);
+        }
+        if(step == 2)
+        {
+            //indexCell++;
+            //sheet.addCellAt(1,indexCell).setValue(new CellAddress(selectedRange.getFromRow(), selectedRange.getFromColumn()) + "," + new CellAddress(selectedRange.getToRow(), selectedRange.getToColumn()));
+            String mama = sheet.getCellAt(0,indexCell+1).getValue();
+            for(int i = selectedRange.getFromRow(); i <= selectedRange.getToRow(); i++)
+            {
+                for(int j = selectedRange.getFromColumn(); j <= selectedRange.getToColumn(); j++)
+                {
+                    indexCell++;
+                    sheet.addCellAt(0,indexCell).setValue(mama);
+                    sheet.addCellAt(1,indexCell).setValue(new CellAddress(i,j) + "");
+                }
+            }
+            sheet.getCellAt(0,0).setValue(indexCell + "");
+
+            Boolean alreadyLinked = false;
+            int alreadyLinkedIndex = -1;
+            for(int i = 0; i < indexCell-1; i++)
+            {
+                if(sheet.getCellAt(0,i+1).getValue().equals(sheet.getCellAt(0,indexCell).getValue()) &&
+                   sheet.getCellAt(1,i+1).getValue().equals(sheet.getCellAt(1,indexCell).getValue()))
+                {
+                    alreadyLinked = true;
+                    alreadyLinkedIndex = i+1;
+                    break;
+                }
+            }
+            if(sheet.getCellAt(0,indexCell).getValue().equals(sheet.getCellAt(1,indexCell).getValue()) || alreadyLinked)
+            {
+                sheet.clearCellAt(0,indexCell);
+                sheet.clearCellAt(1,indexCell);
+                indexCell--;
+                if(alreadyLinked)
+                {
+                    indexCell--;
+                    sheet.getCellAt(0,alreadyLinkedIndex).setValue(sheet.getCellAt(0,indexCell+1).getValue());
+                    sheet.getCellAt(1,alreadyLinkedIndex).setValue(sheet.getCellAt(0,indexCell+1).getValue());
+                    sheet.clearCellAt(0,indexCell+1);
+                    sheet.clearCellAt(1,indexCell+1);
+                }
+                sheet.getCellAt(0,0).setValue(indexCell + "");
+            }
+        }
+/*
+        sheet.addCellAt(selectedRange.getFromColumn(),selectedRange.getFromRow());
+        Cell che = sheet.getCellAt(selectedRange.getFromColumn(),selectedRange.getFromRow());
+        che.setValue("TEST");
+        che.setBorders(Color.BLUE);*/
+
+       /* boolean foundExistingLink = false;
         for(int i = 0; i < indexCell; i++)
         {
             String[] temp2 = newLink.split("->");
@@ -309,8 +475,9 @@ public class WorkbookManager {
             String pi = sheet.getCellAt(0,i+1).getValue();
             if(pi.equals(newLink))
             {
+
                 //reverse
-                int fromColumnSheet = Integer.parseInt(sheet.getCellAt(1,i+1).getValue());
+                /*int fromColumnSheet = Integer.parseInt(sheet.getCellAt(1,i+1).getValue());
                 int fromRowSheet = Integer.parseInt(sheet.getCellAt(2,i+1).getValue());
                 int toColumnSheet = Integer.parseInt(sheet.getCellAt(3,i+1).getValue());
                 int toRowSheet = Integer.parseInt(sheet.getCellAt(4,i+1).getValue());
@@ -341,41 +508,51 @@ public class WorkbookManager {
                 sheet.clearCellAt(4,indexCell);
 
 
+
+
                 foundExistingLink = true;
                 break;
             }
 
 
-            }
-
+            }*/
+/*
         if(!foundExistingLink) {
             sheet.getCellAt(0, 0).setValue(Integer.toString(indexCell + 1));
-            sheet.addCellAt(0, indexCell + 1).setValue(from + "->" + to);
+            sheet.addCellAt(0, indexCell + 1).setValue(from + to);
+            /*sheet.addCellAt(0, indexCell + 1).setValue(from + "->" + to);
             sheet.addCellAt(1, indexCell + 1).setValue(Integer.toString(selectedRange.getFromColumn()));
             sheet.addCellAt(2, indexCell + 1).setValue(Integer.toString(selectedRange.getFromRow()));
             sheet.addCellAt(3, indexCell + 1).setValue(Integer.toString(selectedRange.getToColumn()));
             sheet.addCellAt(4, indexCell + 1).setValue(Integer.toString(selectedRange.getToRow()));
-        }
+        }*/
 
 
 
 
 
     }
+    private String getCellString(int column, int row)
+    {
+        String columnString = column < 26 ? (char)(column + 65) + ""
+                : Character.toString((char)(column / 26 + 64)) + (char)(column % 26 + 65) + "";
+        String rowString = (row + 1) + "";
+        return columnString + rowString;
+    }
     public void applyValidationChange() {
     	ValidationType type = entitySelectionModel.getValidationType();
     	IRI iri = entitySelectionModel.getSelectedEntity().getIRI();
     	OWLPropertyItem propertyItem = entitySelectionModel.getOWLPropertyItem();
-    	logger.debug("Setting validation for IRI "+iri.toString()+", type "+type.toString()+", property "+propertyItem);    			        
-        
+    	logger.debug("Setting validation for IRI "+iri.toString()+", type "+type.toString()+", property "+propertyItem);
+
         Range selectedRange = getSelectionModel().getSelectedRange();
         if(!selectedRange.isCellSelection()) {
             return;
         }
         setValidationAt(selectedRange, type, iri,propertyItem);
         fireValidationAppliedOrCancelled();
-    }      
-    
+    }
+
     public void cancelValidationChange() {
     	Range selectedRange = getSelectionModel().getSelectedRange();
     	getSelectionModel().setSelectedRange(selectedRange);
@@ -385,26 +562,26 @@ public class WorkbookManager {
     public void setValidationAt(Range range,ValidationType type, IRI entityIRI, OWLPropertyItem property) {
     	Range rangeToApply;
         Collection<OntologyTermValidation> validations = getOntologyManager().getContainingOntologyTermValidations(range);
-        
+
         if(validations.isEmpty()) {
             rangeToApply=range;
         }
         else {
             OntologyTermValidation validation = validations.iterator().next();
-            rangeToApply=validation.getRange();            
+            rangeToApply=validation.getRange();
         }
         OWLOntologyManager owlManager = getOntologyManager().getOWLOntologyManager();
         String cellText=getOntologyManager().getRendering(owlManager.getOWLDataFactory().getOWLAnnotationProperty(entityIRI));
         if (type == ValidationType.FREETEXT) {
         	cellText = "";
         }
-        
-        getOntologyManager().setOntologyTermValidation(rangeToApply, type, entityIRI, property);        
-        
+
+        getOntologyManager().setOntologyTermValidation(rangeToApply, type, entityIRI, property);
+
         for(int col = rangeToApply.getFromColumn(); col < rangeToApply.getToColumn() + 1; col++) {
             for(int row = rangeToApply.getFromRow(); row < rangeToApply.getToRow() + 1; row++) {
                 Cell cell = rangeToApply.getSheet().getCellAt(col, row);
-                if (cell == null) {                	
+                if (cell == null) {
                 	SetCellValue scv=new SetCellValue(rangeToApply.getSheet(),col,row,null,cellText);
                 	applyChange(scv);
                 	cell = rangeToApply.getSheet().getCellAt(col, row);
@@ -413,12 +590,12 @@ public class WorkbookManager {
                 	SetCellValue scv=new SetCellValue(rangeToApply.getSheet(),col,row,"",cellText);
                 	applyChange(scv);
                 	cell = rangeToApply.getSheet().getCellAt(col, row);
-                }                              
+                }
             }
         }
     }
-        
-    
+
+
     /**
      * Determines whether the apply button should be enabled or not depending on if the validation setting differ from the cell.
      * @return the enabled state of the apply button
@@ -433,7 +610,7 @@ public class WorkbookManager {
     	for (OntologyTermValidation validation : validations) {
     		OntologyTermValidationDescriptor validationDescriptor = validation.getValidationDescriptor();
     		boolean propertyChanged=false;
-    		
+
     		//FIXME: shouldn't rely on OWLProperty being NULL - should have a NullPropertyItem type
     		if (validationDescriptor.getOWLPropertyItem()==null) {
     			propertyChanged = property!=null;
@@ -441,7 +618,7 @@ public class WorkbookManager {
     		else {
     			propertyChanged = !validationDescriptor.getOWLPropertyItem().equals(property);
     		}
-    		if (!validationDescriptor.getEntityIRI().equals(iri) || 
+    		if (!validationDescriptor.getEntityIRI().equals(iri) ||
     				!validationDescriptor.getType().equals(type) ||
     				propertyChanged) {
     			result=true;
@@ -454,29 +631,29 @@ public class WorkbookManager {
     	logger.debug("Apply button state deterimned as "+result+" for type "+type.toString()+" and IRI "+iri.toString()+" and Property "+property);
     	return result;
     }
-    
-    
+
+
     public void removeValidations(Range range) {
     	if (getOntologyManager().getContainingOntologyTermValidations(range).size()>0)
     	{
-    		getOntologyManager().remoteOntologyTermValidations(range);	    	
+    		getOntologyManager().remoteOntologyTermValidations(range);
     	}
     }
-    
+
     public OntologyManager getOntologyManager() {
     	return ontologyManager;
     }
 
     public CellSelectionModel getSelectionModel() {
         return selectionModel;
-    }        
+    }
 
 	public WorkbookState getWorkbookState() {
 		return workbookState;
 	}
 
 	public Sheet addSheet() {
-		Sheet sheet = getWorkbook().addSheet();		
+		Sheet sheet = getWorkbook().addSheet();
 		return sheet;
 	}
 
@@ -488,8 +665,8 @@ public class WorkbookManager {
 		}
 		else {
 			logger.warn("Attempt to delete sheet with unrecognised name:"+name);
-		}		
-		getWorkbook().deleteSheet(name);				
+		}
+		getWorkbook().deleteSheet(name);
 	}
 
 	public void renameSheet(String oldName, String newName) {
@@ -497,12 +674,12 @@ public class WorkbookManager {
 		if (sheet!=null) {
 			sheet.setName(newName);
 		}
-	}	
-	
+	}
+
 	public String getWorkbookFileExtension() {
 		if (getWorkbook() instanceof WorkbookXSSFImpl) {
 			return "xlsx";
-		}		
+		}
 		else {
 			return "xls";
 		}

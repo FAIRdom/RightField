@@ -9,6 +9,7 @@ package uk.ac.manchester.cs.owl.semspreadsheets.model.hssf.impl;
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
@@ -203,6 +204,46 @@ public class CellHSSFImpl implements Cell {
 			}
 		}
 	}
+	public void setBorders(Color colour) {
+        HSSFColor col = translateColour(colour);
+
+        if (col==null) {
+            logger.warn("Unable to find similar colour in palette for "+colour.toString());
+        }
+        else {
+            theCell.setCellStyle(getBorderStyleForColour(colour));
+            if (logger.isDebugEnabled()) {
+                logger.debug("Cell colour changed to "+col.getHexString()+"with index: "+col.getIndex());
+            }
+        }
+
+    }
+
+    private HSSFCellStyle getBorderStyleForColour(Color colour) {
+        Map<Color,HSSFCellStyle> styles = colourStylesForWorkbook.get(getWorkbook());
+        if (styles == null) {
+            styles = new HashMap<Color,HSSFCellStyle>();
+            colourStylesForWorkbook.put(getWorkbook(), styles);
+        }
+        HSSFCellStyle style = styles.get(colour);
+        if (style == null) {
+            HSSFColor col = translateColour(colour);
+            style = getWorkbook().createCellStyle();
+
+            style.setBorderTop(BorderStyle.THICK);
+            style.setBorderBottom(BorderStyle.THICK);
+            style.setBorderLeft(BorderStyle.THICK);
+            style.setBorderRight(BorderStyle.THICK);
+
+            style.setBottomBorderColor(col.getIndex());
+            style.setTopBorderColor(col.getIndex());
+            style.setLeftBorderColor(col.getIndex());
+            style.setRightBorderColor(col.getIndex());
+
+            styles.put(colour, style);
+        }
+        return style;
+    }
     
     private HSSFCellStyle getFillStyleForColour(Color colour) {
     	Map<Color,HSSFCellStyle> styles = colourStylesForWorkbook.get(getWorkbook());

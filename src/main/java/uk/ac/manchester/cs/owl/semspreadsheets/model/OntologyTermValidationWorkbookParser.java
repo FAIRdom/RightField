@@ -134,7 +134,7 @@ public class OntologyTermValidationWorkbookParser {
     		if (!originalColours.containsKey(cell)) {
     			originalColours.put(cell, cell.getBackgroundFill());
     		}    		
-            cell.setBackgroundFill(highlightColour);  
+            cell.setBackgroundFill(highlightColour);
     	}
     }
     

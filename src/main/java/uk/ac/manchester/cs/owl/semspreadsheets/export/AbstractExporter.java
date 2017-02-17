@@ -7,29 +7,14 @@
 
 package uk.ac.manchester.cs.owl.semspreadsheets.export;
 
+import org.apache.log4j.Logger;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.*;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
-
-import org.apache.log4j.Logger;
-
-import uk.ac.manchester.cs.owl.semspreadsheets.model.Cell;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.InvalidWorkbookFormatException;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyManager;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidation;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidationDescriptor;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.Term;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.Workbook;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
+import java.util.*;
 
 /**
  * Handles the common tasks of exporting populated data validations, allowing subclasses to export in their varous flavours.
@@ -110,7 +95,7 @@ public abstract class AbstractExporter implements Exporter {
 							}
 						}
 						if (matchedTerm!=null) {
-							PopulatedValidatedCellDetails pop = new PopulatedValidatedCellDetails(validation,cell,matchedTerm,value);					
+							PopulatedValidatedCellDetails pop = new PopulatedValidatedCellDetails(validation,cell,matchedTerm,value);
 							result.add(pop);
 						}
 					}

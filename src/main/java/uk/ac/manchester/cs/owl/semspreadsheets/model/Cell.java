@@ -43,7 +43,9 @@ public interface Cell {
 
     void setBold(boolean b);
     
-    void setBackgroundFill(Color colour);    
+    void setBackgroundFill(Color colour);
+
+    void setBorders(Color colour);
 
     String getValidationListName();
     

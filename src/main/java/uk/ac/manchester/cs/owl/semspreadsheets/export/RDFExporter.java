@@ -7,25 +7,15 @@
 
 package uk.ac.manchester.cs.owl.semspreadsheets.export;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
-import java.net.URI;
-
+import com.hp.hpl.jena.rdf.model.*;
 import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.IRI;
-
 import uk.ac.manchester.cs.owl.semspreadsheets.model.InvalidWorkbookFormatException;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OWLPropertyItem;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 
-import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.ModelFactory;
-import com.hp.hpl.jena.rdf.model.Property;
-import com.hp.hpl.jena.rdf.model.Resource;
-import com.hp.hpl.jena.rdf.model.Statement;
+import java.io.*;
+import java.net.URI;
 
 public class RDFExporter extends AbstractExporter {
 	
@@ -85,7 +75,7 @@ public class RDFExporter extends AbstractExporter {
 		for (PopulatedValidatedCellDetails details : getPopulatedValidatedCellDetails()) {
 			addNode(root,model,details);
 		}
-		
+		//addLinkedCellNode(root,model);
 		try {
 			model.write(new OutputStreamWriter(outStream,"UTF-8"));
 		} catch (UnsupportedEncodingException e) {
@@ -132,6 +122,12 @@ public class RDFExporter extends AbstractExporter {
 		Resource r = model.createResource(cellDetails.getTerm().getIRI().toString());						
 		Statement s = model.createStatement(rootResource, property, r);
 		model.add(s);
+	}
+	private void addLinkedCellNode(Resource rootResource,Model model)
+	{
+		String test = defaultProperty.toString();
+		Property property = model.createProperty(defaultProperty.toString());
+		rootResource.addProperty(property, "test");
 	}
 
 }
