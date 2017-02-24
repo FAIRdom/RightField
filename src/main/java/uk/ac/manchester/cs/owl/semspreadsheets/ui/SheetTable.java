@@ -50,7 +50,6 @@ public class SheetTable extends JTable {
             column.setCellEditor(editor);
             column.setPreferredWidth(sheet.getColumnWidth(col));            
         }
-
         setShowGrid(true);
         setRowMargin(1);
         setGridColor(new Color(206, 206, 206));
@@ -112,36 +111,22 @@ public class SheetTable extends JTable {
         }
 
         java.util.List<Sheet> sheets = workbookManager.getWorkbook().getSheets();
-        Sheet sheet = null;
-        for(int i = 0 ; i < sheets.size(); i++)
-        {
-            //String temp = sheets.get(i).getName();
-            if(sheets.get(i).getName().equals("LinkedCells"))
-            {
-                sheet = sheets.get(i);
-                break;
-            }
-        }
+        Sheet sheet = sheets.get(0);
 
         if(sheet != null)
         {
-            int indexCell = Integer.parseInt(sheet.getCellAt(0,0).getValue());
-            if(indexCell != 0)
+            for(String cellLocation : workbookManager.getLinkedCells())
             {
-                ;
-            }
-            for(int i = 1; i < indexCell + 1; i++)
-            {
-                for(int j = 0; j <= 1; j++)
+                Boolean isTo = true;
+                for(String caca : cellLocation.split(","))
                 {
-                    Cell linkedCell = sheet.getCellAt(j,i);
-                    CellAddress da = new CellAddress(linkedCell.getValue());
+                    CellAddress da = new CellAddress(caca);
                     if(sheet.getCellAt(da.getColumn(), da.getRow()) == null)
                     {
                         sheet.addCellAt(da.getColumn(), da.getRow());
                     }
                     Range validation = new Range(sheet, sheet.getCellAt(da.getColumn(), da.getRow()));
-                    g.setColor(Color.BLUE);
+                    g.setColor(isTo ? Color.BLUE : Color.RED);
                     Rectangle startRect = getCellRect(validation.getFromRow(), validation.getFromColumn(), false);
                     Rectangle endRect = getCellRect(validation.getToRow(), validation.getToColumn(), false);
                     int x1 = startRect.x + 1;
@@ -155,13 +140,10 @@ public class SheetTable extends JTable {
                     g2.setComposite(alphaComposite);
                     //g2.fill(rect);
                     g2.setComposite(oldComposite);
+                    isTo = false;
                 }
             }
         }
-
-
-
-
         g2.setStroke(oldStroke);
         g.setColor(oldColor);
     }

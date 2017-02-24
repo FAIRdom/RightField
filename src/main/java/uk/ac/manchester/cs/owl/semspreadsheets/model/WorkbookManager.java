@@ -50,6 +50,9 @@ public class WorkbookManager {
 
     private Set<WorkbookManagerListener> workbookManagerListeners = new HashSet<WorkbookManagerListener>();
 
+    private Set<String> linkedCells = new HashSet<String>();
+    private String tempTo = null;
+
     public WorkbookManager() {
 
         ontologyManager = new OntologyManager(this);
@@ -161,6 +164,7 @@ public class WorkbookManager {
     	List<WorkbookChangeListener> existingListeners = workbook.getAllChangeListeners();
     	workbook.clearChangeListeners();
     	getOntologyManager().clearOntologyTermValidations();
+        linkedCells.clear();
     	OntologyTermValidationWorkbookParser.clearOriginalColours();
     	try {
     		workbook = WorkbookFactory.createWorkbook(format);
@@ -180,6 +184,8 @@ public class WorkbookManager {
 
     public Workbook loadWorkbook(URI uri) throws IOException,InvalidWorkbookFormatException {
         try {
+
+
         	//need to preserve the listeners on the workbook
         	List<WorkbookChangeListener> existingListeners = workbook.getAllChangeListeners();
         	workbook.clearChangeListeners(); //to free it and allow it to be garbage collected
@@ -198,6 +204,28 @@ public class WorkbookManager {
             logger.debug(getOntologyManager().getOntologyTermValidations().size()+" validations after read");
             fireWorkbookLoaded();
             getWorkbookState().changesSaved();
+
+            List<Sheet> sheets = workbook.getSheets();
+            Sheet sheet = null;
+            for(int i = 0 ; i < sheets.size(); i++)
+            {
+                //String temp = sheets.get(i).getName();
+                if(sheets.get(i).getName().equals("LinkedCells"))
+                {
+                    sheet = sheets.get(i);
+                    break;
+                }
+            }
+            linkedCells.clear();
+            if(sheet != null)
+            {
+
+                int indexCell = Integer.parseInt(sheet.getCellAt(0,0).getValue());
+                for(int i = 1; i < indexCell + 1; i++)
+                {
+                    linkedCells.add(sheet.getCellAt(0,i).getValue() + "," + sheet.getCellAt(1,i).getValue());
+                }
+            }
             return workbook;
         }
         catch (IOException e) {
@@ -214,6 +242,43 @@ public class WorkbookManager {
     }
 
     public void saveWorkbook(URI uri) throws Exception {
+
+        //save linked cell set
+        List<Sheet> sheets = workbook.getSheets();
+        Sheet sheet = null;
+        for(int i = 0 ; i < sheets.size(); i++)
+        {
+            //String temp = sheets.get(i).getName();
+            if(sheets.get(i).getName().equals("LinkedCells"))
+            {
+                sheet = sheets.get(i);
+                break;
+            }
+        }
+
+        if(sheet == null)
+        {
+            sheet = workbook.addSheet("LinkedCells");
+        } else {
+            //sheet.clearAllCells();
+        }
+        sheet.clearCellAt(0,0);
+        sheet.addCellAt(0,0).setValue(linkedCells.size() + "");
+
+
+        int index = 1;
+        for(String cellLink : linkedCells)
+        {
+            String[] fromAndTo = cellLink.split(",");
+
+            sheet.clearCellAt(0,index);
+            sheet.clearCellAt(1,index);
+
+            sheet.addCellAt(0,index).setValue(fromAndTo[0]);
+            sheet.addCellAt(1,index).setValue(fromAndTo[1]);
+            index++;
+        }
+
         // Insert validation
     	getOntologyManager().getOntologyTermValidationManager().writeValidationToWorkbook();
     	appendRightFieldComment();
@@ -265,7 +330,80 @@ public class WorkbookManager {
     {
         System.out.println("caca pipi");
     }
-	public void addLinkCells(Boolean delete)
+    public Set<String> getLinkedCells()
+    {
+        Set<String> tempSet = new HashSet<>();
+        Range selectedRange = getSelectionModel().getSelectedRange();
+        if(selectedRange.isCellSelection()) {
+            String from = getCellString(selectedRange.getFromColumn(),selectedRange.getFromRow());
+            String to = getCellString(selectedRange.getToColumn(),selectedRange.getToRow());
+
+            if(!from.equals(to))
+            {
+                return linkedCells;
+            }
+            for(String temp : linkedCells)
+            {
+                if(temp.split(",")[0].equals(from))
+                {
+                    tempSet.add(temp);
+                }
+            }
+            if(tempSet.size() == 0)
+            {
+                return linkedCells;
+            }
+            else
+            {
+                return tempSet;
+            }
+        }
+        return linkedCells;
+    }
+    public void addLinkCells(Boolean delete)
+    {
+        System.out.println("global map version");
+        Range selectedRange = getSelectionModel().getSelectedRange();
+        if(!selectedRange.isCellSelection()) {
+            return;
+        }
+        String from = getCellString(selectedRange.getFromColumn(),selectedRange.getFromRow());
+        String to = getCellString(selectedRange.getToColumn(),selectedRange.getToRow());
+
+
+        if(tempTo == null)
+        {
+            if(!from.equals(to))
+            {
+                return;
+            }
+            tempTo = new CellAddress(selectedRange.getFromRow(), selectedRange.getFromColumn()) + "";
+        }
+        else
+        {
+            for(int i = selectedRange.getFromRow(); i <= selectedRange.getToRow(); i++)
+            {
+                for(int j = selectedRange.getFromColumn(); j <= selectedRange.getToColumn(); j++)
+                {
+                    if(delete)
+                    {
+                        System.out.println("CLICK DREAPTA DELET DATEN MORTI MATI NU STAM LA DISCUTII");
+                        linkedCells.remove(tempTo+","+new CellAddress(i,j) + "");
+                    }
+                    else
+                    {
+                        System.out.println("ADD");
+                        linkedCells.add(tempTo+","+new CellAddress(i,j) + "");
+                    }
+
+                }
+            }
+            tempTo = null;
+        }
+        System.out.println("map size: " + linkedCells.size());
+        fireValidationAppliedOrCancelled();
+    }
+	public void addLinkCellsss(Boolean delete)
     {
         System.out.println("map version");
         Range selectedRange = getSelectionModel().getSelectedRange();
