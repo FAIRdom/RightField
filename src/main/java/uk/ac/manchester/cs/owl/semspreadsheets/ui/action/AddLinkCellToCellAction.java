@@ -19,12 +19,11 @@ import java.awt.event.KeyEvent;
  *
  */
 @SuppressWarnings("serial")
-public class DeleteLinkCellsAction extends WorkbookFrameAction {
+public class AddLinkCellToCellAction extends WorkbookFrameAction {
 
-    public DeleteLinkCellsAction(WorkbookManager workbookManager, WorkbookFrame workbookFrame) {
-        super("Delete PLM", workbookFrame);
-        setAcceleratorKey(KeyEvent.VK_J, true, false);
-
+    public AddLinkCellToCellAction(WorkbookManager workbookManager, WorkbookFrame workbookFrame) {
+        super("Link PLM", workbookFrame);
+        setAcceleratorKey(KeyEvent.VK_J);
     }
 
     /**
@@ -33,6 +32,6 @@ public class DeleteLinkCellsAction extends WorkbookFrameAction {
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        getWorkbookManager().addLinkCells(true, false);
+        getWorkbookManager().addLinkCells(false, false);
     }
 }

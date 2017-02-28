@@ -50,7 +50,7 @@ public class WorkbookManager {
 
     private Set<WorkbookManagerListener> workbookManagerListeners = new HashSet<WorkbookManagerListener>();
 
-    private Set<String> linkedCells = new HashSet<String>();
+    private Map<String, HashSet<String>> linkedCells = new HashMap<String, HashSet<String>>();
     private String tempTo = null;
 
     public WorkbookManager() {
@@ -59,6 +59,7 @@ public class WorkbookManager {
 
         entitySelectionModel = new EntitySelectionModel(ontologyManager.getOWLOntologyManager().getOWLDataFactory().getOWLThing());
         workbook = WorkbookFactory.createWorkbook();
+        linkedCells.put(workbook.getSheet(0).getName(), new HashSet<String>());
         selectionModel = new CellSelectionModel();
         selectionModel.setSelectedRange(new Range(workbook.getSheet(0)));
         selectionModel.addCellSelectionListener(new CellSelectionListener() {
@@ -181,7 +182,10 @@ public class WorkbookManager {
     	getWorkbookState().changesSaved();
         return workbook;
     }
-
+    public void addSheetToHashmap(String name)
+    {
+        linkedCells.put(name, new HashSet<String>());
+    }
     public Workbook loadWorkbook(URI uri) throws IOException,InvalidWorkbookFormatException {
         try {
 
@@ -220,12 +224,23 @@ public class WorkbookManager {
             if(sheet != null)
             {
 
-                int indexCell = Integer.parseInt(sheet.getCellAt(0,0).getValue());
-                for(int i = 1; i < indexCell + 1; i++)
+                int indexSheet = Integer.parseInt(sheet.getCellAt(0,0).getValue());
+                for(int i = 0; i < indexSheet; i++)
                 {
-                    linkedCells.add(sheet.getCellAt(0,i).getValue() + "," + sheet.getCellAt(1,i).getValue());
+                    int indexCell = Integer.parseInt(sheet.getCellAt(i*2,1).getValue());
+                    String sheetName = sheet.getCellAt(i*2,2).getValue();
+                    linkedCells.put(sheetName, new HashSet<String>());
+                    for(int j = 3; j < indexCell + 3; j++)
+                    {
+                        String c1 = sheet.getCellAt(i*2,j).getValue();
+                        String c2 = sheet.getCellAt(i*2+1,j).getValue();
+                        String tempT = c1 + "," + c2;
+                        linkedCells.get(sheetName).add(tempT);
+
+                    }
                 }
             }
+            workbook.deleteSheet("LinkedCells");
             return workbook;
         }
         catch (IOException e) {
@@ -259,25 +274,39 @@ public class WorkbookManager {
         if(sheet == null)
         {
             sheet = workbook.addSheet("LinkedCells");
+            sheet.setVeryHidden(false);
         } else {
             //sheet.clearAllCells();
         }
         sheet.clearCellAt(0,0);
         sheet.addCellAt(0,0).setValue(linkedCells.size() + "");
+        int caca = 0;
+            for(Map.Entry<String, HashSet<String>> entry : linkedCells.entrySet())
+            {
+
+                String sheetName = entry.getKey();
+                HashSet<String> sheetSet = entry.getValue();
+                //sheet.clearCellAt(i,1);
+                sheet.addCellAt(caca,1).setValue(sheetSet.size() + "");
+                sheet.addCellAt(caca,2).setValue(sheetName);
+
+                int index = 3;
+                for(String cellLink : sheetSet)
+                {
+                    String[] fromAndTo = cellLink.split(",");
+
+                    if(sheet.getCellAt(caca, index) != null)sheet.clearCellAt(caca,index);
+                    if(sheet.getCellAt(caca+1, index) != null)sheet.clearCellAt(caca+1,index);
+
+                    sheet.addCellAt(caca,index).setValue(fromAndTo[0]);
+                    sheet.addCellAt(caca+1,index).setValue(fromAndTo[1]);
+                    index++;
+                }
+                caca = caca + 2;
+            }
 
 
-        int index = 1;
-        for(String cellLink : linkedCells)
-        {
-            String[] fromAndTo = cellLink.split(",");
 
-            sheet.clearCellAt(0,index);
-            sheet.clearCellAt(1,index);
-
-            sheet.addCellAt(0,index).setValue(fromAndTo[0]);
-            sheet.addCellAt(1,index).setValue(fromAndTo[1]);
-            index++;
-        }
 
         // Insert validation
     	getOntologyManager().getOntologyTermValidationManager().writeValidationToWorkbook();
@@ -330,19 +359,43 @@ public class WorkbookManager {
     {
         System.out.println("caca pipi");
     }
-    public Set<String> getLinkedCells()
+    public Map<String, HashSet<String>> getAllLinkedCells()
     {
+        return linkedCells;
+    }
+    public boolean isLinked(Cell cell)
+    {
+        String address = getCellString(cell.getColumn(), cell.getRow());
+        for(HashSet<String> set : linkedCells.values())
+        {
+            for(String t : set)
+            {
+                if(t.contains(address))
+                    return true;
+            }
+        }
+        return false;
+    }
+    public Set<String> getLinkedCells(String currentSheetName)
+    {
+        //String currentSheetName = getWorkbook().getActiveSheetName();
+        if(!linkedCells.containsKey(currentSheetName))
+        {
+            return new HashSet<String>();
+        }
         Set<String> tempSet = new HashSet<>();
         Range selectedRange = getSelectionModel().getSelectedRange();
-        if(selectedRange.isCellSelection()) {
+        if(selectedRange.isCellSelection())
+        {
             String from = getCellString(selectedRange.getFromColumn(),selectedRange.getFromRow());
             String to = getCellString(selectedRange.getToColumn(),selectedRange.getToRow());
 
             if(!from.equals(to))
             {
-                return linkedCells;
+                return linkedCells.get(currentSheetName);
             }
-            for(String temp : linkedCells)
+
+            for(String temp : linkedCells.get(currentSheetName))
             {
                 if(temp.split(",")[0].equals(from))
                 {
@@ -351,18 +404,19 @@ public class WorkbookManager {
             }
             if(tempSet.size() == 0)
             {
-                return linkedCells;
+                return linkedCells.get(currentSheetName);
             }
             else
             {
                 return tempSet;
             }
         }
-        return linkedCells;
+        return linkedCells.get(currentSheetName);
     }
-    public void addLinkCells(Boolean delete)
+    public void addLinkCells(Boolean delete, Boolean rowLinking)
     {
         System.out.println("global map version");
+        String sheetName = getSelectionModel().getSelectedRange().getSheet().getName();
         Range selectedRange = getSelectionModel().getSelectedRange();
         if(!selectedRange.isCellSelection()) {
             return;
@@ -381,6 +435,10 @@ public class WorkbookManager {
         }
         else
         {
+            if(!linkedCells.containsKey(sheetName))
+            {
+                linkedCells.put(sheetName, new HashSet<String>());
+            }
             for(int i = selectedRange.getFromRow(); i <= selectedRange.getToRow(); i++)
             {
                 for(int j = selectedRange.getFromColumn(); j <= selectedRange.getToColumn(); j++)
@@ -388,12 +446,13 @@ public class WorkbookManager {
                     if(delete)
                     {
                         System.out.println("CLICK DREAPTA DELET DATEN MORTI MATI NU STAM LA DISCUTII");
-                        linkedCells.remove(tempTo+","+new CellAddress(i,j) + "");
+                        linkedCells.get(sheetName).remove(tempTo+","+new CellAddress(i,j) + "");
+                        linkedCells.get(sheetName).remove(tempTo+","+new CellAddress(i,j) + "!");
                     }
                     else
                     {
                         System.out.println("ADD");
-                        linkedCells.add(tempTo+","+new CellAddress(i,j) + "");
+                        linkedCells.get(sheetName).add(tempTo+","+new CellAddress(i,(rowLinking ? 0 : j)) + (rowLinking ? "!" : ""));
                     }
 
                 }
@@ -403,273 +462,7 @@ public class WorkbookManager {
         System.out.println("map size: " + linkedCells.size());
         fireValidationAppliedOrCancelled();
     }
-	public void addLinkCellsss(Boolean delete)
-    {
-        System.out.println("map version");
-        Range selectedRange = getSelectionModel().getSelectedRange();
-        if(!selectedRange.isCellSelection()) {
-            return;
-        }
-        String from = getCellString(selectedRange.getFromColumn(),selectedRange.getFromRow());
-        String to = getCellString(selectedRange.getToColumn(),selectedRange.getToRow());
 
-        List<Sheet> sheets = workbook.getSheets();
-        Sheet sheet = null;
-        for(int i = 0 ; i < sheets.size(); i++)
-        {
-            //String temp = sheets.get(i).getName();
-            if(sheets.get(i).getName().equals("LinkedCells"))
-            {
-                sheet = sheets.get(i);
-                break;
-            }
-        }
-
-        if(sheet == null)
-        {
-            sheet = workbook.addSheet("LinkedCells");
-            sheet.addCellAt(0,0).setValue("0");
-        }
-
-        int indexCell = Integer.parseInt(sheet.getCellAt(0,0).getValue());
-        int step = sheet.getCellAt(0,indexCell+1) == null || sheet.getCellAt(0,indexCell+1).getValue().equals("")? 1 : 2;
-        if(step == 1)
-        {
-            if(!from.equals(to))
-            {
-                return;
-            }
-            sheet.addCellAt(0,indexCell+1).setValue(new CellAddress(selectedRange.getFromRow(), selectedRange.getFromColumn()) + ""/*+ "," +  new CellAddress(selectedRange.getToRow(), selectedRange.getToColumn())*/);
-        }
-        if(step == 2)
-        {
-            Set<String> map = new HashSet<String>();
-            int what = map.size();
-            String mama = sheet.getCellAt(0,indexCell+1).getValue();
-
-            //add in set what is already linked
-            for(int i = 1; i < indexCell + 1; i++)
-            {
-                map.add(sheet.getCellAt(0,i).getValue()+ "," +sheet.getCellAt(1,i).getValue());
-            }
-
-            for(int i = selectedRange.getFromRow(); i <= selectedRange.getToRow(); i++)
-            {
-                for(int j = selectedRange.getFromColumn(); j <= selectedRange.getToColumn(); j++)
-                {
-                    if(delete)
-                    {
-                        System.out.println("CLICK DREAPTA DELET DATEN MORTI MATI NU STAM LA DISCUTII");
-                        map.remove(mama+","+new CellAddress(i,j) + "");
-                    }
-                    else
-                    {
-                        System.out.println("ADD");
-                        map.add(mama+","+new CellAddress(i,j) + "");
-                    }
-
-                }
-            }
-            //indexCell = map.size();
-            //Iterator<Map.Entry<String, String>> iter = map.entrySet().iterator();
-            int tempIndex = 1;
-            for(String s : map)
-            {
-                String[] temp = s.split(",");
-                sheet.addCellAt(0,tempIndex).setValue(temp[0]);
-                sheet.addCellAt(1,tempIndex).setValue(temp[1]);
-                tempIndex++;
-            }
-            int test = map.size();
-            sheet.getCellAt(0,0).setValue(map.size() + "");
-            for(int i = tempIndex; i < indexCell + 2; i++)
-            {
-                sheet.clearCellAt(0,i);
-                sheet.clearCellAt(1,i);
-            }
-
-
-
-        }
-        fireValidationAppliedOrCancelled();
-    }
-    public void linkCellss() {
-        System.out.println("what?");
-        Range selectedRange = getSelectionModel().getSelectedRange();
-        Sheet workingSheet = selectedRange.getSheet();
-
-        if(!selectedRange.isCellSelection()) {
-            return;
-        }
-
-        //System.out.println((char)(selectedRange.getToColumn() / 26 + 64));
-        //System.out.println((char)(selectedRange.getToColumn() % 26 + 65));
-        /*String fromColumn = selectedRange.getFromColumn() < 26 ? (char)(selectedRange.getFromColumn() + 65) + ""
-                : Character.toString((char)(selectedRange.getFromColumn() / 26 + 64)) + (char)(selectedRange.getFromColumn() % 26 + 65) + "";
-        String toColumn = selectedRange.getToColumn() < 26 ? (char)(selectedRange.getToColumn() + 65) + ""
-                : Character.toString((char)(selectedRange.getToColumn() / 26 + 64))+ (char)(selectedRange.getToColumn() % 26 + 65) + "";
-        String from = fromColumn + "," + (selectedRange.getFromRow() + 1);
-        String to = toColumn + "," +(selectedRange.getToRow() + 1);
-        System.out.println(from + "->" + to);*/
-
-        String from = getCellString(selectedRange.getFromColumn(),selectedRange.getFromRow());
-        String to = getCellString(selectedRange.getToColumn(),selectedRange.getToRow());
-
-        List<Sheet> sheets = workbook.getSheets();
-        Sheet sheet = null;
-        for(int i = 0 ; i < sheets.size(); i++)
-        {
-            //String temp = sheets.get(i).getName();
-            if(sheets.get(i).getName().equals("LinkedCells"))
-            {
-                sheet = sheets.get(i);
-                break;
-            }
-        }
-
-        if(sheet == null)
-        {
-            sheet = workbook.addSheet("LinkedCells");
-            sheet.addCellAt(0,0).setValue("0");
-        }
-
-        int indexCell = Integer.parseInt(sheet.getCellAt(0,0).getValue());
-        //String newLink = from + "->" + to;
-        String newLink = from+to;
-        /*if(from.equals(to))
-        {
-            return;
-        }*/
-        /*workingSheet.addCellAt(0,0);
-        Cell mm = workingSheet.getCellAt(0,0);
-        mm.setValue("morti mei");
-        mm.setBold(true);
-        mm.setBackgroundFill(Color.GREEN);
-        mm.setBorders(Color.CYAN);*/
-        int step = sheet.getCellAt(0,indexCell+1) == null || sheet.getCellAt(0,indexCell+1).getValue().equals("")? 1 : 2;
-        if(step == 1)
-        {
-            if(!from.equals(to))
-            {
-                return;
-            }
-            sheet.addCellAt(0,indexCell+1).setValue(new CellAddress(selectedRange.getFromRow(), selectedRange.getFromColumn()) + ""/*+ "," +  new CellAddress(selectedRange.getToRow(), selectedRange.getToColumn())*/);
-        }
-        if(step == 2)
-        {
-            //indexCell++;
-            //sheet.addCellAt(1,indexCell).setValue(new CellAddress(selectedRange.getFromRow(), selectedRange.getFromColumn()) + "," + new CellAddress(selectedRange.getToRow(), selectedRange.getToColumn()));
-            String mama = sheet.getCellAt(0,indexCell+1).getValue();
-            for(int i = selectedRange.getFromRow(); i <= selectedRange.getToRow(); i++)
-            {
-                for(int j = selectedRange.getFromColumn(); j <= selectedRange.getToColumn(); j++)
-                {
-                    indexCell++;
-                    sheet.addCellAt(0,indexCell).setValue(mama);
-                    sheet.addCellAt(1,indexCell).setValue(new CellAddress(i,j) + "");
-                }
-            }
-            sheet.getCellAt(0,0).setValue(indexCell + "");
-
-            Boolean alreadyLinked = false;
-            int alreadyLinkedIndex = -1;
-            for(int i = 0; i < indexCell-1; i++)
-            {
-                if(sheet.getCellAt(0,i+1).getValue().equals(sheet.getCellAt(0,indexCell).getValue()) &&
-                   sheet.getCellAt(1,i+1).getValue().equals(sheet.getCellAt(1,indexCell).getValue()))
-                {
-                    alreadyLinked = true;
-                    alreadyLinkedIndex = i+1;
-                    break;
-                }
-            }
-            if(sheet.getCellAt(0,indexCell).getValue().equals(sheet.getCellAt(1,indexCell).getValue()) || alreadyLinked)
-            {
-                sheet.clearCellAt(0,indexCell);
-                sheet.clearCellAt(1,indexCell);
-                indexCell--;
-                if(alreadyLinked)
-                {
-                    indexCell--;
-                    sheet.getCellAt(0,alreadyLinkedIndex).setValue(sheet.getCellAt(0,indexCell+1).getValue());
-                    sheet.getCellAt(1,alreadyLinkedIndex).setValue(sheet.getCellAt(0,indexCell+1).getValue());
-                    sheet.clearCellAt(0,indexCell+1);
-                    sheet.clearCellAt(1,indexCell+1);
-                }
-                sheet.getCellAt(0,0).setValue(indexCell + "");
-            }
-        }
-/*
-        sheet.addCellAt(selectedRange.getFromColumn(),selectedRange.getFromRow());
-        Cell che = sheet.getCellAt(selectedRange.getFromColumn(),selectedRange.getFromRow());
-        che.setValue("TEST");
-        che.setBorders(Color.BLUE);*/
-
-       /* boolean foundExistingLink = false;
-        for(int i = 0; i < indexCell; i++)
-        {
-            String[] temp2 = newLink.split("->");
-            String temp3 = temp2[1] + "->" + temp2[0];
-            String pi = sheet.getCellAt(0,i+1).getValue();
-            if(pi.equals(newLink))
-            {
-
-                //reverse
-                /*int fromColumnSheet = Integer.parseInt(sheet.getCellAt(1,i+1).getValue());
-                int fromRowSheet = Integer.parseInt(sheet.getCellAt(2,i+1).getValue());
-                int toColumnSheet = Integer.parseInt(sheet.getCellAt(3,i+1).getValue());
-                int toRowSheet = Integer.parseInt(sheet.getCellAt(4,i+1).getValue());
-
-                String[] temp = sheet.getCellAt(0,i+1).getValue().split("->");
-                sheet.getCellAt(0,i+1).setValue(temp[1] + "->" + temp[0]);
-                sheet.getCellAt(1,i+1).setValue(Integer.toString(toColumnSheet));
-                sheet.getCellAt(2,i+1).setValue(Integer.toString(toRowSheet));
-                sheet.getCellAt(3,i+1).setValue(Integer.toString(fromColumnSheet));
-                sheet.getCellAt(4,i+1).setValue(Integer.toString(fromRowSheet));
-                foundExistingLink = true;
-                break;
-            }
-            else if(temp3.equals(pi))
-            {
-                sheet.getCellAt(0, 0).setValue(Integer.toString(indexCell - 1));
-
-                sheet.getCellAt(0,i+1).setValue(sheet.getCellAt(0,indexCell).getValue());
-                sheet.getCellAt(1,i+1).setValue(sheet.getCellAt(1,indexCell).getValue());
-                sheet.getCellAt(2,i+1).setValue(sheet.getCellAt(2,indexCell).getValue());
-                sheet.getCellAt(3,i+1).setValue(sheet.getCellAt(3,indexCell).getValue());
-                sheet.getCellAt(4,i+1).setValue(sheet.getCellAt(4,indexCell).getValue());
-
-                sheet.clearCellAt(0,indexCell);
-                sheet.clearCellAt(1,indexCell);
-                sheet.clearCellAt(2,indexCell);
-                sheet.clearCellAt(3,indexCell);
-                sheet.clearCellAt(4,indexCell);
-
-
-
-
-                foundExistingLink = true;
-                break;
-            }
-
-
-            }*/
-/*
-        if(!foundExistingLink) {
-            sheet.getCellAt(0, 0).setValue(Integer.toString(indexCell + 1));
-            sheet.addCellAt(0, indexCell + 1).setValue(from + to);
-            /*sheet.addCellAt(0, indexCell + 1).setValue(from + "->" + to);
-            sheet.addCellAt(1, indexCell + 1).setValue(Integer.toString(selectedRange.getFromColumn()));
-            sheet.addCellAt(2, indexCell + 1).setValue(Integer.toString(selectedRange.getFromRow()));
-            sheet.addCellAt(3, indexCell + 1).setValue(Integer.toString(selectedRange.getToColumn()));
-            sheet.addCellAt(4, indexCell + 1).setValue(Integer.toString(selectedRange.getToRow()));
-        }*/
-
-
-
-
-
-    }
     private String getCellString(int column, int row)
     {
         String columnString = column < 26 ? (char)(column + 65) + ""

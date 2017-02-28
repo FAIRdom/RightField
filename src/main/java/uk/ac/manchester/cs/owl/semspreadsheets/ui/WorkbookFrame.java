@@ -199,8 +199,9 @@ public class WorkbookFrame extends JFrame {
 		helpMenu.add(new AboutBoxAction(this));
 
 		JMenu testMenu = menuBar.add(new JMenu("Test"));
-		testMenu.add(new AddLinkCellsAction(workbookManager, this));
+		testMenu.add(new AddLinkCellToCellAction(workbookManager, this));
 		testMenu.add(new DeleteLinkCellsAction(workbookManager, this));
+		testMenu.add(new AddLinkCellToRowAction(workbookManager, this));
 		setJMenuBar(menuBar);
 	}
 	

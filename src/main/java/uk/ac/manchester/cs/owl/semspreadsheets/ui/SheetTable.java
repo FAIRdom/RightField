@@ -111,21 +111,39 @@ public class SheetTable extends JTable {
         }
 
         java.util.List<Sheet> sheets = workbookManager.getWorkbook().getSheets();
-        Sheet sheet = sheets.get(0);
+        Sheet sheet = workbookManager.getSelectionModel().getSelectedRange().getSheet();
 
         if(sheet != null)
         {
-            for(String cellLocation : workbookManager.getLinkedCells())
+            for(String cellLocation : workbookManager.getLinkedCells(sheet.getName()))
             {
                 Boolean isTo = true;
                 for(String caca : cellLocation.split(","))
                 {
-                    CellAddress da = new CellAddress(caca);
-                    if(sheet.getCellAt(da.getColumn(), da.getRow()) == null)
+                    Range validation;
+                    if(caca.contains("!"))
                     {
-                        sheet.addCellAt(da.getColumn(), da.getRow());
+                        CellAddress da = new CellAddress(caca.substring(0, caca.length()-1));
+                        //CellAddress endRow = new CellAddress(da.getRow(),"IV");
+                        for(int index = 0; index <= 50; index++)
+                        {
+                            if(sheet.getCellAt(index, da.getRow()) == null)
+                            {
+                                sheet.addCellAt(index, da.getRow());
+                            }
+                        }
+                        validation = new Range(sheet, 0,da.getRow(),50,da.getRow());
+                    }else {
+                        CellAddress da = new CellAddress(caca);
+                        if(sheet.getCellAt(da.getColumn(), da.getRow()) == null)
+                        {
+                            sheet.addCellAt(da.getColumn(), da.getRow());
+                        }
+                        validation = new Range(sheet, sheet.getCellAt(da.getColumn(), da.getRow()));
                     }
-                    Range validation = new Range(sheet, sheet.getCellAt(da.getColumn(), da.getRow()));
+
+
+
                     g.setColor(isTo ? Color.BLUE : Color.RED);
                     Rectangle startRect = getCellRect(validation.getFromRow(), validation.getFromColumn(), false);
                     Rectangle endRect = getCellRect(validation.getToRow(), validation.getToColumn(), false);

@@ -77,7 +77,14 @@ public class WorkbookHSSFImpl implements MutableWorkbook, WorkbookChangeVisitor 
             }
         }
     }
-
+    public String getActiveSheetName()
+    {
+        return this.getSheet(workbook.getActiveSheetIndex()).getName();
+    }
+    public Sheet getActiveSheet()
+    {
+        return this.getSheet(workbook.getActiveSheetIndex());
+    }
     public Collection<NamedRange> getNamedRanges() {
         Collection<NamedRange> result = new ArrayList<NamedRange>();
         for(int i = 0; i < workbook.getNumberOfNames(); i++) {

@@ -221,6 +221,14 @@ public class WorkbookXSSFImpl implements MutableWorkbook, WorkbookChangeVisitor 
         }
     }
 
+    public String getActiveSheetName()
+    {
+        return this.getSheet(workbook.getActiveSheetIndex()).getName();
+    }
+    public Sheet getActiveSheet()
+    {
+        return this.getSheet(workbook.getActiveSheetIndex());
+    }
     public List<Sheet> getSheets() {
         List<Sheet> sheets = new ArrayList<Sheet>();
         for (int i = 0; i < workbook.getNumberOfSheets(); i++) {

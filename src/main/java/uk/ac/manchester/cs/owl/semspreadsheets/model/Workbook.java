@@ -64,4 +64,8 @@ public interface Workbook {
 
     void applyChange(WorkbookChange change);
 
+    String getActiveSheetName();
+
+    Sheet getActiveSheet();
+
 }
