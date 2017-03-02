@@ -53,5 +53,9 @@ public interface Cell {
     
     int getSheetIndex();
 
-    boolean isEmpty();    
+    boolean isEmpty();
+
+    void setCellStyleFormula();
+
+    void setCellFormula(String formula);
 }

@@ -72,7 +72,14 @@ public class CellXSSFImpl implements Cell {
         XSSFFont xssfFont = theCell.getCellStyle().getFont();
         return xssfFont.getStrikeout();
     }
-
+    public void setCellFormula(String formula)
+    {
+        theCell.setCellFormula(formula);
+    }
+    public void setCellStyleFormula()
+    {
+        theCell.setCellType(CellType.FORMULA);
+    }
     public boolean isUnderline() {
     	XSSFFont xssfFont = theCell.getCellStyle().getFont();
         return xssfFont.getUnderline() != 0;

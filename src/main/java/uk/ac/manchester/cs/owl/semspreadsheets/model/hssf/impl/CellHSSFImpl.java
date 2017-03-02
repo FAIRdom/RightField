@@ -76,7 +76,10 @@ public class CellHSSFImpl implements Cell {
         HSSFFont hssfFont = theCell.getCellStyle().getFont(getWorkbook());
         return hssfFont.getStrikeout();
     }
-
+    public void setCellStyleFormula()
+    {
+        theCell.setCellType(CellType.FORMULA);
+    }
     public boolean isUnderline() {
         HSSFFont hssfFont = theCell.getCellStyle().getFont(getWorkbook());
         return hssfFont.getUnderline() != 0;
@@ -108,7 +111,10 @@ public class CellHSSFImpl implements Cell {
         }
         return "";
     }
-
+    public void setCellFormula(String formula)
+    {
+        theCell.setCellFormula(formula);
+    }
     public void setValue(String value) {
         if (theCell.getCellTypeEnum() == CellType.BLANK) {
             theCell.setCellValue(new HSSFRichTextString(value));
