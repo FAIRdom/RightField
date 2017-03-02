@@ -110,41 +110,32 @@ public class SheetTable extends JTable {
             }
         }
 
-        java.util.List<Sheet> sheets = workbookManager.getWorkbook().getSheets();
+        //java.util.List<Sheet> sheets = workbookManager.getWorkbook().getSheets();
         Sheet sheet = workbookManager.getSelectionModel().getSelectedRange().getSheet();
 
         if(sheet != null)
         {
-            for(String cellLocation : workbookManager.getLinkedCells(sheet.getName()))
+            for(String entry : workbookManager.getLinkedCells(sheet.getName()))
             {
-                Boolean isTo = true;
-                for(String caca : cellLocation.split(","))
-                {
                     Range validation;
-                    if(caca.contains("!"))
+                    String cellString = entry.split(",")[0];
+                    Color color = entry.split(",")[1].equals("BLUE") ? Color.BLUE : (entry.split(",")[1].equals("RED") ? Color.RED : Color.MAGENTA);
+                    int noOfColumns = Integer.parseInt(entry.split(",")[2]);
+                    CellAddress da = new CellAddress(cellString);
+                    for(int i = 0; i < noOfColumns; i++)
                     {
-                        CellAddress da = new CellAddress(caca.substring(0, caca.length()-1));
-                        //CellAddress endRow = new CellAddress(da.getRow(),"IV");
-                        for(int index = 0; index <= 50; index++)
+                        if(sheet.getCellAt(da.getColumn()+i, da.getRow()) == null)
                         {
-                            if(sheet.getCellAt(index, da.getRow()) == null)
-                            {
-                                sheet.addCellAt(index, da.getRow());
-                            }
+                            sheet.addCellAt(da.getColumn()+i, da.getRow());
                         }
-                        validation = new Range(sheet, 0,da.getRow(),50,da.getRow());
-                    }else {
-                        CellAddress da = new CellAddress(caca);
-                        if(sheet.getCellAt(da.getColumn(), da.getRow()) == null)
-                        {
-                            sheet.addCellAt(da.getColumn(), da.getRow());
-                        }
-                        validation = new Range(sheet, sheet.getCellAt(da.getColumn(), da.getRow()));
                     }
 
+                    //validation = new Range(sheet, sheet.getCellAt(da.getColumn(), da.getRow()));
+                    validation = new Range(sheet, da.getColumn(),da.getRow(),da.getColumn()+noOfColumns-1,da.getRow());
 
 
-                    g.setColor(isTo ? Color.BLUE : Color.RED);
+
+                    g.setColor(color);
                     Rectangle startRect = getCellRect(validation.getFromRow(), validation.getFromColumn(), false);
                     Rectangle endRect = getCellRect(validation.getToRow(), validation.getToColumn(), false);
                     int x1 = startRect.x + 1;
@@ -158,8 +149,7 @@ public class SheetTable extends JTable {
                     g2.setComposite(alphaComposite);
                     //g2.fill(rect);
                     g2.setComposite(oldComposite);
-                    isTo = false;
-                }
+                
             }
         }
         g2.setStroke(oldStroke);

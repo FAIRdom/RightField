@@ -7,7 +7,9 @@
 package uk.ac.manchester.cs.owl.semspreadsheets.model;
 
 import org.apache.log4j.Logger;
+import org.apache.poi.ss.util.AreaReference;
 import org.apache.poi.ss.util.CellAddress;
+import org.apache.poi.ss.util.CellReference;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLEntity;
@@ -51,6 +53,8 @@ public class WorkbookManager {
     private Set<WorkbookManagerListener> workbookManagerListeners = new HashSet<WorkbookManagerListener>();
 
     private Map<String, HashSet<String>> linkedCells = new HashMap<String, HashSet<String>>();
+    private Set<String> map = new HashSet<String>();
+    private CellReference tempToRef = null;
     private String tempTo = null;
 
     public WorkbookManager() {
@@ -221,13 +225,15 @@ public class WorkbookManager {
                 }
             }
             linkedCells.clear();
+            map.clear();
             if(sheet != null)
             {
 
                 int indexSheet = Integer.parseInt(sheet.getCellAt(0,0).getValue());
                 for(int i = 0; i < indexSheet; i++)
                 {
-                    int indexCell = Integer.parseInt(sheet.getCellAt(i*2,1).getValue());
+                    map.add(sheet.getCellAt(0, i+1).getValue());
+                    /*int indexCell = Integer.parseInt(sheet.getCellAt(i*2,1).getValue());
                     String sheetName = sheet.getCellAt(i*2,2).getValue();
                     linkedCells.put(sheetName, new HashSet<String>());
                     for(int j = 3; j < indexCell + 3; j++)
@@ -237,7 +243,7 @@ public class WorkbookManager {
                         String tempT = c1 + "," + c2;
                         linkedCells.get(sheetName).add(tempT);
 
-                    }
+                    }*/
                 }
             }
             workbook.deleteSheet("LinkedCells");
@@ -279,9 +285,9 @@ public class WorkbookManager {
             //sheet.clearAllCells();
         }
         sheet.clearCellAt(0,0);
-        sheet.addCellAt(0,0).setValue(linkedCells.size() + "");
+        sheet.addCellAt(0,0).setValue(map.size() + "");
         int caca = 0;
-            for(Map.Entry<String, HashSet<String>> entry : linkedCells.entrySet())
+          /*  for(Map.Entry<String, HashSet<String>> entry : linkedCells.entrySet())
             {
 
                 String sheetName = entry.getKey();
@@ -303,8 +309,32 @@ public class WorkbookManager {
                     index++;
                 }
                 caca = caca + 2;
-            }
+            }*/
+            int index = 1;
+            for(String link : map)
+            {
+                //String fromCell = link.split(",")[0];
+                //String toCell = link.split(",")[1];
 
+                //CellReference fromCF = new CellReference(fromCell);
+                //CellReference toCF = new CellReference(toCell);
+
+                //Sheet sheetCell = workbook.getSheet(fromCF.getSheetName());
+                
+                //Cell cellFrom = sheetCell.getCellAt(fromCF.getCol(), fromCF.getRow());
+                //Cell cellTo = sheetCell.getCellAt(toCF.getCol(), toCF.getRow());
+
+                //OntologyTermValidation validationFrom = getOntologyManager().getContainingOntologyTermValidations(new Range(sheetCell, cellFrom)).iterator().next();
+                //OntologyTermValidation validationTo = getOntologyManager().getContainingOntologyTermValidations(new Range(sheetCell, cellTo)).iterator().next();
+
+                sheet.addCellAt(0, index).setValue(link);
+                //sheet.addCellAt(1, index).setValue(fromCell);
+                //sheet.addCellAt(2, index).setValue(toCell);
+                //sheet.addCellAt(3, index).setValue(validationFrom.getValidationDescriptor().getEntityIRI().toString());
+                //sheet.addCellAt(4, index).setValue(validationFrom.getValidationDescriptor().getOWLPropertyItem().toString());
+                //sheet.addCellAt(4, index).setValue(validationTo.toString());
+                index++;
+            }
 
 
 
@@ -376,7 +406,109 @@ public class WorkbookManager {
         }
         return false;
     }
+    public AreaReference getAreaFirstColumn(CellReference cell)
+    {
+        List<Sheet> sheets = workbook.getSheets();
+        AreaReference area = new AreaReference(cell, cell);
+        Sheet sheet = null;
+        for(int i = 0 ; i < sheets.size(); i++)
+        {
+            //String temp = sheets.get(i).getName();
+            if(sheets.get(i).getName().equals(cell.getSheetName()))
+            {
+                sheet = sheets.get(i);
+                break;
+            }
+        }
+        boolean test1 = true;
+        int colIndex = cell.getCol();
+        int rowIndex = cell.getRow();
+        test1 = true;
+        while(test1)
+        {
+            Cell temp = sheet.getCellAt(cell.getCol(), rowIndex);
+            if(temp == null || temp.equals(""))
+            {
+                test1 = false;
+                rowIndex--;
+            }
+            else
+            {
+                rowIndex++;
+            }
+        }
+        CellReference endCell = new CellReference(cell.getSheetName(), rowIndex, colIndex, false, false);
+        area = new AreaReference(cell, endCell);
+
+
+        return area;
+    }
+    public int getAreaFirstColumnNoOfColumns(CellReference cell)
+    {
+        List<Sheet> sheets = workbook.getSheets();
+        AreaReference area = new AreaReference(cell, cell);
+        Sheet sheet = null;
+        for(int i = 0 ; i < sheets.size(); i++)
+        {
+            //String temp = sheets.get(i).getName();
+            if(sheets.get(i).getName().equals(cell.getSheetName()))
+            {
+                sheet = sheets.get(i);
+                break;
+            }
+        }
+        boolean test1 = true;
+        int colIndex = cell.getCol();
+        while(test1)
+        {
+            Cell temp = sheet.getCellAt(colIndex, cell.getRow()-1);
+            if(temp == null || temp.getValue().equals(""))
+            {
+                test1 = false;
+            }
+            else
+            {
+                colIndex++;
+            }
+        }
+        return colIndex-cell.getCol();
+    }
     public Set<String> getLinkedCells(String currentSheetName)
+    {
+        Set<String> set = new HashSet<>();
+        Range selectedRange = getSelectionModel().getSelectedRange();
+        if(tempToRef != null)
+        {
+            set.add(tempToRef.getCellRefParts()[2]+tempToRef.getCellRefParts()[1] + ",YELLOW,1");
+        }
+        if(selectedRange.isCellSelection())
+        {
+            String from = getCellString(selectedRange.getFromColumn(),selectedRange.getFromRow());
+            String to = getCellString(selectedRange.getToColumn(),selectedRange.getToRow());
+            for(String entry : map)
+            {
+                CellReference fromCF = new CellReference(entry.split(",")[0]);
+                CellReference toCF = new CellReference(entry.split(",")[1]);
+
+                if(fromCF.getSheetName().equals(currentSheetName))
+                {
+                    set.add(fromCF.getCellRefParts()[2]+fromCF.getCellRefParts()[1] + ",BLUE,1");
+                }
+                if(toCF.getSheetName().equals(currentSheetName))
+                {
+                    AreaReference area = getAreaFirstColumn(toCF);
+                    int noOfColumns = getAreaFirstColumnNoOfColumns(toCF);
+                    for(CellReference cellA : area.getAllReferencedCells())
+                    {
+                        set.add(cellA.getCellRefParts()[2]+cellA.getCellRefParts()[1] + ",RED," + noOfColumns);
+
+                    }
+                }
+            }
+        }
+        return set;
+    }
+   /* public Set<String> getLinkedCellsOld(String currentSheetName)
     {
         //String currentSheetName = getWorkbook().getActiveSheetName();
         if(!linkedCells.containsKey(currentSheetName))
@@ -412,8 +544,35 @@ public class WorkbookManager {
             }
         }
         return linkedCells.get(currentSheetName);
-    }
+    }*/
     public void addLinkCells(Boolean delete, Boolean rowLinking)
+    {
+        System.out.print("cell to table");
+        String sheetName = getSelectionModel().getSelectedRange().getSheet().getName();
+        Range selectedRange = getSelectionModel().getSelectedRange();
+        if(!selectedRange.isCellSelection()) {
+            return;
+        }
+        String from = getCellString(selectedRange.getFromColumn(),selectedRange.getFromRow());
+        String to = getCellString(selectedRange.getToColumn(),selectedRange.getToRow());
+        if(tempToRef == null)
+        {
+            if(!from.equals(to))
+            {
+                return;
+            }
+            tempToRef = new CellReference(sheetName, selectedRange.getFromRow(), selectedRange.getFromColumn(), false, false);
+        }
+        else
+        {
+            if(!delete)
+                map.add(tempToRef.formatAsString() + "," + new CellReference(sheetName, selectedRange.getFromRow(), selectedRange.getFromColumn(), false, false).formatAsString());
+            else
+                map.remove(tempToRef.formatAsString() + "," + new CellReference(sheetName, selectedRange.getFromRow(), selectedRange.getFromColumn(), false, false).formatAsString());
+            tempToRef = null;
+        }
+    }
+   /* public void addLinkCellsDA(Boolean delete, Boolean rowLinking)
     {
         System.out.println("global map version");
         String sheetName = getSelectionModel().getSelectedRange().getSheet().getName();
@@ -461,7 +620,7 @@ public class WorkbookManager {
         }
         System.out.println("map size: " + linkedCells.size());
         fireValidationAppliedOrCancelled();
-    }
+    }*/
 
     private String getCellString(int column, int row)
     {
@@ -602,8 +761,15 @@ public class WorkbookManager {
 
 	public void renameSheet(String oldName, String newName) {
 		Sheet sheet = getWorkbook().getSheet(oldName);
+        Set<String> newSet = new HashSet<String>();
 		if (sheet!=null) {
 			sheet.setName(newName);
+            for(String link : map)
+            {
+                newSet.add(link.replaceAll(oldName, newName));
+            }
+            map.clear();
+            map.addAll(newSet);
 		}
 	}
 
