@@ -12,6 +12,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -74,10 +75,18 @@ public class SheetPanel extends JPanel {
     private Collection<Disposable> disposables = new ArrayList<Disposable>();
     private OntologyTermValidationListener ontologyTermValidationListener;
 
-    public SheetPanel(WorkbookManager workbookManager, Sheet sheet) {
+    public SheetPanel(final WorkbookManager workbookManager, Sheet sheet) {
         this.workbookManager = workbookManager;
         setLayout(new BorderLayout());
         table = new SheetTable(workbookManager, sheet);
+        table.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                    workbookManager.clearLinkingProcess();
+                }
+            }
+        });
         table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         scrollPane = new JScrollPane(table);
         SheetBorder sheetBorder = new SheetBorder(workbookManager, this);

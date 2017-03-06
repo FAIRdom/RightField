@@ -139,7 +139,34 @@ public class WorkbookManager {
                 listener.validationAppliedOrCancelled();
         }
     }
+    public void clearLinkingProcess()
+    {
+        tempToRef = null;
+    }
+    public String getLinkString()
+    {
+        String sheetName = getSelectionModel().getSelectedRange().getSheet().getName();
+        Range selectedRange = getSelectionModel().getSelectedRange();
+        if(!selectedRange.isCellSelection()) {
+            return "No link2";
+        }
+        String from = getCellString(selectedRange.getFromColumn(),selectedRange.getFromRow());
+        String to = getCellString(selectedRange.getToColumn(),selectedRange.getToRow());
+        if(selectedRange.getFromColumn() == selectedRange.getToColumn() && selectedRange.getFromRow() == selectedRange.getToRow())
+        {
+            CellReference fromCF = new CellReference(sheetName, selectedRange.getFromRow(), selectedRange.getFromColumn(), false, false);
+            for(String tempString : map)
+            {
+                String[] test = tempString.split(",");
+                if(test[0].equals(fromCF.formatAsString()) || test[1].equals(fromCF.formatAsString()))
+                {
+                    return test[0] + " linked to " + test[1];
+                }
+            }
+        }
 
+        return "No link1";
+    }
     private void fireWorkbookLoaded() {
     	List<WorkbookManagerListener> listeners = getCopyOfListeners();
     	logger.debug("firing workbookLoaded to "+listeners.size()+" listeners");
