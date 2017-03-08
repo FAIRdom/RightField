@@ -154,13 +154,28 @@ public class WorkbookManager {
         String to = getCellString(selectedRange.getToColumn(),selectedRange.getToRow());
         if(selectedRange.getFromColumn() == selectedRange.getToColumn() && selectedRange.getFromRow() == selectedRange.getToRow())
         {
-            CellReference fromCF = new CellReference(sheetName, selectedRange.getFromRow(), selectedRange.getFromColumn(), false, false);
+            CellReference rangeCF = new CellReference(sheetName, selectedRange.getFromRow(), selectedRange.getFromColumn(), false, false);
             for(String tempString : map)
             {
                 String[] test = tempString.split(",");
-                if(test[0].equals(fromCF.formatAsString()) || test[1].equals(fromCF.formatAsString()))
+                CellReference fromCF = new CellReference(test[0]);
+                CellReference toCF = new CellReference(test[1]);
+
+                int rowOffset = getAreaFirstColumn(toCF).getAllReferencedCells().length;
+                int colOffset = getAreaFirstColumnNoOfColumns(toCF);
+
+                String tableFrom = getCellString(toCF.getCol(), toCF.getRow());
+                String tableTo = getCellString(toCF.getCol()+colOffset-1, toCF.getRow()+rowOffset-1);
+
+                if(test[0].equals(rangeCF.formatAsString()))
                 {
-                    return test[0] + " linked to " + test[1];
+
+                    return getCellString(fromCF.getCol(), fromCF.getRow()) + " linked to " + tableFrom + ":" + tableTo;
+                }
+                //if(test[1].equals(rangeCF.formatAsString()))
+                if(toCF.getRow() <= rangeCF.getRow() && rangeCF.getRow() < toCF.getRow()+rowOffset && toCF.getCol() <= rangeCF.getCol() && rangeCF.getCol() < toCF.getCol()+colOffset)
+                {
+                    return getCellString(fromCF.getCol(), fromCF.getRow()) + " linked to " + tableFrom + ":" + tableTo;
                 }
             }
         }
