@@ -22,7 +22,7 @@ import java.awt.event.KeyEvent;
 public class DeleteLinkCellsAction extends WorkbookFrameAction {
 
     public DeleteLinkCellsAction(WorkbookManager workbookManager, WorkbookFrame workbookFrame) {
-        super("Delete PLM", workbookFrame);
+        super("Delete link", workbookFrame);
         setAcceleratorKey(KeyEvent.VK_J, true, false);
 
     }
@@ -33,6 +33,6 @@ public class DeleteLinkCellsAction extends WorkbookFrameAction {
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        getWorkbookManager().addLinkCells(true, false);
+        getWorkbookManager().addLinkCellToTable(true, true);
     }
 }

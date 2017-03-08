@@ -22,8 +22,8 @@ import java.awt.event.KeyEvent;
 public class AddLinkCellToCellAction extends WorkbookFrameAction {
 
     public AddLinkCellToCellAction(WorkbookManager workbookManager, WorkbookFrame workbookFrame) {
-        super("Link PLM", workbookFrame);
-        setAcceleratorKey(KeyEvent.VK_J);
+        super("Link cell to cell", workbookFrame);
+        setAcceleratorKey(KeyEvent.VK_K);
     }
 
     /**
@@ -32,6 +32,6 @@ public class AddLinkCellToCellAction extends WorkbookFrameAction {
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        getWorkbookManager().addLinkCells(false, false);
+        getWorkbookManager().addLinkCellToTable(false, false);
     }
 }

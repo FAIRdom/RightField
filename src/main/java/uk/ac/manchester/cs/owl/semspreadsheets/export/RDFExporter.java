@@ -113,19 +113,11 @@ public class RDFExporter extends AbstractExporter {
 	}
 	
 	private void addLiteralNode(Resource rootResource,Model model,PopulatedValidatedCellDetails cellDetails) {
-		if(getWorkbookManager().isLinked(cellDetails.getCell()))
-		{
-			System.out.println("MORTI MATI DE JEGOASA 1");
-		}
 		Property property = createProperty(model,cellDetails.getOWLPropertyItem());
 		rootResource.addProperty(property, model.createLiteral(cellDetails.getTextValue()));
 	}
 	
 	private void addStatementNode(Resource rootResource,Model model,PopulatedValidatedCellDetails cellDetails) {
-		if(getWorkbookManager().isLinked(cellDetails.getCell()))
-		{
-			System.out.println("MORTI MATI DE JEGOASA 2");
-		}
 		Property property = createProperty(model,cellDetails.getOWLPropertyItem());
 		Resource r = model.createResource(cellDetails.getTerm().getIRI().toString());						
 		Statement s = model.createStatement(rootResource, property, r);

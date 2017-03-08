@@ -186,7 +186,6 @@ public class WorkbookFrame extends JFrame {
 
 		JMenu sheetMenu = menuBar.add(new JMenu("Sheet"));
 		sheetMenu.setMnemonic(KeyEvent.VK_S);
-		sheetMenu.add(new AddSheetAction(workbookManager, this));
 		sheetMenu.add(new RemoveSheetAction(this));
 		sheetMenu.add(new RenameSheetAction(this));			
 				
@@ -198,10 +197,11 @@ public class WorkbookFrame extends JFrame {
 		helpMenu.add(new RegistrationAction(this));
 		helpMenu.add(new AboutBoxAction(this));
 
-		JMenu testMenu = menuBar.add(new JMenu("Test"));
+		JMenu testMenu = menuBar.add(new JMenu("Link"));
 		testMenu.add(new AddLinkCellToCellAction(workbookManager, this));
+		testMenu.add(new AddLinkCellToTableAction(workbookManager, this));
 		testMenu.add(new DeleteLinkCellsAction(workbookManager, this));
-		testMenu.add(new AddLinkCellToRowAction(workbookManager, this));
+
 		setJMenuBar(menuBar);
 	}
 	

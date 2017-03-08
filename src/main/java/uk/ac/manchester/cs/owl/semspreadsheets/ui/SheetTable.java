@@ -119,7 +119,29 @@ public class SheetTable extends JTable {
             {
                     Range validation;
                     String cellString = entry.split(",")[0];
-                    Color color = entry.split(",")[1].equals("BLUE") ? Color.BLUE : (entry.split(",")[1].equals("RED") ? Color.RED : Color.MAGENTA);
+
+                    Color color;
+                    String test = entry.split(",")[1];
+                    if(test .equals("BLUE"))
+                    {
+                        color = Color.BLUE;
+                    }else if(test.equals("RED"))
+                    {
+                        color = Color.RED;
+                    }else if(test.equals("MAGENTA"))
+                    {
+                        color = Color.MAGENTA;
+                    }else if(test.equals("ORANGE"))
+                    {
+                        color = Color.ORANGE;
+                    }else if(test.equals("CYAN"))
+                    {
+                        color = Color.CYAN;
+                    }else
+                    {
+                        color = Color.PINK;
+                    }
+                    //Color color = entry.split(",")[1].equals("BLUE") ? Color.BLUE : (entry.split(",")[1].equals("RED") ? Color.RED : Color.MAGENTA);
                     int noOfColumns = Integer.parseInt(entry.split(",")[2]);
                     CellAddress da = new CellAddress(cellString);
                     for(int i = 0; i < noOfColumns; i++)

@@ -19,11 +19,11 @@ import java.awt.event.KeyEvent;
  *
  */
 @SuppressWarnings("serial")
-public class AddLinkCellToRowAction extends WorkbookFrameAction {
+public class AddLinkCellToTableAction extends WorkbookFrameAction {
 
-    public AddLinkCellToRowAction(WorkbookManager workbookManager, WorkbookFrame workbookFrame) {
-        super("Link Row to row PLM", workbookFrame);
-        setAcceleratorKey(KeyEvent.VK_K);
+    public AddLinkCellToTableAction(WorkbookManager workbookManager, WorkbookFrame workbookFrame) {
+        super("Link cell to table", workbookFrame);
+        setAcceleratorKey(KeyEvent.VK_J);
     }
 
     /**
@@ -32,6 +32,6 @@ public class AddLinkCellToRowAction extends WorkbookFrameAction {
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        getWorkbookManager().addLinkCells(false, true);
+        getWorkbookManager().addLinkCellToTable(false, true);
     }
 }
