@@ -522,7 +522,26 @@ public class WorkbookManager {
         }
         return set;
     }
-    public void addLinkCellToTable(Boolean delete, Boolean table)
+    public void deleteAllLinked()
+    {
+        String sheetName = getSelectionModel().getSelectedRange().getSheet().getName();
+        Range selectedRange = getSelectionModel().getSelectedRange();
+        if(!selectedRange.isCellSelection()) {
+            return;
+        }
+        tempToRef = new CellReference(sheetName, selectedRange.getFromRow(), selectedRange.getFromColumn(), false, false);
+
+        for(Iterator<String> i = map.iterator(); i.hasNext();)
+        {
+            String temp = i.next();
+            if(temp.split(",")[0].equals(tempToRef.formatAsString()))
+            {
+                i.remove();
+            }
+        }
+        tempToRef = null;
+    }
+    public void addLink(Boolean delete, Boolean table)
     {
         System.out.print("cell to table");
         String sheetName = getSelectionModel().getSelectedRange().getSheet().getName();
@@ -544,64 +563,36 @@ public class WorkbookManager {
         {
             if(!delete)
             {
-                map.add(tempToRef.formatAsString() + "," + new CellReference(sheetName, selectedRange.getFromRow(), selectedRange.getFromColumn(), false, false).formatAsString() + (table ? ",table" : ",cell"));
-
+                if(table)
+                {
+                    map.add(tempToRef.formatAsString() + "," + new CellReference(sheetName, selectedRange.getFromRow(), selectedRange.getFromColumn(), false, false).formatAsString() + ",table");
+                }
+                else
+                {
+                    for(int i = selectedRange.getFromRow(); i <= selectedRange.getToRow(); i++)
+                    {
+                        for(int j = selectedRange.getFromColumn(); j <= selectedRange.getToColumn(); j++)
+                        {
+                            map.add(tempToRef.formatAsString() + "," + new CellReference(sheetName, i, j, false, false).formatAsString() + ",cell");
+                        }
+                    }
+                }
             }
             else
             {
-                map.remove(tempToRef.formatAsString() + "," + new CellReference(sheetName, selectedRange.getFromRow(), selectedRange.getFromColumn(), false, false).formatAsString() + ",table");
-                map.remove(tempToRef.formatAsString() + "," + new CellReference(sheetName, selectedRange.getFromRow(), selectedRange.getFromColumn(), false, false).formatAsString() + ",cell");
+                for(int i = selectedRange.getFromRow(); i <= selectedRange.getToRow(); i++)
+                {
+                    for(int j = selectedRange.getFromColumn(); j <= selectedRange.getToColumn(); j++)
+                    {
+                        map.remove(tempToRef.formatAsString() + "," + new CellReference(sheetName, i, j, false, false).formatAsString() + ",table");
+                        map.remove(tempToRef.formatAsString() + "," + new CellReference(sheetName, i, j, false, false).formatAsString() + ",cell");
+                    }
+                }
             }
             tempToRef = null;
 
         }
     }
-    /*public void addLinkCellToCell(Boolean delete)
-    {
-        String sheetName = getSelectionModel().getSelectedRange().getSheet().getName();
-        Range selectedRange = getSelectionModel().getSelectedRange();
-        if(!selectedRange.isCellSelection()) {
-            return;
-        }
-        String from = getCellString(selectedRange.getFromColumn(),selectedRange.getFromRow());
-        String to = getCellString(selectedRange.getToColumn(),selectedRange.getToRow());
-
-
-        if(tempTo == null)
-        {
-            if(!from.equals(to))
-            {
-                return;
-            }
-            tempTo = new CellReference(sheetName, selectedRange.getFromRow(), selectedRange.getFromColumn(), false, false);
-        }
-        else
-        {
-            if(!linkedCells.containsKey(sheetName))
-            {
-                linkedCells.put(sheetName, new HashSet<String>());
-            }
-            for(int i = selectedRange.getFromRow(); i <= selectedRange.getToRow(); i++)
-            {
-                for(int j = selectedRange.getFromColumn(); j <= selectedRange.getToColumn(); j++)
-                {
-                    if(delete)
-                    {
-                        linkedCells.get(sheetName).remove(tempTo+","+new CellAddress(i,j) + "");
-                        tempTo = null;
-                    }
-                    else
-                    {
-                        linkedCells.get(sheetName).add(tempTo+","+new CellAddress(i,j));
-                    }
-
-                }
-            }
-
-        }
-        System.out.println("map size: " + linkedCells.size());
-        fireValidationAppliedOrCancelled();
-    }*/
 
     private String getCellString(int column, int row)
     {

@@ -24,7 +24,9 @@ import java.awt.*;
 public class SheetTable extends JTable {
 	
 	private static Logger logger = Logger.getLogger(SheetTable.class);
-    
+
+    public static final Font FONT = new Font("verdana", Font.PLAIN, 50);
+
     private Sheet sheet;
 
     private WorkbookManager workbookManager;
@@ -33,8 +35,10 @@ public class SheetTable extends JTable {
 
 	public SheetTable(WorkbookManager ss, Sheet sheet) {
         this.workbookManager = ss;
-        this.sheet = sheet;        
+        this.sheet = sheet;
 
+        //dimi
+        this.setRowHeight(20);
         setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         TableModel model = new SheetTableModel(sheet);
         setModel(model);                      
@@ -48,7 +52,7 @@ public class SheetTable extends JTable {
             TableColumn column = getColumnModel().getColumn(col);
             column.setCellRenderer(ren);
             column.setCellEditor(editor);
-            column.setPreferredWidth(sheet.getColumnWidth(col));            
+            column.setPreferredWidth(sheet.getColumnWidth(col));
         }
         setShowGrid(true);
         setRowMargin(1);

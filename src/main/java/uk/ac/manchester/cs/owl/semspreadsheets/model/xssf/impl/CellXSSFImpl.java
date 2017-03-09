@@ -34,7 +34,7 @@ public class CellXSSFImpl implements Cell {
 
     public CellXSSFImpl(XSSFWorkbook workbook, XSSFCell theCell) {
         this.workbook = workbook;
-        this.theCell = theCell;        
+        this.theCell = theCell;
     }
 
     public Font getDefaultFont() {
@@ -165,7 +165,7 @@ public class CellXSSFImpl implements Cell {
         Font font = getFontFromCache(xssfFont);
         if (font == null) {
             String name = xssfFont.getFontName();
-            int size = xssfFont.getFontHeightInPoints();
+            int size = xssfFont.getFontHeightInPoints() < 15 ? 15 : xssfFont.getFontHeightInPoints();
             int style = Font.PLAIN;
             if (xssfFont.getBold()) {
                 style = Font.BOLD;

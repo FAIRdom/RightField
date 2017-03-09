@@ -19,11 +19,12 @@ import java.awt.event.KeyEvent;
  *
  */
 @SuppressWarnings("serial")
-public class AddLinkCellToTableAction extends WorkbookFrameAction {
+public class DeleteAllLinks extends WorkbookFrameAction {
 
-    public AddLinkCellToTableAction(WorkbookManager workbookManager, WorkbookFrame workbookFrame) {
-        super("Link cell to table", workbookFrame);
-        setAcceleratorKey(KeyEvent.VK_J);
+    public DeleteAllLinks(WorkbookManager workbookManager, WorkbookFrame workbookFrame) {
+        super("Delete all links", workbookFrame);
+        setAcceleratorKey(KeyEvent.VK_K, true, true);
+
     }
 
     /**
@@ -32,6 +33,6 @@ public class AddLinkCellToTableAction extends WorkbookFrameAction {
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        getWorkbookManager().addLink(false, true);
+        getWorkbookManager().deleteAllLinked();
     }
 }

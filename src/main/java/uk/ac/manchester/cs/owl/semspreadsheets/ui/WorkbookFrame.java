@@ -201,6 +201,7 @@ public class WorkbookFrame extends JFrame {
 		testMenu.add(new AddLinkCellToCellAction(workbookManager, this));
 		testMenu.add(new AddLinkCellToTableAction(workbookManager, this));
 		testMenu.add(new DeleteLinkCellsAction(workbookManager, this));
+		testMenu.add(new DeleteAllLinks(workbookManager, this));
 
 		setJMenuBar(menuBar);
 	}

@@ -33,6 +33,6 @@ public class DeleteLinkCellsAction extends WorkbookFrameAction {
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        getWorkbookManager().addLinkCellToTable(true, true);
+        getWorkbookManager().addLink(true, true);
     }
 }

@@ -32,6 +32,6 @@ public class AddLinkCellToCellAction extends WorkbookFrameAction {
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        getWorkbookManager().addLinkCellToTable(false, false);
+        getWorkbookManager().addLink(false, false);
     }
 }
