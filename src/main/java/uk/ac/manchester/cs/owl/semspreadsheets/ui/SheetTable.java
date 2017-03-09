@@ -37,8 +37,6 @@ public class SheetTable extends JTable {
         this.workbookManager = ss;
         this.sheet = sheet;
 
-        //dimi
-        this.setRowHeight(20);
         setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         TableModel model = new SheetTableModel(sheet);
         setModel(model);                      

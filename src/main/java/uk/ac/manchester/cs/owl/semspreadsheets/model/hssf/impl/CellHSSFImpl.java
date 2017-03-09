@@ -167,7 +167,7 @@ public class CellHSSFImpl implements Cell {
         Font font = fontCache.get(hssfFont);
         if (font == null) {
             String name = hssfFont.getFontName();
-            int size = hssfFont.getFontHeightInPoints() < 15 ? 15 : hssfFont.getFontHeightInPoints();
+            int size = hssfFont.getFontHeightInPoints();
             int style = Font.PLAIN;
             if (hssfFont.getBold()) {
                 style = Font.BOLD;

@@ -105,8 +105,8 @@ public class SheetXSSFImpl implements Sheet {
         return sheet;
     }
 
-    public int getColumnWidth(int col) {     	
-        int width = (sheet.getColumnWidth(col) / 256) * 10;
+    public int getColumnWidth(int col) {    
+        int width = (sheet.getColumnWidth(col) / 256) * 6;
         return width;
     }
 
