@@ -112,7 +112,6 @@ public class SheetTable extends JTable {
             }
         }
 
-        //java.util.List<Sheet> sheets = workbookManager.getWorkbook().getSheets();
         Sheet sheet = workbookManager.getSelectionModel().getSelectedRange().getSheet();
 
         if(sheet != null)
@@ -139,11 +138,14 @@ public class SheetTable extends JTable {
                     }else if(test.equals("CYAN"))
                     {
                         color = Color.CYAN;
-                    }else
+                    }else if(test.equals("GRAY"))
+                    {
+                        color = Color.GRAY;
+                    }
+                    else
                     {
                         color = Color.PINK;
                     }
-                    //Color color = entry.split(",")[1].equals("BLUE") ? Color.BLUE : (entry.split(",")[1].equals("RED") ? Color.RED : Color.MAGENTA);
                     int noOfColumns = Integer.parseInt(entry.split(",")[2]);
                     CellAddress da = new CellAddress(cellString);
                     for(int i = 0; i < noOfColumns; i++)
@@ -154,10 +156,7 @@ public class SheetTable extends JTable {
                         }
                     }
 
-                    //validation = new Range(sheet, sheet.getCellAt(da.getColumn(), da.getRow()));
                     validation = new Range(sheet, da.getColumn(),da.getRow(),da.getColumn()+noOfColumns-1,da.getRow());
-
-
 
                     g.setColor(color);
                     Rectangle startRect = getCellRect(validation.getFromRow(), validation.getFromColumn(), false);
@@ -171,7 +170,6 @@ public class SheetTable extends JTable {
                     g2.setComposite(alphaComposite2);
                     g2.drawRoundRect(rect.x, rect.y, rect.width, rect.height, 5, 5);
                     g2.setComposite(alphaComposite);
-                    //g2.fill(rect);
                     g2.setComposite(oldComposite);
                 
             }

@@ -6,20 +6,8 @@
  ******************************************************************************/
 package uk.ac.manchester.cs.owl.semspreadsheets.ui;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-
-import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.border.TitledBorder;
-
 import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.OWLEntity;
-
 import uk.ac.manchester.cs.owl.semspreadsheets.listeners.AbstractEntitySelectionModelListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.listeners.AbstractWorkbookManagerListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.listeners.CellSelectionListener;
@@ -28,6 +16,13 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.ValidationType;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.ApplyValidationAction;
+
+import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.TitledBorder;
+import java.awt.*;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 /**
  * Container panel for selecting or showing the validation and properties that are going to be applied to the cells. 
@@ -53,7 +48,6 @@ public class ValidationInspectorPanel extends JPanel {
     private static Color textColor = new Color(96, 110, 128);
     
     private JButton applyButton = new JButton("Apply");
-    private JTextField linkToField = new JTextField("Testing");
     private JButton cancelButton = new JButton("Cancel");
 
 	private ValidationTypeSelectorPanel validationTypeSelectorPanel;
@@ -156,12 +150,6 @@ public class ValidationInspectorPanel extends JPanel {
 		applyButton.setEnabled(false);
 				
 		JPanel  buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-
-
-		linkToField.setEnabled(false);
-		linkToField.setDisabledTextColor(Color.BLACK);
-		linkToField.setSize(25, 3);
-		buttonPanel.add(linkToField);
         buttonPanel.add(applyButton);
 		
 		//Cancel button is currently not visible, as Katy thought it was confusing and could be
