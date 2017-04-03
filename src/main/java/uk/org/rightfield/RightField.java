@@ -1,10 +1,11 @@
 package uk.org.rightfield;
 /*******************************************************************************
- * Copyright (c) 2009-2012, University of Manchester
- * 
- * Licensed under the New BSD License. 
+ * Copyright (c) 2009, 2017, The University of Manchester
+ *
+ * Licensed under the New BSD License.
  * Please see LICENSE file that is distributed with the source code
- ******************************************************************************/
+ *  
+ *******************************************************************************/
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
