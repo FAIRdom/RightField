@@ -75,7 +75,7 @@ public class BioPortalRepositoryAccessor implements RepositoryAccessor {
                 int responseCode = connection.getResponseCode();
                 logger.info("BioPortal http response: " + responseCode);
                 
-                if (responseCode == 400 || responseCode == 403) {
+                if (responseCode == 400 || responseCode == 401 || responseCode == 403) {
                 	throw new BioPortalAccessDeniedException();
                 }
                 
@@ -128,7 +128,8 @@ public class BioPortalRepositoryAccessor implements RepositoryAccessor {
             int responseCode = connection.getResponseCode();
             logger.info("BioPortal http response: " + responseCode);
             
-            if (responseCode == 400 || responseCode == 403) {
+           if (responseCode == 400 || responseCode == 401 || responseCode == 403) {
+        	   logger.error("We are here");
             	throw new BioPortalAccessDeniedException();
             }            
             ObjectMapper mapper = new ObjectMapper();            
