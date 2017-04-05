@@ -89,6 +89,7 @@ public class LegacyBioportalSourceResolver {
 					logger.debug("Bioportal Legacy ID mapping: "+id+" : "+acronym);
 					mappings.put(id, acronym);
 				}
+				reader.close();
 			} catch (IOException e) {
 				logger.error("Error reading Bioportal legacy mapping file",e);
 			}
