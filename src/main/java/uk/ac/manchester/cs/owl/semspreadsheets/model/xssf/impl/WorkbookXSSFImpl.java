@@ -1,3 +1,16 @@
+/*******************************************************************************
+ * Copyright (c) 2009, 2017, The University of Manchester
+ *
+ * Licensed under the New BSD License.
+ * Please see LICENSE file that is distributed with the source code
+ *  
+ *******************************************************************************/
+
+/**
+ * @author Stuart Owen
+ * @author Matthew Horridge
+ */
+
 package uk.ac.manchester.cs.owl.semspreadsheets.model.xssf.impl;
 
 import java.io.BufferedInputStream;
@@ -30,18 +43,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.change.WorkbookChange;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.change.WorkbookChangeEvent;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.change.WorkbookChangeVisitor;
 
-/*******************************************************************************
- * Copyright (c) 2009, 2017, The University of Manchester
- *
- * Licensed under the New BSD License.
- * Please see LICENSE file that is distributed with the source code
- *  
- *******************************************************************************/
 
-/**
- * @author Stuart Owen
- * @author Matthew Horridge
- */
 
 public class WorkbookXSSFImpl implements MutableWorkbook, WorkbookChangeVisitor {
 
