@@ -26,7 +26,7 @@ If you wish your build of RightField to work with BioPortal you need an API key.
 This key should then be placed in a
 text file located at src/main/resources/bioportal_api_key (unfortunately we are unable to include this key with the source code).
 
-To compile RightField you are required to have both {Apache Maven2}[http://maven.apache.org/] and the {Java 1.6 JDK}[http://www.oracle.com/technetwork/java/javase/downloads/index.html] installed. 
+To compile RightField you are required to have both {Apache Maven2}[http://maven.apache.org/] and the {Java 1.8 JDK}[http://www.oracle.com/technetwork/java/javase/downloads/index.html] installed. 
 
   >mvn assembly:directory  
   
