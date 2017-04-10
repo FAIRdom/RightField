@@ -8,6 +8,8 @@
 
 package uk.ac.manchester.cs.owl.semspreadsheets.repository.bioportal;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,6 +24,10 @@ public class BioPortalCache {
 	}
 	public static BioPortalCache getInstance() {
 		return BioPortalCacheHolder.INSTANCE;
+	}
+	
+	public static String getUserBioportalCache() {
+	    return System.getProperty("user.home") + File.separator + ".bioportal_cache";
 	}
 	
 	private static final String CACHE_NAME = "/bioportal_cache";
@@ -39,31 +45,33 @@ public class BioPortalCache {
 	}
 	
 	void dumpStoredProperties() throws IOException {
-		String file = BioPortalRepositoryItem.class.getResource(CACHE_NAME).getFile();
-    	FileOutputStream stream = new FileOutputStream(file);
-    	logger.info("Updating BioPortal properties cache: "+file);
+		logger.error("Storing cache in " + getUserBioportalCache());
+    	FileOutputStream stream = new FileOutputStream(getUserBioportalCache());
     	bioportalCachedDetails.store(stream,null);
     	stream.close();
+    	logger.error("Stored");
 	}
 	
-	private BioPortalCache() {		
-    		bioportalCachedDetails = new Properties();
-        	try {
-        		URL resource = BioPortalRepositoryAccessor.class.getResource(CACHE_NAME);
-        		if (resource!=null) {
-        			InputStream stream = resource.openStream();
-            		bioportalCachedDetails.load(stream);
-    				stream.close();
-        		}
-        		else {
-        			logger.error("Unable to find bioportal-cache file: "+CACHE_NAME);
-        		}
-        		
-			} catch (IOException e) {
-				logger.error("Error reading bioportal properties file",e);
-			}        
-	}
-	
+	private BioPortalCache() {
+		bioportalCachedDetails = new Properties();
+		File userCache = new File(getUserBioportalCache());
+		try {
+			InputStream stream = null;
+			if (userCache.exists() && !userCache.isDirectory()) {
+				stream = new FileInputStream(userCache);
+			} else {
+				URL resource = BioPortalRepositoryAccessor.class.getResource(CACHE_NAME);
+				if (resource != null) {
+					stream = resource.openStream();
+				}
+			}
+			bioportalCachedDetails.load(stream);
+			stream.close();
+
+		} catch (IOException e) {
+			logger.error("Error reading bioportal properties file", e);
+		}
+	}	
 	
 
 }

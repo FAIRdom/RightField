@@ -38,7 +38,7 @@ public class BioPortalRepositoryAccessor implements RepositoryAccessor {
 	
 	private final int CONNECT_TIMEOUT = 120000;
 	
-	private final boolean SAVE_PROPERTIES_CACHE = false;
+	private final boolean SAVE_PROPERTIES_CACHE = true;
 	
     private BioPortalRepository repository;
     
@@ -55,7 +55,7 @@ public class BioPortalRepositoryAccessor implements RepositoryAccessor {
         return repository;
     }    
        
-    public String fetchOntologyFormat(String ontologyAcronym) {
+    public String fetchOntologyFormat(String ontologyAcronym) throws IOException {
     	logger.debug("Fetching format for "+ontologyAcronym);
     	BioPortalCache cache = BioPortalCache.getInstance();
     	String format = cache.getFormat(ontologyAcronym);
@@ -72,7 +72,13 @@ public class BioPortalRepositoryAccessor implements RepositoryAccessor {
         		HttpURLConnection connection = (HttpURLConnection)url.openConnection();
         		connection.setConnectTimeout(CONNECT_TIMEOUT);
                 connection.setReadTimeout(CONNECT_TIMEOUT);
-                int responseCode = connection.getResponseCode();
+                int responseCode = 0;
+				try {
+					responseCode = connection.getResponseCode();
+				} catch (Exception e) {
+					logger.error(url.toString() + " failed");
+					throw (e);
+				}
                 logger.info("BioPortal http response: " + responseCode);
                 
                 if (responseCode == 400 || responseCode == 401 || responseCode == 403) {
@@ -102,9 +108,10 @@ public class BioPortalRepositoryAccessor implements RepositoryAccessor {
             	logger.error("Timeout connecting to BioPortal",e);
             	ErrorHandler.getErrorHandler().handleError(e);
             }
-            catch (IOException e) {        	
-                logger.error("Error communiciating with BioPortal rest API",e);                    	
-            }
+//            catch (IOException e) {
+//            	logger.error("Eaten here");
+//                logger.error("Error communiciating with BioPortal rest API",e);                    	
+//            }
             catch (BioPortalAccessDeniedException e) {
             	ErrorHandler.getErrorHandler().handleError(e);
             }
@@ -125,11 +132,15 @@ public class BioPortalRepositoryAccessor implements RepositoryAccessor {
             HttpURLConnection connection = (HttpURLConnection)url.openConnection();            
             connection.setConnectTimeout(CONNECT_TIMEOUT);
             connection.setReadTimeout(CONNECT_TIMEOUT);
-            int responseCode = connection.getResponseCode();
+            int responseCode = 0;
+			try {
+				responseCode = connection.getResponseCode();
+			} catch (Exception e) {
+				logger.error(e);
+			}
             logger.info("BioPortal http response: " + responseCode);
             
            if (responseCode == 400 || responseCode == 401 || responseCode == 403) {
-        	   logger.error("We are here");
             	throw new BioPortalAccessDeniedException();
             }            
             ObjectMapper mapper = new ObjectMapper();            

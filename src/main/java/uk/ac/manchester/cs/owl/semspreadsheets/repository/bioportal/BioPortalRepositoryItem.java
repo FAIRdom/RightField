@@ -8,6 +8,7 @@
 package uk.ac.manchester.cs.owl.semspreadsheets.repository.bioportal;
 
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -67,7 +68,22 @@ public class BioPortalRepositoryItem implements RepositoryItem {
     }
     
     private String fetchFormat() {
-    	return repositoryAccessor.fetchOntologyFormat(acronym);    	
+    	String result = null;
+    	int count = 0;
+    	int maxTries = 20;
+    	while(true) {
+    	    try {
+    	    	result = repositoryAccessor.fetchOntologyFormat(acronym);
+    	    	return result;
+    	    } catch (IOException e) {
+    	    	logger.error(acronym + " failed " + count);
+    	        // handle exception
+    	        if (++count == maxTries) {
+    	        	logger.error(e);
+    	        	return null;
+    	        }
+    	    }
+    	}
     }
 
     public IRI getOntologyIRI() {
