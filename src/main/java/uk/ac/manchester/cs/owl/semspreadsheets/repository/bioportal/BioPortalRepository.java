@@ -98,7 +98,7 @@ public class BioPortalRepository implements Repository {
 	}
 	
 	/**
-	 * If appropriate, removes the appended apikey=XXX-XXX and returns a cleaned IRI
+	 * If appropriate, removes the appended apikey=some_value
 	 */
 	public static IRI removeBioPortalAPIKey(IRI iri) {
 		IRI newIRI = iri;
