@@ -19,6 +19,9 @@
 			<url>http://www.opensource.org/licenses/bsd-3-clause</url>
 		</license>
 	</licenses>
+	<properties>
+    	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  	</properties>
 	<dependencies>
 		<dependency>
 		<!--  FIXME: skos-api is out of date -->
