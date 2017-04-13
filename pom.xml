@@ -27,7 +27,7 @@
 		<!--  FIXME: skos-api is out of date -->
 			<groupId>uk.ac.manchester.cs.skos</groupId>
 			<artifactId>skos-api</artifactId>
-			<version>3.0.1</version>
+			<version>3.1</version>
 		</dependency>
 		<dependency>
 			<groupId>net.sourceforge.owlapi</groupId>
