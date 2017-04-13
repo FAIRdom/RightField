@@ -17,7 +17,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.semanticweb.owlapi.model.IRI;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.export.Exporter;
@@ -30,7 +31,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookFrame;
 public class ExportRDFAction extends WorkbookFrameAction {
 	
 	@SuppressWarnings("unused")
-	private static Logger logger = Logger.getLogger(ExportRDFAction.class);
+	private static Logger logger = LogManager.getLogger();
 
 	public ExportRDFAction(WorkbookFrame workbookFrame) {
 		super("Export as RDF...",workbookFrame);

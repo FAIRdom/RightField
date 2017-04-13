@@ -7,7 +7,8 @@
  *******************************************************************************/
 package uk.ac.manchester.cs.owl.semspreadsheets.ui;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Stores the state of the workbook
@@ -17,7 +18,7 @@ import org.apache.log4j.Logger;
  */
 public class WorkbookState {
 	
-	private static Logger logger = Logger.getLogger(WorkbookState.class);
+	private static Logger logger = LogManager.getLogger();
 	
 	private boolean changesSaved = true;
 

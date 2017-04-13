@@ -22,7 +22,8 @@ import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.semanticweb.owlapi.model.OWLEntity;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.listeners.AbstractEntitySelectionModelListener;
@@ -45,7 +46,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.ApplyValidationAction;
 @SuppressWarnings("serial")
 public class ValidationInspectorPanel extends JPanel {
 	
-	private static Logger logger = Logger.getLogger(ValidationInspectorPanel.class);
+	private static Logger logger = LogManager.getLogger();
 
     private static Font font = new Font("Lucida Grande", Font.BOLD, 11);
 

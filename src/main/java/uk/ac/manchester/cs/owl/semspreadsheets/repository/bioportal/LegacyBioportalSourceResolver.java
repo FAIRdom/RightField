@@ -15,7 +15,8 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.semanticweb.owlapi.model.IRI;
 
 import au.com.bytecode.opencsv.CSVReader;
@@ -36,7 +37,7 @@ public class LegacyBioportalSourceResolver {
 		return LegacyBioportalSourceResolverHolder.INSTANCE;
 	}
 
-	private static final Logger logger = Logger.getLogger(LegacyBioportalSourceResolver.class);
+	private static final Logger logger = LogManager.getLogger();
 	
 	private static final Map<String,String> mappings = new HashMap<String,String>();
 	private static final String MAPPING_FILE = "/legacy_bioportal_ontology_id_mappings.csv";

@@ -33,7 +33,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.change.WorkbookChangeEvent;
 @SuppressWarnings("serial")
 public class WorkbookPanel extends JPanel {
 
-	// private Logger logger = Logger.getLogger(WorkbookPanel.class);
+	// private Logger logger = LogManager.getLogger();
 
 	private final class WorkbookChangeListenerImpl implements
 			WorkbookChangeListener {

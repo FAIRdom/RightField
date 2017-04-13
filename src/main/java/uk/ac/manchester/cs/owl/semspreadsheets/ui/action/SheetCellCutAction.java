@@ -11,7 +11,8 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Cell;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
@@ -27,7 +28,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.change.SetCellValue;
 @SuppressWarnings("serial")
 public class SheetCellCutAction extends SheetCellCopyAction {
 
-	private static Logger logger = Logger.getLogger(SheetCellCutAction.class);
+	private static Logger logger = LogManager.getLogger();
 
 	public SheetCellCutAction(WorkbookManager workbookManager, Toolkit toolkit) {
 		super("Cut", workbookManager, toolkit);

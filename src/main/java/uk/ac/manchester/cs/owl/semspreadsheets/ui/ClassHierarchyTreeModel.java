@@ -21,7 +21,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLEntity;
@@ -51,7 +52,7 @@ public class ClassHierarchyTreeModel implements HierarchyTreeModel {
 
 	private final OntologyManager ontologyManager;  
 	
-	private static final Logger logger = Logger.getLogger(ClassHierarchyTreeNode.class);
+	private static final Logger logger = LogManager.getLogger();
 	private List<TreeModelListener> treeModelListeners = new ArrayList<TreeModelListener>();
 
 	public ClassHierarchyTreeModel(OntologyManager ontologyManager, OWLOntology ontology) {

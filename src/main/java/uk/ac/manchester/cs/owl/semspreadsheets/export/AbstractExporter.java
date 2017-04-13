@@ -19,7 +19,8 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Cell;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.InvalidWorkbookFormatException;
@@ -44,7 +45,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 public abstract class AbstractExporter implements Exporter {
 	
 	@SuppressWarnings("unused")
-	private static final Logger logger = Logger.getLogger(AbstractExporter.class);
+	private static final Logger logger = LogManager.getLogger();
 	
 	private final WorkbookManager manager;
 

@@ -15,7 +15,8 @@ import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.semanticweb.owlapi.model.IRI;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.InvalidWorkbookFormatException;
@@ -30,7 +31,7 @@ import org.apache.jena.rdf.model.Statement;
 
 public class RDFExporter extends AbstractExporter {
 	
-	private static final Logger logger = Logger.getLogger(RDFExporter.class);
+	private static final Logger logger = LogManager.getLogger();
 	
 	private final IRI rootID;
 	

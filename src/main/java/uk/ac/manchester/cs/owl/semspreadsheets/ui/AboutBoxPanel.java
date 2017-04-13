@@ -25,7 +25,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import uk.org.rightfield.RightField;
 
@@ -34,7 +35,7 @@ import uk.org.rightfield.RightField;
 public class AboutBoxPanel extends JPanel {
 	private static final String WEBSITE = "http://www.rightfield.org.uk";
 	private static final String COPYRIGHT = "(c) University of Manchester 2009-2014";
-	private static Logger logger = Logger.getLogger(AboutBoxPanel.class);
+	private static Logger logger = LogManager.getLogger(AboutBoxPanel.class);
 	
 	public AboutBoxPanel() {
 		super(true);

@@ -8,7 +8,8 @@
 
 package uk.org.rightfield;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * A very basic command line argument handler, primarily for picking out export arguments. Not very robust as its only really intended for internal use.
@@ -20,7 +21,7 @@ import org.apache.log4j.Logger;
  */
 public class RightFieldOptions {
 	
-	private static final Logger logger = Logger.getLogger(RightFieldOptions.class);
+	private static final Logger logger = LogManager.getLogger();
 	
 	String id="df:1";
 	String exportFormat="rdf";

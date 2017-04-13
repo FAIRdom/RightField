@@ -16,7 +16,8 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class BioPortalCache {
 	static class BioPortalCacheHolder {
@@ -32,7 +33,7 @@ public class BioPortalCache {
 	
 	private static final String CACHE_NAME = "/bioportal_cache";
 	
-	private static final Logger logger = Logger.getLogger(BioPortalCache.class);
+	private static final Logger logger = LogManager.getLogger();
 	
 	private static Properties bioportalCachedDetails;
 	

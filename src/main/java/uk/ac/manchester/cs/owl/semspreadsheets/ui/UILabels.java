@@ -12,14 +12,15 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * @author Matthew Horridge
  */
 public class UILabels {
 	
-	private static Logger logger = Logger.getLogger(UILabels.class);
+	private static Logger logger = LogManager.getLogger();
 
     private static UILabels instance = new UILabels();
 

@@ -23,7 +23,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.plaf.basic.BasicButtonUI;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.semanticweb.owlapi.model.OWLOntology;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.listeners.AbstractOntologyTermValidationListener;
@@ -41,8 +42,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyManager;
 class ClassHierarchyTabComponent extends JPanel {
 	private final ClassHierarchyTabbedPane pane;
 	private final OWLOntology ontology;
-	private static Logger logger = Logger
-			.getLogger(ClassHierarchyTabComponent.class);
+	private static Logger logger = LogManager.getLogger();
 	
 	JButton closeButton;
 	private final WorkbookFrame workbookFrame;

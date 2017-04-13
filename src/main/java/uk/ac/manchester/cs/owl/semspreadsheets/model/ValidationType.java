@@ -13,7 +13,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLEntity;
@@ -39,7 +40,7 @@ public enum ValidationType {
     DIRECTNARROWER(UILabels.getInstance().getSKOSDirectNarrowerLabel(),ValidationEntityType.SKOS_CONCEPT);
 
     private String label;
-    private static final Logger logger = Logger.getLogger(ValidationType.class);
+    private static final Logger logger = LogManager.getLogger();
     //FIXME: this is also declared in OntoloyTermValidationDescriptor
     private static final IRI NOTHING_IRI = IRI.create("http://www.w3.org/2002/07/owl#Nothing");
 

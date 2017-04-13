@@ -14,7 +14,8 @@ import java.util.Map;
 
 import javax.swing.SwingConstants;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFColor;
@@ -31,7 +32,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.Cell;
  */
 public class CellXSSFImpl implements Cell {
 		
-	private static Logger logger = Logger.getLogger(CellXSSFImpl.class);
+	private static Logger logger = LogManager.getLogger();
 
     public static final Font DEFAULT_FONT = new Font("verdana", Font.PLAIN, 10);
 

@@ -16,7 +16,8 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.repository.Repository;
 import uk.ac.manchester.cs.owl.semspreadsheets.repository.RepositoryAccessor;
@@ -34,7 +35,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 public class BioPortalRepositoryAccessor implements RepositoryAccessor {
 
-	private static Logger logger = Logger.getLogger(BioPortalRepositoryAccessor.class);
+	private static Logger logger = LogManager.getLogger();
 	
 	private final int CONNECT_TIMEOUT = 120000;
 	

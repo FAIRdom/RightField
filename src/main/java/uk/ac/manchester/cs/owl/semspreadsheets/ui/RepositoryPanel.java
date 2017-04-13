@@ -28,7 +28,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.repository.Repository;
 import uk.ac.manchester.cs.owl.semspreadsheets.repository.RepositoryItem;
@@ -42,7 +43,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.repository.RepositoryItemComparat
 @SuppressWarnings("serial")
 public class RepositoryPanel extends JPanel {
 	
-	Logger logger = Logger.getLogger(RepositoryPanel.class);
+	Logger logger = LogManager.getLogger();
 
 	private JList<RepositoryItem> list;
 
@@ -111,7 +112,7 @@ public class RepositoryPanel extends JPanel {
 	public static RepositoryItem showDialog(WorkbookFrame frame,
 			Repository repository) {
 		
-		final Logger logger = Logger.getLogger(RepositoryItem.class);
+		final Logger logger = LogManager.getLogger();
 		
 		final RepositoryPanel panel = new RepositoryPanel(repository);
 		JOptionPane op = new JOptionPane(panel, JOptionPane.PLAIN_MESSAGE,

@@ -17,8 +17,9 @@ import java.net.URISyntaxException;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.semanticweb.owlapi.model.IRI;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.InvalidWorkbookFormatException;
@@ -35,10 +36,9 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.InvalidWorkbookFormatExcept
  */
 public class RightFieldBatchExporter {
 	
-	private static Logger logger = Logger.getLogger(RightFieldBatchExporter.class);
+	private static Logger logger = LogManager.getLogger();
 	
 	public static void main(String [] args) {
-		logger.setLevel(Level.INFO);		
 		new RightFieldBatchExporter();		
 	}
 	

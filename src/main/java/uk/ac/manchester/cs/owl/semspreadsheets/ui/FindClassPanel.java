@@ -27,7 +27,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.semanticweb.owlapi.model.OWLEntity;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
@@ -40,7 +41,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.skos.SKOSDetector;
 @SuppressWarnings("serial")
 public class FindClassPanel extends JPanel {
 	
-	private static Logger logger = Logger.getLogger(FindClassPanel.class);
+	private static Logger logger = LogManager.getLogger();
 
 	private WorkbookManager manager;
 

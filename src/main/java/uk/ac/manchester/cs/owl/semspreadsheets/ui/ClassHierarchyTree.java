@@ -17,7 +17,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLOntology;
@@ -33,7 +34,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 @SuppressWarnings("serial")
 public class ClassHierarchyTree extends HierarchyTree {
 	
-	private static Logger logger = Logger.getLogger(ClassHierarchyTree.class);
+	private static Logger logger = LogManager.getLogger();
 
     private WorkbookManager workbookManager;    
     

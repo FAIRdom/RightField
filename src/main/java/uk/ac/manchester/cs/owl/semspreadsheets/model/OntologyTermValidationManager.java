@@ -16,7 +16,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.semanticweb.owlapi.model.IRI;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.listeners.OntologyTermValidationListener;
@@ -27,7 +28,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.listeners.OntologyTermValidationL
  */
 public class OntologyTermValidationManager {
 
-	private static Logger logger = Logger.getLogger(OntologyTermValidationManager.class);
+	private static Logger logger = LogManager.getLogger();
 
     private Set<OntologyTermValidation> ontologyTermValidations = new HashSet<OntologyTermValidation>();
 

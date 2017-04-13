@@ -12,7 +12,8 @@ import java.util.Set;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.skos.SKOSConcept;
@@ -33,7 +34,7 @@ public class SKOSHierarchyTreeModel extends ClassHierarchyTreeModel {
 	}
 	
 	
-	private static final Logger logger = Logger.getLogger(SKOSHierarchyTreeModel.class);
+	private static final Logger logger = LogManager.getLogger();
 	private DefaultMutableTreeNode rootNode;
 	private SKOSHierarchyReader skosReader;	
 	

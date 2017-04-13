@@ -9,7 +9,8 @@ package uk.ac.manchester.cs.owl.semspreadsheets.ui;
 
 import java.util.Collection;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntologyAlreadyExistsException;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
@@ -23,7 +24,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.ui.task.AbstractTask;
  */
 public class LoadEmbeddedTermsOntologies extends AbstractTask<Object,RuntimeException> {
 	
-	private static final Logger logger = Logger.getLogger(LoadEmbeddedTermsOntologies.class);
+	private static final Logger logger = LogManager.getLogger();
 
     public Object runTask() throws RuntimeException {
         loadEmbeddedTermOntologies();

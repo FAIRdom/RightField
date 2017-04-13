@@ -11,7 +11,8 @@ package uk.ac.manchester.cs.owl.semspreadsheets.ui.task;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.listeners.TaskListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyManager;
@@ -24,7 +25,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookFrame;
  */
 public abstract class AbstractTask<V, E extends Throwable> implements Task<V, E> {
 
-	private static final Logger logger = Logger.getLogger(AbstractTask.class);
+	private static final Logger logger = LogManager.getLogger();
 
     private WorkbookFrame workbookFrame;
 

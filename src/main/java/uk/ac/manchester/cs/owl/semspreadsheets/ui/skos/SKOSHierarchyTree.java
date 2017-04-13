@@ -10,7 +10,8 @@ package uk.ac.manchester.cs.owl.semspreadsheets.ui.skos;
 
 import javax.swing.tree.TreePath;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.skos.SKOSConcept;
@@ -23,7 +24,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.ui.HierarchyTreeModel;
 
 @SuppressWarnings("serial")
 public class SKOSHierarchyTree extends ClassHierarchyTree {
-	private static final Logger logger = Logger.getLogger(SKOSHierarchyTree.class);
+	private static final Logger logger = LogManager.getLogger();
 	
 	public SKOSHierarchyTree(final WorkbookManager manager, OWLOntology ontology) {
 		super(manager,ontology);		

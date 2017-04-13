@@ -20,7 +20,8 @@ import javax.swing.JTable;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.xmlbeans.impl.values.XmlValueDisconnectedException;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidation;
@@ -36,7 +37,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 @SuppressWarnings("serial")
 public class SheetTable extends JTable {
 	
-	private static Logger logger = Logger.getLogger(SheetTable.class);
+	private static Logger logger = LogManager.getLogger();
     
     private Sheet sheet;
 

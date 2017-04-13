@@ -23,12 +23,13 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @SuppressWarnings("serial")
 public class CSVExportResultPanel extends JPanel {
 	
-	private final static Logger logger = Logger.getLogger(CSVExportResultPanel.class);
+	private final static Logger logger = LogManager.getLogger();
 	
 	private JTextArea csvTextArea;
 

@@ -12,7 +12,8 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.ss.usermodel.DataValidation;
 import org.apache.poi.ss.usermodel.DataValidationConstraint;
@@ -48,7 +49,7 @@ public class SheetXSSFImpl implements Sheet {
 
     private static final int MAX_COLUMNS = 256;
     
-    private static final Logger logger = Logger.getLogger(SheetXSSFImpl.class);
+    private static final Logger logger = LogManager.getLogger();
 
 
     public SheetXSSFImpl(WorkbookXSSFImpl workbook, XSSFSheet hssfSheet) {

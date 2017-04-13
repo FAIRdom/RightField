@@ -20,7 +20,8 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.semanticweb.owlapi.model.OWLOntology;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.listeners.AbstractEntitySelectionModelListener;
@@ -42,8 +43,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 @SuppressWarnings("serial")
 public class PropertyListPanel extends JPanel {
 	private final WorkbookManager workbookManager;
-	private static final Logger logger = Logger
-			.getLogger(PropertyListPanel.class);
+	private static final Logger logger = LogManager.getLogger();
 	private JComboBox<OWLPropertyItem> comboBox;
 	private JCheckBox checkBox;	
 	private OWLOntology selectedOntology;

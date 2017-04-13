@@ -26,7 +26,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.semanticweb.owlapi.io.OWLOntologyCreationIOException;
 import org.semanticweb.owlapi.io.UnparsableOntologyException;
 import org.semanticweb.owlapi.model.IRI;
@@ -45,7 +46,7 @@ public class ErrorHandler {
 
     private static ErrorHandler instance = new ErrorHandler();
     
-    private static Logger logger = Logger.getLogger(ErrorHandler.class);
+    private static Logger logger = LogManager.getLogger();
 
     private ErrorHandler() {
     }

@@ -16,7 +16,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * @author Matthew Horridge
@@ -24,7 +25,7 @@ import org.apache.log4j.Logger;
  */
 public class OntologyTermValidationWorkbookParser {
 	
-	private static final Logger logger = Logger.getLogger(OntologyTermValidationWorkbookParser.class);
+	private static final Logger logger = LogManager.getLogger();
 
     private final WorkbookManager workbookManager;
     

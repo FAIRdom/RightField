@@ -12,7 +12,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.semanticweb.owlapi.model.IRI;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.repository.RepositoryItem;
@@ -41,7 +42,7 @@ public class BioPortalRepositoryItem implements RepositoryItem {
     
     private final BioPortalRepositoryAccessor repositoryAccessor;
     
-    Logger logger = Logger.getLogger(BioPortalRepositoryItem.class);
+    Logger logger = LogManager.getLogger();
 	
     
     public BioPortalRepositoryItem(String acronym, String humanReadableName,BioPortalRepositoryAccessor repositoryAccessor) {

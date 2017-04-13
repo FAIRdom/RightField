@@ -21,7 +21,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFName;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
@@ -50,7 +51,7 @@ public class WorkbookHSSFImpl implements MutableWorkbook, WorkbookChangeVisitor 
 
     private HSSFWorkbook workbook;
     
-    private static final Logger logger = Logger.getLogger(WorkbookHSSFImpl.class);    
+    private static final Logger logger = LogManager.getLogger();    
 
     private Set<WorkbookChangeListener> changeListeners = new HashSet<WorkbookChangeListener>();
 

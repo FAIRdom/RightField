@@ -16,7 +16,8 @@ import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.semanticweb.owlapi.model.IRI;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.export.CSVExporter;
@@ -32,7 +33,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookFrame;
  */
 public class RightField {
 
-	private static Logger logger = Logger.getLogger(RightField.class);
+	private static Logger logger = LogManager.getLogger();
 	
     private static final String WINDOW_X_KEY = "orch.window.x";
 

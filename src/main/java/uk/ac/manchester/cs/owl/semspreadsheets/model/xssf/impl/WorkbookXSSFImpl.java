@@ -24,7 +24,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.poi.ss.usermodel.Name;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFName;
@@ -49,7 +50,7 @@ public class WorkbookXSSFImpl implements MutableWorkbook, WorkbookChangeVisitor 
 
     private XSSFWorkbook workbook;
     
-    private static final Logger logger = Logger.getLogger(WorkbookXSSFImpl.class);
+    private static final Logger logger = LogManager.getLogger();
 
     private List<WorkbookChangeListener> changeListeners = new ArrayList<WorkbookChangeListener>();
 

@@ -16,7 +16,8 @@ import java.util.Collection;
 
 import javax.swing.JOptionPane;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Cell;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidation;
@@ -34,7 +35,7 @@ public class SheetCellCopyAction extends SelectedCellsAction {
 	
 	protected int MAX_CELLS=500;
 
-	private static Logger logger = Logger.getLogger(SheetCellCopyAction.class);
+	private static Logger logger = LogManager.getLogger();
 	private final Toolkit toolkit;
 
 	public SheetCellCopyAction(WorkbookManager workbookManager, Toolkit toolkit) {

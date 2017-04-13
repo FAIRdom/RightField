@@ -37,7 +37,8 @@ import javax.swing.JSeparator;
 import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileFilter;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
@@ -89,7 +90,7 @@ public class WorkbookFrame extends JFrame {
 		
 	private static final String [] APPLICATION_LOGO_FILENAMES = {"/rightfield-logo.png","/rightfield-logo-16x16.png"};
 
-	private static final Logger logger = Logger.getLogger(WorkbookFrame.class);			
+	private static final Logger logger = LogManager.getLogger();			
 
 	private WorkbookManager workbookManager;
 

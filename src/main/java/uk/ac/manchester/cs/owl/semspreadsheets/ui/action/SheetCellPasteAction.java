@@ -16,7 +16,8 @@ import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.StringTokenizer;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Cell;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidationDescriptor;
@@ -34,7 +35,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.change.SetCellValue;
 @SuppressWarnings("serial")
 public class SheetCellPasteAction extends SelectedCellsAction {
 
-	private static Logger logger = Logger.getLogger(SheetCellPasteAction.class);
+	private static Logger logger = LogManager.getLogger();
 
 	private final Toolkit toolkit;
 		

@@ -14,7 +14,8 @@ import java.util.Map;
 
 import javax.swing.SwingConstants;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFComment;
@@ -33,7 +34,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.Cell;
  */
 public class CellHSSFImpl implements Cell {
 	
-	private static Logger logger = Logger.getLogger(CellHSSFImpl.class);
+	private static Logger logger = LogManager.getLogger();
 
     public static final Font DEFAULT_FONT = new Font("verdana", Font.PLAIN, 10);
 

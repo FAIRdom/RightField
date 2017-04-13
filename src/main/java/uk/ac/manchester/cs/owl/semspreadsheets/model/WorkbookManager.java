@@ -16,7 +16,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLEntity;
@@ -40,7 +41,7 @@ import uk.org.rightfield.RightField;
  */
 public class WorkbookManager {
 
-	private static final Logger logger = Logger.getLogger(WorkbookManager.class);
+	private static final Logger logger = LogManager.getLogger();
     private Workbook workbook;      
 
     private URI workbookURI;  
