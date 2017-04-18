@@ -45,11 +45,11 @@ public class BioPortalCache {
 	}
 	
 	void dumpStoredProperties() throws IOException {
-		logger.error("Storing cache in " + getUserBioportalCache());
+		logger.info("Storing cache in " + getUserBioportalCache());
     	FileOutputStream stream = new FileOutputStream(getUserBioportalCache());
     	bioportalCachedDetails.store(stream,null);
     	stream.close();
-    	logger.error("Stored");
+    	logger.info("Stored");
 	}
 	
 	private BioPortalCache() {
