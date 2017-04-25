@@ -12,8 +12,8 @@ description: > # this means to ignore newlines until "baseurl:"
   The eScience Lab team is a multi-disciplinary internationally leading research group
   focusing on the challenges of eScience. We specialise in data and knowledge-intensive e-Laboratories.
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "http://www.esciencelab.org.uk" # the base hostname & protocol for your site
-github_username:  eScienceLab
+url: "http://www.rightfield.org.uk" # the base hostname & protocol for your site
+github_username:  myGrid
 encoding: UTF-8
 permalink: pretty
 
@@ -23,14 +23,3 @@ gems:
 
 # Build settings
 markdown: kramdown
-
-collections:
-  projects:
-    output: true
-    permalink: /:collection/:path/ # Note, trailing / needed to avoid .html
-  activities:
-    output: true
-    permalink: /:collection/:path/ # Note, trailing / needed to avoid .html
-  products:
-    output: true
-    permalink: /:collection/:path/ # Note, trailing / needed to avoid .html
