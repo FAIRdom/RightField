@@ -11,7 +11,7 @@ email: support@mygrid.org.uk
 description: > # this means to ignore newlines until "baseurl:"
   The eScience Lab team is a multi-disciplinary internationally leading research group
   focusing on the challenges of eScience. We specialise in data and knowledge-intensive e-Laboratories.
-baseurl: "RightField" # the subpath of your site, e.g. /blog
+baseurl: "" # the subpath of your site, e.g. /blog
 url: "http://mygrid.github.io" # the base hostname & protocol for your site
 github_username:  myGrid
 encoding: UTF-8
