@@ -1,0 +1,36 @@
+# Welcome to Jekyll!
+#
+# This config file is meant for settings that affect your whole blog, values
+# which you are expected to set up once and rarely need to edit after that.
+# For technical reasons, this file is *NOT* reloaded automatically when you use
+# 'jekyll serve'. If you change this file, please restart the server process.
+
+# Site settings
+title: RightField
+email: support@mygrid.org.uk
+description: > # this means to ignore newlines until "baseurl:"
+  The eScience Lab team is a multi-disciplinary internationally leading research group
+  focusing on the challenges of eScience. We specialise in data and knowledge-intensive e-Laboratories.
+baseurl: "" # the subpath of your site, e.g. /blog
+url: "http://www.esciencelab.org.uk" # the base hostname & protocol for your site
+github_username:  eScienceLab
+encoding: UTF-8
+permalink: pretty
+
+#Gems
+gems:
+  - jekyll-sitemap
+
+# Build settings
+markdown: kramdown
+
+collections:
+  projects:
+    output: true
+    permalink: /:collection/:path/ # Note, trailing / needed to avoid .html
+  activities:
+    output: true
+    permalink: /:collection/:path/ # Note, trailing / needed to avoid .html
+  products:
+    output: true
+    permalink: /:collection/:path/ # Note, trailing / needed to avoid .html

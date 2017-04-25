@@ -1,0 +1,314 @@
+/**
+ * Site header
+ */
+.site-header {
+    min-height: 56px;
+
+    // Positioning context for the mobile navigation icon
+    position: relative;
+    font-family: 'Titillium Web', sans-serif;
+    background-color: $header-background-color;
+    box-shadow: 0 1px 3px #000;
+    padding: 15px;
+}
+
+.site-logo {
+    display: block;
+    position:relative;
+    float:left;
+    width: 8em;
+    padding-right: 1em
+}
+
+.site-title {
+    font-size: 26px;
+    font-weight: bold;
+    line-height: 56px;
+    letter-spacing: -1px;
+    margin-bottom: 0;
+    float: left;
+
+    &,
+    &:visited {
+        color: $header-text-color;
+    }
+}
+
+.site-nav {
+    float: right;
+    line-height: 56px;
+
+    .menu-icon {
+        display: none;
+    }
+
+    .page-link {
+        color: $header-text-color;
+        line-height: $base-line-height;
+
+        // Gaps between nav items, but not on the last one
+        &:not(:last-child) {
+            margin-right: 20px;
+        }
+    }
+
+    @include media-query($on-palm) {
+        position: absolute;
+        z-index: 20;
+        top: 28px;
+        right: $spacing-unit / 2;
+        background-color: lighten($header-background-color, 10%);
+        text-align: right;
+
+        .menu-icon {
+            display: block;
+            float: right;
+            width: 36px;
+            height: 27px;
+            line-height: 0;
+            padding-top: 6px;
+            text-align: center;
+
+            > svg {
+                width: 18px;
+                height: 15px;
+
+                path {
+                    fill: $header-text-color;
+                }
+            }
+        }
+
+        .trigger {
+            clear: both;
+            display: none;
+        }
+
+        &:hover .trigger {
+            display: block;
+        }
+
+        .page-link {
+            display: block;
+            padding: 10px 10px 10px 40px;
+
+            &:hover {
+                background-color: lighten($header-background-color, 15%);
+            }
+
+            &:not(:last-child) {
+                margin-right: 0;
+            }
+        }
+    }
+}
+
+
+
+/**
+ * Site footer
+ */
+.site-footer {
+    border-top: 1px solid $grey-color-light;
+    padding: $spacing-unit 0;
+}
+
+.footer-heading {
+    font-size: 18px;
+    margin-bottom: $spacing-unit / 2;
+}
+
+.contact-list,
+.social-media-list {
+    list-style: none;
+    margin-left: 0;
+}
+
+.footer-col-wrapper {
+    font-size: 15px;
+    color: $grey-color;
+    margin-left: -$spacing-unit / 2;
+    @extend %clearfix;
+}
+
+.footer-col {
+    float: left;
+    margin-bottom: $spacing-unit / 2;
+    padding-left: $spacing-unit / 2;
+}
+
+.footer-col-1 {
+    width: -webkit-calc(35% - (#{$spacing-unit} / 2));
+    width:         calc(35% - (#{$spacing-unit} / 2));
+}
+
+.footer-col-2 {
+    width: -webkit-calc(20% - (#{$spacing-unit} / 2));
+    width:         calc(20% - (#{$spacing-unit} / 2));
+}
+
+.footer-col-3 {
+    width: -webkit-calc(45% - (#{$spacing-unit} / 2));
+    width:         calc(45% - (#{$spacing-unit} / 2));
+}
+
+@include media-query($on-laptop) {
+    .footer-col-1,
+    .footer-col-2 {
+        width: -webkit-calc(50% - (#{$spacing-unit} / 2));
+        width:         calc(50% - (#{$spacing-unit} / 2));
+    }
+
+    .footer-col-3 {
+        width: -webkit-calc(100% - (#{$spacing-unit} / 2));
+        width:         calc(100% - (#{$spacing-unit} / 2));
+    }
+}
+
+@include media-query($on-palm) {
+    .footer-col {
+        float: none;
+        width: -webkit-calc(100% - (#{$spacing-unit} / 2));
+        width:         calc(100% - (#{$spacing-unit} / 2));
+    }
+}
+
+
+
+/**
+ * Page content
+ */
+.page-content {
+    padding: $spacing-unit 0;
+}
+
+.page-heading {
+    font-size: 20px;
+}
+
+.post-list {
+    margin-left: 0;
+    list-style: none;
+
+    > li {
+        margin-bottom: $spacing-unit;
+    }
+}
+
+.post-meta {
+    font-size: $small-font-size;
+    color: $grey-color;
+}
+
+.post-link {
+    display: block;
+    font-size: 18px;
+}
+
+
+
+/**
+ * Posts
+ */
+.post-header {
+    margin-bottom: $spacing-unit;
+}
+
+.post-title {
+    font-size: 42px;
+    letter-spacing: -1px;
+    line-height: 1;
+
+    @include media-query($on-laptop) {
+        font-size: 36px;
+    }
+}
+
+.post-content {
+    margin-bottom: $spacing-unit;
+
+    h2 {
+        font-size: 32px;
+
+        @include media-query($on-laptop) {
+            font-size: 28px;
+        }
+    }
+
+    h3 {
+        font-size: 26px;
+
+        @include media-query($on-laptop) {
+            font-size: 22px;
+        }
+    }
+
+    h4 {
+        font-size: 20px;
+
+        @include media-query($on-laptop) {
+            font-size: 18px;
+        }
+    }
+}
+
+/** product **/
+img.product-logo {
+    max-height: 100px;
+}
+
+.hero {
+    // background-image: url('/images/garden.png');
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#5a7999+9,344659+81 */
+    /* background: #5a7999; /* Old browsers */
+    /* background: -moz-linear-gradient(-45deg, #5a7999 9%, #344659 81%); /* FF3.6-15 */
+    /* background: -webkit-linear-gradient(-45deg, #5a7999 9%,#344659 81%); /* Chrome10-25,Safari5.1-6 */
+    /* background: linear-gradient(135deg, #5a7999 9%,#344659 81%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    /* filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5a7999', endColorstr='#344659',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-image: url('/images/garden_cropped_scaled.jpg');
+    background-size: auto;
+    height: 350px;
+    @include media-query($on-laptop) {
+        height: 200px;
+    }
+    margin-bottom: 20px;
+
+    h1 {
+        font-family: 'Titillium Web', sans-serif;
+        font-size: 80px;
+        line-height: 350px;
+        color: white;
+        text-shadow: 1px 1px 3px #000;
+        padding: 0;
+        float: left;
+        position: absolute;
+        z-index: 10;
+        white-space: nowrap;
+        @include media-query($on-laptop) {
+            font-size: 60px;
+            line-height: 200px;
+        }
+    }
+}
+
+.about {
+    width: 66%;
+    float: left;
+    @include media-query($on-palm) {
+        width: 100%;
+        float: none;
+    }
+}
+
+.news {
+    width: 33%;
+    padding-left: 20px;
+    float: right;
+    @include media-query($on-palm) {
+        width: 100%;
+        padding-left: 0;
+        float: none;
+    }
+}

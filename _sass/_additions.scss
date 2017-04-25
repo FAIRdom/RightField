@@ -1,0 +1,121 @@
+#search-wrapper {
+  float: right;
+  min-width: 20em;
+  max-width: 30em;
+  box-sizing: content-box;
+  .gsc-control-cse {
+    background-color: transparent !important;
+    border: none !important;
+  }
+  .gsc-input-box {
+    height: 32px;
+  }
+}
+
+.product-screenshot {
+  position: relative;
+  display: inline-block;
+  margin: 1em;
+  border: 1px solid #ccc;
+  box-shadow: 2px 2px 4px #aaa;
+  color: $text-color;
+
+  &:visited {
+    text-decoration: none;
+    color: $text-color;
+  }
+
+  &:hover {
+    text-decoration: none;
+    border-color: $brand-color;
+    color: $text-color;
+  }
+}
+
+.product-screenshot h3 {
+  text-align: center;
+  padding: 0.2em;
+  margin: 0;
+  background: $header-background-color;
+  color: $header-text-color;
+  font-size: $base-font-size;
+}
+
+.product-screenshot img {
+  width: 320px;
+  height: 192px;
+}
+
+.product-screenshot .product-description {
+  position: absolute;
+  bottom: 0;
+  background: #fff;
+  border-top: 1px solid #ccc;
+  padding: 5px;
+  width: 100%;
+}
+
+h2.post-tagline { 
+  font-size: 110%;
+  font-style: italic;
+  font-weight: normal;
+  letter-spacing: 0.07em;
+}
+
+
+img.project-logo {
+  padding-bottom: 1em;
+  @include media-query($on-laptop) {
+    max-width: 50%;
+  }
+  max-width: 100%;
+}
+
+div.logo-grid {
+  clear: both;
+  margin-top: 10px;
+  text-align: center;
+}
+
+a.logo-grid-item {
+  display: inline-block;
+  padding: 10px;
+  width: 33%;
+  min-width: 300px;
+  img {
+    filter: grayscale(75%);
+    -webkit-filter: grayscale(75%);
+    &:hover {
+      filter: none;
+      -webkit-filter: none;
+    }
+  }
+}
+
+.profile_box {
+  width: 180px;
+  height: 280px;
+  display: inline-block;
+  vertical-align: top;
+  text-align: center;
+  .name {
+    font-size: 16px;
+    font-weight: bold;
+  }
+  .role {
+    text-align: center;
+    font-size: smaller;
+  }
+  .profile_picture {
+    max-width: 150px;
+    height: 150px;
+  }
+  &.head {
+    display: block;
+  }
+}
+
+div.former-members li {
+  width: 16em;
+  float: left;
+}

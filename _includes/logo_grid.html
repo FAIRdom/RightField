@@ -1,0 +1,5 @@
+<div class="logo-grid">
+    {% for product in site.products %}
+    <a class="logo-grid-item" href="{{product.url}}"><img src="{{product.logo}}"/></a>
+    {% endfor %}
+</div>

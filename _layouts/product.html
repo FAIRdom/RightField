@@ -1,0 +1,44 @@
+---
+layout: default
+---
+
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Product",
+  "description": "{{ page.description }}",
+  "name": "{{ page.title }}",
+  "image": "{{site.url}}{{ page.screenshot | replace_first: "/sm_", "/lg_" }}",
+  "url": "{{ page.website }}",
+  "logo": "{{site.url}}{{ page.logo }}",
+  "sameAs": "{{page.wiki}}"
+}
+</script>
+
+<article class="post">
+
+    <header class="post-header">
+        <h1 class="post-title">{{ page.title }}</h1>
+    </header>
+
+    <div class="post-content">
+      {% if page.description %}
+        <h2 class="post-tagline">{{ page.description }}</h2>
+      {% endif %}
+
+        <div style="margin-bottom: 5px;">
+            <img src="{{ page.logo }}" alt="{{ page.title }}" class='product-logo'>
+        </div>
+        {{ content }}
+    </div>
+    <div class="screenshot">
+      <a href="{{ page.website }}" target="_blank">
+        <img src="{{ page.screenshot | replace_first: "/sm_", "/lg_" }}" alt="{{ page.title }}" title="Screenshot of {{ page.title }}"/>
+      </a>
+    </div>
+
+    <div>
+        Find out more about <a href="{{ page.website }}" target="_blank">{{ page.title }}</a>.
+    </div>
+
+</article>
