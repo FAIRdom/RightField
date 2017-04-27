@@ -27,6 +27,11 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Cell;
 
+import javax.swing.*;
+import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author Stuart Owen
  */
@@ -48,7 +53,7 @@ public class CellXSSFImpl implements Cell {
 
     public CellXSSFImpl(XSSFWorkbook workbook, XSSFCell theCell) {
         this.workbook = workbook;
-        this.theCell = theCell;        
+        this.theCell = theCell;
     }
 
     public Font getDefaultFont() {
@@ -86,7 +91,14 @@ public class CellXSSFImpl implements Cell {
         XSSFFont xssfFont = theCell.getCellStyle().getFont();
         return xssfFont.getStrikeout();
     }
-
+    public void setCellFormula(String formula)
+    {
+        theCell.setCellFormula(formula);
+    }
+    public void setCellStyleFormula()
+    {
+        theCell.setCellType(CellType.FORMULA);
+    }
     public boolean isUnderline() {
     	XSSFFont xssfFont = theCell.getCellStyle().getFont();
         return xssfFont.getUnderline() != 0;
@@ -98,43 +110,43 @@ public class CellXSSFImpl implements Cell {
     }
 
     public String getValue() {
-        if (theCell.getCellType() == XSSFCell.CELL_TYPE_BLANK) {
+        if (theCell.getCellTypeEnum() == CellType.BLANK) {
             return "";
         }
-        else if (theCell.getCellType() == XSSFCell.CELL_TYPE_BOOLEAN) {
+        else if (theCell.getCellTypeEnum() == CellType.BOOLEAN) {
             return Boolean.toString(theCell.getBooleanCellValue());
         }
-        else if (theCell.getCellType() == XSSFCell.CELL_TYPE_ERROR) {
+        else if (theCell.getCellTypeEnum() == CellType.ERROR) {
             return "<ERROR?>";
         }
-        else if (theCell.getCellType() == XSSFCell.CELL_TYPE_FORMULA) {
+        else if (theCell.getCellTypeEnum() == CellType.FORMULA) {
             return theCell.getCellFormula();
         }
-        else if (theCell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC) {
+        else if (theCell.getCellTypeEnum() == CellType.NUMERIC) {
             return Double.toString(theCell.getNumericCellValue());
         }
-        else if (theCell.getCellType() == XSSFCell.CELL_TYPE_STRING) {
+        else if (theCell.getCellTypeEnum() == CellType.STRING) {
             return theCell.getRichStringCellValue().getString();
         }
         return "";
     }
 
     public void setValue(String value) {
-        if (theCell.getCellType() == XSSFCell.CELL_TYPE_BLANK) {
+        if (theCell.getCellTypeEnum() == CellType.BLANK) {
             theCell.setCellValue(new XSSFRichTextString(value));
         }
-        else if (theCell.getCellType() == XSSFCell.CELL_TYPE_BOOLEAN) {
+        else if (theCell.getCellTypeEnum() == CellType.BOOLEAN) {
             theCell.setCellValue(Boolean.parseBoolean(value));
         }
-        else if (theCell.getCellType() == XSSFCell.CELL_TYPE_ERROR) {
+        else if (theCell.getCellTypeEnum() == CellType.ERROR) {
         }
-        else if (theCell.getCellType() == XSSFCell.CELL_TYPE_FORMULA) {
+        else if (theCell.getCellTypeEnum() == CellType.FORMULA) {
             theCell.setCellFormula(value);
         }
-        else if (theCell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC) {
+        else if (theCell.getCellTypeEnum() == CellType.NUMERIC) {
             theCell.setCellValue(Double.parseDouble(value));
         }
-        else if (theCell.getCellType() == XSSFCell.CELL_TYPE_STRING) {
+        else if (theCell.getCellTypeEnum() == CellType.STRING) {
             theCell.setCellValue(new XSSFRichTextString(value));
         }
     }
@@ -154,12 +166,7 @@ public class CellXSSFImpl implements Cell {
             font = workbook.createFont();
             cellStyle.setFont(font);
         }
-        if (b) {
-            font.setBoldweight(XSSFFont.BOLDWEIGHT_BOLD);
-        }
-        else {
-            font.setBoldweight(XSSFFont.BOLDWEIGHT_NORMAL);
-        }
+        font.setBold(b);
         fontCache.clear();
     }
 
@@ -179,7 +186,7 @@ public class CellXSSFImpl implements Cell {
             String name = xssfFont.getFontName();
             int size = xssfFont.getFontHeightInPoints();
             int style = Font.PLAIN;
-            if (xssfFont.getBoldweight() == XSSFFont.BOLDWEIGHT_BOLD) {
+            if (xssfFont.getBold()) {
                 style = Font.BOLD;
                 if (xssfFont.getItalic()) {
                     style = style | Font.ITALIC;
@@ -222,11 +229,11 @@ public class CellXSSFImpl implements Cell {
         }        
         else {
         	XSSFColor xssfColour = cellStyle.getFillForegroundXSSFColor();
-    		if (xssfColour == null) {
+    		if (xssfColour == null || null == xssfColour.getRGB()) {
     			colour = Color.WHITE;
     		}
     		else {
-    			colour = translateRGB(xssfColour.getRgb());
+    			colour = translateRGB(xssfColour.getRGB());
     		}
         }
 		
@@ -260,7 +267,52 @@ public class CellXSSFImpl implements Cell {
 			logger.error("Error setting cell style",e);
 		}
 	}
+    public void setBorders(Color colour) {
+        XSSFCellStyle style = getBorderStyleForColour(colour);
 
+        try {
+
+            theCell.getCellStyle().setBottomBorderColor(new XSSFColor(colour));
+            theCell.getCellStyle().setTopBorderColor(new XSSFColor(colour));
+            theCell.getCellStyle().setLeftBorderColor(new XSSFColor(colour));
+            theCell.getCellStyle().setRightBorderColor(new XSSFColor(colour));
+
+            theCell.getCellStyle().setBorderTop(BorderStyle.THICK);
+            theCell.getCellStyle().setBorderBottom(BorderStyle.THICK);
+            theCell.getCellStyle().setBorderLeft(BorderStyle.THICK);
+            theCell.getCellStyle().setBorderRight(BorderStyle.THICK);
+            //theCell.setCellStyle(style);
+        }
+        catch(Exception e) {
+            logger.error("Error setting cell style",e);
+        }
+
+    }
+    private XSSFCellStyle getBorderStyleForColour(Color colour) {
+        Map<Color,XSSFCellStyle> styles = colourStylesForWorkbook.get(getWorkbook());
+        if (styles == null) {
+            styles = new HashMap<Color,XSSFCellStyle>();
+            colourStylesForWorkbook.put(getWorkbook(), styles);
+        }
+        XSSFCellStyle style = styles.get(colour);
+        if (style==null) {
+            style = getWorkbook().createCellStyle();
+            XSSFColor col = new XSSFColor(colour);
+
+            style.setBottomBorderColor(col);
+            style.setTopBorderColor(col);
+            style.setLeftBorderColor(col);
+            style.setRightBorderColor(col);
+
+            style.setBorderTop(BorderStyle.THICK);
+            style.setBorderBottom(BorderStyle.THICK);
+            style.setBorderLeft(BorderStyle.THICK);
+            style.setBorderRight(BorderStyle.THICK);
+
+            styles.put(colour,style);
+        }
+        return style;
+    }
 	private XSSFCellStyle getFillStyleForColour(Color colour) {
 		Map<Color,XSSFCellStyle> styles = colourStylesForWorkbook.get(getWorkbook());
     	if (styles == null) {
@@ -271,7 +323,7 @@ public class CellXSSFImpl implements Cell {
     	if (style==null) {
     		style = getWorkbook().createCellStyle();
     		XSSFColor col = new XSSFColor(colour);
-    		style.setFillPattern(XSSFCellStyle.SOLID_FOREGROUND );
+    		style.setFillPattern(FillPatternType.SOLID_FOREGROUND );
     		style.setFillForegroundColor(col);
     		styles.put(colour,style);
     	}
@@ -281,8 +333,8 @@ public class CellXSSFImpl implements Cell {
     public Color getForeground() {
         if (foreground == null) {
         	XSSFColor colour = theCell.getCellStyle().getFont().getXSSFColor();
-        	if (colour!=null) {
-        		foreground = translateRGB(colour.getRgb());
+        	if (colour != null && colour.getRGB() != null) {
+        		foreground = translateRGB(colour.getRGB());
         	}        	
         	else {
         		foreground = Color.BLACK;
@@ -296,14 +348,14 @@ public class CellXSSFImpl implements Cell {
         if (cellStyle == null) {
             return SwingConstants.LEFT;
         }
-        short xssfAlignment = cellStyle.getAlignment();
-        if (xssfAlignment == XSSFCellStyle.ALIGN_LEFT) {
+        HorizontalAlignment xssfAlignment = cellStyle.getAlignmentEnum();
+        if (xssfAlignment == HorizontalAlignment.LEFT) {
             return SwingConstants.LEFT;
         }
-        else if (xssfAlignment == XSSFCellStyle.ALIGN_CENTER) {
+        else if (xssfAlignment == HorizontalAlignment.CENTER) {
             return SwingConstants.CENTER;
         }
-        else if (xssfAlignment == XSSFCellStyle.ALIGN_RIGHT) {
+        else if (xssfAlignment == HorizontalAlignment.RIGHT) {
             return SwingConstants.RIGHT;
         }
         else {

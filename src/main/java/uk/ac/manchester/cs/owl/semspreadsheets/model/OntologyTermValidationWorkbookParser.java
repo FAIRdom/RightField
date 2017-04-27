@@ -8,6 +8,9 @@
 package uk.ac.manchester.cs.owl.semspreadsheets.model;
 
 
+<<<<<<< HEAD
+import org.apache.log4j.Logger;
+=======
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -18,6 +21,10 @@ import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+>>>>>>> mygrid/alan
+
+import java.awt.*;
+import java.util.*;
 
 /**
  * @author Matthew Horridge
@@ -77,7 +84,7 @@ public class OntologyTermValidationWorkbookParser {
     	Map<String,Validation> validations = new HashMap<String,Validation>();
     	
     	for (Sheet sheet : workbook.getSheets()) {    		
-    		for (Validation validation : sheet.getValidations()) {
+			for (Validation validation : sheet.getValidations()) {
     			if (validation.isLiteralValidation()) {    				    				
     				validations.put(PropertyValidationForumlaDefinition.decode(validation.getFormula()),validation);
     			}
@@ -141,7 +148,7 @@ public class OntologyTermValidationWorkbookParser {
     		if (!originalColours.containsKey(cell)) {
     			originalColours.put(cell, cell.getBackgroundFill());
     		}    		
-            cell.setBackgroundFill(highlightColour);  
+            cell.setBackgroundFill(highlightColour);
     	}
     }
     

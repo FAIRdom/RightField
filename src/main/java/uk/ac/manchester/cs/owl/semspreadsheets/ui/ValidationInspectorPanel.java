@@ -24,8 +24,8 @@ import javax.swing.border.TitledBorder;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.semanticweb.owlapi.model.OWLEntity;
 
+import org.semanticweb.owlapi.model.OWLEntity;
 import uk.ac.manchester.cs.owl.semspreadsheets.listeners.AbstractEntitySelectionModelListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.listeners.AbstractWorkbookManagerListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.listeners.CellSelectionListener;
@@ -34,6 +34,13 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.ValidationType;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.ApplyValidationAction;
+
+import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.TitledBorder;
+import java.awt.*;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 /**
  * Container panel for selecting or showing the validation and properties that are going to be applied to the cells. 
@@ -52,7 +59,9 @@ public class ValidationInspectorPanel extends JPanel {
 
     private WorkbookManager workbookManager;
 
-    private JLabel selectedCellAddressLabel = new JLabel("No cells are currently selected");        
+    private JLabel selectedCellAddressLabel = new JLabel("No cells are currently selected");
+
+    private JLabel selectedLinkLabel = new JLabel("No link");
 
     private static Color textColor = new Color(96, 110, 128);
     
@@ -70,7 +79,10 @@ public class ValidationInspectorPanel extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(7, 2, 7, 7));  
         
         //selected cell        
-        addSelectedCellLabel();        
+        addSelectedCellLabel();
+
+        //add selected link
+        addLinkCellLabel();
 
         //class hierarchy
         addClassHierarchyPanel(frame);        
@@ -79,6 +91,8 @@ public class ValidationInspectorPanel extends JPanel {
         addValidationSelectionPanel(frame);                                       
         
         updateSelectionLabel(workbookManager.getSelectionModel().getSelectedRange());
+
+        updateSelectionLinkLabel();
                 
     }    
     
@@ -95,6 +109,7 @@ public class ValidationInspectorPanel extends JPanel {
         frame.getWorkbookManager().getSelectionModel().addCellSelectionListener(new CellSelectionListener() {
             public void selectionChanged(Range range) {
                 updateSelectionLabel(range);
+                updateSelectionLinkLabel();
             }
         });     
           
@@ -116,6 +131,11 @@ public class ValidationInspectorPanel extends JPanel {
 		selectedCellAddressLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         add(selectedCellAddressLabel);
 	}
+    private void addLinkCellLabel() {
+        selectedLinkLabel.setBorder(BorderFactory.createEmptyBorder(5, 7, 5, 0));
+        selectedLinkLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+        add(selectedLinkLabel);
+    }
 
 	private JPanel setupButtonPanel(ValidationTypeSelectorPanel typeSelectorPanel) {
 		
@@ -182,7 +202,11 @@ public class ValidationInspectorPanel extends JPanel {
             selectedCellAddressLabel.setText("No cells are currently selected");
         }
     }
-
+    private void updateSelectionLinkLabel()
+    {
+        String testString = workbookManager.getLinkString();
+        selectedLinkLabel.setText(testString);
+    }
     private static Border createTitledBorder(String title) {
         Border border = BorderFactory.createEmptyBorder(1, 1, 1, 1);
 

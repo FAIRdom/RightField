@@ -45,7 +45,7 @@ public interface Sheet {
     Cell addCellAt(int col, int row);
 
     void clearCellAt(int col, int row);
-    
+
     List<Cell> getCellsWithContent();
 
     /**

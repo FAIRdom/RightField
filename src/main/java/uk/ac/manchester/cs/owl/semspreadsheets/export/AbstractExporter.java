@@ -8,10 +8,6 @@
 
 package uk.ac.manchester.cs.owl.semspreadsheets.export;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -112,7 +108,7 @@ public abstract class AbstractExporter implements Exporter {
 							}
 						}
 						if (matchedTerm!=null) {
-							PopulatedValidatedCellDetails pop = new PopulatedValidatedCellDetails(validation,cell,matchedTerm,value);					
+							PopulatedValidatedCellDetails pop = new PopulatedValidatedCellDetails(validation,cell,matchedTerm,value);
 							result.add(pop);
 						}
 					}

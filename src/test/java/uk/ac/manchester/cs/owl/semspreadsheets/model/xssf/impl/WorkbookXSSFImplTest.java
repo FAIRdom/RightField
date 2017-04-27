@@ -111,16 +111,14 @@ public class WorkbookXSSFImplTest extends GeneralWorkbookTests {
 		assertTrue(f.exists());
 		try {
 			wb.saveAs(f.toURI());
-			fail("GOOD News - its possible that this issue has been fixed by Apache POI");
 		} catch (XmlValueDisconnectedException e) {
-			//expected due to bug
+			fail("BAD News - the issue was fixed by Apache POI but it might got back");
 		}
 
 		try {
 			assertNotNull(WorkbookFactory.createWorkbook(f.toURI()));
-			fail("GOOD News - its possible that this issue has been fixed by Apache POI");
 		} catch (InvalidWorkbookFormatException e) {
-			// expected due to bug
+			fail("BAD News - the issue was fixed by Apache POI but it might got back");
 		}
 
 		// this is to test a weird problem with the sheet column widths becoming

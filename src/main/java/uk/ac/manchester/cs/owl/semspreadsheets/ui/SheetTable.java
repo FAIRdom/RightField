@@ -22,13 +22,14 @@ import javax.swing.table.TableModel;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.xmlbeans.impl.values.XmlValueDisconnectedException;
 
-import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidation;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidationDescriptor;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
+import org.apache.xmlbeans.impl.values.XmlValueDisconnectedException;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.*;
+
+import javax.swing.*;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableModel;
+import java.awt.*;
 
 /**
  * @author Stuart Owen
@@ -37,6 +38,8 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 @SuppressWarnings("serial")
 public class SheetTable extends JTable {
 	
+    public static final Font FONT = new Font("verdana", Font.PLAIN, 50);
+
 	private static Logger logger = LogManager.getLogger();
     
     private Sheet sheet;
@@ -47,7 +50,7 @@ public class SheetTable extends JTable {
 
 	public SheetTable(WorkbookManager ss, Sheet sheet) {
         this.workbookManager = ss;
-        this.sheet = sheet;        
+        this.sheet = sheet;
 
         setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         TableModel model = new SheetTableModel(sheet);
@@ -62,9 +65,8 @@ public class SheetTable extends JTable {
             TableColumn column = getColumnModel().getColumn(col);
             column.setCellRenderer(ren);
             column.setCellEditor(editor);
-            column.setPreferredWidth(sheet.getColumnWidth(col));            
+            column.setPreferredWidth(sheet.getColumnWidth(col));
         }
-
         setShowGrid(true);
         setRowMargin(1);
         setGridColor(new Color(206, 206, 206));
@@ -125,6 +127,68 @@ public class SheetTable extends JTable {
             }
         }
 
+        Sheet sheet = workbookManager.getSelectionModel().getSelectedRange().getSheet();
+
+        if(sheet != null)
+        {
+            for(String entry : workbookManager.getLinkedCells(sheet.getName()))
+            {
+                    Range validation;
+                    String cellString = entry.split(",")[0];
+
+                    Color color;
+                    String test = entry.split(",")[1];
+                    if(test .equals("BLUE"))
+                    {
+                        color = Color.BLUE;
+                    }else if(test.equals("RED"))
+                    {
+                        color = Color.RED;
+                    }else if(test.equals("MAGENTA"))
+                    {
+                        color = Color.MAGENTA;
+                    }else if(test.equals("ORANGE"))
+                    {
+                        color = Color.ORANGE;
+                    }else if(test.equals("CYAN"))
+                    {
+                        color = Color.CYAN;
+                    }else if(test.equals("GRAY"))
+                    {
+                        color = Color.GRAY;
+                    }
+                    else
+                    {
+                        color = Color.PINK;
+                    }
+                    int noOfColumns = Integer.parseInt(entry.split(",")[2]);
+                    CellAddress da = new CellAddress(cellString);
+                    for(int i = 0; i < noOfColumns; i++)
+                    {
+                        if(sheet.getCellAt(da.getColumn()+i, da.getRow()) == null)
+                        {
+                            sheet.addCellAt(da.getColumn()+i, da.getRow());
+                        }
+                    }
+
+                    validation = new Range(sheet, da.getColumn(),da.getRow(),da.getColumn()+noOfColumns-1,da.getRow());
+
+                    g.setColor(color);
+                    Rectangle startRect = getCellRect(validation.getFromRow(), validation.getFromColumn(), false);
+                    Rectangle endRect = getCellRect(validation.getToRow(), validation.getToColumn(), false);
+                    int x1 = startRect.x + 1;
+                    int y1 = startRect.y + 1;
+                    int width = endRect.width + endRect.x - startRect.x - 2;
+                    int height = endRect.y + endRect.height - startRect.y - 2;
+                    Rectangle rect = new Rectangle(x1, y1, width, height);
+                    Composite oldComposite = g2.getComposite();
+                    g2.setComposite(alphaComposite2);
+                    g2.drawRoundRect(rect.x, rect.y, rect.width, rect.height, 5, 5);
+                    g2.setComposite(alphaComposite);
+                    g2.setComposite(oldComposite);
+                
+            }
+        }
         g2.setStroke(oldStroke);
         g.setColor(oldColor);
     }

@@ -7,28 +7,20 @@
  *******************************************************************************/
 package uk.ac.manchester.cs.owl.semspreadsheets.model.hssf.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFDataValidation;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.log4j.Logger;
+import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.DataValidationConstraint;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellRangeAddressList;
-
-import uk.ac.manchester.cs.owl.semspreadsheets.model.Cell;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.PropertyValidationForumlaDefinition;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.Validation;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.Workbook;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.*;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.impl.ValidationImpl;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author Stuart Owen
@@ -41,6 +33,8 @@ public class SheetHSSFImpl implements Sheet {
     private HSSFWorkbook hssfWorkbook;
 
     private HSSFSheet sheet;
+
+    private static Logger logger = Logger.getLogger(SheetHSSFImpl.class);
 
     private static final short MAX_ROWS = Short.MAX_VALUE;
 
@@ -68,7 +62,7 @@ public class SheetHSSFImpl implements Sheet {
         		int lastCell = row.getLastCellNum();
         		for (int cellIndex = firstCell ; cellIndex <= lastCell;cellIndex++) {
         			HSSFCell cell = row.getCell(cellIndex);
-        			boolean skip = cell==null || cell.getCellType()==HSSFCell.CELL_TYPE_BLANK || (cell.getCellType()==HSSFCell.CELL_TYPE_STRING && cell.getStringCellValue().isEmpty());        			
+        			boolean skip = cell==null || cell.getCellTypeEnum()== CellType.BLANK || (cell.getCellTypeEnum()==CellType.STRING && cell.getStringCellValue().isEmpty());
         			if (!skip) {
         				cells.add(new CellHSSFImpl(hssfWorkbook, cell));
         			}
@@ -98,7 +92,7 @@ public class SheetHSSFImpl implements Sheet {
     }
 
     public void setHidden(boolean b) {
-        hssfWorkbook.setSheetHidden(hssfWorkbook.getSheetIndex(sheet), b);
+        //hssfWorkbook.setSheetHidden(hssfWorkbook.getSheetIndex(sheet), b);
     }
 
     public void setVeryHidden(boolean b) {    	
@@ -184,7 +178,7 @@ public class SheetHSSFImpl implements Sheet {
             theCell.setCellValue("");
         }
     }            
-        
+
 
     public Collection<Validation> getIntersectingValidations(Range range) {
         ArrayList<Validation> intersectingValidations = new ArrayList<Validation>();
@@ -247,12 +241,15 @@ public class SheetHSSFImpl implements Sheet {
         return validationList;
     }   
     
-    public List<HSSFDataValidation> getValidationData() {    	    	
+    public List<HSSFDataValidation> getValidationData() {
     	return PatchedPoi.getInstance().getValidationData(sheet, hssfWorkbook);
-    }    
-    
+    }
+    /*public List<HSSFDataValidation> getValidationData() {
+            return sheet.getDataValidations();
+    }*/
     public void clearValidationData() {
         PatchedPoi.getInstance().clearValidationData(sheet);
     }
+
 
 }

@@ -1,22 +1,13 @@
 package uk.ac.manchester.cs.owl.semspreadsheets.model.impl;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import org.junit.Test;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.junit.Test;
-
-import uk.ac.manchester.cs.owl.semspreadsheets.model.PropertyValidationForumlaDefinition;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.Cell;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.Validation;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.Workbook;
+import static org.junit.Assert.*;
 
 public abstract class GeneralSheetTests {
 	
@@ -56,11 +47,14 @@ public abstract class GeneralSheetTests {
 	@Test
 	public void testClearDataValidationsInSheetWithProperties() throws Exception {
 		Sheet sheet = getTestSheetWithProperties();
-		assertEquals(2,sheet.getValidations().size());
+		int var1 = sheet.getValidations().size();
+		assertEquals(2,var1);
 		sheet.clearValidationData();
-		assertEquals(0,sheet.getValidations().size());
+		int var2 = sheet.getValidations().size();
+		assertEquals(0,var2);
 		sheet.clearValidationData();
-		assertEquals(0,sheet.getValidations().size());
+		var1 = sheet.getValidations().size();
+		assertEquals(0,var1);
 	}
 
 	@Test
