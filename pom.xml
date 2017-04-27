@@ -88,7 +88,7 @@
 		<dependency>
 			<groupId>net.sourceforge.owlapi</groupId>
 			<artifactId>owlapi-api</artifactId>
-			<version>3.5.4</version>
+			<version>3.4.3</version>
 		</dependency>
 		<dependency>
 			<groupId>net.sourceforge.owlapi</groupId>
@@ -98,7 +98,7 @@
 		<dependency>
 			<groupId>net.sourceforge.owlapi</groupId>
 			<artifactId>owlapi-apibinding</artifactId>
-			<version>3.5.4</version>
+			<version>3.4.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.sysmo-db</groupId>
