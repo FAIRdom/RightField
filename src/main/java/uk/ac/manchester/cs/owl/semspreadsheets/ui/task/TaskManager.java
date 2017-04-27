@@ -1,9 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2009-2013, University of Manchester
- *  
+ * Copyright (c) 2009, 2017, The University of Manchester
+ *
  * Licensed under the New BSD License.
  * Please see LICENSE file that is distributed with the source code
- ******************************************************************************/
+ *  
+ *******************************************************************************/
 
 package uk.ac.manchester.cs.owl.semspreadsheets.ui.task;
 
@@ -17,7 +18,8 @@ import java.util.concurrent.TimeoutException;
 
 import javax.swing.SwingUtilities;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.listeners.TaskListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.ProgressDialog;
@@ -32,7 +34,7 @@ public class TaskManager implements TaskListener {
 
     public static final long TIME_UNTIL_PROGRESS = 500;
     
-    private static final Logger logger = Logger.getLogger(TaskManager.class);
+    private static final Logger logger = LogManager.getLogger();
 
     private WorkbookFrame workbookFrame;
 

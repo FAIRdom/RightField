@@ -1,13 +1,30 @@
 /*******************************************************************************
- * Copyright (c) 2009-2012, University of Manchester
- * 
- * Licensed under the New BSD License. 
+ * Copyright (c) 2009, 2017, The University of Manchester
+ *
+ * Licensed under the New BSD License.
  * Please see LICENSE file that is distributed with the source code
- ******************************************************************************/
+ *  
+ *******************************************************************************/
 package uk.ac.manchester.cs.owl.semspreadsheets.model.hssf.impl;
 
-import org.apache.log4j.Logger;
-import org.apache.poi.hssf.usermodel.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.swing.SwingConstants;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFComment;
+import org.apache.poi.hssf.usermodel.HSSFFont;
+import org.apache.poi.hssf.usermodel.HSSFPalette;
+import org.apache.poi.hssf.usermodel.HSSFRichTextString;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.CellType;
@@ -26,7 +43,7 @@ import java.util.Map;
  */
 public class CellHSSFImpl implements Cell {
 	
-	private static Logger logger = Logger.getLogger(CellHSSFImpl.class);
+	private static Logger logger = LogManager.getLogger();
 
     public static final Font DEFAULT_FONT = new Font("verdana", Font.PLAIN, 10);
 

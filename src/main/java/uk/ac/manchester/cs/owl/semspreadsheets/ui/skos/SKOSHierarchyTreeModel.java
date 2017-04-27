@@ -1,9 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2009-2013, University of Manchester
- *  
+ * Copyright (c) 2009, 2017, The University of Manchester
+ *
  * Licensed under the New BSD License.
  * Please see LICENSE file that is distributed with the source code
- ******************************************************************************/
+ *  
+ *******************************************************************************/
 
 package uk.ac.manchester.cs.owl.semspreadsheets.ui.skos;
 
@@ -11,7 +12,8 @@ import java.util.Set;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.skos.SKOSConcept;
@@ -32,7 +34,7 @@ public class SKOSHierarchyTreeModel extends ClassHierarchyTreeModel {
 	}
 	
 	
-	private static final Logger logger = Logger.getLogger(SKOSHierarchyTreeModel.class);
+	private static final Logger logger = LogManager.getLogger();
 	private DefaultMutableTreeNode rootNode;
 	private SKOSHierarchyReader skosReader;	
 	

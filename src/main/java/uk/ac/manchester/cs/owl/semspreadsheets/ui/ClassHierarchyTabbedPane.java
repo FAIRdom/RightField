@@ -1,9 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2009-2012, University of Manchester
- * 
- * Licensed under the New BSD License. 
+ * Copyright (c) 2009, 2017, The University of Manchester
+ *
+ * Licensed under the New BSD License.
  * Please see LICENSE file that is distributed with the source code
- ******************************************************************************/
+ *  
+ *******************************************************************************/
 package uk.ac.manchester.cs.owl.semspreadsheets.ui;
 
 import java.awt.Color;
@@ -25,7 +26,8 @@ import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.semanticweb.owlapi.model.OWLAnnotation;
 import org.semanticweb.owlapi.model.OWLAnnotationProperty;
 import org.semanticweb.owlapi.model.OWLClass;
@@ -53,7 +55,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.ui.skos.SKOSHierarchyTree;
 @SuppressWarnings("serial")
 public class ClassHierarchyTabbedPane extends JTabbedPane {	
 	
-	private static final Logger logger = Logger.getLogger(ClassHierarchyTabbedPane.class);	
+	private static final Logger logger = LogManager.getLogger();	
 	
 	private List<OWLOntology> knownOntologies = new ArrayList<OWLOntology>();
 

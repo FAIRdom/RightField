@@ -1,13 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2009-2012, University of Manchester
- *  
+ * Copyright (c) 2009, 2017, The University of Manchester
+ *
  * Licensed under the New BSD License.
  * Please see LICENSE file that is distributed with the source code
- ******************************************************************************/
+ *  
+ *******************************************************************************/
 
 package uk.ac.manchester.cs.owl.semspreadsheets.model;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Encodes and decodes the string that defines that a free text property hidden sheet name that gets embedded in the validation, along with the hidden sheet name
@@ -21,7 +23,7 @@ import org.apache.log4j.Logger;
  */
 public class PropertyValidationForumlaDefinition {
 	
-	private static final Logger logger = Logger.getLogger(PropertyValidationForumlaDefinition.class);
+	private static final Logger logger = LogManager.getLogger();
 	
 	/**
 	 * Defines the seperator used in the encoding, currently ^ is chosen since it is not a valid IRI character, so makes splitting the string easier.

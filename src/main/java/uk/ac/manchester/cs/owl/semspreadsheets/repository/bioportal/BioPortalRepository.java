@@ -1,9 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2009-2012, University of Manchester
- * 
- * Licensed under the New BSD License. 
+ * Copyright (c) 2009, 2017, The University of Manchester
+ *
+ * Licensed under the New BSD License.
  * Please see LICENSE file that is distributed with the source code
- ******************************************************************************/
+ *  
+ *******************************************************************************/
 package uk.ac.manchester.cs.owl.semspreadsheets.repository.bioportal;
 
 import java.io.IOException;
@@ -12,7 +13,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.semanticweb.owlapi.model.IRI;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.repository.Repository;
@@ -27,7 +29,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.repository.RepositoryManager;
 
 public class BioPortalRepository implements Repository {
 	
-	private static final Logger logger = Logger.getLogger(BioPortalRepository.class);
+	private static final Logger logger = LogManager.getLogger();
 
     public static final String NAME = "BioPortal";
 
@@ -97,7 +99,7 @@ public class BioPortalRepository implements Repository {
 	}
 	
 	/**
-	 * If appropriate, removes the appended apikey=XXX-XXX and returns a cleaned IRI
+	 * If appropriate, removes the appended apikey=some_value
 	 */
 	public static IRI removeBioPortalAPIKey(IRI iri) {
 		IRI newIRI = iri;

@@ -1,16 +1,18 @@
 /*******************************************************************************
- * Copyright (c) 2009-2012, University of Manchester
- * 
- * Licensed under the New BSD License. 
+ * Copyright (c) 2009, 2017, The University of Manchester
+ *
+ * Licensed under the New BSD License.
  * Please see LICENSE file that is distributed with the source code
- ******************************************************************************/
+ *  
+ *******************************************************************************/
 package uk.ac.manchester.cs.owl.semspreadsheets.model;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -25,7 +27,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookFormat;
  */
 public class WorkbookFactory {
 	
-	private static final Logger logger = Logger.getLogger(WorkbookFactory.class);
+	private static final Logger logger = LogManager.getLogger();
 
     /**
      * Creates an empty workbook, defaulting to Excel 97 (HSSF) format

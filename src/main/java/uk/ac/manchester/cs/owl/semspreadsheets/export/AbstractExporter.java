@@ -1,20 +1,33 @@
 /*******************************************************************************
- * Copyright (c) 2009-2012, University of Manchester
- *  
+ * Copyright (c) 2009, 2017, The University of Manchester
+ *
  * Licensed under the New BSD License.
  * Please see LICENSE file that is distributed with the source code
- ******************************************************************************/
+ *  
+ *******************************************************************************/
 
 package uk.ac.manchester.cs.owl.semspreadsheets.export;
 
-import org.apache.log4j.Logger;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.List;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.net.URI;
-import java.util.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import uk.ac.manchester.cs.owl.semspreadsheets.model.Cell;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.InvalidWorkbookFormatException;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyManager;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidation;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidationDescriptor;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.Term;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.Workbook;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 
 /**
  * Handles the common tasks of exporting populated data validations, allowing subclasses to export in their varous flavours.
@@ -28,7 +41,7 @@ import java.util.*;
 public abstract class AbstractExporter implements Exporter {
 	
 	@SuppressWarnings("unused")
-	private static final Logger logger = Logger.getLogger(AbstractExporter.class);
+	private static final Logger logger = LogManager.getLogger();
 	
 	private final WorkbookManager manager;
 

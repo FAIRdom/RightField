@@ -1,13 +1,28 @@
 /*******************************************************************************
- * Copyright (c) 2009-2012, University of Manchester
- * 
- * Licensed under the New BSD License. 
+ * Copyright (c) 2009, 2017, The University of Manchester
+ *
+ * Licensed under the New BSD License.
  * Please see LICENSE file that is distributed with the source code
- ******************************************************************************/
+ *  
+ *******************************************************************************/
 package uk.ac.manchester.cs.owl.semspreadsheets.ui;
 
-import org.apache.log4j.Logger;
-import org.apache.poi.ss.util.CellAddress;
+import java.awt.AlphaComposite;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Composite;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.Stroke;
+
+import javax.swing.JTable;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableModel;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import org.apache.xmlbeans.impl.values.XmlValueDisconnectedException;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.*;
 
@@ -23,10 +38,10 @@ import java.awt.*;
 @SuppressWarnings("serial")
 public class SheetTable extends JTable {
 	
-	private static Logger logger = Logger.getLogger(SheetTable.class);
-
     public static final Font FONT = new Font("verdana", Font.PLAIN, 50);
 
+	private static Logger logger = LogManager.getLogger();
+    
     private Sheet sheet;
 
     private WorkbookManager workbookManager;

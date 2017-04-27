@@ -1,13 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2009-2012, University of Manchester
- *  
+ * Copyright (c) 2009, 2017, The University of Manchester
+ *
  * Licensed under the New BSD License.
  * Please see LICENSE file that is distributed with the source code
- ******************************************************************************/
+ *  
+ *******************************************************************************/
 
 package uk.org.rightfield;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * A very basic command line argument handler, primarily for picking out export arguments. Not very robust as its only really intended for internal use.
@@ -19,7 +21,7 @@ import org.apache.log4j.Logger;
  */
 public class RightFieldOptions {
 	
-	private static final Logger logger = Logger.getLogger(RightFieldOptions.class);
+	private static final Logger logger = LogManager.getLogger();
 	
 	String id="df:1";
 	String exportFormat="rdf";

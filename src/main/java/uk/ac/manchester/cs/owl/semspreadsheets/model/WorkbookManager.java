@@ -1,14 +1,24 @@
 /*******************************************************************************
- * Copyright (c) 2009-2012, University of Manchester
+ * Copyright (c) 2009, 2017, The University of Manchester
  *
  * Licensed under the New BSD License.
  * Please see LICENSE file that is distributed with the source code
- ******************************************************************************/
+ *  
+ *******************************************************************************/
 package uk.ac.manchester.cs.owl.semspreadsheets.model;
 
-import org.apache.log4j.Logger;
-import org.apache.poi.ss.util.AreaReference;
-import org.apache.poi.ss.util.CellReference;
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLEntity;
@@ -36,12 +46,17 @@ import java.util.*;
  */
 public class WorkbookManager {
 
+<<<<<<< HEAD
 	private static final Logger logger = Logger.getLogger(WorkbookManager.class);
     private Workbook workbook;
 
     private URI workbookURI;
 
     private OntologyManager ontologyManager;
+=======
+	private static final Logger logger = LogManager.getLogger();
+    private Workbook workbook;      
+>>>>>>> mygrid/alan
 
     private WorkbookState workbookState = new WorkbookState();
 

@@ -1,3 +1,10 @@
+/*******************************************************************************
+ * Copyright (c) 2009, 2017, The University of Manchester
+ *
+ * Licensed under the New BSD License.
+ * Please see LICENSE file that is distributed with the source code
+ *  
+ *******************************************************************************/
 package uk.ac.manchester.cs.owl.semspreadsheets.model.xssf.impl;
 
 import org.apache.poi.ss.util.AreaReference;

@@ -1,12 +1,19 @@
 /*******************************************************************************
- * Copyright (c) 2009-2012, University of Manchester
- * 
- * Licensed under the New BSD License. 
+ * Copyright (c) 2009, 2017, The University of Manchester
+ *
+ * Licensed under the New BSD License.
  * Please see LICENSE file that is distributed with the source code
- ******************************************************************************/
+ *  
+ *******************************************************************************/
 package uk.ac.manchester.cs.owl.semspreadsheets.ui.action;
 
-import org.apache.log4j.Logger;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Cell;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
@@ -25,7 +32,7 @@ import java.awt.event.KeyEvent;
 @SuppressWarnings("serial")
 public class SheetCellCutAction extends SheetCellCopyAction {
 
-	private static Logger logger = Logger.getLogger(SheetCellCutAction.class);
+	private static Logger logger = LogManager.getLogger();
 
 	public SheetCellCutAction(WorkbookManager workbookManager, Toolkit toolkit) {
 		super("Cut", workbookManager, toolkit);

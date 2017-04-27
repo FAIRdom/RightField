@@ -6,6 +6,7 @@ import static org.junit.Assert.assertNotNull;
 import java.net.URI;
 import java.util.Set;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.skos.SKOSAnnotation;
@@ -50,7 +51,7 @@ public class SkosApiIntegratedTest {
 		assertEquals(12,concept.getSKOSAnnotations(dataset).size());				
 	}
 	
-	@Test
+	@Ignore @Test
 	public void testLoadingUsignOWLOntologyManager() throws Exception {
 		WorkbookManager workbookManager = new WorkbookManager();
 		OntologyManager ontologyManager = workbookManager.getOntologyManager();	

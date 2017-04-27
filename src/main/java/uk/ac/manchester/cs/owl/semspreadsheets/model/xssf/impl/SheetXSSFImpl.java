@@ -1,7 +1,12 @@
+/*******************************************************************************
+ * Copyright (c) 2009, 2017, The University of Manchester
+ *
+ * Licensed under the New BSD License.
+ * Please see LICENSE file that is distributed with the source code
+ *  
+ *******************************************************************************/
 package uk.ac.manchester.cs.owl.semspreadsheets.model.xssf.impl;
 
-import org.apache.log4j.Logger;
-import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.DataValidation;
 import org.apache.poi.ss.usermodel.DataValidationConstraint;
 import org.apache.poi.ss.usermodel.Row;
@@ -31,7 +36,7 @@ public class SheetXSSFImpl implements Sheet {
 
     private static final int MAX_COLUMNS = 256;
     
-    private static final Logger logger = Logger.getLogger(SheetXSSFImpl.class);
+    private static final Logger logger = LogManager.getLogger();
 
 
     public SheetXSSFImpl(WorkbookXSSFImpl workbook, XSSFSheet hssfSheet) {

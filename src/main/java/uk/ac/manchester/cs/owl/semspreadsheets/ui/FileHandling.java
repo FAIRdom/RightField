@@ -1,9 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2009-2012, University of Manchester
- *  
+ * Copyright (c) 2009, 2017, The University of Manchester
+ *
  * Licensed under the New BSD License.
  * Please see LICENSE file that is distributed with the source code
- ******************************************************************************/
+ *  
+ *******************************************************************************/
 
 package uk.ac.manchester.cs.owl.semspreadsheets.ui;
 
@@ -23,7 +24,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.filechooser.FileFilter;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.InvalidWorkbookFormatException;
@@ -34,7 +36,7 @@ import uk.org.rightfield.UserPrefs;
 
 public class FileHandling {
 		
-	private static Logger logger = Logger.getLogger(FileHandling.class);
+	private static Logger logger = LogManager.getLogger();
 	
 	private final WorkbookManager workbookManager;
 	private final TaskManager taskManager;

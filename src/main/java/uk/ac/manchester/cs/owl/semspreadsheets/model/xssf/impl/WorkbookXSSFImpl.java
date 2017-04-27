@@ -1,6 +1,32 @@
+/*******************************************************************************
+ * Copyright (c) 2009, 2017, The University of Manchester
+ *
+ * Licensed under the New BSD License.
+ * Please see LICENSE file that is distributed with the source code
+ *  
+ *******************************************************************************/
+
+/**
+ * @author Stuart Owen
+ * @author Matthew Horridge
+ */
+
 package uk.ac.manchester.cs.owl.semspreadsheets.model.xssf.impl;
 
-import org.apache.log4j.Logger;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import org.apache.poi.ss.usermodel.Name;
 import org.apache.poi.xssf.usermodel.*;
 import uk.ac.manchester.cs.owl.semspreadsheets.listeners.WorkbookChangeListener;
@@ -13,6 +39,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.change.WorkbookChange;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.change.WorkbookChangeEvent;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.change.WorkbookChangeVisitor;
 
+<<<<<<< HEAD
 import java.io.*;
 import java.net.URI;
 import java.util.ArrayList;
@@ -41,17 +68,15 @@ import java.util.List;
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
+=======
+>>>>>>> mygrid/alan
 
-/**
- * @author Stuart Owen
- * @author Matthew Horridge
- */
 
 public class WorkbookXSSFImpl implements MutableWorkbook, WorkbookChangeVisitor {
 
     private XSSFWorkbook workbook;
     
-    private static final Logger logger = Logger.getLogger(WorkbookXSSFImpl.class);
+    private static final Logger logger = LogManager.getLogger();
 
     private List<WorkbookChangeListener> changeListeners = new ArrayList<WorkbookChangeListener>();
 

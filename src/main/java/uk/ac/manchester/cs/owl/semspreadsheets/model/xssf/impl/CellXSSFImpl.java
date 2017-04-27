@@ -1,11 +1,30 @@
+/*******************************************************************************
+ * Copyright (c) 2009, 2017, The University of Manchester
+ *
+ * Licensed under the New BSD License.
+ * Please see LICENSE file that is distributed with the source code
+ *  
+ *******************************************************************************/
 package uk.ac.manchester.cs.owl.semspreadsheets.model.xssf.impl;
 
-import org.apache.log4j.Logger;
-import org.apache.poi.ss.usermodel.BorderStyle;
-import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.FillPatternType;
-import org.apache.poi.ss.usermodel.HorizontalAlignment;
-import org.apache.poi.xssf.usermodel.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.swing.SwingConstants;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFColor;
+import org.apache.poi.xssf.usermodel.XSSFComment;
+import org.apache.poi.xssf.usermodel.XSSFFont;
+import org.apache.poi.xssf.usermodel.XSSFRichTextString;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Cell;
 
 import javax.swing.*;
@@ -18,7 +37,7 @@ import java.util.Map;
  */
 public class CellXSSFImpl implements Cell {
 		
-	private static Logger logger = Logger.getLogger(CellXSSFImpl.class);
+	private static Logger logger = LogManager.getLogger();
 
     public static final Font DEFAULT_FONT = new Font("verdana", Font.PLAIN, 10);
 

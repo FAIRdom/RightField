@@ -1,9 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2009-2012, University of Manchester
- * 
- * Licensed under the New BSD License. 
+ * Copyright (c) 2009, 2017, The University of Manchester
+ *
+ * Licensed under the New BSD License.
  * Please see LICENSE file that is distributed with the source code
- ******************************************************************************/
+ *  
+ *******************************************************************************/
 package uk.ac.manchester.cs.owl.semspreadsheets.repository.bioportal;
 
 import java.io.IOException;
@@ -15,7 +16,8 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.repository.Repository;
 import uk.ac.manchester.cs.owl.semspreadsheets.repository.RepositoryAccessor;
@@ -33,11 +35,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 public class BioPortalRepositoryAccessor implements RepositoryAccessor {
 
-	private static Logger logger = Logger.getLogger(BioPortalRepositoryAccessor.class);
+	private static Logger logger = LogManager.getLogger();
 	
 	private final int CONNECT_TIMEOUT = 120000;
 	
-	private final boolean SAVE_PROPERTIES_CACHE = false;
+	private final boolean SAVE_PROPERTIES_CACHE = true;
 	
     private BioPortalRepository repository;
     
@@ -54,7 +56,7 @@ public class BioPortalRepositoryAccessor implements RepositoryAccessor {
         return repository;
     }    
        
-    public String fetchOntologyFormat(String ontologyAcronym) {
+    public String fetchOntologyFormat(String ontologyAcronym) throws IOException {
     	logger.debug("Fetching format for "+ontologyAcronym);
     	BioPortalCache cache = BioPortalCache.getInstance();
     	String format = cache.getFormat(ontologyAcronym);
@@ -71,10 +73,16 @@ public class BioPortalRepositoryAccessor implements RepositoryAccessor {
         		HttpURLConnection connection = (HttpURLConnection)url.openConnection();
         		connection.setConnectTimeout(CONNECT_TIMEOUT);
                 connection.setReadTimeout(CONNECT_TIMEOUT);
-                int responseCode = connection.getResponseCode();
+                int responseCode = 0;
+				try {
+					responseCode = connection.getResponseCode();
+				} catch (Exception e) {
+					logger.error(url.toString() + " failed");
+					throw (e);
+				}
                 logger.info("BioPortal http response: " + responseCode);
                 
-                if (responseCode == 400 || responseCode == 403) {
+                if (responseCode == 400 || responseCode == 401 || responseCode == 403) {
                 	throw new BioPortalAccessDeniedException();
                 }
                 
@@ -101,9 +109,10 @@ public class BioPortalRepositoryAccessor implements RepositoryAccessor {
             	logger.error("Timeout connecting to BioPortal",e);
             	ErrorHandler.getErrorHandler().handleError(e);
             }
-            catch (IOException e) {        	
-                logger.error("Error communiciating with BioPortal rest API",e);                    	
-            }
+//            catch (IOException e) {
+//            	logger.error("Eaten here");
+//                logger.error("Error communiciating with BioPortal rest API",e);                    	
+//            }
             catch (BioPortalAccessDeniedException e) {
             	ErrorHandler.getErrorHandler().handleError(e);
             }
@@ -124,10 +133,15 @@ public class BioPortalRepositoryAccessor implements RepositoryAccessor {
             HttpURLConnection connection = (HttpURLConnection)url.openConnection();            
             connection.setConnectTimeout(CONNECT_TIMEOUT);
             connection.setReadTimeout(CONNECT_TIMEOUT);
-            int responseCode = connection.getResponseCode();
+            int responseCode = 0;
+			try {
+				responseCode = connection.getResponseCode();
+			} catch (Exception e) {
+				logger.error(e);
+			}
             logger.info("BioPortal http response: " + responseCode);
             
-            if (responseCode == 400 || responseCode == 403) {
+           if (responseCode == 400 || responseCode == 401 || responseCode == 403) {
             	throw new BioPortalAccessDeniedException();
             }            
             ObjectMapper mapper = new ObjectMapper();            

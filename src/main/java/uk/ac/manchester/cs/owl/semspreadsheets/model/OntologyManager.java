@@ -1,9 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2009-2012, University of Manchester
- * 
- * Licensed under the New BSD License. 
+ * Copyright (c) 2009, 2017, The University of Manchester
+ *
+ * Licensed under the New BSD License.
  * Please see LICENSE file that is distributed with the source code
- ******************************************************************************/
+ *  
+ *******************************************************************************/
 package uk.ac.manchester.cs.owl.semspreadsheets.model;
 
 import java.net.URI;
@@ -22,7 +23,8 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.io.IRIDocumentSource;
 import org.semanticweb.owlapi.io.OWLOntologyDocumentSource;
@@ -68,7 +70,7 @@ import uk.ac.manchester.cs.skos.SKOSConceptImpl;
  */
 public class OntologyManager {
 
-	private static final Logger logger = Logger.getLogger(OntologyManager.class);
+	private static final Logger logger = LogManager.getLogger();
 	
 	private final OWLOntologyManager owlManager;
 	private OWLReasoner reasoner;

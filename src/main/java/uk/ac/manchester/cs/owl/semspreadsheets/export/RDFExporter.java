@@ -1,25 +1,38 @@
 /*******************************************************************************
- * Copyright (c) 2009-2012, University of Manchester
- *  
+ * Copyright (c) 2009, 2017, The University of Manchester
+ *
  * Licensed under the New BSD License.
  * Please see LICENSE file that is distributed with the source code
- ******************************************************************************/
+ *  
+ *******************************************************************************/
 
 package uk.ac.manchester.cs.owl.semspreadsheets.export;
 
-import com.hp.hpl.jena.rdf.model.*;
-import org.apache.log4j.Logger;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import org.semanticweb.owlapi.model.IRI;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.InvalidWorkbookFormatException;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OWLPropertyItem;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 
-import java.io.*;
-import java.net.URI;
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ModelFactory;
+import org.apache.jena.rdf.model.Property;
+import org.apache.jena.rdf.model.Resource;
+import org.apache.jena.rdf.model.Statement;
+
 
 public class RDFExporter extends AbstractExporter {
 	
-	private static final Logger logger = Logger.getLogger(RDFExporter.class);
+	private static final Logger logger = LogManager.getLogger();
 	
 	private final IRI rootID;
 	

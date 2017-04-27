@@ -1,16 +1,19 @@
 /*******************************************************************************
- * Copyright (c) 2009-2012, University of Manchester
- * 
- * Licensed under the New BSD License. 
+ * Copyright (c) 2009, 2017, The University of Manchester
+ *
+ * Licensed under the New BSD License.
  * Please see LICENSE file that is distributed with the source code
- ******************************************************************************/
+ *  
+ *******************************************************************************/
 package uk.ac.manchester.cs.owl.semspreadsheets.repository.bioportal;
 
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.semanticweb.owlapi.model.IRI;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.repository.RepositoryItem;
@@ -39,7 +42,7 @@ public class BioPortalRepositoryItem implements RepositoryItem {
     
     private final BioPortalRepositoryAccessor repositoryAccessor;
     
-    Logger logger = Logger.getLogger(BioPortalRepositoryItem.class);
+    Logger logger = LogManager.getLogger();
 	
     
     public BioPortalRepositoryItem(String acronym, String humanReadableName,BioPortalRepositoryAccessor repositoryAccessor) {
@@ -66,7 +69,22 @@ public class BioPortalRepositoryItem implements RepositoryItem {
     }
     
     private String fetchFormat() {
-    	return repositoryAccessor.fetchOntologyFormat(acronym);    	
+    	String result = null;
+    	int count = 0;
+    	int maxTries = 20;
+    	while(true) {
+    	    try {
+    	    	result = repositoryAccessor.fetchOntologyFormat(acronym);
+    	    	return result;
+    	    } catch (IOException e) {
+    	    	logger.error(acronym + " failed " + count);
+    	        // handle exception
+    	        if (++count == maxTries) {
+    	        	logger.error(e);
+    	        	return null;
+    	        }
+    	    }
+    	}
     }
 
     public IRI getOntologyIRI() {

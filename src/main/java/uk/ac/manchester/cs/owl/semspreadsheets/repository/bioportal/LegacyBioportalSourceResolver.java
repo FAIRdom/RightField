@@ -1,9 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2009-2014, University of Manchester
- *  
+ * Copyright (c) 2009, 2017, The University of Manchester
+ *
  * Licensed under the New BSD License.
  * Please see LICENSE file that is distributed with the source code
- ******************************************************************************/
+ *  
+ *******************************************************************************/
 
 package uk.ac.manchester.cs.owl.semspreadsheets.repository.bioportal;
 
@@ -14,10 +15,11 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.semanticweb.owlapi.model.IRI;
 
-import au.com.bytecode.opencsv.CSVReader;
+import com.opencsv.CSVReader;
 
 
 /** 
@@ -35,7 +37,7 @@ public class LegacyBioportalSourceResolver {
 		return LegacyBioportalSourceResolverHolder.INSTANCE;
 	}
 
-	private static final Logger logger = Logger.getLogger(LegacyBioportalSourceResolver.class);
+	private static final Logger logger = LogManager.getLogger();
 	
 	private static final Map<String,String> mappings = new HashMap<String,String>();
 	private static final String MAPPING_FILE = "/legacy_bioportal_ontology_id_mappings.csv";
@@ -88,6 +90,7 @@ public class LegacyBioportalSourceResolver {
 					logger.debug("Bioportal Legacy ID mapping: "+id+" : "+acronym);
 					mappings.put(id, acronym);
 				}
+				reader.close();
 			} catch (IOException e) {
 				logger.error("Error reading Bioportal legacy mapping file",e);
 			}

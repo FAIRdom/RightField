@@ -1,3 +1,10 @@
+/*******************************************************************************
+ * Copyright (c) 2009, 2017, The University of Manchester
+ *
+ * Licensed under the New BSD License.
+ * Please see LICENSE file that is distributed with the source code
+ *  
+ *******************************************************************************/
 package uk.ac.manchester.cs.owl.semspreadsheets.ui.action;
 
 import java.awt.Desktop;
@@ -7,7 +14,8 @@ import java.net.URI;
 
 import javax.swing.JOptionPane;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.ErrorHandler;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookFrame;
@@ -17,7 +25,7 @@ public class RegistrationAction extends WorkbookFrameAction {
 
 private String REG_URI="http://www.rightfield.org.uk/registration";
 	
-	private static Logger logger = Logger.getLogger(OnlineHelpAction.class);
+	private static Logger logger = LogManager.getLogger();
 	
 	public RegistrationAction(WorkbookFrame workbookFrame) {
 		super("Registration and Feedback",workbookFrame);
