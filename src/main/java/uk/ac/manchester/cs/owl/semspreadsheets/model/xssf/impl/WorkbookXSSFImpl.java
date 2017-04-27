@@ -26,9 +26,14 @@ import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import org.apache.poi.ss.usermodel.Name;
-import org.apache.poi.xssf.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFName;
+import org.apache.poi.xssf.usermodel.XSSFRichTextString;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
 import uk.ac.manchester.cs.owl.semspreadsheets.listeners.WorkbookChangeListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.MutableWorkbook;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.NamedRange;
@@ -38,39 +43,6 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.change.SetCellValue;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.change.WorkbookChange;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.change.WorkbookChangeEvent;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.change.WorkbookChangeVisitor;
-
-<<<<<<< HEAD
-import java.io.*;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-/*
- * Copyright (C) 2009, University of Manchester
- *
- * Modifications to the initial code base are copyright of their
- * respective authors, or their employers as appropriate.  Authorship
- * of the modifications may be determined from the ChangeLog placed at
- * the end of this file.
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
-
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
-
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- */
-=======
->>>>>>> mygrid/alan
-
 
 public class WorkbookXSSFImpl implements MutableWorkbook, WorkbookChangeVisitor {
 

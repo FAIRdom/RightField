@@ -22,7 +22,7 @@ import javax.swing.table.TableModel;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
+import org.apache.poi.ss.util.CellAddress;
 import org.apache.xmlbeans.impl.values.XmlValueDisconnectedException;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.*;
 

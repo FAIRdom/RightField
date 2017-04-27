@@ -7,6 +7,9 @@
  *******************************************************************************/
 package uk.ac.manchester.cs.owl.semspreadsheets.model.xssf.impl;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.DataValidation;
 import org.apache.poi.ss.usermodel.DataValidationConstraint;
 import org.apache.poi.ss.usermodel.Row;
@@ -36,7 +39,7 @@ public class SheetXSSFImpl implements Sheet {
 
     private static final int MAX_COLUMNS = 256;
     
-    private static final Logger logger = LogManager.getLogger();
+	private static final Logger logger = LogManager.getLogger();
 
 
     public SheetXSSFImpl(WorkbookXSSFImpl workbook, XSSFSheet hssfSheet) {

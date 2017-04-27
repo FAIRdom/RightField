@@ -8,9 +8,6 @@
 package uk.ac.manchester.cs.owl.semspreadsheets.model;
 
 
-<<<<<<< HEAD
-import org.apache.log4j.Logger;
-=======
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,10 +18,6 @@ import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
->>>>>>> mygrid/alan
-
-import java.awt.*;
-import java.util.*;
 
 /**
  * @author Matthew Horridge

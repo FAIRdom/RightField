@@ -7,7 +7,10 @@
  *******************************************************************************/
 package uk.ac.manchester.cs.owl.semspreadsheets.model.hssf.impl;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.DataValidationConstraint;
@@ -34,7 +37,7 @@ public class SheetHSSFImpl implements Sheet {
 
     private HSSFSheet sheet;
 
-    private static Logger logger = Logger.getLogger(SheetHSSFImpl.class);
+    private static Logger logger = LogManager.getLogger();
 
     private static final short MAX_ROWS = Short.MAX_VALUE;
 

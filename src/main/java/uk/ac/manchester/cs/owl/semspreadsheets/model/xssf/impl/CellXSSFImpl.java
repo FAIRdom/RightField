@@ -16,6 +16,10 @@ import javax.swing.SwingConstants;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.ss.usermodel.BorderStyle;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFColor;

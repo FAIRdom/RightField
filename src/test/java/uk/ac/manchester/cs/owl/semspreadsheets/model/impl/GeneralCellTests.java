@@ -45,8 +45,9 @@ public abstract class GeneralCellTests {
 		
 		//try again with a new workbook, to test caching
 		workbook = getTestWorkbook();
-		cell = workbook.getSheet(0).addCellAt(1, 1);		
-		assertEquals(Font.PLAIN,cell.getFont().getStyle());
+		cell = workbook.getSheet(0).addCellAt(1, 1);
+		Font font2= cell.getFont();
+		assertEquals(Font.PLAIN,font2.getStyle());
 		assertNotSame(font,cell.getFont());
 	}
 	
