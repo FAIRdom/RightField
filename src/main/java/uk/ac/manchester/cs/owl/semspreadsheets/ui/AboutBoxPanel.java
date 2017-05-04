@@ -33,7 +33,7 @@ import uk.org.rightfield.RightField;
 @SuppressWarnings("serial")
 public class AboutBoxPanel extends JPanel {
 	private static final String WEBSITE = "http://www.rightfield.org.uk";
-	private static final String COPYRIGHT = "(c) University of Manchester 2009-2014";
+	private static final String COPYRIGHT = "(c) University of Manchester 2009-2017";
 	private static Logger logger = Logger.getLogger(AboutBoxPanel.class);
 	
 	public AboutBoxPanel() {
