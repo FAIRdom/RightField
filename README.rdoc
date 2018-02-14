@@ -3,10 +3,9 @@
 Authors::    Stuart Owen, {Matthew Horridge}[http://www.cs.man.ac.uk/~horridgm]
 Contact::    mailto:stuart.owen@manchester.ac.uk
 Licence::    BSD (See LICENCE or http://www.opensource.org/licenses/bsd-license.php)
-Copyright::  (c) 2009-2017 The University of Manchester, UK
+Copyright::  (c) 2009-2018 The University of Manchester, UK
 
 Website::    http://www.rightfield.org.uk
-Google+::    https://plus.google.com/115015865438051713723/posts
 
 {<img src="https://travis-ci.org/myGrid/RightField.svg" alt="Build Status" />}[https://travis-ci.org/myGrid/RightField]
 
