@@ -101,15 +101,14 @@ public abstract class GeneralRDFExporterTests {
 		assertEquals(2,statements.size());
 		
 		assertEquals(rootID.toString(),statements.get(0).getSubject().getURI());
-		assertEquals("http://www.mygrid.org.uk/ontology/JERMOntology#hasType",statements.get(0).getPredicate().getURI());
+		assertEquals("http://www.mygrid.org.uk/ontology/JERMOntology#isAssociatedWith",statements.get(0).getPredicate().getURI());
 		assertTrue(statements.get(0).getObject().isResource());
-		assertEquals("http://www.mygrid.org.uk/ontology/JERMOntology#13C_radiolabelling",statements.get(0).getObject().asResource().getURI());
-		
+		assertEquals("http://www.mygrid.org.uk/ontology/JERMOntology#COSMIC",statements.get(0).getObject().asResource().getURI());
 		
 		assertEquals(rootID.toString(),statements.get(1).getSubject().getURI());
-		assertEquals("http://www.mygrid.org.uk/ontology/JERMOntology#isAssociatedWith",statements.get(1).getPredicate().getURI());
+		assertEquals("http://www.mygrid.org.uk/ontology/JERMOntology#hasType",statements.get(1).getPredicate().getURI());
 		assertTrue(statements.get(1).getObject().isResource());
-		assertEquals("http://www.mygrid.org.uk/ontology/JERMOntology#COSMIC",statements.get(1).getObject().asResource().getURI());						
+		assertEquals("http://www.mygrid.org.uk/ontology/JERMOntology#13C_radiolabelling",statements.get(1).getObject().asResource().getURI());										
 	}				
 
 	@Test
@@ -127,10 +126,10 @@ public abstract class GeneralRDFExporterTests {
 		List<Statement> statements = r.listProperties().toList();
 		assertEquals(6,statements.size());
 		
-		assertEquals(rootID.toString(),statements.get(0).getSubject().getURI());
-		assertEquals(RDFExporter.DEFAULT_PROPERTY_URI,statements.get(0).getPredicate().getURI());
-		assertTrue(statements.get(0).getObject().isResource());
-		assertEquals("http://www.mygrid.org.uk/ontology/JERMOntology#Enterococcus_faecalis",statements.get(0).getObject().asResource().getURI());
+		assertEquals(rootID.toString(),statements.get(5).getSubject().getURI());
+		assertEquals(RDFExporter.DEFAULT_PROPERTY_URI,statements.get(5).getPredicate().getURI());
+		assertTrue(statements.get(5).getObject().isResource());
+		assertEquals("http://www.mygrid.org.uk/ontology/JERMOntology#Enterococcus_faecalis",statements.get(5).getObject().asResource().getURI());
 	}
 	
 	@Test
@@ -156,12 +155,12 @@ public abstract class GeneralRDFExporterTests {
 		
 		assertEquals(rootID.toString(),statements.get(1).getSubject().getURI());
 		assertEquals("http://www.mygrid.org.uk/ontology/JERMOntology#ECNumber",statements.get(0).getPredicate().getURI());
-		assertTrue(statements.get(0).getObject().isLiteral());
+		assertTrue(statements.get(1).getObject().isLiteral());
 		assertEquals("hello",statements.get(1).getObject().asLiteral().getValue());		
 		
 		assertEquals(rootID.toString(),statements.get(2).getSubject().getURI());
 		assertEquals("http://www.mygrid.org.uk/ontology/JERMOntology#ECNumber",statements.get(1).getPredicate().getURI());
-		assertTrue(statements.get(1).getObject().isLiteral());
+		assertTrue(statements.get(2).getObject().isLiteral());
 		assertEquals("world",statements.get(2).getObject().asLiteral().getValue());
 	}
 	

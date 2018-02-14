@@ -19,9 +19,9 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidation;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidationDescriptor;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Term;
-
+//FIMXE: rename - as doesn't only apply to Populated cells, but also those left empty but marked as free text
 /**
- * Contains the details for a cell in a spreadsheet that has had its annotation selected.
+ * Contains the details for a cell in a spreadsheet that has had its annotation selected, is marked as a free text field.
  * Contains details about the actual cell, the text value of the cell, the associated {@link Term}, Entity IRI and the Ontology IRI's. 
  * It also provides full access to the {@link OntologyTermValidation} for additional information if required.
  * 
@@ -30,7 +30,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.Term;
  * @see AbstractExporter#getPopulatedValidatedCellDetails()
  *
  */
-class PopulatedValidatedCellDetails 
+class PopulatedValidatedCellDetails implements Comparable<PopulatedValidatedCellDetails>
 {
 	private OntologyTermValidation validation;
 	private Cell cell;	
@@ -98,4 +98,16 @@ class PopulatedValidatedCellDetails
 		}
 		return iris;
 	}
+
+	@Override
+	public int compareTo(PopulatedValidatedCellDetails o) {
+		long maxCols = 16384;
+		long maxRows = 1048576;
+		long cellsPerSheet = maxCols * maxRows;
+		long val = (getSheet().getIndex()*cellsPerSheet) + (getCell().getRow()*maxCols) + getCell().getColumn();
+		long oVal = (o.getSheet().getIndex()*cellsPerSheet) + (o.getCell().getRow()*maxCols) + o.getCell().getColumn();
+		return new Long(val).compareTo(new Long(oVal));	
+	}
+	
+	
 }

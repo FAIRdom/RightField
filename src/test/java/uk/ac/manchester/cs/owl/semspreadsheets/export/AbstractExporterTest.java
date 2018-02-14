@@ -73,19 +73,19 @@ public class AbstractExporterTest {
 		assertEquals(4,exporter.getPopulatedValidatedCellDetails().size());
 		List<PopulatedValidatedCellDetails> list = new ArrayList<PopulatedValidatedCellDetails>(exporter.getPopulatedValidatedCellDetails());
 		
-		String [] textValues = new String [] {"Bacillus_subtilis","cell_size","concentration","dilution_rate"};
+		String [] textValues = new String [] {"cell_size","concentration","dilution_rate","Bacillus_subtilis"};
 		int x=0;
 		for (PopulatedValidatedCellDetails pop : list) {
 			assertEquals(textValues[x],pop.getTextValue());
 			assertFalse(pop.definesLiteral());
 			x++;
 		}
-		assertEquals("http://www.mygrid.org.uk/ontology/JERMOntology#Bacillus_subtilis",list.get(0).getTerm().getIRI().toString());
-		assertEquals("cell_size",list.get(1).getTerm().getName());		
+		assertEquals("http://www.mygrid.org.uk/ontology/JERMOntology#cell_size",list.get(0).getTerm().getIRI().toString());
+		assertEquals("concentration",list.get(1).getTerm().getName());		
 		assertEquals(1,list.get(1).getCell().getColumn());
-		assertEquals(10,list.get(1).getCell().getRow());
-		assertEquals("http://www.mygrid.org.uk/ontology/JERMOntology#concentration",list.get(2).getTerm().getIRI().toString());
-		assertEquals("http://www.mygrid.org.uk/ontology/JERMOntology#FactorsStudied",list.get(3).getEntityIRI().toString());
+		assertEquals(19,list.get(1).getCell().getRow());
+		assertEquals("http://www.mygrid.org.uk/ontology/JERMOntology#dilution_rate",list.get(2).getTerm().getIRI().toString());
+		assertEquals("http://www.mygrid.org.uk/ontology/JERMOntology#FactorsStudied",list.get(2).getEntityIRI().toString());
 		assertEquals(1,list.get(2).getOntologyIRIs().size());
 	}	
 	
@@ -121,20 +121,20 @@ public class AbstractExporterTest {
 		assertEquals(3,exporter.getPopulatedValidatedCellDetails().size());
 		List<PopulatedValidatedCellDetails> list = new ArrayList<PopulatedValidatedCellDetails>(exporter.getPopulatedValidatedCellDetails());
 		
-		String [] textValues = new String [] {"BioAssayData","list of booleans","primary site"};
+		String [] textValues = new String [] {"primary site","BioAssayData","list of booleans"};
 		int x=0;
 		for (PopulatedValidatedCellDetails pop : list) {
 			assertEquals(textValues[x],pop.getTextValue());
 			assertFalse(pop.definesLiteral());
 			x++;
 		}
-		assertEquals(ValidationType.SUBCLASSES,list.get(0).getValidation().getValidationDescriptor().getType());
-		assertEquals(ValidationType.INDIVIDUALS,list.get(1).getValidation().getValidationDescriptor().getType());
+		assertEquals(ValidationType.INDIVIDUALS,list.get(0).getValidation().getValidationDescriptor().getType());
+		assertEquals(ValidationType.SUBCLASSES ,list.get(1).getValidation().getValidationDescriptor().getType());
 		
-		assertEquals("primary site",list.get(2).getTerm().getName());
-		assertEquals("primary site",list.get(2).getTerm().getFormattedName());
-		assertEquals("http://mged.sourceforge.net/ontologies/MGEDOntology.owl#primary_site",list.get(2).getTerm().getIRI().toString());		
-		assertEquals("http://mged.sourceforge.net/ontologies/MGEDOntology.owl#CancerSite",list.get(2).getEntityIRI().toString());
+		assertEquals("primary site",list.get(0).getTerm().getName());
+		assertEquals("primary site",list.get(0).getTerm().getFormattedName());
+		assertEquals("http://mged.sourceforge.net/ontologies/MGEDOntology.owl#primary_site",list.get(0).getTerm().getIRI().toString());		
+		assertEquals("http://mged.sourceforge.net/ontologies/MGEDOntology.owl#CancerSite",list.get(0).getEntityIRI().toString());
 		assertEquals(1,list.get(2).getOntologyIRIs().size());
 		assertEquals("http://mged.sourceforge.net/ontologies/MGEDOntology.owl",list.get(2).getOntologyIRIs().iterator().next().toString());
 		assertEquals("http://rest.bioontology.org/bioportal/virtual/download/1131",list.get(2).getPhysicalIRIs().iterator().next().toString());

@@ -118,14 +118,7 @@ public abstract class AbstractExporter implements Exporter {
 					
 				}								
 		}
-		Collections.sort(result, new Comparator<PopulatedValidatedCellDetails>() {
-
-			@Override
-			public int compare(PopulatedValidatedCellDetails o1,
-					PopulatedValidatedCellDetails o2) {
-				return o1.getTextValue().compareTo(o2.getTextValue());
-			}
-		});
+		Collections.sort(result);
 		return result;
 	}
 	
