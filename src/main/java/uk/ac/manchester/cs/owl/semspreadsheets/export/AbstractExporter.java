@@ -97,7 +97,7 @@ public abstract class AbstractExporter implements Exporter {
 				for (Cell cell : range.getCells()) {
 					String value = cell.getValue();
 					if (validationDescriptor.definesLiteral()) {
-						if (value!=null && !value.trim().isEmpty()) {
+						if (value!=null) {
 							PopulatedValidatedCellDetails pop = new PopulatedValidatedCellDetails(validation,cell,value);					
 							result.add(pop);
 						}

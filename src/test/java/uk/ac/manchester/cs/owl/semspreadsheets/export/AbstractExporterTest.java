@@ -94,15 +94,17 @@ public class AbstractExporterTest {
 		URI uri = DocumentsCatalogue.simpleWorkbookWithLiteralsOverRangeURI();
 		AbstractExporter exporter = new AbstractExporterTestImpl(uri);
 		Collection<PopulatedValidatedCellDetails> cellDetails = exporter.getPopulatedValidatedCellDetails();
-		assertEquals(2,cellDetails.size());
+		assertEquals(12,cellDetails.size());
 		String [] textValues = new String [] {"hello", "world"};
 		int x=0;
 		for (PopulatedValidatedCellDetails pop : cellDetails) {
 			assertTrue(pop.definesLiteral());
-			assertEquals(textValues[x],pop.getTextValue());
-			assertEquals(IRI.create("http://www.mygrid.org.uk/ontology/JERMOntology#ECNumber"),pop.getOWLPropertyItem().getIRI());
-			assertEquals(OWLPropertyType.DATA_PROPERTY,pop.getOWLPropertyItem().getPropertyType());
-			x++;
+			if (!pop.getTextValue().isEmpty()) {
+				assertEquals(textValues[x],pop.getTextValue());
+				assertEquals(IRI.create("http://www.mygrid.org.uk/ontology/JERMOntology#ECNumber"),pop.getOWLPropertyItem().getIRI());
+				assertEquals(OWLPropertyType.DATA_PROPERTY,pop.getOWLPropertyItem().getPropertyType());
+				x++;
+			}			
 		}
 		
 	}

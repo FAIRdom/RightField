@@ -52,7 +52,7 @@ public abstract class GeneralCSVExporterTests {
 	public void testExportWithLiterals() throws Exception {
 		URI uri = bookWithLiteralsURI();
 		Exporter exporter = new CSVExporter(uri);
-		String csv = exporter.export();			
+		String csv = exporter.export();				
 		assertEquals(expectedCSV3(),csv);
 	}
 	
@@ -104,6 +104,16 @@ public abstract class GeneralCSVExporterTests {
 	
 	private String expectedCSV3() {
 		String expected = "text,col,row,sheet,type,term uri,entity uri,property uri,ontology uri,ontology source\n";
+		expected += "\"\",1,1,\"Sheet0\",Free text,\"None\",\"http://www.w3.org/2002/07/owl#Nothing\",\"http://www.mygrid.org.uk/ontology/JERMOntology#ECNumber\",\"http://www.mygrid.org.uk/ontology/JERMOntology\",\"http://rest.bioontology.org/bioportal/virtual/download/1488\"\n";
+		expected += "\"\",3,1,\"Sheet0\",Free text,\"None\",\"http://www.w3.org/2002/07/owl#Nothing\",\"http://www.mygrid.org.uk/ontology/JERMOntology#ECNumber\",\"http://www.mygrid.org.uk/ontology/JERMOntology\",\"http://rest.bioontology.org/bioportal/virtual/download/1488\"\n";
+		expected += "\"\",1,2,\"Sheet0\",Free text,\"None\",\"http://www.w3.org/2002/07/owl#Nothing\",\"http://www.mygrid.org.uk/ontology/JERMOntology#ECNumber\",\"http://www.mygrid.org.uk/ontology/JERMOntology\",\"http://rest.bioontology.org/bioportal/virtual/download/1488\"\n";
+		expected += "\"\",2,2,\"Sheet0\",Free text,\"None\",\"http://www.w3.org/2002/07/owl#Nothing\",\"http://www.mygrid.org.uk/ontology/JERMOntology#ECNumber\",\"http://www.mygrid.org.uk/ontology/JERMOntology\",\"http://rest.bioontology.org/bioportal/virtual/download/1488\"\n";
+		expected += "\"\",3,2,\"Sheet0\",Free text,\"None\",\"http://www.w3.org/2002/07/owl#Nothing\",\"http://www.mygrid.org.uk/ontology/JERMOntology#ECNumber\",\"http://www.mygrid.org.uk/ontology/JERMOntology\",\"http://rest.bioontology.org/bioportal/virtual/download/1488\"\n";
+		expected += "\"\",1,3,\"Sheet0\",Free text,\"None\",\"http://www.w3.org/2002/07/owl#Nothing\",\"http://www.mygrid.org.uk/ontology/JERMOntology#ECNumber\",\"http://www.mygrid.org.uk/ontology/JERMOntology\",\"http://rest.bioontology.org/bioportal/virtual/download/1488\"\n";
+		expected += "\"\",2,3,\"Sheet0\",Free text,\"None\",\"http://www.w3.org/2002/07/owl#Nothing\",\"http://www.mygrid.org.uk/ontology/JERMOntology#ECNumber\",\"http://www.mygrid.org.uk/ontology/JERMOntology\",\"http://rest.bioontology.org/bioportal/virtual/download/1488\"\n";
+		expected += "\"\",3,3,\"Sheet0\",Free text,\"None\",\"http://www.w3.org/2002/07/owl#Nothing\",\"http://www.mygrid.org.uk/ontology/JERMOntology#ECNumber\",\"http://www.mygrid.org.uk/ontology/JERMOntology\",\"http://rest.bioontology.org/bioportal/virtual/download/1488\"\n";
+		expected += "\"\",1,4,\"Sheet0\",Free text,\"None\",\"http://www.w3.org/2002/07/owl#Nothing\",\"http://www.mygrid.org.uk/ontology/JERMOntology#ECNumber\",\"http://www.mygrid.org.uk/ontology/JERMOntology\",\"http://rest.bioontology.org/bioportal/virtual/download/1488\"\n";
+		expected += "\"\",2,4,\"Sheet0\",Free text,\"None\",\"http://www.w3.org/2002/07/owl#Nothing\",\"http://www.mygrid.org.uk/ontology/JERMOntology#ECNumber\",\"http://www.mygrid.org.uk/ontology/JERMOntology\",\"http://rest.bioontology.org/bioportal/virtual/download/1488\"\n";
 		expected += "\"hello\",2,1,\"Sheet0\",Free text,\"None\",\"http://www.w3.org/2002/07/owl#Nothing\",\"http://www.mygrid.org.uk/ontology/JERMOntology#ECNumber\",\"http://www.mygrid.org.uk/ontology/JERMOntology\",\"http://rest.bioontology.org/bioportal/virtual/download/1488\"\n";
 		expected += "\"world\",3,4,\"Sheet0\",Free text,\"None\",\"http://www.w3.org/2002/07/owl#Nothing\",\"http://www.mygrid.org.uk/ontology/JERMOntology#ECNumber\",\"http://www.mygrid.org.uk/ontology/JERMOntology\",\"http://rest.bioontology.org/bioportal/virtual/download/1488\"";
 		

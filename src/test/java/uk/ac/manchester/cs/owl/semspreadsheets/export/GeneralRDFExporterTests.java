@@ -147,17 +147,22 @@ public abstract class GeneralRDFExporterTests {
 		assertNotNull(r);
 		assertEquals(rootID.toString(),r.getURI());
 		List<Statement> statements = r.listProperties().toList();
-		assertEquals(2,statements.size());
+		assertEquals(3,statements.size());
 		
 		assertEquals(rootID.toString(),statements.get(0).getSubject().getURI());
 		assertEquals("http://www.mygrid.org.uk/ontology/JERMOntology#ECNumber",statements.get(0).getPredicate().getURI());
 		assertTrue(statements.get(0).getObject().isLiteral());
-		assertEquals("hello",statements.get(0).getObject().asLiteral().getValue());		
+		assertEquals("",statements.get(0).getObject().asLiteral().getValue());
 		
 		assertEquals(rootID.toString(),statements.get(1).getSubject().getURI());
+		assertEquals("http://www.mygrid.org.uk/ontology/JERMOntology#ECNumber",statements.get(0).getPredicate().getURI());
+		assertTrue(statements.get(0).getObject().isLiteral());
+		assertEquals("hello",statements.get(1).getObject().asLiteral().getValue());		
+		
+		assertEquals(rootID.toString(),statements.get(2).getSubject().getURI());
 		assertEquals("http://www.mygrid.org.uk/ontology/JERMOntology#ECNumber",statements.get(1).getPredicate().getURI());
 		assertTrue(statements.get(1).getObject().isLiteral());
-		assertEquals("world",statements.get(1).getObject().asLiteral().getValue());
+		assertEquals("world",statements.get(2).getObject().asLiteral().getValue());
 	}
 	
 	protected abstract URI populatedJERMWorkbookURI() throws Exception;
