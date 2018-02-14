@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.semanticweb.owlapi.model.IRI;
 
@@ -27,6 +28,7 @@ public class LoadEmbeddedOntologiesTest {
 	}
 	
 	@Test
+	@Ignore("Relies on unlreliable and changeable external resources")
 	public void testLoadEmbeddedOntologies() throws Exception {
 		LoadEmbeddedTermsOntologies task = new LoadEmbeddedTermsOntologies();
 		workbookManager.loadWorkbook(DocumentsCatalogue.twoOntologiesWorkbookURI());
