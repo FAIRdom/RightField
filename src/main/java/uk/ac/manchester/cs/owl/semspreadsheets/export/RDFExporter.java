@@ -14,6 +14,8 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.util.Collections;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.IRI;
@@ -85,7 +87,13 @@ public class RDFExporter extends AbstractExporter {
 
 		Resource root = model.createResource(getRootID().toString());
 
-		for (PopulatedValidatedCellDetails details : getPopulatedValidatedCellDetails()) {
+		List<PopulatedValidatedCellDetails> populatedValidatedCellDetails = getPopulatedValidatedCellDetails();
+
+		// reverse the list, so the graph shows them in the order in the workbook. First
+		// node added appears at the end of the graph
+		Collections.reverse(populatedValidatedCellDetails);
+
+		for (PopulatedValidatedCellDetails details : populatedValidatedCellDetails) {
 			addNode(root, model, details);
 		}
 
