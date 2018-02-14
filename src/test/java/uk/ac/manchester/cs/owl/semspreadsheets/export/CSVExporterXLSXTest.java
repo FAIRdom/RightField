@@ -10,7 +10,7 @@ public class CSVExporterXLSXTest extends GeneralCSVExporterTests {
 	protected URI twoOntologiesWorkbookURI() throws Exception {
 		return DocumentsCatalogue.twoOntologiesWorkbookXLSXURI();
 	}
-	
+
 	@Override
 	protected URI bookWithPropertiesURI() throws Exception {
 		return DocumentsCatalogue.bookWithPropertiesXLSXURI();
@@ -20,7 +20,7 @@ public class CSVExporterXLSXTest extends GeneralCSVExporterTests {
 	protected URI bookWithLiteralsURI() throws Exception {
 		return DocumentsCatalogue.simpleWorkbookWithLiteralsOverRangeXLSXURI();
 	}
-	
+
 	@Override
 	protected URI bookWithQuotesAndCommasURI() throws Exception {
 		return DocumentsCatalogue.simpleXLSXWorkbookForCSVURI();

@@ -19,78 +19,80 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidation;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidationDescriptor;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Term;
+
 //FIMXE: rename - as doesn't only apply to Populated cells, but also those left empty but marked as free text
 /**
- * Contains the details for a cell in a spreadsheet that has had its annotation selected, is marked as a free text field.
- * Contains details about the actual cell, the text value of the cell, the associated {@link Term}, Entity IRI and the Ontology IRI's. 
- * It also provides full access to the {@link OntologyTermValidation} for additional information if required.
+ * Contains the details for a cell in a spreadsheet that has had its annotation
+ * selected, is marked as a free text field. Contains details about the actual
+ * cell, the text value of the cell, the associated {@link Term}, Entity IRI and
+ * the Ontology IRI's. It also provides full access to the
+ * {@link OntologyTermValidation} for additional information if required.
  * 
  * @author Stuart Owen
  * 
  * @see AbstractExporter#getPopulatedValidatedCellDetails()
  *
  */
-class PopulatedValidatedCellDetails implements Comparable<PopulatedValidatedCellDetails>
-{
+class PopulatedValidatedCellDetails implements Comparable<PopulatedValidatedCellDetails> {
 	private OntologyTermValidation validation;
-	private Cell cell;	
+	private Cell cell;
 	private Term term;
 	private String textValue;
-	
-	public PopulatedValidatedCellDetails(OntologyTermValidation validation,
-			Cell cell, Term term, String textValue) {
+
+	public PopulatedValidatedCellDetails(OntologyTermValidation validation, Cell cell, Term term, String textValue) {
 		super();
 		this.validation = validation;
 		this.cell = cell;
 		this.term = term;
-		this.textValue = textValue;		
+		this.textValue = textValue;
 	}
-	
+
 	public PopulatedValidatedCellDetails(OntologyTermValidation validation, Cell cell, String textValue) {
-		this(validation,cell,null,textValue);
+		this(validation, cell, null, textValue);
 	}
-	
-	 /**
-     * @return whether this validation defines a literal, i.e has a property but is FREETEXT
-     * 
-     * @see OntologyTermValidationDescriptor#definesLiteral()
-     */
+
+	/**
+	 * @return whether this validation defines a literal, i.e has a property but is
+	 *         FREETEXT
+	 * 
+	 * @see OntologyTermValidationDescriptor#definesLiteral()
+	 */
 	public boolean definesLiteral() {
-		return this.term==null && getValidation().getValidationDescriptor().definesLiteral();
+		return this.term == null && getValidation().getValidationDescriptor().definesLiteral();
 	}
-	
+
 	public Sheet getSheet() {
 		return validation.getRange().getSheet();
 	}
-	
+
 	public OntologyTermValidation getValidation() {
 		return validation;
 	}
-	
+
 	public OWLPropertyItem getOWLPropertyItem() {
 		return getValidation().getValidationDescriptor().getOWLPropertyItem();
 	}
-	
+
 	public Cell getCell() {
 		return cell;
 	}
-	
+
 	public Term getTerm() {
 		return term;
 	}
-	
+
 	public String getTextValue() {
 		return textValue;
 	}
-	
+
 	public IRI getEntityIRI() {
 		return getValidation().getValidationDescriptor().getEntityIRI();
 	}
-	
+
 	public Set<IRI> getOntologyIRIs() {
 		return getValidation().getValidationDescriptor().getOntologyIRIs();
 	}
-	
+
 	public Set<IRI> getPhysicalIRIs() {
 		Set<IRI> iris = new HashSet<IRI>();
 		for (IRI ontologyIRI : getOntologyIRIs()) {
@@ -104,10 +106,10 @@ class PopulatedValidatedCellDetails implements Comparable<PopulatedValidatedCell
 		long maxCols = 16384;
 		long maxRows = 1048576;
 		long cellsPerSheet = maxCols * maxRows;
-		long val = (getSheet().getIndex()*cellsPerSheet) + (getCell().getRow()*maxCols) + getCell().getColumn();
-		long oVal = (o.getSheet().getIndex()*cellsPerSheet) + (o.getCell().getRow()*maxCols) + o.getCell().getColumn();
-		return new Long(val).compareTo(new Long(oVal));	
+		long val = (getSheet().getIndex() * cellsPerSheet) + (getCell().getRow() * maxCols) + getCell().getColumn();
+		long oVal = (o.getSheet().getIndex() * cellsPerSheet) + (o.getCell().getRow() * maxCols)
+				+ o.getCell().getColumn();
+		return new Long(val).compareTo(new Long(oVal));
 	}
-	
-	
+
 }
