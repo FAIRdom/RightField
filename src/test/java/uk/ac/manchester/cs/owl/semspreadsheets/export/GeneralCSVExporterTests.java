@@ -16,11 +16,11 @@ import java.net.URI;
 
 import org.junit.Test;
 
-public abstract class GeneralCSVExporterTests {
+public abstract class GeneralCSVExporterTests {		
 
 	@Test
 	public void testExportOutputStream() throws Exception {
-		URI uri = twoOntologiesWorkbookURI();
+		URI uri = twoOntologiesWorkbookURI();		
 		Exporter exporter = new CSVExporter(uri);
 		ByteArrayOutputStream outStream = new ByteArrayOutputStream();
 		exporter.export(outStream);

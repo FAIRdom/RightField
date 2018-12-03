@@ -68,15 +68,24 @@ public class SheetXSSFImpl implements Sheet {
     	for (int rowIndex = firstRow ; rowIndex <= lastRow; rowIndex++) {
     		XSSFRow row = sheet.getRow(rowIndex);
     		if (row!=null) {
-    			int firstCell = row.getFirstCellNum();
-        		int lastCell = row.getLastCellNum();
-        		for (int cellIndex = firstCell ; cellIndex <= lastCell;cellIndex++) {
-        			XSSFCell cell = row.getCell(cellIndex);
-        			boolean skip = cell==null || cell.getCellType()==HSSFCell.CELL_TYPE_BLANK || (cell.getCellType()==HSSFCell.CELL_TYPE_STRING && cell.getStringCellValue().isEmpty());        			
+    			for (Iterator<org.apache.poi.ss.usermodel.Cell> i = row.cellIterator(); i.hasNext();) {
+    				org.apache.poi.ss.usermodel.Cell cell = i.next();
+    				boolean skip = cell==null || cell.getCellType()==HSSFCell.CELL_TYPE_BLANK || (cell.getCellType()==HSSFCell.CELL_TYPE_STRING && cell.getStringCellValue().isEmpty());        			
         			if (!skip) {
-        				cells.add(new CellXSSFImpl(hssfWorkbook, cell));
+        				cells.add(new CellXSSFImpl(hssfWorkbook, (XSSFCell)cell));
         			}
-        		} 
+    			}
+//    			int firstCell = row.getFirstCellNum();
+//        		int lastCell = row.getLastCellNum();
+//        		if (firstCell >=0 && lastCell>=0) {
+//        			for (int cellIndex = firstCell ; cellIndex <= lastCell;cellIndex++) {
+//            			XSSFCell cell = row.getCell(cellIndex);
+//            			boolean skip = cell==null || cell.getCellType()==HSSFCell.CELL_TYPE_BLANK || (cell.getCellType()==HSSFCell.CELL_TYPE_STRING && cell.getStringCellValue().isEmpty());        			
+//            			if (!skip) {
+//            				cells.add(new CellXSSFImpl(hssfWorkbook, cell));
+//            			}
+//            		} 
+//        		}        		        	
     		}    		    		
     	}
     	return cells;
