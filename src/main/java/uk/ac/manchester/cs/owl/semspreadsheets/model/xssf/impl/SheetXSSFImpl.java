@@ -40,7 +40,7 @@ public class SheetXSSFImpl implements Sheet {
 
     private WorkbookXSSFImpl workbook;
 
-    private XSSFWorkbook hssfWorkbook;       
+    private XSSFWorkbook xssfWorkbook;       
 
     private XSSFSheet sheet;
 
@@ -53,7 +53,7 @@ public class SheetXSSFImpl implements Sheet {
 
     public SheetXSSFImpl(WorkbookXSSFImpl workbook, XSSFSheet hssfSheet) {
         this.workbook = workbook;
-        this.hssfWorkbook = workbook.getXSSFWorkbook();
+        this.xssfWorkbook = workbook.getXSSFWorkbook();
         this.sheet = hssfSheet;
     }
 
@@ -72,20 +72,9 @@ public class SheetXSSFImpl implements Sheet {
     				org.apache.poi.ss.usermodel.Cell cell = i.next();
     				boolean skip = cell==null || cell.getCellType()==HSSFCell.CELL_TYPE_BLANK || (cell.getCellType()==HSSFCell.CELL_TYPE_STRING && cell.getStringCellValue().isEmpty());        			
         			if (!skip) {
-        				cells.add(new CellXSSFImpl(hssfWorkbook, (XSSFCell)cell));
+        				cells.add(new CellXSSFImpl(xssfWorkbook, (XSSFCell)cell));
         			}
-    			}
-//    			int firstCell = row.getFirstCellNum();
-//        		int lastCell = row.getLastCellNum();
-//        		if (firstCell >=0 && lastCell>=0) {
-//        			for (int cellIndex = firstCell ; cellIndex <= lastCell;cellIndex++) {
-//            			XSSFCell cell = row.getCell(cellIndex);
-//            			boolean skip = cell==null || cell.getCellType()==HSSFCell.CELL_TYPE_BLANK || (cell.getCellType()==HSSFCell.CELL_TYPE_STRING && cell.getStringCellValue().isEmpty());        			
-//            			if (!skip) {
-//            				cells.add(new CellXSSFImpl(hssfWorkbook, cell));
-//            			}
-//            		} 
-//        		}        		        	
+    			}        		        	
     		}    		    		
     	}
     	return cells;
@@ -93,30 +82,30 @@ public class SheetXSSFImpl implements Sheet {
 
     public void setName(String name) {
         String oldName = sheet.getSheetName();
-        hssfWorkbook.setSheetName(hssfWorkbook.getSheetIndex(sheet), name);
+        xssfWorkbook.setSheetName(xssfWorkbook.getSheetIndex(sheet), name);
         workbook.fireSheetRenamed(oldName, name);
     }
 
     public boolean isHidden() {
-        return hssfWorkbook.isSheetHidden(hssfWorkbook.getSheetIndex(sheet));
+        return xssfWorkbook.isSheetHidden(xssfWorkbook.getSheetIndex(sheet));
     }
 
     public void setHidden(boolean b) {
-        hssfWorkbook.setSheetHidden(hssfWorkbook.getSheetIndex(sheet), b);
+        xssfWorkbook.setSheetHidden(xssfWorkbook.getSheetIndex(sheet), b);
     }
 
     public void setVeryHidden(boolean b) {    	
         if (b) {
-            hssfWorkbook.setSheetHidden(hssfWorkbook.getSheetIndex(sheet), 2);
+            xssfWorkbook.setSheetHidden(xssfWorkbook.getSheetIndex(sheet), 2);
         }
         else {
-            hssfWorkbook.setSheetHidden(hssfWorkbook.getSheetIndex(sheet), false);
+            xssfWorkbook.setSheetHidden(xssfWorkbook.getSheetIndex(sheet), false);
         }
     }
     
     @Override
 	public boolean isVeryHidden() {
-		return hssfWorkbook.isSheetVeryHidden(hssfWorkbook.getSheetIndex(sheet));
+		return xssfWorkbook.isSheetVeryHidden(xssfWorkbook.getSheetIndex(sheet));
 	}
 
     public boolean equals(Object obj) {
@@ -137,7 +126,7 @@ public class SheetXSSFImpl implements Sheet {
     }
 
     public String getName() {
-        return hssfWorkbook.getSheetName(hssfWorkbook.getSheetIndex(sheet));
+        return xssfWorkbook.getSheetName(xssfWorkbook.getSheetIndex(sheet));
     }
 
     public int getMaxRows() {
@@ -165,7 +154,7 @@ public class SheetXSSFImpl implements Sheet {
             return null;
         }
         else {
-            return new CellXSSFImpl(hssfWorkbook, hssfCell);
+            return new CellXSSFImpl(xssfWorkbook, hssfCell);
         }
     }
 
@@ -178,7 +167,7 @@ public class SheetXSSFImpl implements Sheet {
         if (cell == null) {
             cell = hssfRow.createCell(col);
         }
-        return new CellXSSFImpl(hssfWorkbook, cell);
+        return new CellXSSFImpl(xssfWorkbook, cell);
     }
 
     public void clearCellAt(int col, int row) {
