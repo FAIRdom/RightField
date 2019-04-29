@@ -7,7 +7,8 @@
  *******************************************************************************/
 package uk.ac.manchester.cs.owl.semspreadsheets.model.xssf.impl;
 
-import org.apache.poi.hssf.util.AreaReference;
+import org.apache.poi.ss.SpreadsheetVersion;
+import org.apache.poi.ss.util.AreaReference;
 import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.xssf.usermodel.XSSFName;
 
@@ -38,7 +39,7 @@ public class NamedRangeXSSFImpl implements NamedRange {
     public Range getRange() {
         String sheetName = name.getSheetName();
         String formula = name.getRefersToFormula();
-        AreaReference areaReference = new AreaReference(formula);
+        AreaReference areaReference = new AreaReference(formula, SpreadsheetVersion.EXCEL2007);
         CellReference firstCellReference = areaReference.getFirstCell();
         CellReference lastCellReference = areaReference.getLastCell();
         return new Range(workbook.getSheet(sheetName), firstCellReference.getCol(), firstCellReference.getRow(), lastCellReference.getCol(), lastCellReference.getRow());

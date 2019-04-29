@@ -24,6 +24,9 @@ import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Cell;
 
@@ -53,7 +56,7 @@ public class CellHSSFImpl implements Cell {
     }
 
     public Font getDefaultFont() {
-        HSSFFont font = getWorkbook().getFontAt((short) 0);
+        HSSFFont font = getWorkbook().getFontAt(0);
         if (font == null) {
             return DEFAULT_FONT;
         }
@@ -95,43 +98,43 @@ public class CellHSSFImpl implements Cell {
     }
 
     public String getValue() {
-        if (theCell.getCellType() == HSSFCell.CELL_TYPE_BLANK) {
+        if (theCell.getCellType() == CellType.BLANK) {
             return "";
         }
-        else if (theCell.getCellType() == HSSFCell.CELL_TYPE_BOOLEAN) {
+        else if (theCell.getCellType() == CellType.BOOLEAN) {
             return Boolean.toString(theCell.getBooleanCellValue());
         }
-        else if (theCell.getCellType() == HSSFCell.CELL_TYPE_ERROR) {
+        else if (theCell.getCellType() == CellType.ERROR) {
             return "<ERROR?>";
         }
-        else if (theCell.getCellType() == HSSFCell.CELL_TYPE_FORMULA) {
+        else if (theCell.getCellType() == CellType.FORMULA) {
             return theCell.getCellFormula();
         }
-        else if (theCell.getCellType() == HSSFCell.CELL_TYPE_NUMERIC) {
+        else if (theCell.getCellType() == CellType.NUMERIC) {
             return Double.toString(theCell.getNumericCellValue());
         }
-        else if (theCell.getCellType() == HSSFCell.CELL_TYPE_STRING) {
+        else if (theCell.getCellType() == CellType.STRING) {
             return theCell.getRichStringCellValue().getString();
         }
         return "";
     }
 
     public void setValue(String value) {
-        if (theCell.getCellType() == HSSFCell.CELL_TYPE_BLANK) {
+        if (theCell.getCellType() == CellType.BLANK) {
             theCell.setCellValue(new HSSFRichTextString(value));
         }
-        else if (theCell.getCellType() == HSSFCell.CELL_TYPE_BOOLEAN) {
+        else if (theCell.getCellType() == CellType.BOOLEAN) {
             theCell.setCellValue(Boolean.parseBoolean(value));
         }
-        else if (theCell.getCellType() == HSSFCell.CELL_TYPE_ERROR) {
+        else if (theCell.getCellType() == CellType.ERROR) {
         }
-        else if (theCell.getCellType() == HSSFCell.CELL_TYPE_FORMULA) {
+        else if (theCell.getCellType() == CellType.FORMULA) {
             theCell.setCellFormula(value);
         }
-        else if (theCell.getCellType() == HSSFCell.CELL_TYPE_NUMERIC) {
+        else if (theCell.getCellType() == CellType.NUMERIC) {
             theCell.setCellValue(Double.parseDouble(value));
         }
-        else if (theCell.getCellType() == HSSFCell.CELL_TYPE_STRING) {
+        else if (theCell.getCellType() == CellType.STRING) {
             theCell.setCellValue(new HSSFRichTextString(value));
         }
     }
@@ -152,10 +155,10 @@ public class CellHSSFImpl implements Cell {
             cellStyle.setFont(font);
         }
         if (b) {
-            font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+            font.setBold(true);
         }
         else {
-            font.setBoldweight(HSSFFont.BOLDWEIGHT_NORMAL);
+            font.setBold(false);
         }
         fontCache.clear();
     }
@@ -175,7 +178,7 @@ public class CellHSSFImpl implements Cell {
             String name = hssfFont.getFontName();
             int size = hssfFont.getFontHeightInPoints();
             int style = Font.PLAIN;
-            if (hssfFont.getBoldweight() == HSSFFont.BOLDWEIGHT_BOLD) {
+            if (hssfFont.getBold()) {
                 style = Font.BOLD;
                 if (hssfFont.getItalic()) {
                     style = style | Font.ITALIC;
@@ -227,7 +230,7 @@ public class CellHSSFImpl implements Cell {
     	if (style == null) {
     		HSSFColor col = translateColour(colour);
     		style = getWorkbook().createCellStyle();
-    		style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND );
+    		style.setFillPattern(FillPatternType.SOLID_FOREGROUND );
     		style.setFillForegroundColor(col.getIndex());
     		styles.put(colour, style);
     	}
@@ -281,14 +284,14 @@ public class CellHSSFImpl implements Cell {
         if (cellStyle == null) {
             return SwingConstants.LEFT;
         }
-        short hssfAlignment = cellStyle.getAlignment();
-        if (hssfAlignment == HSSFCellStyle.ALIGN_LEFT) {
+        HorizontalAlignment hssfAlignment = cellStyle.getAlignmentEnum();
+        if (hssfAlignment == HorizontalAlignment.LEFT) {
             return SwingConstants.LEFT;
         }
-        else if (hssfAlignment == HSSFCellStyle.ALIGN_CENTER) {
+        else if (hssfAlignment == HorizontalAlignment.CENTER) {
             return SwingConstants.CENTER;
         }
-        else if (hssfAlignment == HSSFCellStyle.ALIGN_RIGHT) {
+        else if (hssfAlignment == HorizontalAlignment.RIGHT) {
             return SwingConstants.RIGHT;
         }
         else {

@@ -29,6 +29,7 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.OfficeXmlFileException;
+import org.apache.poi.ss.usermodel.Name;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.listeners.WorkbookChangeListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.InvalidWorkbookFormatException;
@@ -100,8 +101,7 @@ public class WorkbookHSSFImpl implements MutableWorkbook, WorkbookChangeVisitor 
 
     public Collection<NamedRange> getNamedRanges() {
         Collection<NamedRange> result = new ArrayList<NamedRange>();
-        for(int i = 0; i < workbook.getNumberOfNames(); i++) {
-            HSSFName name = workbook.getNameAt(i);
+        for(HSSFName name : workbook.getAllNames()) {            
             if(!name.isDeleted() && !name.isFunctionName()) {
                 NamedRange range = new NamedRangeHSSFImpl(this, name);
                 result.add(range);
@@ -141,13 +141,20 @@ public class WorkbookHSSFImpl implements MutableWorkbook, WorkbookChangeVisitor 
         if(workbook.getName(name) != null) {
             workbook.removeName(name);
         }
-        HSSFName hssfName = workbook.createName();
+        Name hssfName = workbook.createName();
         hssfName.setNameName(name);
         hssfName.setRefersToFormula(rng.toFixedAddress());
     }
 
-    public void removeName(String name) {
-        workbook.removeName(name);
+    public void removeName(String name) {    	
+    	logger.info("Removing name: "+name);
+        List<HSSFName> names = workbook.getNames(name);
+        if (names.size()>1) {
+        	logger.warn("More than one name '"+name+"' encountered when removing name");
+        }
+        if (!names.isEmpty()) {
+        	workbook.removeName(names.get(0));
+        }
     }
         
     public Sheet addSheet() {

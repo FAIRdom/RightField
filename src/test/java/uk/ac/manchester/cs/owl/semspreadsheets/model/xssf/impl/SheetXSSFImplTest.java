@@ -45,6 +45,8 @@ public class SheetXSSFImplTest extends GeneralSheetTests {
 		List<XSSFDataValidation> dataValidations = sheet.getDataValidations();	//<-- works
 		assertEquals(0, dataValidations.size());
 		
+		wb.close();
+		
 		//create the cell that will have the validation applied
 		sheet.createRow(0).createCell(0);		
 		

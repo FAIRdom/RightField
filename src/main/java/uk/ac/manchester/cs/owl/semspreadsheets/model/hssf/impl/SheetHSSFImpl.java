@@ -17,8 +17,10 @@ import org.apache.poi.hssf.usermodel.HSSFDataValidation;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.DataValidationConstraint;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.SheetVisibility;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellRangeAddressList;
 
@@ -68,7 +70,7 @@ public class SheetHSSFImpl implements Sheet {
         		int lastCell = row.getLastCellNum();
         		for (int cellIndex = firstCell ; cellIndex <= lastCell;cellIndex++) {
         			HSSFCell cell = row.getCell(cellIndex);
-        			boolean skip = cell==null || cell.getCellType()==HSSFCell.CELL_TYPE_BLANK || (cell.getCellType()==HSSFCell.CELL_TYPE_STRING && cell.getStringCellValue().isEmpty());        			
+        			boolean skip = cell==null || cell.getCellType()==CellType.BLANK || (cell.getCellType()==CellType.STRING && cell.getStringCellValue().isEmpty());        			
         			if (!skip) {
         				cells.add(new CellHSSFImpl(hssfWorkbook, cell));
         			}
@@ -102,11 +104,11 @@ public class SheetHSSFImpl implements Sheet {
     }
 
     public void setVeryHidden(boolean b) {    	
-        if (b) {
-            hssfWorkbook.setSheetHidden(hssfWorkbook.getSheetIndex(sheet), 2);
+        if (b) {        	
+            hssfWorkbook.setSheetVisibility(hssfWorkbook.getSheetIndex(sheet), SheetVisibility.VERY_HIDDEN);
         }
         else {
-            hssfWorkbook.setSheetHidden(hssfWorkbook.getSheetIndex(sheet), false);
+        	hssfWorkbook.setSheetVisibility(hssfWorkbook.getSheetIndex(sheet), SheetVisibility.VISIBLE);
         }
     }
     
@@ -248,10 +250,10 @@ public class SheetHSSFImpl implements Sheet {
     }   
     
     public List<HSSFDataValidation> getValidationData() {    	    	
-    	return PatchedPoi.getInstance().getValidationData(sheet, hssfWorkbook);
+    	return sheet.getDataValidations();
     }    
     
-    public void clearValidationData() {
+    public void clearValidationData() {    	
         PatchedPoi.getInstance().clearValidationData(sheet);
     }
 

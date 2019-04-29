@@ -2,7 +2,6 @@ package uk.ac.manchester.cs.owl.semspreadsheets.model.impl;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
@@ -41,13 +40,7 @@ public abstract class GeneralCellTests {
 		Font font = cell.getFont();		
 		assertEquals(Font.PLAIN,font.getStyle());
 		//test it is cached
-		assertSame(font,cell.getFont());
-		
-		//try again with a new workbook, to test caching
-		workbook = getTestWorkbook();
-		cell = workbook.getSheet(0).addCellAt(1, 1);		
-		assertEquals(Font.PLAIN,cell.getFont().getStyle());
-		assertNotSame(font,cell.getFont());
+		assertSame(font,cell.getFont());		
 	}
 	
 	@Test

@@ -13,10 +13,11 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.DataValidation;
 import org.apache.poi.ss.usermodel.DataValidationConstraint;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.SheetVisibility;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellRangeAddressList;
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -70,7 +71,7 @@ public class SheetXSSFImpl implements Sheet {
     		if (row!=null) {
     			for (Iterator<org.apache.poi.ss.usermodel.Cell> i = row.cellIterator(); i.hasNext();) {
     				org.apache.poi.ss.usermodel.Cell cell = i.next();
-    				boolean skip = cell==null || cell.getCellType()==HSSFCell.CELL_TYPE_BLANK || (cell.getCellType()==HSSFCell.CELL_TYPE_STRING && cell.getStringCellValue().isEmpty());        			
+    				boolean skip = cell==null || cell.getCellType()==CellType.BLANK || (cell.getCellType()==CellType.STRING && cell.getStringCellValue().isEmpty());        			
         			if (!skip) {
         				cells.add(new CellXSSFImpl(xssfWorkbook, (XSSFCell)cell));
         			}
@@ -96,10 +97,10 @@ public class SheetXSSFImpl implements Sheet {
 
     public void setVeryHidden(boolean b) {    	
         if (b) {
-            xssfWorkbook.setSheetHidden(xssfWorkbook.getSheetIndex(sheet), 2);
+            xssfWorkbook.setSheetVisibility(xssfWorkbook.getSheetIndex(sheet), SheetVisibility.VERY_HIDDEN);
         }
         else {
-            xssfWorkbook.setSheetHidden(xssfWorkbook.getSheetIndex(sheet), false);
+            xssfWorkbook.setSheetVisibility(xssfWorkbook.getSheetIndex(sheet), SheetVisibility.VISIBLE);
         }
     }
     
@@ -246,7 +247,7 @@ public class SheetXSSFImpl implements Sheet {
     	return -1;
     }
     
-    protected List<XSSFDataValidation> getValidationData() {    	    	    	
+    protected List<XSSFDataValidation> getValidationData() {    	    	
     	return sheet.getDataValidations();
     }    
     

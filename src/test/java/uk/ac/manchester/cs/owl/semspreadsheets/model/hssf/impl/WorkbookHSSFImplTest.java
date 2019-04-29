@@ -49,7 +49,8 @@ public class WorkbookHSSFImplTest extends GeneralWorkbookTests {
         assertTrue(f.exists());
         
         assertEquals("hello world",workbook.getSheetAt(0).getRow(0).getCell(0).getStringCellValue());
-		assertEquals(2048,workbook.getSheetAt(0).getColumnWidth(0));        
+		assertEquals(2048,workbook.getSheetAt(0).getColumnWidth(0)); 
+		workbook.close();
 	}
 	
 	

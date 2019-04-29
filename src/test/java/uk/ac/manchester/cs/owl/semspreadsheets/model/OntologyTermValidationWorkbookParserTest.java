@@ -61,7 +61,7 @@ public class OntologyTermValidationWorkbookParserTest {
 		Cell cell = sheet.getCellAt(2, 1);
 		assertEquals(sheet,v.getSheet());
 		assertEquals(new Range(sheet,cell),v.getRange());
-		assertEquals("propliteral^wksowlv0",v.getFormula());
+		assertEquals("AND(A1<>\"propliteral^wksowlv0\")",v.getFormula());
 		assertTrue(v.isLiteralValidation());
 		assertFalse(v.isDataValidation());
 	}

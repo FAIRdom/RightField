@@ -13,7 +13,6 @@ import java.net.URI;
 
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.hssf.impl.WorkbookHSSFImpl;
@@ -40,7 +39,7 @@ public class WorkbookFactory {
      * Creates either an Excel 97 (HSSF) or Excel 2007 (XSSF) workbook according to the format passed in
      * 
      */
-    public static Workbook createWorkbook(WorkbookFormat format) {
+    public static Workbook createWorkbook(WorkbookFormat format) {    	
     	logger.debug("Format requested: "+format);
     	if (format.equals(WorkbookFormat.EXCEL97)) {
     		logger.debug("Creating HSSF Workbook");
@@ -56,30 +55,28 @@ public class WorkbookFactory {
     	}
     }
 
-    /**
-     * Creates a workbook by parsing an Excel document at a given URI
-     * @param uri The URI that points to the Excel workbook
-     * @return A representation of the workbook at the specified URI
-     * @throws IOException If there was an IO problem loading the workbook
-     * @throws InvalidWorkbookFormatException indicates the format of the file behind the URI is not supported
-     */
-    public static Workbook createWorkbook(URI uri) throws IOException,InvalidWorkbookFormatException {
-    	InputStream inputStream = uri.toURL().openStream();
-    	Workbook wb = null;
-        try {
-			org.apache.poi.ss.usermodel.Workbook created = org.apache.poi.ss.usermodel.WorkbookFactory.create(inputStream);
-			if (created instanceof HSSFWorkbook) {
-				wb = new WorkbookHSSFImpl((HSSFWorkbook)created);
-			}
-			else {
-				wb = new WorkbookXSSFImpl((XSSFWorkbook)created);
-			}
-		} catch (InvalidFormatException e) {
-			throw new InvalidWorkbookFormatException(e, uri);
-		} catch (IllegalArgumentException e) {
-			throw new InvalidWorkbookFormatException(e, uri);
+	/**
+	 * Creates a workbook by parsing an Excel document at a given URI
+	 * 
+	 * @param uri The URI that points to the Excel workbook
+	 * @return A representation of the workbook at the specified URI
+	 * @throws IOException                    If there was an IO problem loading the
+	 *                                        workbook
+	 * @throws InvalidWorkbookFormatException indicates the format of the file
+	 *                                        behind the URI is not supported
+	 */
+	public static Workbook createWorkbook(URI uri) throws IOException, InvalidWorkbookFormatException {
+		InputStream inputStream = uri.toURL().openStream();
+		Workbook wb = null;
+
+		org.apache.poi.ss.usermodel.Workbook created = org.apache.poi.ss.usermodel.WorkbookFactory.create(inputStream);
+		if (created instanceof HSSFWorkbook) {
+			wb = new WorkbookHSSFImpl((HSSFWorkbook) created);
+		} else {
+			wb = new WorkbookXSSFImpl((XSSFWorkbook) created);
 		}
-        return wb;
-    }
+
+		return wb;
+	}
 
 }

@@ -206,7 +206,12 @@ public class WorkbookManager {
             return workbook;
         }
         catch (IOException e) {
-            throw new IOException("Could not open spreadsheet: " + e.getMessage());
+        	if (e.getMessage().contains("Your InputStream was neither an OLE2 stream, nor an OOXML stream")) {
+        		throw new InvalidWorkbookFormatException(e, uri);
+        	}
+        	else {
+        		throw e;
+        	}            
         }
     }    
 

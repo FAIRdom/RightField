@@ -54,7 +54,7 @@ public class WorkbookXSSFImpl implements MutableWorkbook, WorkbookChangeVisitor 
     private List<WorkbookChangeListener> changeListeners = new ArrayList<WorkbookChangeListener>();
 
     public WorkbookXSSFImpl() {
-        workbook = new XSSFWorkbook();
+        workbook = new XSSFWorkbook();        
         workbook.createSheet();
     }
     
@@ -102,8 +102,7 @@ public class WorkbookXSSFImpl implements MutableWorkbook, WorkbookChangeVisitor 
 
     public Collection<NamedRange> getNamedRanges() {
         Collection<NamedRange> result = new ArrayList<NamedRange>();
-        for(int i = 0; i < workbook.getNumberOfNames(); i++) {
-            XSSFName name = workbook.getNameAt(i);
+        for(XSSFName name : workbook.getAllNames()) {            
             if(!name.isDeleted() && !name.isFunctionName()) {
                 NamedRange range = new NamedRangeXSSFImpl(this, name);
                 result.add(range);
@@ -146,16 +145,24 @@ public class WorkbookXSSFImpl implements MutableWorkbook, WorkbookChangeVisitor 
     }
 
     public void addName(String name, Range rng) {
+    	logger.info("Adding name: "+name);
         if(workbook.getName(name) != null) {
-            workbook.removeName(name);
+            removeName(name);
         }
         Name xssfName = workbook.createName();
         xssfName.setNameName(name);
         xssfName.setRefersToFormula(rng.toFixedAddress());
     }
 
-    public void removeName(String name) {
-        workbook.removeName(name);
+    public void removeName(String name) {    	
+    	logger.info("Removing name: "+name);
+        List<XSSFName> names = workbook.getNames(name);
+        if (names.size()>1) {
+        	logger.warn("More than one name '"+name+"' encountered when removing name");
+        }
+        if (!names.isEmpty()) {
+        	workbook.removeName(names.get(0));
+        }
     }
         
     public Sheet addSheet() {
