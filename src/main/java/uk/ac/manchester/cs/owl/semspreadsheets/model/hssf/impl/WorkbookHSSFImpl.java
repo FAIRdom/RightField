@@ -147,7 +147,7 @@ public class WorkbookHSSFImpl implements MutableWorkbook, WorkbookChangeVisitor 
     }
 
     public void removeName(String name) {    	
-    	logger.info("Removing name: "+name);
+    	logger.debug("Removing name: "+name);
         List<HSSFName> names = workbook.getNames(name);
         if (names.size()>1) {
         	logger.warn("More than one name '"+name+"' encountered when removing name");

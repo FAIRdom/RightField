@@ -263,7 +263,7 @@ public class OntologyTermValidationSheetParser {
     private void setTerms(OntologyTermValidationDescriptor descriptor) {
         int row = 1 + descriptor.getOntologyIRIs().size();
         Collection<Term> terms = descriptor.getTerms();
-        logger.info("There are " + terms.size() + " terms");
+        logger.debug("There are " + terms.size() + " terms");
         for (Term term : terms) {
         	logger.debug("\t" + term.getName());
             Cell iriCell = sheet.getCellAt(0, row);

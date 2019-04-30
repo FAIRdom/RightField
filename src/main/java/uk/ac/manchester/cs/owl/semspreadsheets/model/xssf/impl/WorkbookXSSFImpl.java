@@ -145,7 +145,7 @@ public class WorkbookXSSFImpl implements MutableWorkbook, WorkbookChangeVisitor 
     }
 
     public void addName(String name, Range rng) {
-    	logger.info("Adding name: "+name);
+    	logger.debug("Adding name: "+name);
         if(workbook.getName(name) != null) {
             removeName(name);
         }
@@ -155,7 +155,7 @@ public class WorkbookXSSFImpl implements MutableWorkbook, WorkbookChangeVisitor 
     }
 
     public void removeName(String name) {    	
-    	logger.info("Removing name: "+name);
+    	logger.debug("Removing name: "+name);
         List<XSSFName> names = workbook.getNames(name);
         if (names.size()>1) {
         	logger.warn("More than one name '"+name+"' encountered when removing name");

@@ -385,7 +385,7 @@ public class OntologyManager {
     	OWLOntologyID newID = null;
     	IRI logIRI = null;
     	
-        logger.info("Loading: " + physicalIRI);
+        logger.info("Loading ontology: " + physicalIRI);
         //See if an ontology with such ID had been loaded. If yes, unload it
         unloadOntology(physicalIRI);
                 
