@@ -32,17 +32,12 @@
 		<dependency>
 			<groupId>net.sourceforge.owlapi</groupId>
 			<artifactId>owlapi-api</artifactId>
-			<version>3.4.3</version>
-		</dependency>
-		<dependency>
-			<groupId>net.sourceforge.owlapi</groupId>
-			<artifactId>owlapi-reasoner</artifactId>
-			<version>3.3</version>
+			<version>3.4.10</version>
 		</dependency>
 		<dependency>
 			<groupId>net.sourceforge.owlapi</groupId>
 			<artifactId>owlapi-apibinding</artifactId>
-			<version>3.4.3</version>
+			<version>3.4.10</version>
 		</dependency>
 		
 		<dependency>
@@ -170,9 +165,6 @@
 				<enabled>true</enabled>
 			</releases>
 		</repository>
-		<repository>
-			<id>biordf</id>
-			<url>http://dev.biordf.net/maven/</url>
-		</repository>
+		
 	</repositories>
 </project>
