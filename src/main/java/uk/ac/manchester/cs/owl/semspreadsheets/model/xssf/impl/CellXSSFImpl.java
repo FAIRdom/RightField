@@ -15,6 +15,9 @@ import java.util.Map;
 import javax.swing.SwingConstants;
 
 import org.apache.log4j.Logger;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFPalette;
+import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
@@ -269,16 +272,16 @@ public class CellXSSFImpl implements Cell {
     		styles = new HashMap<Color,XSSFCellStyle>();
     		colourStylesForWorkbook.put(getWorkbook(), styles);
     	}
-    	XSSFCellStyle style = styles.get(colour);
-    	if (style==null) {
-    		style = getWorkbook().createCellStyle();       		
-    		XSSFColor col = new XSSFColor(colour);
+    	XSSFCellStyle style = styles.get(colour);    	    	
+    	if (style == null) {
+    		XSSFColor col = new XSSFColor(colour,getWorkbook().getStylesSource().getIndexedColors());
+    		style = getWorkbook().createCellStyle();
     		style.setFillPattern(FillPatternType.SOLID_FOREGROUND );
-    		style.setFillForegroundColor(col);
-    		styles.put(colour,style);
+    		style.setFillForegroundColor(col.getIndex());
+    		styles.put(colour, style);
     	}
     	return style;
-	}	
+	}		
 	
     public Color getForeground() {
         if (foreground == null) {

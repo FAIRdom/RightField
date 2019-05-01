@@ -27,6 +27,7 @@ import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Cell;
 
@@ -208,15 +209,13 @@ public class CellHSSFImpl implements Cell {
 
     @Override
 	public void setBackgroundFill(Color colour) {
-		HSSFColor col = translateColour(colour);
-		if (col==null) {
-			logger.warn("Unable to find similar colour in palette for "+colour.toString());
+    	HSSFCellStyle style = getFillStyleForColour(colour);
+		
+		try {
+			theCell.setCellStyle(style);			
 		}
-		else {						
-			theCell.setCellStyle(getFillStyleForColour(colour));
-			if (logger.isDebugEnabled()) {
-				logger.debug("Cell colour changed to "+col.getHexString()+"with index: "+col.getIndex());
-			}
+		catch(Exception e) {
+			logger.error("Error setting cell style",e);
 		}
 	}
     
