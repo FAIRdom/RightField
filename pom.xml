@@ -43,22 +43,54 @@
 			<version>3.4.10</version>
 		</dependency>
 
+		<!--  still using patched version, just to clear validation with HSSFSheet -->
 		<dependency>
+			<groupId>org.sysmo-db</groupId>
+			<artifactId>rightfield-poi</artifactId>
+			<version>4.1.0</version>
+		</dependency>
+		
+		<!--  poi dependencies -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-collections4</artifactId>
+			<version>4.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-math3</artifactId>
+			<version>3.6.1</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.12</version>
+		</dependency>
+				
+		
+		<!--  
+		 <dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi</artifactId>
 			<version>4.1.0</version>
-		</dependency>
-
+		 </dependency>
+		 --> 
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi-ooxml</artifactId>
 			<version>4.1.0</version>
-		</dependency>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.poi</groupId>
+					<artifactId>poi</artifactId>
+					</exclusion>				
+			</exclusions>
+		</dependency>			
 
 		<dependency>
 			<groupId>org.apache.jena</groupId>
 			<artifactId>jena-arq</artifactId>
-			<version>3.10.0</version>
+			<version>3.10.0</version>			
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>

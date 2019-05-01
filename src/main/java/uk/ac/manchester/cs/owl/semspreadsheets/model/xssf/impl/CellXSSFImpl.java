@@ -270,14 +270,14 @@ public class CellXSSFImpl implements Cell {
     		colourStylesForWorkbook.put(getWorkbook(), styles);
     	}
     	XSSFCellStyle style = styles.get(colour);    	    	
-    	if (style == null) {
+    	if (style==null) {    		       	
     		XSSFColor col = new XSSFColor(colour,getWorkbook().getStylesSource().getIndexedColors());
     		style = getWorkbook().createCellStyle();
     		style.setFillPattern(FillPatternType.SOLID_FOREGROUND );
-    		style.setFillForegroundColor(col.getIndex());
-    		styles.put(colour, style);
+    		style.setFillForegroundColor(col);
+    		styles.put(colour,style);
     	}
-    	return style;
+    	return style;    	
 	}		
 	
     public Color getForeground() {

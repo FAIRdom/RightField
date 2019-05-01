@@ -1,9 +1,10 @@
-Apply the patch in the root of the poi src directory using the following line, then run ant jars
+Apply the patch in the root of the poi src directory, cloned from github, using the following line, 
 
-patch -p0 < ../rightfield/poi-patch/poi-rightfield.patch
+	git apply ../rightfield/poi-patch/poi-rightfield.patch
 
+then run ant jar
 
 A note of the deploy command used to deploy the patched poi jar to local-artifacts
 This is a note to save looking up the parameters each time, the paths, filenames and versions may differ between versions.
 
-mvn deploy:deploy-file -Dversion=3.8-beta5 -Dfile=build/dist/poi-3.8-beta5-20120109.jar -DartifactId=rightfield-poi -DgroupId=org.sysmo-db -Dpackaging=jar -Durl=file:../rightfield/local-artifacts/
+mvn deploy:deploy-file -Dversion=4.1.0 -Dfile=build/dist/maven/poi/poi-4.1.0.jar -DartifactId=rightfield-poi -DgroupId=org.sysmo-db -Dpackaging=jar -Durl=file:../rightfield/local-artifacts/
