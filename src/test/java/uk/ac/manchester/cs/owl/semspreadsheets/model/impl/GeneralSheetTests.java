@@ -222,22 +222,7 @@ public abstract class GeneralSheetTests {
 		assertTrue(sheet.isHidden());
 		assertFalse(sheet.isVeryHidden());
 	}
-	
-	@Test
-	public void testSetHiddenSheet() throws Exception {
-		Sheet sheet = getTestSheet();
-		assertFalse(sheet.isHidden());
-		sheet.setHidden(true);
-		assertTrue(sheet.isHidden());
-	}
-	
-	@Test
-	public void testSetVisible() throws Exception {
-		Sheet sheet = getTestWorkbook().getSheet(1);
-		assertTrue(sheet.isHidden());
-		sheet.setHidden(false);
-		assertFalse(sheet.isHidden());
-	}
+		
 	
 	@Test
 	public void testSetVeryHiddden() throws Exception {

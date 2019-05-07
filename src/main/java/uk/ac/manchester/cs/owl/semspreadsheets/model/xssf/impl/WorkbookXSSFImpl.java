@@ -187,13 +187,7 @@ public class WorkbookXSSFImpl implements MutableWorkbook, WorkbookChangeVisitor 
     	}
     	XSSFSheet xssfSheet = workbook.createSheet(name);
     	return new SheetXSSFImpl(this, xssfSheet);
-    }    
-
-    public Sheet addHiddenSheet() {
-        Sheet sheet = createSheet();
-        sheet.setHidden(true);
-        return sheet;
-    }
+    }        
 
     public Sheet addVeryHiddenSheet() {
     	Sheet sheet = createSheet();

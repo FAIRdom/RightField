@@ -179,13 +179,7 @@ public class WorkbookHSSFImpl implements MutableWorkbook, WorkbookChangeVisitor 
     	}
     	HSSFSheet hssfSheet = workbook.createSheet(name);
     	return new SheetHSSFImpl(this, hssfSheet);
-    }
-    
-    public Sheet addHiddenSheet() {
-        Sheet sheet = createSheet();
-        sheet.setHidden(true);
-        return sheet;
-    }
+    }       
 
     public Sheet addVeryHiddenSheet() {
     	Sheet sheet = createSheet();

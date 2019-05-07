@@ -28,9 +28,7 @@ public interface Sheet {
     
     boolean isVeryHidden();
 
-    void setVeryHidden(boolean b);
-
-    void setHidden(boolean b);
+    void setVeryHidden(boolean b);   
 
     int getMaxRows();
 

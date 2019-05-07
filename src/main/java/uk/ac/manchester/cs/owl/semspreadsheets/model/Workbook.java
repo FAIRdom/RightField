@@ -33,9 +33,7 @@ public interface Workbook {
     
     void clearChangeListeners();
 
-    Sheet addSheet();
-
-    Sheet addHiddenSheet();
+    Sheet addSheet();   
 
     Sheet addVeryHiddenSheet();      
 
