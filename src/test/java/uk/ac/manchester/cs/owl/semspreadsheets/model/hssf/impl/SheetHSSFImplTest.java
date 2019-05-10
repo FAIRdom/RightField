@@ -56,6 +56,10 @@ public class SheetHSSFImplTest extends GeneralSheetTests {
 	protected Sheet getBlankSheet() throws Exception {
 		return SpreadsheetTestHelper.getBlankWorkbook().createSheet();
 	}
+	
+	protected Sheet getTestSheetWithNonRightfieldValidations() throws Exception {
+		return SpreadsheetTestHelper.getWorkbookSheetHSSF(DocumentsCatalogue.bookWithNonRightFieldValidationsURI(), 0);
+	}
 
 	@Override
 	protected Sheet getTestSheetWithNumerics() throws Exception {

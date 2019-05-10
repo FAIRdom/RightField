@@ -148,10 +148,18 @@ public class DocumentsCatalogue {
 	public static URI partiallyPopulatedMGEDWorkbookURI() throws Exception {
 		 return uriForResourceName("workbooks/partially_populated_mged_book.xls");
 	}
+	
+	public static URI bookWithNonRightFieldValidationsURI() throws Exception {
+		return uriForResourceName("workbooks/with-existing-validation.xls");
+	}
+	
+	public static URI bookWithNonRightFieldValidationsXLSXURI() throws Exception {
+		return uriForResourceName("workbooks/with-existing-validation.xlsx");
+	}
 
 	public static URI uriForResourceName(String resource) throws Exception {
 		return DocumentsCatalogue.class.getResource("/" + resource).toURI();
-	}
+	}	
 
 	private static File fileForResourceName(String resource) throws Exception {
 		String filename = DocumentsCatalogue.class.getResource("/" + resource)

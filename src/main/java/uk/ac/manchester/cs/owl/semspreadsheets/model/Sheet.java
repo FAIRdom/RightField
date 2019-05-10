@@ -72,6 +72,8 @@ public interface Sheet {
     Collection<Validation> getIntersectingValidations(Range range);
 
     Collection<Validation> getContainingValidations(Range range);
+    
+    Collection<?> getValidationData();
 
     void clearValidationData();
 

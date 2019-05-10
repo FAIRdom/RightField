@@ -45,8 +45,8 @@ public class OntologyTermValidationWorkbookParser {
     	logger.debug("Reading validations from workbook");
         Set<OntologyTermValidation> validations = new HashSet<OntologyTermValidation>();
         Workbook workbook = getWorkbookManager().getWorkbook();
-        Map<String,Validation> literalValidations = collectLiteralValidations(workbook);
-        for (Sheet sheet : workbook.getSheets()) {
+        Map<String,Validation> literalValidations = collectLiteralValidations(workbook);        
+        for (Sheet sheet : workbook.getSheets()) {        	
             OntologyTermValidationSheetParser parser = new OntologyTermValidationSheetParser(getWorkbookManager(), sheet);
             if (parser.isValidationSheet()) {
             	OntologyTermValidationDescriptor descriptor = parser.parseValidationDescriptor();
@@ -90,7 +90,7 @@ public class OntologyTermValidationWorkbookParser {
     	logger.debug("Clearing validations from workbook");
         Workbook workbook = getWorkbookManager().getWorkbook();
         Collection<Sheet> validationSheets = new ArrayList<Sheet>();
-        restoreCellBackgroundColours();
+        restoreCellBackgroundColours();        
         for (Sheet sheet : workbook.getSheets()) {
         	logger.debug("Clearing validations for sheet:"+sheet.getName());
             OntologyTermValidationSheetParser parser = new OntologyTermValidationSheetParser(getWorkbookManager(), sheet);
@@ -104,7 +104,7 @@ public class OntologyTermValidationWorkbookParser {
             logger.debug("Finished clearing validations for sheet:"+sheet.getName());
         }
         for (Sheet sheet : workbook.getSheets()) {
-        	logger.debug("Clearing validation data for sheet "+sheet.getName());
+        	logger.debug("Clearing validation data for sheet "+sheet.getName());         	
             sheet.clearValidationData();
             logger.debug("Finished clearing validation data for sheet "+sheet.getName());
         }
@@ -113,7 +113,7 @@ public class OntologyTermValidationWorkbookParser {
         	logger.debug("Deleting validation sheet "+name);
             workbook.deleteSheet(sheet.getName());
             logger.debug("Finished deleting validation sheet "+name);
-        }
+        }        
         logger.debug("Finished clearing validations from workbook");
     }
 

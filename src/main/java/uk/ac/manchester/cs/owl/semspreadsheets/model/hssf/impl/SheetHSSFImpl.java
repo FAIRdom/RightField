@@ -249,8 +249,32 @@ public class SheetHSSFImpl implements Sheet {
     	return sheet.getDataValidations();
     }    
     
-    public void clearValidationData() {    	
+    public void clearValidationData() {
+    	List<HSSFDataValidation> baseValidations = getNoneOntologyTermValidations();
         PatchedPoi.getInstance().clearValidationData(sheet);
+        addNoneOntologyTermValidations(baseValidations);
+    }
+    
+    private List<HSSFDataValidation> getNoneOntologyTermValidations() {
+    	List<HSSFDataValidation> validations = new ArrayList<HSSFDataValidation>();
+    	for (HSSFDataValidation validation : getValidationData()) {
+    		boolean ontologyValidation = true;
+    		for (CellRangeAddress address : validation.getRegions().getCellRangeAddresses()) {
+                Validation v = new ValidationImpl(validation.getConstraint().getFormula1(), this, address.getFirstColumn(), address.getLastColumn(), address.getFirstRow(), address.getLastRow());
+                ontologyValidation = v.isLiteralValidation() || v.isDataValidation();
+                if (!ontologyValidation) {
+                	validations.add(validation);
+                	break;
+                }
+            }    		
+    	}
+    	return validations;
+    }
+    
+    private void addNoneOntologyTermValidations(List<HSSFDataValidation> validations) {
+    	for (HSSFDataValidation validation : validations) {
+    		sheet.addValidationData(validation);
+    	}
     }
 
 }

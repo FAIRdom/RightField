@@ -2,6 +2,7 @@ package uk.ac.manchester.cs.owl.semspreadsheets.model.xssf.impl;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.poi.ss.usermodel.DataValidation;
@@ -25,9 +26,9 @@ public class SheetXSSFImplTest extends GeneralSheetTests {
 	@Test
 	public void testGetValidationData() throws Exception {
 		SheetXSSFImpl sheet = (SheetXSSFImpl)getTestSheet();
-		List<XSSFDataValidation> validationData = sheet.getValidationData();
+		Collection<XSSFDataValidation> validationData = sheet.getValidationData();
 		assertEquals(1,validationData.size());
-		XSSFDataValidation val = validationData.get(0);
+		XSSFDataValidation val = validationData.iterator().next();
 		CellRangeAddress[] cellRangeAddresses = val.getRegions().getCellRangeAddresses();
 		assertEquals(1,cellRangeAddresses.length);
 		CellRangeAddress rangeAddresses = cellRangeAddresses[0];
@@ -77,6 +78,10 @@ public class SheetXSSFImplTest extends GeneralSheetTests {
 	
 	protected Sheet getBlankSheet() throws Exception {
 		return SpreadsheetTestHelper.getBlankXSSFWorkbook().createSheet();
+	}
+	
+	protected Sheet getTestSheetWithNonRightfieldValidations() throws Exception {
+		return SpreadsheetTestHelper.getWorkbookSheetXSSF(DocumentsCatalogue.bookWithNonRightFieldValidationsXLSXURI(), 0);
 	}
 
 

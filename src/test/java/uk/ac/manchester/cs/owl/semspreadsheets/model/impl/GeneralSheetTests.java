@@ -252,12 +252,21 @@ public abstract class GeneralSheetTests {
 		assertFalse(sheet.isVeryHidden());		
 	}	
 	
+	@Test
+	public void testClearKeepsNonRightFieldValidations() throws Exception {
+		Sheet sheet = getTestSheetWithNonRightfieldValidations();
+		assertEquals(2,sheet.getValidationData().size());
+		sheet.clearValidationData();
+		assertEquals(2,sheet.getValidationData().size());		
+	}
+	
 	protected abstract Sheet getTestSheetWithNumerics() throws Exception;
 	protected abstract Workbook getTestWorkbook() throws Exception;
 	protected abstract Sheet getTestSheet() throws Exception;
 	protected abstract Sheet getBlankSheet() throws Exception;
 	protected abstract Workbook getBlankWorkbook() throws Exception;
 	protected abstract Sheet getTestSheetWithProperties() throws Exception;
+	protected abstract Sheet getTestSheetWithNonRightfieldValidations() throws Exception;
 	
 
 }

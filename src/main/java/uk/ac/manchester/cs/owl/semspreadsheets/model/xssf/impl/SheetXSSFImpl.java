@@ -13,6 +13,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.apache.poi.hssf.usermodel.HSSFDataValidation;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.DataValidation;
 import org.apache.poi.ss.usermodel.DataValidationConstraint;
@@ -32,6 +33,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Validation;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Workbook;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.hssf.impl.PatchedPoi;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.impl.ValidationImpl;
 
 /**
@@ -247,13 +249,17 @@ public class SheetXSSFImpl implements Sheet {
     	return -1;
     }
     
-    protected List<XSSFDataValidation> getValidationData() {    	    	
+    public Collection<XSSFDataValidation> getValidationData() {    	    	
     	return sheet.getDataValidations();
     }    
     
-    public void clearValidationData() {    	
-    	if (sheet.getCTWorksheet().getDataValidations() != null) {    		
-	    	for (int i=0;i<sheet.getCTWorksheet().getDataValidations().getCount();i++) {
+    public void clearValidationData() {    	    
+    	
+    	List<XSSFDataValidation> baseValidations = getNoneOntologyTermValidations();
+    	
+    	if (sheet.getCTWorksheet().getDataValidations() != null) {    
+    		long n = sheet.getCTWorksheet().getDataValidations().getCount();
+	    	for (int i=0;i<n;i++) {	    		
 	    		try {
 	    			sheet.getCTWorksheet().getDataValidations().removeDataValidation(0);
 	    		}
@@ -261,9 +267,42 @@ public class SheetXSSFImpl implements Sheet {
 	    			//FIXME: currently, getCount seems to return 1 when there are no validation, or 1 when there is 1 validation, and so far haven't found
 	    			//a way of distinguishing.
 	    			logger.debug("Index out of bounds removing validation (probably caused by getCount returning 1 when there are zero");
-	    		}
+	    		}	    		
 	    	}        
     	}
-    }
+    	
+    	addNoneOntologyTermValidations(baseValidations);
+    	    	
+    }            
+
+	private List<XSSFDataValidation> getNoneOntologyTermValidations() {
+		List<XSSFDataValidation> validations = new ArrayList<XSSFDataValidation>();
+    	for (XSSFDataValidation validation : getValidationData()) {
+    		boolean ontologyValidation = true;
+    		for (CellRangeAddress address : validation.getRegions().getCellRangeAddresses()) {
+                Validation v = new ValidationImpl(validation.getValidationConstraint().getFormula1(), this, address.getFirstColumn(), address.getLastColumn(), address.getFirstRow(), address.getLastRow());
+                ontologyValidation = v.isLiteralValidation() || v.isDataValidation();
+                if (!ontologyValidation) {
+                	validations.add(validation);
+                	break;
+                }
+            }    		
+    	}
+    	return validations;
+		
+	}
+
+	private void addNoneOntologyTermValidations(List<XSSFDataValidation> validations) {
+		for (XSSFDataValidation validation : validations) {
+			CellRangeAddressList addressList = new CellRangeAddressList();
+			for (CellRangeAddress address : validation.getRegions().getCellRangeAddresses()) {
+				addressList.addCellRangeAddress(address);
+			}
+			
+			DataValidation dataValdation = sheet.getDataValidationHelper().createValidation(validation.getValidationConstraint(), addressList);
+    		sheet.addValidationData(dataValdation);
+    	}
+	}
+	
 
 }
