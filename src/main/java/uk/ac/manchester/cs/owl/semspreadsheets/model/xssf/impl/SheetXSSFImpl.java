@@ -13,7 +13,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.apache.poi.hssf.usermodel.HSSFDataValidation;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.DataValidation;
 import org.apache.poi.ss.usermodel.DataValidationConstraint;
@@ -33,7 +32,6 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Validation;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Workbook;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.hssf.impl.PatchedPoi;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.impl.ValidationImpl;
 
 /**
@@ -41,255 +39,255 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.impl.ValidationImpl;
  */
 public class SheetXSSFImpl implements Sheet {
 
-    private WorkbookXSSFImpl workbook;
+	private WorkbookXSSFImpl workbook;
 
-    private XSSFWorkbook xssfWorkbook;       
+	private XSSFWorkbook xssfWorkbook;
 
-    private XSSFSheet sheet;
+	private XSSFSheet sheet;
 
-    private static final short MAX_ROWS = Short.MAX_VALUE;
+	private static final short MAX_ROWS = Short.MAX_VALUE;
 
-    private static final int MAX_COLUMNS = 256;
-    
-    private static final Logger logger = Logger.getLogger(SheetXSSFImpl.class);
+	private static final int MAX_COLUMNS = 256;
 
+	private static final Logger logger = Logger.getLogger(SheetXSSFImpl.class);
 
-    public SheetXSSFImpl(WorkbookXSSFImpl workbook, XSSFSheet hssfSheet) {
-        this.workbook = workbook;
-        this.xssfWorkbook = workbook.getXSSFWorkbook();
-        this.sheet = hssfSheet;
-    }
+	public SheetXSSFImpl(WorkbookXSSFImpl workbook, XSSFSheet hssfSheet) {
+		this.workbook = workbook;
+		this.xssfWorkbook = workbook.getXSSFWorkbook();
+		this.sheet = hssfSheet;
+	}
 
-    public Workbook getWorkbook() {
-        return workbook;
-    }
-    
-    public List<Cell> getCellsWithContent() {
-    	List<Cell> cells = new ArrayList<Cell>();
-    	int firstRow = sheet.getFirstRowNum();
-    	int lastRow = sheet.getLastRowNum();
-    	for (int rowIndex = firstRow ; rowIndex <= lastRow; rowIndex++) {
-    		XSSFRow row = sheet.getRow(rowIndex);
-    		if (row!=null) {
-    			for (Iterator<org.apache.poi.ss.usermodel.Cell> i = row.cellIterator(); i.hasNext();) {
-    				org.apache.poi.ss.usermodel.Cell cell = i.next();
-    				boolean skip = cell==null || cell.getCellType()==CellType.BLANK || (cell.getCellType()==CellType.STRING && cell.getStringCellValue().isEmpty());        			
-        			if (!skip) {
-        				cells.add(new CellXSSFImpl(xssfWorkbook, (XSSFCell)cell));
-        			}
-    			}        		        	
-    		}    		    		
-    	}
-    	return cells;
-    }
+	public Workbook getWorkbook() {
+		return workbook;
+	}
 
-    public void setName(String name) {
-        String oldName = sheet.getSheetName();
-        xssfWorkbook.setSheetName(xssfWorkbook.getSheetIndex(sheet), name);
-        workbook.fireSheetRenamed(oldName, name);
-    }
+	public List<Cell> getCellsWithContent() {
+		List<Cell> cells = new ArrayList<Cell>();
+		int firstRow = sheet.getFirstRowNum();
+		int lastRow = sheet.getLastRowNum();
+		for (int rowIndex = firstRow; rowIndex <= lastRow; rowIndex++) {
+			XSSFRow row = sheet.getRow(rowIndex);
+			if (row != null) {
+				for (Iterator<org.apache.poi.ss.usermodel.Cell> i = row.cellIterator(); i.hasNext();) {
+					org.apache.poi.ss.usermodel.Cell cell = i.next();
+					boolean skip = cell == null || cell.getCellType() == CellType.BLANK
+							|| (cell.getCellType() == CellType.STRING && cell.getStringCellValue().isEmpty());
+					if (!skip) {
+						cells.add(new CellXSSFImpl(xssfWorkbook, (XSSFCell) cell));
+					}
+				}
+			}
+		}
+		return cells;
+	}
 
-    public boolean isHidden() {
-        return xssfWorkbook.isSheetHidden(xssfWorkbook.getSheetIndex(sheet));
-    }
+	public void setName(String name) {
+		String oldName = sheet.getSheetName();
+		xssfWorkbook.setSheetName(xssfWorkbook.getSheetIndex(sheet), name);
+		workbook.fireSheetRenamed(oldName, name);
+	}
 
-    public void setHidden(boolean b) {
-        xssfWorkbook.setSheetHidden(xssfWorkbook.getSheetIndex(sheet), b);
-    }
+	public boolean isHidden() {
+		return xssfWorkbook.isSheetHidden(xssfWorkbook.getSheetIndex(sheet));
+	}
 
-    public void setVeryHidden(boolean b) {    	
-        if (b) {
-            xssfWorkbook.setSheetVisibility(xssfWorkbook.getSheetIndex(sheet), SheetVisibility.VERY_HIDDEN);
-        }
-        else {
-            xssfWorkbook.setSheetVisibility(xssfWorkbook.getSheetIndex(sheet), SheetVisibility.VISIBLE);
-        }
-    }
-    
-    @Override
+	public void setHidden(boolean b) {
+		xssfWorkbook.setSheetHidden(xssfWorkbook.getSheetIndex(sheet), b);
+	}
+
+	public void setVeryHidden(boolean b) {
+		if (b) {
+			xssfWorkbook.setSheetVisibility(xssfWorkbook.getSheetIndex(sheet), SheetVisibility.VERY_HIDDEN);
+		} else {
+			xssfWorkbook.setSheetVisibility(xssfWorkbook.getSheetIndex(sheet), SheetVisibility.VISIBLE);
+		}
+	}
+
+	@Override
 	public boolean isVeryHidden() {
 		return xssfWorkbook.isSheetVeryHidden(xssfWorkbook.getSheetIndex(sheet));
 	}
 
-    public boolean equals(Object obj) {
-        if (!(obj instanceof SheetXSSFImpl)) {
-            return false;
-        }
-        SheetXSSFImpl other = (SheetXSSFImpl) obj;
-        return sheet == other.sheet;
-    }
+	public boolean equals(Object obj) {
+		if (!(obj instanceof SheetXSSFImpl)) {
+			return false;
+		}
+		SheetXSSFImpl other = (SheetXSSFImpl) obj;
+		return sheet == other.sheet;
+	}
 
-    public XSSFSheet getHSSFSheet() {
-        return sheet;
-    }
+	public XSSFSheet getHSSFSheet() {
+		return sheet;
+	}
 
-    public int getColumnWidth(int col) {     	
-        int width = (sheet.getColumnWidth(col) / 256) * 6;
-        return width;
-    }
+	public int getColumnWidth(int col) {
+		int width = (sheet.getColumnWidth(col) / 256) * 6;
+		return width;
+	}
 
-    public String getName() {
-        return xssfWorkbook.getSheetName(xssfWorkbook.getSheetIndex(sheet));
-    }
+	public String getName() {
+		return xssfWorkbook.getSheetName(xssfWorkbook.getSheetIndex(sheet));
+	}
 
-    public int getMaxRows() {
-        return MAX_ROWS;
-    }
+	public int getMaxRows() {
+		return MAX_ROWS;
+	}
 
-    public int getMaxColumns() {
-        return MAX_COLUMNS;
-    }
+	public int getMaxColumns() {
+		return MAX_COLUMNS;
+	}
 
-    public void clearAllCells() {
-        for(Iterator<Row> it = sheet.rowIterator(); it.hasNext(); ) {
-            Row row = it.next();
-            sheet.removeRow(row);
-        }
-    }    
+	public void clearAllCells() {
+		for (Iterator<Row> it = sheet.rowIterator(); it.hasNext();) {
+			Row row = it.next();
+			sheet.removeRow(row);
+		}
+	}
 
-    public Cell getCellAt(int col, int row) {
-        XSSFRow hssfRow = sheet.getRow(row);
-        if (hssfRow == null) {
-            return null;
-        }
-        XSSFCell hssfCell = hssfRow.getCell(col);
-        if (hssfCell == null) {
-            return null;
-        }
-        else {
-            return new CellXSSFImpl(xssfWorkbook, hssfCell);
-        }
-    }
+	public Cell getCellAt(int col, int row) {
+		XSSFRow hssfRow = sheet.getRow(row);
+		if (hssfRow == null) {
+			return null;
+		}
+		XSSFCell hssfCell = hssfRow.getCell(col);
+		if (hssfCell == null) {
+			return null;
+		} else {
+			return new CellXSSFImpl(xssfWorkbook, hssfCell);
+		}
+	}
 
-    public Cell addCellAt(int col, int row) {
-        XSSFRow hssfRow = sheet.getRow(row);
-        if (hssfRow == null) {
-            hssfRow = sheet.createRow(row);
-        }
-        XSSFCell cell = hssfRow.getCell(col);
-        if (cell == null) {
-            cell = hssfRow.createCell(col);
-        }
-        return new CellXSSFImpl(xssfWorkbook, cell);
-    }
+	public Cell addCellAt(int col, int row) {
+		XSSFRow hssfRow = sheet.getRow(row);
+		if (hssfRow == null) {
+			hssfRow = sheet.createRow(row);
+		}
+		XSSFCell cell = hssfRow.getCell(col);
+		if (cell == null) {
+			cell = hssfRow.createCell(col);
+		}
+		return new CellXSSFImpl(xssfWorkbook, cell);
+	}
 
-    public void clearCellAt(int col, int row) {
-        XSSFRow theRow = sheet.getRow(row);
-        if(theRow != null) {
-            XSSFCell theCell = theRow.getCell(col);
-            theCell.setCellValue("");
-        }
-    }            
-        
+	public void clearCellAt(int col, int row) {
+		XSSFRow theRow = sheet.getRow(row);
+		if (theRow != null) {
+			XSSFCell theCell = theRow.getCell(col);
+			theCell.setCellValue("");
+		}
+	}
 
-    public Collection<Validation> getIntersectingValidations(Range range) {
-        ArrayList<Validation> intersectingValidations = new ArrayList<Validation>();
-        for (Validation validation : range.getSheet().getValidations()) {
-            if (validation.getRange().intersectsRange(range)) {
-                intersectingValidations.add(validation);
-            }
-        }
-        return intersectingValidations;
-    }
+	public Collection<Validation> getIntersectingValidations(Range range) {
+		ArrayList<Validation> intersectingValidations = new ArrayList<Validation>();
+		for (Validation validation : range.getSheet().getValidations()) {
+			if (validation.getRange().intersectsRange(range)) {
+				intersectingValidations.add(validation);
+			}
+		}
+		return intersectingValidations;
+	}
 
-    public Collection<Validation> getContainingValidations(Range range) {
-        ArrayList<Validation> containingValidations = new ArrayList<Validation>();
-        for (Validation validation : range.getSheet().getValidations()) {
-            if (validation.getRange().containsRange(range)) {
-                containingValidations.add(validation);
-            }
-        }
-        return containingValidations;
-    }
-    
-    /**
-     * Creates a custom validation that embeds the hidden sheet name (that contains the ontology details) .
-     * e.g
-     * =AND(A1<>"propliteral^wksowlv0")
-     * this embeds the information, without restricting the use of the field (except the highly unlikely case of wanting to type the encoded string).
-     */
-    public void addLiteralValidation(String hiddenSheetName, int firstCol, int firstRow, int lastCol, int lastRow) {
-    	String encoded = PropertyValidationForumlaDefinition.encode(hiddenSheetName);
-    	
-    	//the cell title A1 is irrelevant, when the sheet is saved it gets turned into the current cell.
-    	String formula="AND(A1<>\""+encoded+"\")";    	
-    	
-    	CellRangeAddressList addressList = new CellRangeAddressList(firstRow, lastRow, firstCol, lastCol); 
-    	DataValidationConstraint constraint = sheet.getDataValidationHelper().createCustomConstraint(formula);
-    	DataValidation dataValidation = sheet.getDataValidationHelper().createValidation(constraint, addressList);
-    	dataValidation.setShowErrorBox(false);
-        sheet.addValidationData(dataValidation);
-    }
+	public Collection<Validation> getContainingValidations(Range range) {
+		ArrayList<Validation> containingValidations = new ArrayList<Validation>();
+		for (Validation validation : range.getSheet().getValidations()) {
+			if (validation.getRange().containsRange(range)) {
+				containingValidations.add(validation);
+			}
+		}
+		return containingValidations;
+	}
 
-    public void addValidation(String namedRange, int firstCol, int firstRow, int lastCol, int lastRow) {
-        CellRangeAddressList addressList = new CellRangeAddressList(firstRow, lastRow, firstCol, lastCol);        
-        DataValidationConstraint constraint = sheet.getDataValidationHelper().createFormulaListConstraint(namedRange);
-        DataValidation dataValidation = sheet.getDataValidationHelper().createValidation(constraint, addressList);
-        dataValidation.setShowErrorBox(true);
-        sheet.addValidationData(dataValidation);
-    }
+	/**
+	 * Creates a custom validation that embeds the hidden sheet name (that contains
+	 * the ontology details) . e.g =AND(A1<>"propliteral^wksowlv0") this embeds the
+	 * information, without restricting the use of the field (except the highly
+	 * unlikely case of wanting to type the encoded string).
+	 */
+	public void addLiteralValidation(String hiddenSheetName, int firstCol, int firstRow, int lastCol, int lastRow) {
+		String encoded = PropertyValidationForumlaDefinition.encode(hiddenSheetName);
 
-    public Collection<Validation> getValidations() {
-        List<Validation> validationList = new ArrayList<Validation>();
-        for (XSSFDataValidation validation : getValidationData()) {
-            for (CellRangeAddress address : validation.getRegions().getCellRangeAddresses()) {
-            	String formula1=validation.getValidationConstraint().getFormula1();            	
-                validationList.add(new ValidationImpl(formula1, this, address.getFirstColumn(), address.getLastColumn(), address.getFirstRow(), address.getLastRow()));
-            }
-        }
-        return validationList;
-    }
-    
-    public int getIndex() {    	
-    	for (int index = 0 ; index < getWorkbook().getSheets().size(); index++) {
-    		if (getWorkbook().getSheet(index).equals(this)) {
-    			return index;
-    		}
-    	}
-    	return -1;
-    }
-    
-    public Collection<XSSFDataValidation> getValidationData() {    	    	
-    	return sheet.getDataValidations();
-    }    
-    
-    public void clearValidationData() {    	    
-    	
-    	List<XSSFDataValidation> baseValidations = getNoneOntologyTermValidations();
-    	
-    	if (sheet.getCTWorksheet().getDataValidations() != null) {    
-    		long n = sheet.getCTWorksheet().getDataValidations().getCount();
-	    	for (int i=0;i<n;i++) {	    		
-	    		try {
-	    			sheet.getCTWorksheet().getDataValidations().removeDataValidation(0);
-	    		}
-	    		catch(IndexOutOfBoundsException e) {
-	    			//FIXME: currently, getCount seems to return 1 when there are no validation, or 1 when there is 1 validation, and so far haven't found
-	    			//a way of distinguishing.
-	    			logger.debug("Index out of bounds removing validation (probably caused by getCount returning 1 when there are zero");
-	    		}	    		
-	    	}        
-    	}
-    	
-    	addNoneOntologyTermValidations(baseValidations);
-    	    	
-    }            
+		// the cell title A1 is irrelevant, when the sheet is saved it gets turned into
+		// the current cell.
+		String formula = "AND(A1<>\"" + encoded + "\")";
+
+		CellRangeAddressList addressList = new CellRangeAddressList(firstRow, lastRow, firstCol, lastCol);
+		DataValidationConstraint constraint = sheet.getDataValidationHelper().createCustomConstraint(formula);
+		DataValidation dataValidation = sheet.getDataValidationHelper().createValidation(constraint, addressList);
+		dataValidation.setShowErrorBox(false);
+		sheet.addValidationData(dataValidation);
+	}
+
+	public void addValidation(String namedRange, int firstCol, int firstRow, int lastCol, int lastRow) {
+		CellRangeAddressList addressList = new CellRangeAddressList(firstRow, lastRow, firstCol, lastCol);
+		DataValidationConstraint constraint = sheet.getDataValidationHelper().createFormulaListConstraint(namedRange);
+		DataValidation dataValidation = sheet.getDataValidationHelper().createValidation(constraint, addressList);
+		dataValidation.setShowErrorBox(true);
+		sheet.addValidationData(dataValidation);
+	}
+
+	public Collection<Validation> getValidations() {
+		List<Validation> validationList = new ArrayList<Validation>();
+		for (XSSFDataValidation validation : getValidationData()) {
+			for (CellRangeAddress address : validation.getRegions().getCellRangeAddresses()) {
+				String formula1 = validation.getValidationConstraint().getFormula1();
+				validationList.add(new ValidationImpl(formula1, this, address.getFirstColumn(), address.getLastColumn(),
+						address.getFirstRow(), address.getLastRow()));
+			}
+		}
+		return validationList;
+	}
+
+	public int getIndex() {
+		for (int index = 0; index < getWorkbook().getSheets().size(); index++) {
+			if (getWorkbook().getSheet(index).equals(this)) {
+				return index;
+			}
+		}
+		return -1;
+	}
+
+	public Collection<XSSFDataValidation> getValidationData() {
+		return sheet.getDataValidations();
+	}
+
+	public void clearValidationData() {
+
+		List<XSSFDataValidation> baseValidations = getNoneOntologyTermValidations();
+
+		if (sheet.getCTWorksheet().getDataValidations() != null) {
+			long n = sheet.getCTWorksheet().getDataValidations().getCount();
+			for (int i = 0; i < n; i++) {
+				try {
+					sheet.getCTWorksheet().getDataValidations().removeDataValidation(0);
+				} catch (IndexOutOfBoundsException e) {
+					// FIXME: currently, getCount seems to return 1 when there are no validation, or
+					// 1 when there is 1 validation, and so far haven't found
+					// a way of distinguishing.
+					logger.debug(
+							"Index out of bounds removing validation (probably caused by getCount returning 1 when there are zero");
+				}
+			}
+		}
+
+		addNoneOntologyTermValidations(baseValidations);
+
+	}
 
 	private List<XSSFDataValidation> getNoneOntologyTermValidations() {
 		List<XSSFDataValidation> validations = new ArrayList<XSSFDataValidation>();
-    	for (XSSFDataValidation validation : getValidationData()) {
-    		boolean ontologyValidation = true;
-    		for (CellRangeAddress address : validation.getRegions().getCellRangeAddresses()) {
-                Validation v = new ValidationImpl(validation.getValidationConstraint().getFormula1(), this, address.getFirstColumn(), address.getLastColumn(), address.getFirstRow(), address.getLastRow());
-                ontologyValidation = v.isLiteralValidation() || v.isDataValidation();
-                if (!ontologyValidation) {
-                	validations.add(validation);
-                	break;
-                }
-            }    		
-    	}
-    	return validations;
-		
+		for (XSSFDataValidation validation : getValidationData()) {
+			boolean ontologyValidation = true;
+			for (CellRangeAddress address : validation.getRegions().getCellRangeAddresses()) {
+				Validation v = new ValidationImpl(validation.getValidationConstraint().getFormula1(), this,
+						address.getFirstColumn(), address.getLastColumn(), address.getFirstRow(), address.getLastRow());
+				ontologyValidation = v.isLiteralValidation() || v.isDataValidation();
+				if (!ontologyValidation) {
+					validations.add(validation);
+					break;
+				}
+			}
+		}
+		return validations;
 	}
 
 	private void addNoneOntologyTermValidations(List<XSSFDataValidation> validations) {
@@ -298,11 +296,11 @@ public class SheetXSSFImpl implements Sheet {
 			for (CellRangeAddress address : validation.getRegions().getCellRangeAddresses()) {
 				addressList.addCellRangeAddress(address);
 			}
-			
-			DataValidation dataValdation = sheet.getDataValidationHelper().createValidation(validation.getValidationConstraint(), addressList);
-    		sheet.addValidationData(dataValdation);
-    	}
+
+			DataValidation dataValdation = sheet.getDataValidationHelper()
+					.createValidation(validation.getValidationConstraint(), addressList);
+			sheet.addValidationData(dataValdation);
+		}
 	}
-	
 
 }
