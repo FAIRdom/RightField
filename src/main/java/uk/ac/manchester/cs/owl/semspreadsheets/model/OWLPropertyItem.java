@@ -12,7 +12,10 @@ import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 
 import uk.ac.manchester.cs.owl.owlapi.OWLDataPropertyImpl;
+import uk.ac.manchester.cs.owl.owlapi.OWLNamedIndividualImpl;
 import uk.ac.manchester.cs.owl.owlapi.OWLObjectPropertyImpl;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.skos.SKOSDetector;
+import uk.ac.manchester.cs.skos.SKOSConceptImpl;
 
 /**
  * Simple wrapper for {@link OWLDataProperty} or {@link OWLObjectProperty}
@@ -69,10 +72,24 @@ public class OWLPropertyItem {
 			return objectProperty.getIRI();
 		}
 	}
+	
+	public String getLabel() {
+		String label = null;
+		if (dataProperty!=null) {
+			label = OWLLabelResolver.getInstance().getLabel(dataProperty);
+		}
+		else {
+			label = OWLLabelResolver.getInstance().getLabel(objectProperty);
+		}
+		if (label == null) {
+			label = getIRI().getFragment().toString();
+		}
+		return label;
+	}
 
 	@Override
 	public String toString() {
-		return getIRI().getFragment().toString();
+		return getLabel();
 	}
 	
 	@Override

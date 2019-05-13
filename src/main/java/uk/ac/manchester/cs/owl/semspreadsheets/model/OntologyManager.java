@@ -35,6 +35,7 @@ import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLObject;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
+import org.semanticweb.owlapi.model.OWLOntologyFormat;
 import org.semanticweb.owlapi.model.OWLOntologyID;
 import org.semanticweb.owlapi.model.OWLOntologyLoaderConfiguration;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
@@ -45,15 +46,18 @@ import org.semanticweb.owlapi.reasoner.SimpleConfiguration;
 import org.semanticweb.owlapi.reasoner.structural.StructuralReasoner;
 import org.semanticweb.owlapi.util.AnnotationValueShortFormProvider;
 import org.semanticweb.owlapi.util.BidirectionalShortFormProviderAdapter;
+import org.semanticweb.owlapi.util.DefaultPrefixManager;
 import org.semanticweb.owlapi.util.ShortFormProvider;
 import org.semanticweb.owlapi.util.SimpleShortFormProvider;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
+import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat;
 import org.semanticweb.skos.SKOSAnnotation;
 import org.semanticweb.skos.SKOSConcept;
 import org.semanticweb.skos.SKOSDataset;
 import org.semanticweb.skosapibinding.SKOSManager;
 
 import uk.ac.manchester.cs.owl.owlapi.OWLNamedIndividualImpl;
+import uk.ac.manchester.cs.owl.owlapi.mansyntaxrenderer.ManchesterOWLSyntaxPrefixNameShortFormProvider;
 import uk.ac.manchester.cs.owl.semspreadsheets.listeners.OntologyManagerListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.listeners.OntologyTermValidationListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.skos.SKOSDetector;
@@ -75,7 +79,6 @@ public class OntologyManager {
 	private OWLReasoner reasoner;
 	public Map<OWLOntologyID,OWLReasoner> ontologyReasoners = new HashMap<OWLOntologyID, OWLReasoner>();
 	private OWLOntologyLoaderConfiguration ontologyLoaderConfiguration = new OWLOntologyLoaderConfiguration();
-	private BidirectionalShortFormProviderAdapter shortFormProvider;
 	private OntologyTermValidationManager ontologyTermValidationManager;
 	private Set<OntologyManagerListener> ontologyManagerListeners = new HashSet<OntologyManagerListener>();
 	private OWLPropertyHandler propertyHandler;	
@@ -86,8 +89,7 @@ public class OntologyManager {
 
 	public OntologyManager(WorkbookManager workbookManager) {
 		this.owlManager = OWLManager.createOWLOntologyManager();;	
-		ontologyLoaderConfiguration = ontologyLoaderConfiguration.setMissingImportHandlingStrategy(MissingImportHandlingStrategy.SILENT);		
-		shortFormProvider = new BidirectionalShortFormProviderAdapter(new SimpleShortFormProvider());
+		ontologyLoaderConfiguration = ontologyLoaderConfiguration.setMissingImportHandlingStrategy(MissingImportHandlingStrategy.SILENT);				
 		ontologyTermValidationManager = new OntologyTermValidationManager(workbookManager);
 		propertyHandler = new OWLPropertyHandler(owlManager);
 	}
@@ -144,14 +146,8 @@ public class OntologyManager {
     }
 
 	private Set<OWLEntity> searchForMatchingOWLEntities(String label) {
-		label = label.toLowerCase();
-		Set<OWLEntity> result = new HashSet<OWLEntity>();
-        for(String s : shortFormProvider.getShortForms()) {
-            if(s.toLowerCase().contains(label)) {
-                result.addAll(shortFormProvider.getEntities(s));
-            }
-        }
-		return result;
+		return OWLLabelResolver.getInstance().fingMatchingOwlEntities(label);
+		
 	}
 	
 	private Set<OWLEntity> searchForMatchingSKOSEntities(String label) {
@@ -253,11 +249,12 @@ public class OntologyManager {
     //FIXME: this and the next 2 don't really belong in OntologyManager
 	public String getRendering(OWLObject object) {
         if (object instanceof OWLEntity) {
-        	if (SKOSDetector.isSKOSEntity(((OWLEntity) object).getIRI(), this)) {
-        		return getRendering(new SKOSConceptImpl(new OWLNamedIndividualImpl(((OWLEntity) object).getIRI())));
+        	OWLEntity entity = (OWLEntity)object;
+        	if (SKOSDetector.isSKOSEntity((entity).getIRI(), this)) {
+        		return getRendering(new SKOSConceptImpl(new OWLNamedIndividualImpl((entity).getIRI())));
         	}
-        	else {
-        		return shortFormProvider.getShortForm((OWLEntity) object);
+        	else {        		
+        		return OWLLabelResolver.getInstance().getLabel(entity);     		
         	}
             
         }
@@ -292,7 +289,7 @@ public class OntologyManager {
 			label = annotation.getAnnotationValueAsConstant().getLiteral();
 		}
 		return label;		
-	}
+	}		
 	
 	private void handleSKOSLabels(Set<OWLOntology> skosOntologies) {
 		skosLabelsForConcepts = new HashMap<String,Set<OWLEntity>>();
@@ -406,7 +403,7 @@ public class OntologyManager {
         
         updateStructuralReasoner();
         updateStructuralReasoner(ontology);
-        
+       
         loadedOntologies.add(ontology);
         
         retrieveLabelsFromOntologies();
@@ -494,23 +491,14 @@ public class OntologyManager {
 			}
 			else {
 				owlOntologies.add(ontology);
-			}
+			}			
 		}
 		handleOwlLabels(owlOntologies);
 		handleSKOSLabels(skosOntologies);
 	}
 
 	private void handleOwlLabels(Set<OWLOntology> owlOntologies) {
-		IRI iri = OWLRDFVocabulary.RDFS_LABEL.getIRI();
-		OWLAnnotationProperty prop = owlManager.getOWLDataFactory()
-				.getOWLAnnotationProperty(iri);
-		List<OWLAnnotationProperty> props = new ArrayList<OWLAnnotationProperty>();
-		props.add(prop);
-		ShortFormProvider provider = new AnnotationValueShortFormProvider(
-				props, new HashMap<OWLAnnotationProperty, List<String>>(),
-				owlManager);
-		shortFormProvider.dispose();
-		shortFormProvider = new BidirectionalShortFormProviderAdapter(owlOntologies, provider);
+		OWLLabelResolver.getInstance().update(owlOntologies,getOWLOntologyManager());
 	}	
 
     public void setOntologyTermValidation(Range rangeToApply,
