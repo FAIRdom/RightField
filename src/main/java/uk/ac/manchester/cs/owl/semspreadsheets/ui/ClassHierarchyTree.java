@@ -131,5 +131,5 @@ public class ClassHierarchyTree extends HierarchyTree {
     
     protected WorkbookManager getWorkbookManager() {
     	return workbookManager;
-    }    
+    }        
 }

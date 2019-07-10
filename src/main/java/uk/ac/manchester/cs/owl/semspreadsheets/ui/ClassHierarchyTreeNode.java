@@ -23,7 +23,7 @@ import org.semanticweb.owlapi.reasoner.impl.NodeFactory;
 public class ClassHierarchyTreeNode extends DefaultMutableTreeNode {    
 
     public ClassHierarchyTreeNode() {
-        super(NodeFactory.getOWLClassTopNode());        
+        super(NodeFactory.getOWLClassTopNode());            
     }
 
     public ClassHierarchyTreeNode(Node<OWLClass> clses) {

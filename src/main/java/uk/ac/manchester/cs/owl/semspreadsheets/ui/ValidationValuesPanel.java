@@ -23,6 +23,9 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.ToolTipManager;
+
+import org.semanticweb.owlapi.model.IRI;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.listeners.CellSelectionListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.listeners.OntologyTermValidationListener;
@@ -108,6 +111,7 @@ public class ValidationValuesPanel extends JPanel {
 
         };
         termList.setCellRenderer(new ValueListItemCellRenderer());
+        ToolTipManager.sharedInstance().registerComponent(termList);
 	}
 
     protected void updateFromPreviewList(
@@ -115,7 +119,7 @@ public class ValidationValuesPanel extends JPanel {
     	TreeSet<ValueListItem> listData = new TreeSet<ValueListItem>();
     	for(OntologyTermValidation validation : previewList) {
             for(Term term : validation.getValidationDescriptor().getTerms()) {
-                listData.add(new ValueListItem(term.getFormattedName(), validation.getValidationDescriptor().getType()));
+                listData.add(new ValueListItem(term, validation.getValidationDescriptor().getType()));
             }
         }
         termList.setListData(listData.toArray(new ValueListItem[listData.size()]));		
@@ -131,7 +135,7 @@ public class ValidationValuesPanel extends JPanel {
         TreeSet<ValueListItem> listData = new TreeSet<ValueListItem>();
         for(OntologyTermValidation validation : validations) {
             for(Term term : validation.getValidationDescriptor().getTerms()) {
-                listData.add(new ValueListItem(term.getFormattedName(), validation.getValidationDescriptor().getType()));
+                listData.add(new ValueListItem(term, validation.getValidationDescriptor().getType()));
             }
         }
         termList.setListData(listData.toArray(new ValueListItem[listData.size()]));
@@ -142,35 +146,49 @@ public class ValidationValuesPanel extends JPanel {
         @Override
         public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
             JLabel label = (JLabel) super.getListCellRendererComponent(list, ((ValueListItem) value), index, isSelected, cellHasFocus);
-            ValueListItem item = (ValueListItem) value;
+            ValueListItem item = (ValueListItem) value;            
             ValidationEntityType<?> entityType = item.getType().getEntityType();
             label.setIcon(Icons.getOWLEntityIcon(entityType));
+            label.setToolTipText(item.getEntityIRI().toString());
             return label;
         }
     }
 
     private class ValueListItem implements Comparable<ValueListItem> {
 
-        private String name;
+        private Term term;
+                
 
         private ValidationType type;
 
-        private ValueListItem(String name, ValidationType type) {
-            this.name = name;
+        private ValueListItem(Term term, ValidationType type) {
+            this.term = term;
             this.type = type;
         }
 
         @Override
         public String toString() {
-            return name;
+            return getName();
+        }
+        
+        public String getName() {
+        	return term.getFormattedName();
+        }
+        
+        public IRI getEntityIRI() {
+        	return term.getIRI();
         }
         
         public ValidationType getType() {
             return type;
         }
+        
+        protected Term getTerm() {
+        	return term;
+        }
 
         public int compareTo(ValueListItem o) {
-            return name.compareTo(o.name);
+            return getTerm().compareTo(o.getTerm());
         }
     }
 

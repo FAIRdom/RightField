@@ -48,8 +48,8 @@ public class OntologyCellRenderer implements TreeCellRenderer, ListCellRenderer<
         else if(value instanceof ClassHierarchyIndividualNode) {
             ClassHierarchyIndividualNode node = (ClassHierarchyIndividualNode) value;
             setupRenderer(label, (OWLNamedIndividual) node.getUserObject());
-        }
-        return label;
+        }        
+        return label;        
     }
 
     @Override
@@ -63,7 +63,8 @@ public class OntologyCellRenderer implements TreeCellRenderer, ListCellRenderer<
         if(value instanceof OWLEntity) {
         	OWLEntity entity = (OWLEntity)value;
             label.setIcon(Icons.getOWLEntityIcon(entity));
-            label.setText(ontologyManager.getRendering(entity));                                  
+            label.setText(ontologyManager.getRendering(entity));   
+            label.setToolTipText(entity.getIRI().toString());
         }        
         else {
             label.setIcon(null);

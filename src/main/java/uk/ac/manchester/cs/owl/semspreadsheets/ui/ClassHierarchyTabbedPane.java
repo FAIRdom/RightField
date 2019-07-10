@@ -23,6 +23,7 @@ import java.util.Set;
 import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.ToolTipManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -247,6 +248,7 @@ public class ClassHierarchyTabbedPane extends JTabbedPane {
 
 	private void createTab(OWLOntology ontology) {
 		HierarchyTree tree = createTree(ontology);
+		ToolTipManager.sharedInstance().registerComponent(tree);		
 		JScrollPane sp = new JScrollPane(tree);
 		tabToTreeMap.put(sp, tree);
 		sp.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
