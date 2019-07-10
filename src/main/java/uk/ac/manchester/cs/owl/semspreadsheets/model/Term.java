@@ -33,10 +33,10 @@ public class Term implements Comparable<Term> {
     }
     
     /**
-     * @return an improved formatting of the name - e.g removing underscores between words
+     * @return an improved formatting of the name - e.g removing underscores between words - also with any prefix removed
      */
-    public String getFormattedName() {
-    	return name.replaceAll("_", " ");
+    public String getFormattedName() {    	
+    	return name.replaceAll("_", " ").replaceAll(".*:", "");
     }
 
     public int compareTo(Term o) {

@@ -108,7 +108,7 @@ public class OntologyTermValidationWorkbookParserTest {
 		assertEquals("<http://www.mygrid.org.uk/ontology/JERMOntology>",validationSheet.getCellAt(1,1).getValue());
 		assertEquals("<"+DocumentsCatalogue.jermOntologyURI().toString()+">",validationSheet.getCellAt(2,1).getValue());
 		assertEquals("<http://www.mygrid.org.uk/ontology/JERMOntology#BaCell>",validationSheet.getCellAt(0, 2).getValue());
-		assertEquals("JERMOntology:BaCell",validationSheet.getCellAt(1, 2).getValue());
+		assertEquals("BaCell",validationSheet.getCellAt(1, 2).getValue());
 		sheetValidations = manager.getWorkbook().getSheet(0).getValidations();
 		
 		Validation v = sheetValidations.iterator().next();

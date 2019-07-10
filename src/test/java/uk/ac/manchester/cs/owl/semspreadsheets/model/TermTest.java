@@ -17,7 +17,15 @@ public class TermTest {
 	public void testFormattedName() {
 		Term term = new Term(IRI.create("http://term#name_with_underscores"), "name_with_underscores");
 		assertEquals("name_with_underscores",term.getName());
-		assertEquals("name with underscores",term.getFormattedName());		
+		assertEquals("name with underscores",term.getFormattedName());
+		
+		term = new Term(IRI.create("http://term#name_prefix"), "prov:Person");
+		assertEquals("prov:Person",term.getName());
+		assertEquals("Person",term.getFormattedName());
+		
+		term = new Term(IRI.create("http://term#name_prefix_underscore_combined"), "prov:proper_Person");
+		assertEquals("prov:proper_Person",term.getName());
+		assertEquals("proper Person",term.getFormattedName());
 	}
 
 }

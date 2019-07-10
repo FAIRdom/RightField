@@ -12,10 +12,7 @@ import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 
 import uk.ac.manchester.cs.owl.owlapi.OWLDataPropertyImpl;
-import uk.ac.manchester.cs.owl.owlapi.OWLNamedIndividualImpl;
 import uk.ac.manchester.cs.owl.owlapi.OWLObjectPropertyImpl;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.skos.SKOSDetector;
-import uk.ac.manchester.cs.skos.SKOSConceptImpl;
 
 /**
  * Simple wrapper for {@link OWLDataProperty} or {@link OWLObjectProperty}

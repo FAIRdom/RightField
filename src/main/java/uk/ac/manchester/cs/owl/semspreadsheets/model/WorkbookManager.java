@@ -304,9 +304,11 @@ public class WorkbookManager {
             rangeToApply=validation.getRange();            
         }
         OWLOntologyManager owlManager = getOntologyManager().getOWLOntologyManager();
-        String cellText=getOntologyManager().getRendering(owlManager.getOWLDataFactory().getOWLAnnotationProperty(entityIRI));
-        if (type == ValidationType.FREETEXT) {
-        	cellText = "";
+        
+        String cellText = "";
+        if (type != ValidationType.FREETEXT) {
+        	String shortFormName=getOntologyManager().getRendering(owlManager.getOWLDataFactory().getOWLAnnotationProperty(entityIRI));
+            cellText = new Term(entityIRI, shortFormName).getFormattedName();
         }
         
         getOntologyManager().setOntologyTermValidation(rangeToApply, type, entityIRI, property);        
