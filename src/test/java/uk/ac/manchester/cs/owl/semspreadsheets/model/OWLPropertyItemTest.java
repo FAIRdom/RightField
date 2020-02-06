@@ -8,6 +8,7 @@ import org.semanticweb.owlapi.model.IRI;
 
 public class OWLPropertyItemTest {
 
+	@SuppressWarnings("unlikely-arg-type")
 	@Test
 	public void testEquals() {
 		OWLPropertyItem item = new OWLPropertyItem(IRI.create("http://info/stuff#property"),OWLPropertyType.DATA_PROPERTY);

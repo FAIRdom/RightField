@@ -524,7 +524,7 @@ public class OntologyManagerTest {
 		ontologyManager.loadOntology(DocumentsCatalogue.castSKOSURI());
 		
 		String rendering = ontologyManager.getRendering(new OWLClassImpl(IRI.create("http://www.mygrid.org.uk/ontology/JERMOntology#metabolite_profiling")));
-		assertEquals("JERMOntology:metabolite_profiling",rendering);
+		assertEquals("metabolite_profiling",rendering);
 		
 		rendering = ontologyManager.getRendering(new SKOSConceptImpl(new OWLNamedIndividualImpl(IRI.create("http://onto.nerc.ac.uk/CAST/178"))));
 		assertEquals("ground level rainfall measurement",rendering);

@@ -136,7 +136,7 @@ public class OntologyManager {
     }
 
 	private Set<OWLEntity> searchForMatchingOWLEntities(String label) {
-		return OWLLabelResolver.getInstance().fingMatchingOwlEntities(label);
+		return OWLLabelResolver.getInstance().findMatchingOwlEntities(label);
 		
 	}
 	

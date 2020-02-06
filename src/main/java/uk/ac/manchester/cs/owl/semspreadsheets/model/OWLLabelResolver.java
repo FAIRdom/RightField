@@ -1,16 +1,20 @@
 package uk.ac.manchester.cs.owl.semspreadsheets.model;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import org.semanticweb.owlapi.model.OWLAnnotationProperty;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyFormat;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.util.AnnotationValueShortFormProvider;
 import org.semanticweb.owlapi.util.BidirectionalShortFormProviderAdapter;
-import org.semanticweb.owlapi.util.DefaultPrefixManager;
+import org.semanticweb.owlapi.util.ShortFormProvider;
 import org.semanticweb.owlapi.util.SimpleShortFormProvider;
-import org.semanticweb.owlapi.vocab.PrefixOWLOntologyFormat;
+import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
 public class OWLLabelResolver {
 
@@ -25,7 +29,7 @@ public class OWLLabelResolver {
 		return InstanceHolder.intance;
 	}
 
-	public synchronized Set<OWLEntity> fingMatchingOwlEntities(String label) {
+	public synchronized Set<OWLEntity> findMatchingOwlEntities(String label) {
 		label = label.toLowerCase();
 		Set<OWLEntity> result = new HashSet<OWLEntity>();
 		for (String shortForms : shortFormProvider.getShortForms()) {
@@ -34,7 +38,6 @@ public class OWLLabelResolver {
 			}
 		}
 		return result;
-
 	}
 
 	public synchronized String getLabel(OWLEntity entity) {
@@ -42,16 +45,13 @@ public class OWLLabelResolver {
 	}
 
 	public void update(Set<OWLOntology> owlOntologies, OWLOntologyManager ontologyManager) {
-		DefaultPrefixManager provider = new DefaultPrefixManager();
-		for (OWLOntology ontology : owlOntologies) {
-			OWLOntologyFormat format = ontologyManager.getOntologyFormat(ontology);
-			if (format instanceof PrefixOWLOntologyFormat) {
-				PrefixOWLOntologyFormat prefixFormat = (PrefixOWLOntologyFormat) format;
-				for (String prefixName : prefixFormat.getPrefixName2PrefixMap().keySet()) {
-					provider.setPrefix(prefixName, prefixFormat.getPrefix(prefixName));					
-				}
-			}
-		}
+
+		OWLAnnotationProperty prop = ontologyManager.getOWLDataFactory()
+				.getOWLAnnotationProperty(OWLRDFVocabulary.RDFS_LABEL.getIRI());
+		List<OWLAnnotationProperty> props = new ArrayList<OWLAnnotationProperty>();
+		props.add(prop);
+		ShortFormProvider provider = new AnnotationValueShortFormProvider(props,
+				new HashMap<OWLAnnotationProperty, List<String>>(), ontologyManager);
 
 		synchronized (this) {
 			shortFormProvider.dispose();
