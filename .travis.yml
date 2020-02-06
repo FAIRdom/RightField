@@ -5,8 +5,3 @@ jdk:
 
 services:
   - xvfb
-  
-before_script:
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
-  - sleep 3 # give time for xvfb to start
