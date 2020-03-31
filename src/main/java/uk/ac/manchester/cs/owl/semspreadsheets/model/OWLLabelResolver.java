@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.OWLAnnotationProperty;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLOntology;
@@ -17,8 +18,11 @@ import org.semanticweb.owlapi.util.SimpleShortFormProvider;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
 public class OWLLabelResolver {
+	
+	private static final Logger logger = Logger.getLogger(OWLLabelResolver.class);
 
 	private BidirectionalShortFormProviderAdapter shortFormProvider;
+		
 
 	// ensures thread safety getting instance
 	private static class InstanceHolder {
@@ -45,7 +49,7 @@ public class OWLLabelResolver {
 	}
 
 	public void update(Set<OWLOntology> owlOntologies, OWLOntologyManager ontologyManager) {
-
+		logger.debug("Updating OWLLabelResolver");
 		OWLAnnotationProperty prop = ontologyManager.getOWLDataFactory()
 				.getOWLAnnotationProperty(OWLRDFVocabulary.RDFS_LABEL.getIRI());
 		List<OWLAnnotationProperty> props = new ArrayList<OWLAnnotationProperty>();
@@ -53,10 +57,13 @@ public class OWLLabelResolver {
 		ShortFormProvider provider = new AnnotationValueShortFormProvider(props,
 				new HashMap<OWLAnnotationProperty, List<String>>(), ontologyManager);
 
-		synchronized (this) {
+		logger.debug("Entering sychronised block");
+		synchronized (this) {			
 			shortFormProvider.dispose();
 			shortFormProvider = new BidirectionalShortFormProviderAdapter(owlOntologies, provider);
 		}
+		logger.debug("Finshed sychronised block");
+		logger.debug("Finshed Updating OWLLabelResolver");
 	}
 
 	private OWLLabelResolver() {

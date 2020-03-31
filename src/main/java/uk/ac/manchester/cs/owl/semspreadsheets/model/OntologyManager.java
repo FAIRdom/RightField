@@ -378,8 +378,10 @@ public class OntologyManager {
                 
         OWLOntologyDocumentSource source = new IRIDocumentSource(BioPortalRepository.handleBioPortalAPIKey(physicalIRI));
                 
+        
         OWLOntology ontology = processOntologyDocumentSourceWithTimeout(source, 120);        
     	
+        logger.debug("Finished loading ontology");
     	logIRI = ontology.getOntologyID().getOntologyIRI();
     	if (logIRI==null) {
     		logger.debug("No logical IRI, so using physical IRI:"+physicalIRI);
@@ -390,12 +392,12 @@ public class OntologyManager {
         newID = new OWLOntologyID(logIRI,physicalIRI);        
         getOWLOntologyManager().applyChange(new SetOntologyID(ontology, newID));              
         
-        
+        logger.debug("Updating structural reasoner");
         updateStructuralReasoner();
         updateStructuralReasoner(ontology);
        
         loadedOntologies.add(ontology);
-        
+                
         retrieveLabelsFromOntologies();
         fireOntologiesChanged();        
         
@@ -409,11 +411,12 @@ public class OntologyManager {
      * @return the OWLOntology
      * @throws OWLOntologyCreationException
      */
-    private OWLOntology processOntologyDocumentSourceWithTimeout(final OWLOntologyDocumentSource source,int timeout) throws OWLOntologyCreationException {
-    	
+    private OWLOntology processOntologyDocumentSourceWithTimeout(final OWLOntologyDocumentSource source, int timeout) throws OWLOntologyCreationException {
+    	logger.debug("Process ontology document "+source);
 		Callable<OWLOntology> callable = new Callable<OWLOntology>() {
 			@Override
 			public OWLOntology call() throws Exception {
+				logger.info("Calling OWLOntologyManager to load source: "+source);
 				return owlManager.loadOntologyFromOntologyDocument(source,
 						ontologyLoaderConfiguration);
 			}
@@ -442,6 +445,7 @@ public class OntologyManager {
 								+ e.getMessage());
 			}
 		} catch (TimeoutException e) {
+			logger.error("Timeout (" + timeout + " seconds) loading ontology " + source);
 			throw new OWLOntologyCreationException(
 					"There was a timeout whilst fetching the ontology from "
 							+ source.getDocumentIRI().toString());
@@ -473,6 +477,7 @@ public class OntologyManager {
     }
     
 	private void retrieveLabelsFromOntologies() {
+		logger.debug("Retrieving labels from ontology");
 		Set<OWLOntology> owlOntologies = new HashSet<OWLOntology>();
 		Set<OWLOntology> skosOntologies = new HashSet<OWLOntology>();
 		for (OWLOntology ontology : getAllOntologies()) {
@@ -485,6 +490,7 @@ public class OntologyManager {
 		}
 		handleOwlLabels(owlOntologies);
 		handleSKOSLabels(skosOntologies);
+		logger.debug("Finished Retrieving labels from ontology");
 	}
 
 	private void handleOwlLabels(Set<OWLOntology> owlOntologies) {
