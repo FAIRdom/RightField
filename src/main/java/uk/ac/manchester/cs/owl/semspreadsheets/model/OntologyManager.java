@@ -379,12 +379,12 @@ public class OntologyManager {
         OWLOntologyDocumentSource source = new IRIDocumentSource(BioPortalRepository.handleBioPortalAPIKey(physicalIRI));
                 
         
-        OWLOntology ontology = processOntologyDocumentSourceWithTimeout(source, 120);        
+        OWLOntology ontology = processOntologyDocumentSourceWithTimeout(source, 300);        
     	
         logger.debug("Finished loading ontology");
     	logIRI = ontology.getOntologyID().getOntologyIRI();
     	if (logIRI==null) {
-    		logger.debug("No logical IRI, so using physical IRI:"+physicalIRI);
+    		logger.debug("No logical IRI, so using physical IRI:" + physicalIRI);
     		logIRI=physicalIRI;
     	}
     	
