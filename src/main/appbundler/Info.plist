@@ -33,7 +33,7 @@
 <key>JVMOptions</key>
 <array>
 <string>-Dapple.laf.useScreenMenuBar=true</string>
-<string>-Xmx500M</string>
+<string>-Xmx1000M</string>
 </array>
 <key>JVMArguments</key>
 <array>
