@@ -76,6 +76,8 @@ public class OntologyManager {
 	private Map<String,Set<OWLEntity>> skosLabelsForConcepts;
 
 	private Set<OWLOntology> loadedOntologies = new HashSet<OWLOntology>();
+	
+	private static int LOAD_TIMEOUT=1800;
 
 	public OntologyManager(WorkbookManager workbookManager) {
 		this.owlManager = OWLManager.createOWLOntologyManager();;	
@@ -379,7 +381,7 @@ public class OntologyManager {
         OWLOntologyDocumentSource source = new IRIDocumentSource(BioPortalRepository.handleBioPortalAPIKey(physicalIRI));
                 
         
-        OWLOntology ontology = processOntologyDocumentSourceWithTimeout(source, 300);        
+        OWLOntology ontology = processOntologyDocumentSourceWithTimeout(source, LOAD_TIMEOUT);        
     	
         logger.debug("Finished loading ontology");
     	logIRI = ontology.getOntologyID().getOntologyIRI();
