@@ -95,27 +95,28 @@ public abstract class AbstractExporter implements Exporter {
 			Range range = validation.getRange();
 			OntologyTermValidationDescriptor validationDescriptor = validation.getValidationDescriptor();
 			for (Cell cell : range.getCells()) {
-				String value = cell.getValue();
-				if (validationDescriptor.definesLiteral()) {
-					if (value != null) {
-						PopulatedValidatedCellDetails pop = new PopulatedValidatedCellDetails(validation, cell, value);
-						result.add(pop);
-					}
-				} else {
-					Term matchedTerm = null;
-					for (Term term : validationDescriptor.getTerms()) {
-						if (term.getFormattedName().equalsIgnoreCase(value) || term.getName().equalsIgnoreCase(value)) {
-							matchedTerm = term;
-							break;
+				if (cell != null) {
+					String value = cell.getValue();
+					if (validationDescriptor.definesLiteral()) {
+						if (value != null) {
+							PopulatedValidatedCellDetails pop = new PopulatedValidatedCellDetails(validation, cell, value);
+							result.add(pop);
+						}
+					} else {
+						Term matchedTerm = null;
+						for (Term term : validationDescriptor.getTerms()) {
+							if (term.getFormattedName().equalsIgnoreCase(value) || term.getName().equalsIgnoreCase(value)) {
+								matchedTerm = term;
+								break;
+							}
+						}
+						if (matchedTerm != null) {
+							PopulatedValidatedCellDetails pop = new PopulatedValidatedCellDetails(validation, cell,
+									matchedTerm, value);
+							result.add(pop);
 						}
 					}
-					if (matchedTerm != null) {
-						PopulatedValidatedCellDetails pop = new PopulatedValidatedCellDetails(validation, cell,
-								matchedTerm, value);
-						result.add(pop);
-					}
-				}
-
+				}				
 			}
 		}
 		Collections.sort(result);

@@ -71,6 +71,8 @@ public abstract class GeneralCSVExporterTests {
 		assertTrue(csv.contains("\"Policy\",0,0,\"Sheet0\",Text,None"));
 		assertFalse("Shouldn't contain anything for the empty cell", csv.contains("0,1"));
 	}
+	
+	
 
 	protected abstract URI bookWithNumericsAndStringsURI() throws Exception;
 
