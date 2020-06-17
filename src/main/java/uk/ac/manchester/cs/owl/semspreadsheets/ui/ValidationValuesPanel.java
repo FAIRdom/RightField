@@ -23,7 +23,11 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.ListModel;
+import javax.swing.ListSelectionModel;
 import javax.swing.ToolTipManager;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import org.semanticweb.owlapi.model.IRI;
 
@@ -32,6 +36,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.listeners.OntologyTermValidationL
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidation;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Term;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.ValueListItem;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.ValidationType;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 
@@ -111,7 +116,11 @@ public class ValidationValuesPanel extends JPanel {
 
         };
         termList.setCellRenderer(new ValueListItemCellRenderer());
-        ToolTipManager.sharedInstance().registerComponent(termList);
+        termList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION); //AW changed
+        workbookManager.setTermJListFromValidationValuesPanel(this.termList); //AW changed
+        ListSelectionModel listSelectionModel = termList.getSelectionModel(); //AW changed
+        listSelectionModel.addListSelectionListener(new SharedListSelectionHandler()); //AW changed
+        //ToolTipManager.sharedInstance().registerComponent(termList); //AW removed, not clear where and how this works?
 	}
 
     protected void updateFromPreviewList(
@@ -153,7 +162,8 @@ public class ValidationValuesPanel extends JPanel {
             return label;
         }
     }
-
+    //AW removed this inner class and implemented as regular class
+    /*
     private class ValueListItem implements Comparable<ValueListItem> {
 
         private Term term;
@@ -191,7 +201,40 @@ public class ValidationValuesPanel extends JPanel {
             return getTerm().compareTo(o.getTerm());
         }
     }
+*/
 
+    class SharedListSelectionHandler implements ListSelectionListener {//AW added 
+    public void valueChanged(ListSelectionEvent e) {
+        ListSelectionModel lsm = (ListSelectionModel)e.getSource(); 
+        StringBuffer output = new StringBuffer();
+        int firstIndex = e.getFirstIndex();
+        int lastIndex = e.getLastIndex();
+        boolean isAdjusting = e.getValueIsAdjusting();
+        output.append("Event for indexes "
+                      + firstIndex + " - " + lastIndex
+                      + "; isAdjusting is " + isAdjusting
+                      + "; selected indexes:");
+        if (lsm.isSelectionEmpty()) {
+            output.append(" <none>");
+            System.out.print(" none");      
+        } else {
+            // Find out which indexes are selected.
+            int minIndex = lsm.getMinSelectionIndex();
+            int maxIndex = lsm.getMaxSelectionIndex();
+            ListModel <ValueListItem> lm = termList.getModel(); //DefaultListModel          
+            for (int i = 0; i <= lm.getSize()-1; i++) {
+                ValueListItem vli = (ValueListItem)lm.getElementAt(i);
+                Term term = vli.getTerm();    
+                if (lsm.isSelectedIndex(i)) {
+                    output.append(" " + i);
+                    term.setSelected(true);
+                }else{
+                    term.setSelected(false);
+                }
+            }
+        }
+    }
+}
 
     
 }

@@ -13,8 +13,11 @@ import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Stroke;
+import java.awt.event.MouseEvent;
+import java.util.Collection;
 
 import javax.swing.JTable;
 import javax.swing.table.TableColumn;
@@ -27,6 +30,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidation;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidationDescriptor;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.Term;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 
 /**
@@ -127,4 +131,32 @@ public class SheetTable extends JTable {
         g2.setStroke(oldStroke);
         g.setColor(oldColor);
     }
+    
+        @Override
+    public String getToolTipText(MouseEvent e) {//AW added
+
+        Point p = e.getPoint();
+        int rowIndex = rowAtPoint(p);
+        int colIndex = columnAtPoint(p);
+       
+        Range range = new Range(sheet, colIndex, rowIndex, colIndex, rowIndex);
+        
+        Collection<OntologyTermValidation> validations = workbookManager.getOntologyManager().getContainingOntologyTermValidations(range);
+
+        if(validations != null && validations.size() > 0){
+            StringBuffer tip = new StringBuffer("<html>");
+            for(OntologyTermValidation validation : validations) {
+                for(Term term : validation.getValidationDescriptor().getTerms()) {
+                    if(term.isSelected()){
+                        tip.append(term.getName());
+                        tip.append("<br>");
+                    }
+                }
+            }  
+            tip.append("</html>");
+            return tip.toString();
+        }
+        return null;
+    }  
+    
 }

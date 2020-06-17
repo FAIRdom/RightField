@@ -15,6 +15,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import javax.swing.JList;
 
 import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.IRI;
@@ -54,6 +55,8 @@ public class WorkbookManager {
     private EntitySelectionModel entitySelectionModel;
 
     private Set<WorkbookManagerListener> workbookManagerListeners = new HashSet<WorkbookManagerListener>();
+
+    private JList<ValueListItem> termJList; //AW changed
 
     public WorkbookManager() {    	
         
@@ -419,5 +422,13 @@ public class WorkbookManager {
 			return "xls";
 		}
 	}
+
+        public void setTermJListFromValidationValuesPanel(JList<ValueListItem>termJList){ //AW changed
+            this.termJList = termJList;
+}
+        
+        public JList<ValueListItem> getTermJListFromValidationValuesPanel(){ //AW changed
+            return this.termJList;
+        }           
 
 }
