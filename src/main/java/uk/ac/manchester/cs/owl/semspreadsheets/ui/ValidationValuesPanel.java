@@ -3,27 +3,16 @@
  *
  * Licensed under the New BSD License.
  * Please see LICENSE file that is distributed with the source code
- *  
+ *
  *******************************************************************************/
 package uk.ac.manchester.cs.owl.semspreadsheets.ui;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.util.Collection;
 import java.util.List;
 import java.util.TreeSet;
 
-import javax.swing.BorderFactory;
-import javax.swing.DefaultListCellRenderer;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.ToolTipManager;
+import javax.swing.*;
 
 import org.semanticweb.owlapi.model.IRI;
 
@@ -37,7 +26,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 
 /**
  * UI Pane that shows the available terms for the selected Type.
- * 
+ *
  * @author Stuart Owen
  * @author Matthew Horridge
  */
@@ -52,41 +41,48 @@ public class ValidationValuesPanel extends JPanel {
 
     private static final String EMPTY_VALIDATION = "None";
 
-    public ValidationValuesPanel(WorkbookManager manager) {
-        this.workbookManager = manager;
+    public ValidationValuesPanel(WorkbookFrame frame) {
+        this.workbookManager = frame.getWorkbookManager();
         setLayout(new BorderLayout());
+
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        JButton filterButton = new JButton("Filter");
+        filterButton.addActionListener(e -> TermFilterPanel.showDialog(frame));
+        buttonPanel.add(filterButton);
+        add(buttonPanel, BorderLayout.NORTH);
+
         createTermList();
         JScrollPane sp = new JScrollPane(termList);
-        
         add(sp, BorderLayout.CENTER);
         sp.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+
         workbookManager.getSelectionModel().addCellSelectionListener(new CellSelectionListener() {
             public void selectionChanged(Range range) {
                 updateFromModel(range);
             }
         });
-        
+
         workbookManager.getOntologyManager().addListener(new OntologyTermValidationListener() {
             @Override
-        	public void validationsChanged() {
+            public void validationsChanged() {
                 updateFromModel(workbookManager.getSelectionModel().getSelectedRange());
-            }			
+            }
 
-			@Override
-			public void ontologyTermSelected(
-					List<OntologyTermValidation> previewList) {
-				updateFromPreviewList(previewList);
-				
-			}
-        });        
+            @Override
+            public void ontologyTermSelected(
+                    List<OntologyTermValidation> previewList) {
+                updateFromPreviewList(previewList);
+
+            }
+        });
     }
 
-	private void createTermList() {
-		termList = new JList<ValueListItem>() {
-            
+    private void createTermList() {
+        termList = new JList<ValueListItem>() {
+
             private Font nowValuesSpecifiedFont = new Font("Lucida Grande", Font.BOLD, 14);
 
-             @Override
+            @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 if (termList.getModel().getSize() == 0) {
@@ -94,7 +90,7 @@ public class ValidationValuesPanel extends JPanel {
                     Range selRange = workbookManager.getSelectionModel().getSelectedRange();
                     if (selRange.isCellSelection()) {
                         Collection<OntologyTermValidation> validations = workbookManager.getOntologyManager().getContainingOntologyTermValidations(selRange);
-                        if(!validations.isEmpty()) {
+                        if (!validations.isEmpty()) {
                             msg = EMPTY_VALIDATION;
                         }
                     }
@@ -112,29 +108,29 @@ public class ValidationValuesPanel extends JPanel {
         };
         termList.setCellRenderer(new ValueListItemCellRenderer());
         ToolTipManager.sharedInstance().registerComponent(termList);
-	}
+    }
 
     protected void updateFromPreviewList(
-			List<OntologyTermValidation> previewList) {
-    	TreeSet<ValueListItem> listData = new TreeSet<ValueListItem>();
-    	for(OntologyTermValidation validation : previewList) {
-            for(Term term : validation.getValidationDescriptor().getTerms()) {
+            List<OntologyTermValidation> previewList) {
+        TreeSet<ValueListItem> listData = new TreeSet<ValueListItem>();
+        for (OntologyTermValidation validation : previewList) {
+            for (Term term : validation.getValidationDescriptor().getTerms()) {
                 listData.add(new ValueListItem(term, validation.getValidationDescriptor().getType()));
             }
         }
-        termList.setListData(listData.toArray(new ValueListItem[listData.size()]));		
-	}
+        termList.setListData(listData.toArray(new ValueListItem[listData.size()]));
+    }
 
-	private void updateFromModel(Range range) {		
-        termList.setListData(new ValueListItem [0]);
-        
-        if(!range.isCellSelection()) {
+    private void updateFromModel(Range range) {
+        termList.setListData(new ValueListItem[0]);
+
+        if (!range.isCellSelection()) {
             return;
         }
         Collection<OntologyTermValidation> validations = workbookManager.getOntologyManager().getContainingOntologyTermValidations(range);
         TreeSet<ValueListItem> listData = new TreeSet<ValueListItem>();
-        for(OntologyTermValidation validation : validations) {
-            for(Term term : validation.getValidationDescriptor().getTerms()) {
+        for (OntologyTermValidation validation : validations) {
+            for (Term term : validation.getValidationDescriptor().getTerms()) {
                 listData.add(new ValueListItem(term, validation.getValidationDescriptor().getType()));
             }
         }
@@ -146,7 +142,7 @@ public class ValidationValuesPanel extends JPanel {
         @Override
         public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
             JLabel label = (JLabel) super.getListCellRendererComponent(list, ((ValueListItem) value), index, isSelected, cellHasFocus);
-            ValueListItem item = (ValueListItem) value;            
+            ValueListItem item = (ValueListItem) value;
             ValidationEntityType<?> entityType = item.getType().getEntityType();
             label.setIcon(Icons.getOWLEntityIcon(entityType));
             label.setToolTipText(item.getEntityIRI().toString());
@@ -157,7 +153,7 @@ public class ValidationValuesPanel extends JPanel {
     private class ValueListItem implements Comparable<ValueListItem> {
 
         private Term term;
-                
+
 
         private ValidationType type;
 
@@ -170,21 +166,21 @@ public class ValidationValuesPanel extends JPanel {
         public String toString() {
             return getName();
         }
-        
+
         public String getName() {
-        	return term.getFormattedName();
+            return term.getFormattedName();
         }
-        
+
         public IRI getEntityIRI() {
-        	return term.getIRI();
+            return term.getIRI();
         }
-        
+
         public ValidationType getType() {
             return type;
         }
-        
+
         protected Term getTerm() {
-        	return term;
+            return term;
         }
 
         public int compareTo(ValueListItem o) {
@@ -193,5 +189,4 @@ public class ValidationValuesPanel extends JPanel {
     }
 
 
-    
 }

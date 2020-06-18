@@ -85,7 +85,7 @@ public class ValidationInspectorPanel extends JPanel {
 		validationTypeSelectorPanel = new ValidationTypeSelectorPanel(frame.getWorkbookManager());        
         validationTypeSelectorPanel.setBorder(createTitledBorder("VALUE TYPE AND PROPERTY"));        
         
-        ValidationValuesPanel valuesPanel = new ValidationValuesPanel(frame.getWorkbookManager());
+        ValidationValuesPanel valuesPanel = new ValidationValuesPanel(frame);
         valuesPanel.setBorder(createTitledBorder("ALLOWED VALUES"));
         
         

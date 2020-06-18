@@ -34,8 +34,10 @@ public class EntitySelectionModel {
     private ValidationType validationType = ValidationType.FREETEXT; 
     
     private OWLPropertyItem owlPropertyItem;
-    
-    private boolean allowSelectionEvents = true;
+
+	private List<Term> terms; // = new ArrayList<Term>();
+
+	private boolean allowSelectionEvents = true;
 
 	private List<EntitySelectionModelListener> listeners = new ArrayList<EntitySelectionModelListener>();		
 
@@ -53,6 +55,7 @@ public class EntitySelectionModel {
         else {
             this.selectedEntity = entity;            
         }
+        terms = null;
         logger.debug("Set selected entity to "+selectedEntity.getIRI().toString());
         if (oldEntity==null ? selectedEntity!=null : !oldEntity.equals(selectedEntity)) {
         	fireSelectedEntityChanged();        	        
@@ -79,9 +82,16 @@ public class EntitySelectionModel {
 	public void setOWLPropertyItem(OWLPropertyItem owlPropertyItem) {
 		OWLPropertyItem oldItem = this.owlPropertyItem;
 		this.owlPropertyItem = owlPropertyItem;
+		this.terms = null;
 		if (oldItem==null ? this.owlPropertyItem!=null : !oldItem.equals(this.owlPropertyItem)) {
 			fireOWLPropertyChanged();			
 		}		
+	}
+
+	public List<Term> getTerms() { return terms; }
+
+	public void setTerms(List<Term> terms) {
+
 	}
     
     public void clearSelection() {
