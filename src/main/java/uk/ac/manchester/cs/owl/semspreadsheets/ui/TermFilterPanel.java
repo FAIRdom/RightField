@@ -49,9 +49,9 @@ public class TermFilterPanel extends JPanel {
         add(availablePanel, BorderLayout.WEST);
 
         JPanel buttonsPanel = new JPanel();
-        buttonsPanel.add(Box.createVerticalGlue());
         buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.Y_AXIS));
         buttonsPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        buttonsPanel.add(Box.createVerticalGlue());
         buttonsPanel.add(addButton);
         buttonsPanel.add(removeButton);
         buttonsPanel.add(Box.createVerticalGlue());

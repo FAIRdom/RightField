@@ -45,16 +45,12 @@ public class ValidationValuesPanel extends JPanel {
         this.workbookManager = frame.getWorkbookManager();
         setLayout(new BorderLayout());
 
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        JButton filterButton = new JButton("Filter");
-        filterButton.addActionListener(e -> TermFilterPanel.showDialog(frame));
-        buttonPanel.add(filterButton);
-        add(buttonPanel, BorderLayout.NORTH);
-
         createTermList();
         JScrollPane sp = new JScrollPane(termList);
         add(sp, BorderLayout.CENTER);
         sp.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+
+        add(new ValidationValuesFilterPanel(frame), BorderLayout.SOUTH);
 
         workbookManager.getSelectionModel().addCellSelectionListener(new CellSelectionListener() {
             public void selectionChanged(Range range) {
