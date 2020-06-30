@@ -17,12 +17,10 @@ public abstract class AbstractOntologyTermValidationListener implements
 
 	@Override
 	public void validationsChanged() {
-
 	}
 
 	@Override
 	public void ontologyTermSelected(List<OntologyTermValidation> previewList) {		
-
 	}
 
 }

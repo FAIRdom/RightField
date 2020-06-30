@@ -56,7 +56,7 @@ public class WorkbookManager {
 
     private Set<WorkbookManagerListener> workbookManagerListeners = new HashSet<WorkbookManagerListener>();
 
-    private JList<ValueListItem> termJList; //AW changed
+    private JList<ValueListItem> termJList = new JList(); 
 
     public WorkbookManager() {    	
         
