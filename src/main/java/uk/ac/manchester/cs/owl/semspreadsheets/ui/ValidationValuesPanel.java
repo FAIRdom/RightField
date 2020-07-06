@@ -19,17 +19,17 @@ import java.util.TreeSet;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListCellRenderer;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
-import javax.swing.ToolTipManager;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import org.apache.log4j.Logger;
 
-import org.semanticweb.owlapi.model.IRI;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.listeners.CellSelectionListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.listeners.OntologyTermValidationListener;
@@ -37,7 +37,6 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidation;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.Term;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.ValueListItem;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.ValidationType;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 
 /**
@@ -49,7 +48,11 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
 @SuppressWarnings("serial")
 public class ValidationValuesPanel extends JPanel {
 
+    private static Logger logger = Logger.getLogger(ValidationValuesPanel.class);    
+    
     private WorkbookManager workbookManager;
+    
+    private ValidationInspectorPanel validationInspectorPanel;
 
     private JList<ValueListItem> termList;
 
@@ -57,8 +60,9 @@ public class ValidationValuesPanel extends JPanel {
 
     private static final String EMPTY_VALIDATION = "None";
 
-    public ValidationValuesPanel(WorkbookManager manager) {
+    public ValidationValuesPanel(WorkbookManager manager, ValidationInspectorPanel validationInspectorPanel) {
         this.workbookManager = manager;
+        this.validationInspectorPanel = validationInspectorPanel;
         setLayout(new BorderLayout());
         createTermList();
         JScrollPane sp = new JScrollPane(termList);
@@ -116,40 +120,63 @@ public class ValidationValuesPanel extends JPanel {
 
         };
         termList.setCellRenderer(new ValueListItemCellRenderer());
-        termList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION); //AW changed
-        workbookManager.setTermJListFromValidationValuesPanel(this.termList); //AW changed
-        ListSelectionModel listSelectionModel = termList.getSelectionModel(); //AW changed
-        listSelectionModel.addListSelectionListener(new SharedListSelectionHandler()); //AW changed
+        termList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION); 
+        workbookManager.setTermJListFromValidationValuesPanel(this.termList); 
+        ListSelectionModel listSelectionModel = termList.getSelectionModel(); 
+        listSelectionModel.addListSelectionListener(new SharedListSelectionHandler()); 
         //ToolTipManager.sharedInstance().registerComponent(termList); //AW removed, not clear where and how this works?
 	}
 
-    protected void updateFromPreviewList(
-			List<OntologyTermValidation> previewList) {
-    	TreeSet<ValueListItem> listData = new TreeSet<ValueListItem>();
-    	for(OntologyTermValidation validation : previewList) {
-            for(Term term : validation.getValidationDescriptor().getTerms()) {
+    protected void updateFromPreviewList(List<OntologyTermValidation> previewList) {
+        TreeSet<ValueListItem> listData = new TreeSet<ValueListItem>();
+        for (OntologyTermValidation validation : previewList) {
+            for (Term term : validation.getValidationDescriptor().getTerms()) {
                 listData.add(new ValueListItem(term, validation.getValidationDescriptor().getType()));
             }
         }
-        termList.setListData(listData.toArray(new ValueListItem[listData.size()]));		
-	}
 
-	private void updateFromModel(Range range) {		
-        termList.setListData(new ValueListItem [0]);
+        termList.setListData(listData.toArray(new ValueListItem[listData.size()]));
         
-        if(!range.isCellSelection()) {
+        setViewAllTermsSelected();
+    }
+
+    private void updateFromModel(Range range) {
+        termList.setListData(new ValueListItem[0]);
+
+        if (!range.isCellSelection()) {
             return;
         }
         Collection<OntologyTermValidation> validations = workbookManager.getOntologyManager().getContainingOntologyTermValidations(range);
         TreeSet<ValueListItem> listData = new TreeSet<ValueListItem>();
-        for(OntologyTermValidation validation : validations) {
-            for(Term term : validation.getValidationDescriptor().getTerms()) {
+        for (OntologyTermValidation validation : validations) {
+            for (Term term : validation.getValidationDescriptor().getTerms()) {
                 listData.add(new ValueListItem(term, validation.getValidationDescriptor().getType()));
             }
         }
+
         termList.setListData(listData.toArray(new ValueListItem[listData.size()]));
+
+        setViewTermsHighlighting();
     }
 
+    private void setViewTermsHighlighting() {
+        ListModel model = termList.getModel();
+        ListSelectionModel listSelectionModel = termList.getSelectionModel();
+        
+        for (int i = 0; i < model.getSize(); i++) {
+            ValueListItem vli = (ValueListItem) model.getElementAt(i);
+            Term term = vli.getTerm();
+            if (term.isSelected()) {
+                listSelectionModel.addSelectionInterval(i, i);
+            }
+        }
+    }    
+    
+     private void setViewAllTermsSelected() {
+         ListSelectionModel listSelectionModel = termList.getSelectionModel();
+         listSelectionModel.setSelectionInterval(0, termList.getModel().getSize() -1);
+    }   
+   
     private class ValueListItemCellRenderer extends DefaultListCellRenderer {
 
         @Override
@@ -162,79 +189,30 @@ public class ValidationValuesPanel extends JPanel {
             return label;
         }
     }
-    //AW removed this inner class and implemented as regular class
-    /*
-    private class ValueListItem implements Comparable<ValueListItem> {
 
-        private Term term;
-                
+    class SharedListSelectionHandler implements ListSelectionListener { 
 
-        private ValidationType type;
+        public void valueChanged(ListSelectionEvent e) {
+            ListSelectionModel lsm = (ListSelectionModel) e.getSource();
 
-        private ValueListItem(Term term, ValidationType type) {
-            this.term = term;
-            this.type = type;
-        }
-
-        @Override
-        public String toString() {
-            return getName();
-        }
-        
-        public String getName() {
-        	return term.getFormattedName();
-        }
-        
-        public IRI getEntityIRI() {
-        	return term.getIRI();
-        }
-        
-        public ValidationType getType() {
-            return type;
-        }
-        
-        protected Term getTerm() {
-        	return term;
-        }
-
-        public int compareTo(ValueListItem o) {
-            return getTerm().compareTo(o.getTerm());
-        }
-    }
-*/
-
-    class SharedListSelectionHandler implements ListSelectionListener {//AW added 
-    public void valueChanged(ListSelectionEvent e) {
-        ListSelectionModel lsm = (ListSelectionModel)e.getSource(); 
-        StringBuffer output = new StringBuffer();
-        int firstIndex = e.getFirstIndex();
-        int lastIndex = e.getLastIndex();
-        boolean isAdjusting = e.getValueIsAdjusting();
-        output.append("Event for indexes "
-                      + firstIndex + " - " + lastIndex
-                      + "; isAdjusting is " + isAdjusting
-                      + "; selected indexes:");
-        if (lsm.isSelectionEmpty()) {
-            output.append(" <none>");
-            System.out.print(" none");      
-        } else {
-            // Find out which indexes are selected.
-            int minIndex = lsm.getMinSelectionIndex();
-            int maxIndex = lsm.getMaxSelectionIndex();
-            ListModel <ValueListItem> lm = termList.getModel(); //DefaultListModel          
-            for (int i = 0; i <= lm.getSize()-1; i++) {
-                ValueListItem vli = (ValueListItem)lm.getElementAt(i);
-                Term term = vli.getTerm();    
-                if (lsm.isSelectedIndex(i)) {
-                    output.append(" " + i);
-                    term.setSelected(true);
-                }else{
-                    term.setSelected(false);
+            if (e.getValueIsAdjusting()) {
+                if (!lsm.isSelectionEmpty()) {
+                    ListModel<ValueListItem> lm = termList.getModel();           
+                    for (int i = 0; i <= lm.getSize() - 1; i++) {
+                        ValueListItem vli = (ValueListItem) lm.getElementAt(i);
+                        Term term = vli.getTerm();
+                        if (lsm.isSelectedIndex(i)) {
+                            term.setSelected(true);
+                        } else {
+                            term.setSelected(false);
+                        }
+                    }
                 }
             }
+            validationInspectorPanel.updateApplyButtonState();
         }
+        
     }
-}
 
     
 }

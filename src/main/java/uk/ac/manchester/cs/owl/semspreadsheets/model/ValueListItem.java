@@ -2,7 +2,6 @@ package uk.ac.manchester.cs.owl.semspreadsheets.model;
 
 import org.semanticweb.owlapi.model.IRI;
 
-//AW added this as regular class, not inner class
  public class ValueListItem implements Comparable<ValueListItem> {
 
         private Term term;

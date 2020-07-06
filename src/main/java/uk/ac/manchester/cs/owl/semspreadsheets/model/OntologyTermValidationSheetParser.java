@@ -262,7 +262,6 @@ public class OntologyTermValidationSheetParser {
 
     private void setTerms(OntologyTermValidationDescriptor descriptor) {
         int row = 1 + descriptor.getOntologyIRIs().size();
-        //Collection<Term> terms = descriptor.getTerms(); //AW changed
         Collection<Term> terms = descriptor.getOnlySelectedTerms();    
         logger.debug("There are " + terms.size() + " terms");
         for (Term term : terms) {

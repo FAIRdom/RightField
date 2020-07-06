@@ -103,7 +103,8 @@ class ClassHierarchyTabComponent extends JPanel {
 		boolean used = getOntologyManager().isOntologyInUse(getOntology());
 		
 		logger.debug("Checking wether the ontology is used in the workbook = "+used);
-		closeButton.setEnabled(!used);
+		//closeButton.setEnabled(!used);//AW based on a wish from a user (O.), this was removed - but it is questionable if this should be possible?
+                closeButton.setEnabled(true);
 	}
 
 	private WorkbookFrame getWorkbookFrame() {

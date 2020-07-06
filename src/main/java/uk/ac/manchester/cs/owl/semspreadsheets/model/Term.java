@@ -19,7 +19,6 @@ public class Term implements Comparable<Term> {
 
     private String name;
 
-    //AW added isSelected for Term
     private boolean isSelected = true;
 
     public Term(IRI iri, String name) {
