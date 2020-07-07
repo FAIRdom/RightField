@@ -14,6 +14,8 @@ import org.semanticweb.owlapi.reasoner.impl.NodeFactory;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.DocumentsCatalogue;
 
+import java.util.List;
+
 public class OntologyTermValidationDescriptorTest {
 	
 	private OntologyManager ontManager;
@@ -29,7 +31,7 @@ public class OntologyTermValidationDescriptorTest {
 	@Test @Ignore("Dependent ontology contains an invalid import. Ontology needs fixing to no longer be reliant on external resources")
 	public void testOntologyIRIsWithOWLThing() throws Exception {		
 		IRI owlThingEntity = NodeFactory.getOWLClassTopNode().getEntities().iterator().next().getIRI();
-		OntologyTermValidationDescriptor descriptor = new OntologyTermValidationDescriptor(ValidationType.SUBCLASSES,owlThingEntity,null,ontManager);
+		OntologyTermValidationDescriptor descriptor = new OntologyTermValidationDescriptor(ValidationType.SUBCLASSES,owlThingEntity,null,null,ontManager);
 		assertEquals(3,descriptor.getOntologyIRIs().size());
 		assertTrue(descriptor.getOntologyIRIs().contains(IRI.create("http://www.mygrid.org.uk/ontology/JERMOntology")));
 		assertTrue(descriptor.getOntologyIRIs().contains(IRI.create("http://www.co-ode.org/ontologies/meta/2005/06/15/meta.owl")));
@@ -41,7 +43,7 @@ public class OntologyTermValidationDescriptorTest {
 		OntologyManager man = new WorkbookManager().getOntologyManager();
 		man.loadOntology(DocumentsCatalogue.rdfSchemaOntologyURI());
 		IRI owlThingEntity = NodeFactory.getOWLClassTopNode().getEntities().iterator().next().getIRI();
-		OntologyTermValidationDescriptor descriptor = new OntologyTermValidationDescriptor(ValidationType.SUBCLASSES,owlThingEntity,null,man);
+		OntologyTermValidationDescriptor descriptor = new OntologyTermValidationDescriptor(ValidationType.SUBCLASSES,owlThingEntity,null,null,man);
 		assertEquals(1,descriptor.getOntologyIRIs().size());
 		assertTrue(descriptor.getOntologyIRIs().contains(IRI.create(DocumentsCatalogue.rdfSchemaOntologyURI())));		
 	}
@@ -68,12 +70,14 @@ public class OntologyTermValidationDescriptorTest {
 	
 	@Test
 	public void testEntityNoProperty() throws Exception {		
-		
+
+		ValidationType validationType = ValidationType.INDIVIDUALS;
 		IRI entityIRI = IRI.create("http://www.mygrid.org.uk/ontology/JERMOntology#Project");
+		List<Term> terms = validationType.getTerms(ontManager, entityIRI);
 		
-		OntologyTermValidationDescriptor descriptor = new OntologyTermValidationDescriptor(ValidationType.INDIVIDUALS,entityIRI,null,ontManager);
+		OntologyTermValidationDescriptor descriptor = new OntologyTermValidationDescriptor(validationType,entityIRI,null,terms,ontManager);
 		
-		assertEquals(ValidationType.INDIVIDUALS,descriptor.getType());
+		assertEquals(validationType,descriptor.getType());
 		assertNull(descriptor.getOWLPropertyItem());
 		assertEquals(13,descriptor.getTerms().size());
 		assertEquals(IRI.create("http://www.mygrid.org.uk/ontology/JERMOntology#Project"),descriptor.getEntityIRI());		
@@ -88,13 +92,14 @@ public class OntologyTermValidationDescriptorTest {
 	
 	@Test
 	public void testEntityAndProperty() throws Exception {		
-		
+		ValidationType validationType = ValidationType.SUBCLASSES;
 		OWLPropertyItem property = new OWLPropertyItem(IRI.create("http://mygrid/JERMOntology#fishing"),OWLPropertyType.DATA_PROPERTY);
 		IRI entityIRI = IRI.create("http://www.mygrid.org.uk/ontology/JERMOntology#AssayType");
+		List<Term> terms = validationType.getTerms(ontManager, entityIRI);
 		
-		OntologyTermValidationDescriptor descriptor = new OntologyTermValidationDescriptor(ValidationType.SUBCLASSES,entityIRI,property,ontManager);
+		OntologyTermValidationDescriptor descriptor = new OntologyTermValidationDescriptor(validationType,entityIRI,property,terms,ontManager);
 		
-		assertEquals(ValidationType.SUBCLASSES,descriptor.getType());
+		assertEquals(validationType,descriptor.getType());
 		assertEquals(65,descriptor.getTerms().size());
 		assertEquals(property,descriptor.getOWLPropertyItem());
 		

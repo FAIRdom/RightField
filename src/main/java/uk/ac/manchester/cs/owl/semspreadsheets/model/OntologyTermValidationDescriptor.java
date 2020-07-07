@@ -66,7 +66,7 @@ public class OntologyTermValidationDescriptor implements Serializable {
         this.type = type;
         this.entityIRI = entityIRI;
 		this.propertyItem = propertyItem;
-		this.terms = terms;
+		this.terms = terms != null ? terms : type.getTerms(ontologyManager, entityIRI);
         ontologyIRI2PhysicalIRIMap = new HashMap<IRI, IRI>();
 		resolveOntologyIRIMap(entityIRI, propertyItem, ontologyManager);
     }

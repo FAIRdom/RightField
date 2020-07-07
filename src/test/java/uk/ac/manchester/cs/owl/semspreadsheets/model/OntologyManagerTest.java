@@ -406,7 +406,7 @@ public class OntologyManagerTest {
 		Sheet sheet = workbookManager.getWorkbook().getSheet(0);
 		Range range  = new Range(sheet,1,1,1,1);
 		assertTrue(ontologyManager.getOntologyIRIs().isEmpty());
-		ontologyManager.setOntologyTermValidation(range, ValidationType.SUBCLASSES, IRI.create("http://www.mygrid.org.uk/ontology/JERMOntology#AssayType"), null);
+		ontologyManager.setOntologyTermValidation(range, ValidationType.SUBCLASSES, IRI.create("http://www.mygrid.org.uk/ontology/JERMOntology#AssayType"), null, null);
 		assertEquals(1,ontologyManager.getOntologyIRIs().size());
 		assertTrue(ontologyManager.getOntologyIRIs().contains(IRI.create("http://www.mygrid.org.uk/ontology/JERMOntology")));
 		
