@@ -4,7 +4,10 @@ import org.semanticweb.owlapi.model.OWLEntity;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.listeners.EntitySelectionModelListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OWLPropertyItem;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.Term;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.ValidationType;
+
+import java.util.List;
 
 public class DummyEntitySelectionModelListener implements EntitySelectionModelListener {
 
@@ -23,6 +26,9 @@ public class DummyEntitySelectionModelListener implements EntitySelectionModelLi
 	}
 
 
+	public boolean isTermsChanged() { return termsChanged; }
+
+
 	public OWLPropertyItem getSelectedProperty() {
 		return selectedProperty;
 	}
@@ -38,6 +44,9 @@ public class DummyEntitySelectionModelListener implements EntitySelectionModelLi
 	}
 
 
+	public List<Term> getSelectedTerms() { return selectedTerms; }
+
+
 	public DummyEntitySelectionModelListener() {
 		reset();
 	}
@@ -45,18 +54,22 @@ public class DummyEntitySelectionModelListener implements EntitySelectionModelLi
 	private boolean owlPropertyChanged;
 	private boolean validationTypeChanged;
 	private boolean selectedEntityChanged;
+	private boolean termsChanged;
 	
 	private OWLPropertyItem selectedProperty;
 	private OWLEntity selectedEntity;
 	private ValidationType selectedValidationType;
+	private List<Term> selectedTerms;
 	
 	public void reset() {
 		owlPropertyChanged=false;
 		validationTypeChanged=false;
 		selectedEntityChanged=false;
+		termsChanged=false;
 		selectedProperty=null;
 		selectedEntity=null;
 		selectedValidationType=null;
+		selectedTerms=null;
 	}
 	
 	
@@ -76,6 +89,12 @@ public class DummyEntitySelectionModelListener implements EntitySelectionModelLi
 	public void selectedEntityChanged(OWLEntity entity) {
 		selectedEntity=entity;
 		selectedEntityChanged=true;		
+	}
+
+	@Override
+	public void termsChanged(List<Term> terms) {
+		selectedTerms=terms;
+		termsChanged=true;
 	}
 
 }

@@ -9,6 +9,7 @@ package uk.ac.manchester.cs.owl.semspreadsheets.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.OWLEntity;
@@ -35,7 +36,7 @@ public class EntitySelectionModel {
     
     private OWLPropertyItem owlPropertyItem;
 
-	private List<Term> terms; // = new ArrayList<Term>();
+	private List<Term> terms;
 
 	private boolean allowSelectionEvents = true;
 
@@ -56,7 +57,7 @@ public class EntitySelectionModel {
             this.selectedEntity = entity;            
         }
         terms = null;
-        logger.debug("Set selected entity to "+selectedEntity.getIRI().toString());
+		logger.debug("Set selected entity to "+selectedEntity.getIRI().toString());
         if (oldEntity==null ? selectedEntity!=null : !oldEntity.equals(selectedEntity)) {
         	fireSelectedEntityChanged();        	        
         }        
@@ -91,7 +92,10 @@ public class EntitySelectionModel {
 	public List<Term> getTerms() { return terms; }
 
 	public void setTerms(List<Term> terms) {
-
+		if (!Objects.equals(terms, this.terms)) {
+			this.terms = terms;
+			fireTermsChanged();
+		}
 	}
     
     public void clearSelection() {
@@ -139,6 +143,15 @@ public class EntitySelectionModel {
 
 				listener.validationTypeChanged(validationType);
 
+			}
+		}
+	}
+
+	protected void fireTermsChanged() {
+		if (allowSelectionEvents) {
+			for (EntitySelectionModelListener listener : new ArrayList<EntitySelectionModelListener>(
+					listeners)) {
+				listener.termsChanged(terms);
 			}
 		}
 	}

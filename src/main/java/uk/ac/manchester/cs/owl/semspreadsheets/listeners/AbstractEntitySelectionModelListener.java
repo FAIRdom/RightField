@@ -11,7 +11,10 @@ package uk.ac.manchester.cs.owl.semspreadsheets.listeners;
 import org.semanticweb.owlapi.model.OWLEntity;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OWLPropertyItem;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.Term;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.ValidationType;
+
+import java.util.List;
 
 public abstract class AbstractEntitySelectionModelListener implements
 		EntitySelectionModelListener {
@@ -31,4 +34,8 @@ public abstract class AbstractEntitySelectionModelListener implements
 		
 	}
 
+	@Override
+	public void termsChanged(List<Term> terms) {
+
+	}
 }

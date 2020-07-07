@@ -10,7 +10,10 @@ package uk.ac.manchester.cs.owl.semspreadsheets.listeners;
 import org.semanticweb.owlapi.model.OWLEntity;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OWLPropertyItem;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.Term;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.ValidationType;
+
+import java.util.List;
 
 /**
  * @author Matthew Horridge
@@ -23,4 +26,6 @@ public interface EntitySelectionModelListener {
     void validationTypeChanged(ValidationType type);
     
     void selectedEntityChanged(OWLEntity entity);
+
+    void termsChanged(List<Term> terms);
 }

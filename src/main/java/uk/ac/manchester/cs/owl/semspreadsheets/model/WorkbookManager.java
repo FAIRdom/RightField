@@ -267,22 +267,26 @@ public class WorkbookManager {
     	ValidationType type = getEntitySelectionModel().getValidationType();
     	logger.debug("Type for preview: "+type.getEntityType());
     	OWLPropertyItem owlPropertyItem = getEntitySelectionModel().getOWLPropertyItem();
+    	List<Term> terms = getEntitySelectionModel().getTerms();
+    	if (terms == null) terms = type.getTerms(ontologyManager, iri);
     	Range range = new Range(workbook.getSheet(0));
     	
-    	getOntologyManager().getOntologyTermValidationManager().previewValidation(range,type, iri,owlPropertyItem);
+    	getOntologyManager().getOntologyTermValidationManager().previewValidation(range,type, iri,owlPropertyItem, terms);
 	}	
     
     public void applyValidationChange() {
     	ValidationType type = entitySelectionModel.getValidationType();
     	IRI iri = entitySelectionModel.getSelectedEntity().getIRI();
     	OWLPropertyItem propertyItem = entitySelectionModel.getOWLPropertyItem();
-    	logger.debug("Setting validation for IRI "+iri.toString()+", type "+type.toString()+", property "+propertyItem);    			        
+    	List<Term> terms = entitySelectionModel.getTerms();
+        if (terms == null) terms = type.getTerms(ontologyManager, iri);
+    	logger.debug("Setting validation for IRI "+iri.toString()+", type "+type.toString()+", property "+propertyItem);
         
         Range selectedRange = getSelectionModel().getSelectedRange();
         if(!selectedRange.isCellSelection()) {
             return;
         }
-        setValidationAt(selectedRange, type, iri,propertyItem);
+        setValidationAt(selectedRange, type, iri,propertyItem, terms);
         fireValidationAppliedOrCancelled();
     }      
     
@@ -292,7 +296,7 @@ public class WorkbookManager {
     	fireValidationAppliedOrCancelled();
     }
 
-    public void setValidationAt(Range range,ValidationType type, IRI entityIRI, OWLPropertyItem property) {
+    public void setValidationAt(Range range,ValidationType type, IRI entityIRI, OWLPropertyItem property, List<Term> terms) {
     	Range rangeToApply;
         Collection<OntologyTermValidation> validations = getOntologyManager().getContainingOntologyTermValidations(range);
         
@@ -311,7 +315,7 @@ public class WorkbookManager {
             cellText = new Term(entityIRI, shortFormName).getFormattedName();
         }
         
-        getOntologyManager().setOntologyTermValidation(rangeToApply, type, entityIRI, property);        
+        getOntologyManager().setOntologyTermValidation(rangeToApply, type, entityIRI, property, terms);
         
         for(int col = rangeToApply.getFromColumn(); col < rangeToApply.getToColumn() + 1; col++) {
             for(int row = rangeToApply.getFromRow(); row < rangeToApply.getToRow() + 1; row++) {
@@ -339,22 +343,26 @@ public class WorkbookManager {
     	ValidationType type = entitySelectionModel.getValidationType();
     	IRI iri = entitySelectionModel.getSelectedEntity().getIRI();
     	OWLPropertyItem property = entitySelectionModel.getOWLPropertyItem();
-    	Range selectedRange = getSelectionModel().getSelectedRange();
+    	List<Term> terms = entitySelectionModel.getTerms();
+        if (terms == null) terms = type.getTerms(ontologyManager, iri);
+        Range selectedRange = getSelectionModel().getSelectedRange();
     	Collection<OntologyTermValidation> validations = getOntologyManager().getContainingOntologyTermValidations(selectedRange);
     	boolean result = false;
     	for (OntologyTermValidation validation : validations) {
     		OntologyTermValidationDescriptor validationDescriptor = validation.getValidationDescriptor();
-    		boolean propertyChanged=false;
-    		
+
     		//FIXME: shouldn't rely on OWLProperty being NULL - should have a NullPropertyItem type
+            boolean propertyChanged=false;
     		if (validationDescriptor.getOWLPropertyItem()==null) {
     			propertyChanged = property!=null;
     		}
     		else {
     			propertyChanged = !validationDescriptor.getOWLPropertyItem().equals(property);
     		}
-    		if (!validationDescriptor.getEntityIRI().equals(iri) || 
+
+    		if (!validationDescriptor.getEntityIRI().equals(iri) ||
     				!validationDescriptor.getType().equals(type) ||
+                    !validationDescriptor.getTerms().equals(terms) ||
     				propertyChanged) {
     			result=true;
     			break;

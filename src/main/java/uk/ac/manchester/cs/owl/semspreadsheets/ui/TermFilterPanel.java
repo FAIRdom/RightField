@@ -65,12 +65,12 @@ public class TermFilterPanel extends JPanel {
     }
 
     private void createLists() {
-        java.util.List<Term> selectedTerms = workbookManager.getEntitySelectionModel().getTerms();
+        List<Term> selectedTerms = workbookManager.getEntitySelectionModel().getTerms();
         if (selectedTerms == null) selectedTerms = new ArrayList<>();
         ValidationType validationType = workbookManager.getEntitySelectionModel().getValidationType();
         IRI iri = workbookManager.getEntitySelectionModel().getSelectedEntity().getIRI();
-        java.util.List<Term> allTerms = validationType.getTerms(workbookManager.getOntologyManager(), iri);
-        java.util.List<Term> availableTerms = new ArrayList<>();
+        List<Term> allTerms = validationType.getTerms(workbookManager.getOntologyManager(), iri);
+        List<Term> availableTerms = new ArrayList<>();
 
         for (Term term : allTerms) {
             if (selectedTerms.contains(term)) continue;
@@ -93,24 +93,26 @@ public class TermFilterPanel extends JPanel {
     private void createButtons() {
         addButton = new JButton("Add >>");
         addButton.addActionListener(e -> {
-            java.util.List<Term> selected = availableList.getSelectedValuesList();
+            List<Term> selected = availableList.getSelectedValuesList();
             availableListModel.removeAll(selected);
             allowedListModel.addAll(selected);
         });
 
         removeButton = new JButton("<< Remove");
         removeButton.addActionListener(e -> {
-            java.util.List<Term> selected = allowedList.getSelectedValuesList();
+            List<Term> selected = allowedList.getSelectedValuesList();
             allowedListModel.removeAll(selected);
             availableListModel.addAll(selected);
         });
     }
 
-    public java.util.List<Term> getAllowedTerms() {
+    public List<Term> getAllowedTerms() {
         return allowedListModel.terms;
     }
 
     public static void showDialog(WorkbookFrame frame) {
+        final Logger logger = Logger.getLogger(ValidationValuesFilterPanel.class);
+
         WorkbookManager manager = frame.getWorkbookManager();
         final TermFilterPanel panel = new TermFilterPanel(manager);
         JOptionPane op = new JOptionPane(panel, JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
@@ -120,6 +122,7 @@ public class TermFilterPanel extends JPanel {
         dialog.setVisible(true);
         if (op.getValue() != null
                 && op.getValue().equals(JOptionPane.OK_OPTION)) {
+            logger.info("Apply filter with " + panel.getAllowedTerms().size() + " items.");
             manager.getEntitySelectionModel().setTerms(panel.getAllowedTerms());
             manager.previewValidation();
         }
@@ -127,9 +130,9 @@ public class TermFilterPanel extends JPanel {
 
     class TermListModel extends AbstractListModel<Term> {
 
-        private final java.util.List<Term> terms;
+        private final List<Term> terms;
 
-        public TermListModel(java.util.List<Term> terms) {
+        public TermListModel(List<Term> terms) {
             this.terms = terms;
         }
 
@@ -143,7 +146,7 @@ public class TermFilterPanel extends JPanel {
             return terms.get(index);
         }
 
-        public void addAll(java.util.List<Term> terms) {
+        public void addAll(List<Term> terms) {
             this.terms.addAll(terms);
             fireContentsChanged(this, 0, getSize());
         }

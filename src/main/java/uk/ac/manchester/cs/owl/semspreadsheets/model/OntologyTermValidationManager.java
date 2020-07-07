@@ -3,7 +3,7 @@
  *
  * Licensed under the New BSD License.
  * Please see LICENSE file that is distributed with the source code
- *  
+ *
  *******************************************************************************/
 package uk.ac.manchester.cs.owl.semspreadsheets.model;
 
@@ -36,7 +36,7 @@ public class OntologyTermValidationManager {
 	private final WorkbookManager workbookManager;
 
     public OntologyTermValidationManager(WorkbookManager workbookManager) {
-		this.workbookManager = workbookManager;		        
+		this.workbookManager = workbookManager;
     }
 
     public void addListener(OntologyTermValidationListener listener) {
@@ -49,9 +49,9 @@ public class OntologyTermValidationManager {
 
     protected void readValidationFromWorkbook() {
         OntologyTermValidationWorkbookParser parser = new OntologyTermValidationWorkbookParser(getWorkbookManager());
-        clearValidations();  
-        Collection<OntologyTermValidation> validations = parser.readOntologyTermValidations();        
-        ontologyTermValidations.addAll(validations);        
+        clearValidations();
+        Collection<OntologyTermValidation> validations = parser.readOntologyTermValidations();
+        ontologyTermValidations.addAll(validations);
         parser.clearOntologyTermValidations();
         fireValidationsChanged();
     }
@@ -78,34 +78,34 @@ public class OntologyTermValidationManager {
         if (ontologyTermValidations.removeAll(getIntersectingValidations(range))) {
             fireValidationsChanged();
         }
-    }    
-    
-    public void previewValidation(Range range, ValidationType type, IRI entityIRI, OWLPropertyItem property) {
+    }
+
+    public void previewValidation(Range range, ValidationType type, IRI entityIRI, OWLPropertyItem property, List<Term> terms) {
     	logger.debug("Previewing validation for iri "+entityIRI.toString()+", type "+type.toString()+", property = "+property);
     	List<OntologyTermValidation> previewList = new ArrayList<OntologyTermValidation>();
-    	
+
         Collection<OntologyTermValidation> intersectingValidations = getIntersectingValidations(range);
         previewList.removeAll(intersectingValidations);
-        
+
         if (!type.equals(ValidationType.FREETEXT)) {
             // Add new validation        	
-            OntologyTermValidationDescriptor descriptor = new OntologyTermValidationDescriptor(type, entityIRI,property, getOntologyManager());
-            OntologyTermValidation validation = new OntologyTermValidation(descriptor, range); 
+            OntologyTermValidationDescriptor descriptor = new OntologyTermValidationDescriptor(type, entityIRI,property, terms, getOntologyManager());
+            OntologyTermValidation validation = new OntologyTermValidation(descriptor, range);
             previewList.add(validation);
-        }        
+        }
         fireOntologyTermSelected(previewList);
     }
 
-    public void setValidation(Range range, ValidationType type, IRI entityIRI, OWLPropertyItem property) {
+    public void setValidation(Range range, ValidationType type, IRI entityIRI, OWLPropertyItem property, List<Term> terms) {
     	if (logger.isDebugEnabled()) {
     		logger.debug("Setting validation at "+range.toFixedAddress()+" type:"+type.toString()+", IRI:"+entityIRI+", property:"+property);
     	}
-    	
+
         Collection<OntologyTermValidation> intersectingValidations = getIntersectingValidations(range);
         ontologyTermValidations.removeAll(intersectingValidations);
-        
-        if (!type.equals(ValidationType.FREETEXT)) {            
-            OntologyTermValidationDescriptor descriptor = new OntologyTermValidationDescriptor(type, entityIRI, property,  getOntologyManager());
+
+        if (!type.equals(ValidationType.FREETEXT)) {
+            OntologyTermValidationDescriptor descriptor = new OntologyTermValidationDescriptor(type, entityIRI, property, terms,  getOntologyManager());
             OntologyTermValidation validation = new OntologyTermValidation(descriptor, range);
             ontologyTermValidations.add(validation);
         }
@@ -113,8 +113,8 @@ public class OntologyTermValidationManager {
         	OntologyTermValidationDescriptor descriptor = new OntologyTermValidationDescriptor(property,getOntologyManager());
             OntologyTermValidation validation = new OntologyTermValidation(descriptor, range);
             ontologyTermValidations.add(validation);
-        }        
-        
+        }
+
         fireValidationsChanged();
     }
 
@@ -126,7 +126,7 @@ public class OntologyTermValidationManager {
 
     public Collection<OntologyTermValidation> getIntersectingValidations(Range range) {
          List<OntologyTermValidation> result = new ArrayList<OntologyTermValidation>();
-        for(OntologyTermValidation validation : ontologyTermValidations) {        	
+        for(OntologyTermValidation validation : ontologyTermValidations) {
             if(validation.getRange().intersectsRange(range)) {
                 result.add(validation);
             }
@@ -172,14 +172,14 @@ public class OntologyTermValidationManager {
 
     /**
      * returns the physical IRI that the ontology was original retrieved from, according to the ontology IRI
-     * 
+     *
      * @param ontologyIRI
      * @return physicalIRI
      */
     public IRI getOntologyPhysicalIRI(IRI ontologyIRI) {
 		return getOntology2PhysicalIRIMap().get(ontologyIRI);
 	}
-    
+
     public Map<IRI, IRI> getOntology2PhysicalIRIMap() {
         Map<IRI, IRI> result = new HashMap<IRI, IRI>();
         for(OntologyTermValidation validation : ontologyTermValidations) {
@@ -201,7 +201,7 @@ public class OntologyTermValidationManager {
             }
         }
     }
-    
+
     protected void fireOntologyTermSelected(List<OntologyTermValidation> previewList) {
         for(OntologyTermValidationListener listener : new ArrayList<OntologyTermValidationListener>(listeners)) {
             try {
@@ -222,7 +222,7 @@ public class OntologyTermValidationManager {
         }
         fireValidationsChanged();
     }
-    
+
     //removes validations that match a given sheet
     public void removeValidations(Sheet sheet) {
     	for(Iterator<OntologyTermValidation> it = ontologyTermValidations.iterator(); it.hasNext(); ) {
@@ -233,14 +233,14 @@ public class OntologyTermValidationManager {
         }
         fireValidationsChanged();
     }
-    
+
     protected WorkbookManager getWorkbookManager() {
     	return workbookManager;
     }
-    
+
     protected OntologyManager getOntologyManager() {
     	return getWorkbookManager().getOntologyManager();
     }
 
-	
+
 }

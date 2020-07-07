@@ -14,15 +14,12 @@ import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.util.List;
 import java.util.StringTokenizer;
 
 import org.apache.log4j.Logger;
 
-import uk.ac.manchester.cs.owl.semspreadsheets.model.Cell;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidationDescriptor;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.Sheet;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.*;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.change.SetCellValue;
 
 /**
@@ -109,7 +106,8 @@ public class SheetCellPasteAction extends SelectedCellsAction {
 			OntologyTermValidationDescriptor descriptor) {
 		getWorkbookManager().removeValidations(range);
 		if (descriptor!=null) {			
-			getWorkbookManager().setValidationAt(range,descriptor.getType(), descriptor.getEntityIRI(), descriptor.getOWLPropertyItem());
+			getWorkbookManager().setValidationAt(range,descriptor.getType(), descriptor.getEntityIRI(),
+					descriptor.getOWLPropertyItem(), (List<Term>) descriptor.getTerms());
 		}
 	}
 	

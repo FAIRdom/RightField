@@ -492,8 +492,8 @@ public class OntologyManager {
 	}	
 
     public void setOntologyTermValidation(Range rangeToApply,
-			ValidationType type, IRI entityIRI, OWLPropertyItem property) {
-		getOntologyTermValidationManager().setValidation(rangeToApply, type, entityIRI, property);		
+			ValidationType type, IRI entityIRI, OWLPropertyItem property, List<Term> terms) {
+		getOntologyTermValidationManager().setValidation(rangeToApply, type, entityIRI, property, terms);
 	}
 
     public void unloadOntology(IRI physicalIRI) {    	

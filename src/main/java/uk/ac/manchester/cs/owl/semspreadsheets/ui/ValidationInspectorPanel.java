@@ -7,12 +7,10 @@
  *******************************************************************************/
 package uk.ac.manchester.cs.owl.semspreadsheets.ui;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.FlowLayout;
-import java.awt.Font;
+import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -28,10 +26,7 @@ import org.semanticweb.owlapi.model.OWLEntity;
 import uk.ac.manchester.cs.owl.semspreadsheets.listeners.AbstractEntitySelectionModelListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.listeners.AbstractWorkbookManagerListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.listeners.CellSelectionListener;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.OWLPropertyItem;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.Range;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.ValidationType;
-import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
+import uk.ac.manchester.cs.owl.semspreadsheets.model.*;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.action.ApplyValidationAction;
 
 /**
@@ -132,7 +127,10 @@ public class ValidationInspectorPanel extends JPanel {
 			@Override
 			public void selectedEntityChanged(OWLEntity entity) {				
 				updateApplyButtonState();
-			}			
+			}
+
+			@Override
+            public void termsChanged(List<Term> terms) { updateApplyButtonState(); }
 		});
 		
         typeSelectorPanel.addListItemListener(new ItemListener() {			

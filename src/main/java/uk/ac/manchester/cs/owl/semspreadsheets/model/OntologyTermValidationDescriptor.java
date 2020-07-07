@@ -46,8 +46,9 @@ public class OntologyTermValidationDescriptor implements Serializable {
      * @param ontologyManager
      * @param propertyItem
      */
-    public OntologyTermValidationDescriptor(OWLPropertyItem propertyItem,OntologyManager ontologyManager) { 
-    	this(ValidationType.FREETEXT,NOTHING_IRI,propertyItem,ontologyManager);    	
+    public OntologyTermValidationDescriptor(OWLPropertyItem propertyItem,OntologyManager ontologyManager) {
+    	this(ValidationType.FREETEXT,NOTHING_IRI,propertyItem,
+                ValidationType.FREETEXT.getTerms(ontologyManager, NOTHING_IRI),ontologyManager);
     }
 
     public OntologyTermValidationDescriptor(ValidationType type, IRI entityIRI, OWLPropertyItem propertyItem, Map<IRI, IRI> ontologyIRI2PhysicalIRIMap, Map<IRI, String> terms) {
@@ -61,14 +62,14 @@ public class OntologyTermValidationDescriptor implements Serializable {
         Collections.sort(this.terms);
     }
         
-    public OntologyTermValidationDescriptor(ValidationType type, IRI entityIRI, OWLPropertyItem propertyItem, OntologyManager ontologyManager) {
+    public OntologyTermValidationDescriptor(ValidationType type, IRI entityIRI, OWLPropertyItem propertyItem, List<Term> terms, OntologyManager ontologyManager) {
         this.type = type;
         this.entityIRI = entityIRI;
-		this.propertyItem = propertyItem;        
+		this.propertyItem = propertyItem;
+		this.terms = terms;
         ontologyIRI2PhysicalIRIMap = new HashMap<IRI, IRI>();
 		resolveOntologyIRIMap(entityIRI, propertyItem, ontologyManager);
-		terms = type.getTerms(ontologyManager, entityIRI);	        
-    }        
+    }
 
     private void resolveOntologyIRIMap(IRI entityIRI,
 			OWLPropertyItem propertyItem, OntologyManager ontologyManager) {

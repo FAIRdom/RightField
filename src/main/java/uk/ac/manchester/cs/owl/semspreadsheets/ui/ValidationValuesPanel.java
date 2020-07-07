@@ -8,14 +8,15 @@
 package uk.ac.manchester.cs.owl.semspreadsheets.ui;
 
 import java.awt.*;
-import java.util.Collection;
+import java.util.*;
 import java.util.List;
-import java.util.TreeSet;
 
 import javax.swing.*;
 
+import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.IRI;
 
+import uk.ac.manchester.cs.owl.semspreadsheets.listeners.AbstractEntitySelectionModelListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.listeners.CellSelectionListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.listeners.OntologyTermValidationListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.OntologyTermValidation;
@@ -32,6 +33,8 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.WorkbookManager;
  */
 @SuppressWarnings("serial")
 public class ValidationValuesPanel extends JPanel {
+
+    Logger logger = Logger.getLogger(ValidationValuesPanel.class);
 
     private WorkbookManager workbookManager;
 
@@ -69,6 +72,13 @@ public class ValidationValuesPanel extends JPanel {
                     List<OntologyTermValidation> previewList) {
                 updateFromPreviewList(previewList);
 
+            }
+        });
+
+        workbookManager.getEntitySelectionModel().addListener(new AbstractEntitySelectionModelListener() {
+            @Override
+            public void termsChanged(List<Term> terms) {
+                updateFromSelectionModel(terms);
             }
         });
     }
@@ -131,6 +141,21 @@ public class ValidationValuesPanel extends JPanel {
             }
         }
         termList.setListData(listData.toArray(new ValueListItem[listData.size()]));
+    }
+
+    private void updateFromSelectionModel(List<Term> terms) {
+        termList.setListData(new ValueListItem[0]);
+
+        ValidationType type = workbookManager.getEntitySelectionModel().getValidationType();
+        List<ValueListItem> listItems = new ArrayList<>();
+
+        if (terms != null) {
+            for (Term term : terms) {
+                listItems.add(new ValueListItem(term, type));
+            }
+        }
+
+        termList.setListData(listItems.toArray(new ValueListItem[listItems.size()]));
     }
 
     private class ValueListItemCellRenderer extends DefaultListCellRenderer {
