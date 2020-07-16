@@ -15,6 +15,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import javax.swing.JList;
+import javax.swing.ListSelectionModel;
 
 import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.IRI;
@@ -107,6 +109,20 @@ public class OntologyTermValidationManager {
         if (!type.equals(ValidationType.FREETEXT)) {            
             OntologyTermValidationDescriptor descriptor = new OntologyTermValidationDescriptor(type, entityIRI, property,  getOntologyManager());
             OntologyTermValidation validation = new OntologyTermValidation(descriptor, range);
+            JList<ValueListItem> termJList = workbookManager.getTermJListFromValidationValuesPanel();
+            Collection<Term> termList = descriptor.getTerms(); 
+            ListSelectionModel lsm = termJList.getSelectionModel();           
+            int counter = 0;
+            Iterator iter = termList.iterator();
+            while(iter.hasNext()){
+                Term term = (Term)iter.next();
+                if(lsm.isSelectedIndex(counter)){//AW changed to selected terms only
+                    term.setSelected(true);
+                }else{
+                    term.setSelected(false);
+        }
+                counter++;
+            }
             ontologyTermValidations.add(validation);
         }
         else if (property!=null) {

@@ -15,6 +15,9 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import javax.swing.JList;
+import javax.swing.ListModel;
+import javax.swing.ListSelectionModel;
 
 import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.IRI;
@@ -30,6 +33,7 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.change.WorkbookChange;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.xssf.impl.WorkbookXSSFImpl;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.CellSelectionModel;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.ErrorHandler;
+import uk.ac.manchester.cs.owl.semspreadsheets.ui.ValidationValuesPanel;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookFormat;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookState;
 import uk.org.rightfield.RightField;
@@ -54,6 +58,8 @@ public class WorkbookManager {
     private EntitySelectionModel entitySelectionModel;
 
     private Set<WorkbookManagerListener> workbookManagerListeners = new HashSet<WorkbookManagerListener>();
+
+    private JList<ValueListItem> termJList = new JList(); 
 
     public WorkbookManager() {    	
         
@@ -273,18 +279,18 @@ public class WorkbookManager {
 	}	
     
     public void applyValidationChange() {
-    	ValidationType type = entitySelectionModel.getValidationType();
-    	IRI iri = entitySelectionModel.getSelectedEntity().getIRI();
-    	OWLPropertyItem propertyItem = entitySelectionModel.getOWLPropertyItem();
-    	logger.debug("Setting validation for IRI "+iri.toString()+", type "+type.toString()+", property "+propertyItem);    			        
-        
-        Range selectedRange = getSelectionModel().getSelectedRange();
-        if(!selectedRange.isCellSelection()) {
-            return;
-        }
-        setValidationAt(selectedRange, type, iri,propertyItem);
-        fireValidationAppliedOrCancelled();
-    }      
+            ValidationType type = entitySelectionModel.getValidationType();
+            IRI iri = entitySelectionModel.getSelectedEntity().getIRI();
+            OWLPropertyItem propertyItem = entitySelectionModel.getOWLPropertyItem();
+            logger.debug("Setting validation for IRI " + iri.toString() + ", type " + type.toString() + ", property " + propertyItem);
+
+            Range selectedRange = getSelectionModel().getSelectedRange();
+            if (!selectedRange.isCellSelection()) {
+                return;
+            }
+            setValidationAt(selectedRange, type, iri, propertyItem);
+            fireValidationAppliedOrCancelled();
+    } 
     
     public void cancelValidationChange() {
     	Range selectedRange = getSelectionModel().getSelectedRange();
@@ -363,7 +369,11 @@ public class WorkbookManager {
     	if (validations.isEmpty()) {
     		result = (type!=ValidationType.FREETEXT || property!=null);
     	}
-    	logger.debug("Apply button state deterimned as "+result+" for type "+type.toString()+" and IRI "+iri.toString()+" and Property "+property);
+        
+        ValueListItem item = termJList.getSelectedValue();
+        if (item == null) {
+            result = false;
+        }
     	return result;
     }
     
@@ -420,4 +430,12 @@ public class WorkbookManager {
 		}
 	}
 
+        public void setTermJListFromValidationValuesPanel(JList<ValueListItem>termJList){ 
+            this.termJList = termJList;
+}
+        
+        public JList<ValueListItem> getTermJListFromValidationValuesPanel(){ 
+            return this.termJList;
+        }    
+        
 }
