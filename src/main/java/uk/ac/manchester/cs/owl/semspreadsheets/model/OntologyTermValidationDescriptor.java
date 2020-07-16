@@ -134,16 +134,6 @@ public class OntologyTermValidationDescriptor implements Serializable {
         return new ArrayList<Term>(terms);
     }
 
-    public Collection<Term> getOnlySelectedTerms(){ //AW changed
-        ArrayList<Term> selectedTerms = new ArrayList<Term>();
-        for(Term term : terms){
-            if(term.isSelected()){
-                selectedTerms.add(term);
-            }
-        }
-        return selectedTerms;
-    }    
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

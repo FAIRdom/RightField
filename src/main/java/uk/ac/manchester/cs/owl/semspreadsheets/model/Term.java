@@ -19,19 +19,10 @@ public class Term implements Comparable<Term> {
 
     private String name;
 
-    //AW added isSelected for Term
-    private boolean isSelected = true;
-
     public Term(IRI iri, String name) {
         this.iri = iri;
         this.name = name;
     }
-
-    public Term(IRI iri, String name, boolean isSelected) {
-        this.iri = iri;
-        this.name = name;
-        this.isSelected = isSelected;
-    }      
 
     public IRI getIRI() {
         return iri;
@@ -40,14 +31,6 @@ public class Term implements Comparable<Term> {
     public String getName() {
         return name;
     }
-    
-    public boolean isSelected() {
-        return isSelected;
-    }    
-    
-    public void setSelected(boolean isSelected) {
-        this.isSelected = isSelected;
-    }     
     
     /**
      * @return an improved formatting of the name - e.g removing underscores between words - also with any prefix removed
