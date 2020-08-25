@@ -15,6 +15,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
 
@@ -113,7 +114,7 @@ public class OntologyTermValidationManager {
             Collection<Term> termList = descriptor.getTerms(); 
             ListSelectionModel lsm = termJList.getSelectionModel();           
             int counter = 0;
-            Iterator iter = termList.iterator();
+            Iterator<Term> iter = termList.iterator();
             while(iter.hasNext()){
                 Term term = (Term)iter.next();
                 if(lsm.isSelectedIndex(counter)){//AW changed to selected terms only

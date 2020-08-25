@@ -19,7 +19,6 @@ import java.util.TreeSet;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListCellRenderer;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -28,8 +27,8 @@ import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import org.apache.log4j.Logger;
 
+import org.apache.log4j.Logger;
 
 import uk.ac.manchester.cs.owl.semspreadsheets.listeners.CellSelectionListener;
 import uk.ac.manchester.cs.owl.semspreadsheets.listeners.OntologyTermValidationListener;
@@ -160,7 +159,7 @@ public class ValidationValuesPanel extends JPanel {
     }
 
     private void setViewTermsHighlighting() {
-        ListModel model = termList.getModel();
+        ListModel<ValueListItem> model = termList.getModel();
         ListSelectionModel listSelectionModel = termList.getSelectionModel();
         
         for (int i = 0; i < model.getSize(); i++) {

@@ -15,9 +15,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 import javax.swing.JList;
-import javax.swing.ListModel;
-import javax.swing.ListSelectionModel;
 
 import org.apache.log4j.Logger;
 import org.semanticweb.owlapi.model.IRI;
@@ -33,7 +32,6 @@ import uk.ac.manchester.cs.owl.semspreadsheets.model.change.WorkbookChange;
 import uk.ac.manchester.cs.owl.semspreadsheets.model.xssf.impl.WorkbookXSSFImpl;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.CellSelectionModel;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.ErrorHandler;
-import uk.ac.manchester.cs.owl.semspreadsheets.ui.ValidationValuesPanel;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookFormat;
 import uk.ac.manchester.cs.owl.semspreadsheets.ui.WorkbookState;
 import uk.org.rightfield.RightField;
@@ -59,7 +57,7 @@ public class WorkbookManager {
 
     private Set<WorkbookManagerListener> workbookManagerListeners = new HashSet<WorkbookManagerListener>();
 
-    private JList<ValueListItem> termJList = new JList(); 
+    private JList<ValueListItem> termJList = new JList<ValueListItem>(); 
 
     public WorkbookManager() {    	
         
