@@ -1,9 +1,9 @@
 = RightField
 
-Authors::    Stuart Owen, {Matthew Horridge}[http://www.cs.man.ac.uk/~horridgm]
-Contact::    mailto:stuart.owen@manchester.ac.uk
+Authors::    {Stuart Owen}[https://orcid.org/0000-0003-2130-0865], {Matthew Horridge}[http://www.cs.man.ac.uk/~horridgm]
+Contact::    https://rightfield.org.uk/contact_us.html
 Licence::    BSD (See LICENCE or http://www.opensource.org/licenses/bsd-license.php)
-Copyright::  (c) 2009-2018 The University of Manchester, UK
+Copyright::  (c) 2009-2020 The University of Manchester, UK
 
 Website::    http://www.rightfield.org.uk
 
