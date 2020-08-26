@@ -9,4 +9,4 @@ if test -x "$JAVA_HOME/bin/java"; then
     javabin="$JAVA_HOME/bin/java"
 fi
 
-exec $javabin -Xmx1000M -jar $dir/rightfield-bin.jar $@
+exec $javabin -Xmx1000M -jar "$dir/rightfield-bin.jar" $@
