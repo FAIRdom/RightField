@@ -97,7 +97,7 @@ public class FileHandling {
 	public void openWorkbook()  {
 		String lastLocation = UserPrefs.getLastFileLocation();
 		File file = browseForFile("Open spreadsheet", FileDialog.LOAD,
-				WORKBOOK_EXT,"Excel 97-2003",lastLocation);
+				WORKBOOK_EXT,"Excel 2007",lastLocation);
 		if (file != null) {
 			try {
 				UserPrefs.setLastFileLocation(file);
