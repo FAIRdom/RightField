@@ -369,7 +369,7 @@ public class WorkbookManager {
     	}
         
         ValueListItem item = termJList.getSelectedValue();
-        if (item == null) {
+        if (type!=ValidationType.FREETEXT && item == null) {
             result = false;
         }
     	return result;
