@@ -282,7 +282,7 @@ public class CellHSSFImpl implements Cell {
         if (cellStyle == null) {
             return SwingConstants.LEFT;
         }
-        HorizontalAlignment hssfAlignment = cellStyle.getAlignment();
+        HorizontalAlignment hssfAlignment = cellStyle.getAlignmentEnum();
         if (hssfAlignment == HorizontalAlignment.LEFT) {
             return SwingConstants.LEFT;
         }

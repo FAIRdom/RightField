@@ -298,7 +298,7 @@ public class CellXSSFImpl implements Cell {
         if (cellStyle == null) {
             return SwingConstants.LEFT;
         }
-        HorizontalAlignment xssfAlignment = cellStyle.getAlignment();
+        HorizontalAlignment xssfAlignment = cellStyle.getAlignmentEnum();
         if (xssfAlignment == HorizontalAlignment.LEFT) {
             return SwingConstants.LEFT;
         }

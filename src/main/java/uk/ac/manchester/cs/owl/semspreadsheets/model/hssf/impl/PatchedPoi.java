@@ -35,8 +35,8 @@ public class PatchedPoi {
 	}
 
 
-	public void clearValidationData(HSSFSheet sheet) {				
-//		sheet.getDataValidityTable().clear();
+	public void clearValidationData(HSSFSheet sheet) {		
+		sheet.getDataValidityTable().clear();
 	}
 
 }

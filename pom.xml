@@ -44,16 +44,11 @@
 		</dependency>
 
 		<!--  still using patched version, just to clear validation with HSSFSheet -->
-		<!--<dependency>
+		<dependency>
 			<groupId>org.sysmo-db</groupId>
 			<artifactId>rightfield-poi</artifactId>
 			<version>4.1.0</version>
-		</dependency>-->
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi</artifactId>
-			<version>5.2.3</version>			
-		</dependency>	
+		</dependency>
 		
 		<!--  poi dependencies -->
 		<dependency>
@@ -83,13 +78,13 @@
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi-ooxml</artifactId>
-			<version>5.2.3</version>
-			<!--<exclusions>
+			<version>4.1.0</version>
+			<exclusions>
 				<exclusion>
 					<groupId>org.apache.poi</groupId>
 					<artifactId>poi</artifactId>
 					</exclusion>				
-			</exclusions>-->
+			</exclusions>
 		</dependency>			
 
 		<dependency>
