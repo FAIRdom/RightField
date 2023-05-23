@@ -98,7 +98,7 @@
 			<version>1.7.26</version>
 		</dependency>
 
-		<dependency>
+		<!--<dependency>
 			<groupId>dom4j</groupId>
 			<artifactId>dom4j</artifactId>
 			<version>1.6.1</version>
@@ -108,7 +108,7 @@
 					<groupId>xml-apis</groupId>
 				</exclusion>
 			</exclusions>
-		</dependency>
+		</dependency>-->
 
 		<dependency>
 			<groupId>net.sf.opencsv</groupId>
