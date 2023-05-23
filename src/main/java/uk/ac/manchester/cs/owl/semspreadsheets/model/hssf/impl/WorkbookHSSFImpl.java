@@ -138,10 +138,12 @@ public class WorkbookHSSFImpl implements MutableWorkbook, WorkbookChangeVisitor 
     }
 
     public void addName(String name, Range rng) {
-        if(workbook.getName(name) != null) {
-            workbook.removeName(name);
+    	Name hssfName = workbook.getName(name);    	
+    	
+        if(hssfName != null) {
+            workbook.removeName(hssfName);
         }
-        Name hssfName = workbook.createName();
+        hssfName = workbook.createName();
         hssfName.setNameName(name);
         hssfName.setRefersToFormula(rng.toFixedAddress());
     }
